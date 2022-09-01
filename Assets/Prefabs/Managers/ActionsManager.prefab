@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3236320749043518720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3236320749043518726}
+  - component: {fileID: 3236320749043518727}
+  m_Layer: 0
+  m_Name: ActionsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3236320749043518726
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236320749043518720}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20.065077, y: 2.9693482, z: -17.80701}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3236320749043518727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236320749043518720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1bc2d982fefa7644a3920c2682b4bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllPatientsPhotonViews: []
+  AllPlayersPhotonViews: []
+  AllPlayerData: []
+  AllPatients: []
+  NatanPrefab: {fileID: 4554301809211483259, guid: 6562aefc6eec2554a9099985472aa171, type: 3}
+  Clipboard: {fileID: 5287983245635027189, guid: 39516b9ebdd56c34fb72a019bae2f2bc, type: 3}
+  HeadVice: {fileID: 1558164250459590511, guid: 3a6159b03833f1f4d9c494b37cde1f31, type: 3}
+  Megaphone: {fileID: 928589608784601698, guid: c9d55da3146394146b438e7b93e7b3cc, type: 3}
+  NeckBrace: {fileID: 6554632361257791038, guid: 0c87a229448c0994f9bf056bbc8ee94f, type: 3}
+  Hat: {fileID: 9052725642230537754, guid: af8ec455242bc3e45b21a1ec4fd4d799, type: 3}
+  BloodPressureSleeve: {fileID: 6198605158783632762, guid: 1e5f511972109634a9ee0ec85867c792, type: 3}
+  OxyMask: {fileID: 6658054613961404604, guid: f8d946847623ce04286bcfb0961cc602, type: 3}
+  RespirationBalloon: {fileID: 7126309234378175540, guid: a0f61957727a07349a7285d990cab31e, type: 3}
+  ArmBandage: {fileID: 8407028067461935344, guid: 1ebf40424c5170c4eb9d7fd5bd8137fd, type: 3}
+  ArmTourniquet: {fileID: 382790226773440647, guid: 1091b1b252401a841bbb25dd26e01b4b, type: 3}
+  BicepsBandage: {fileID: 1299191453934167215, guid: 7ce26ee832c420247950278ff170b550, type: 3}
+  BicepsTourniquet: {fileID: 8645587581515534804, guid: 87f2a3caa89ca1b49838adba3885ccc8, type: 3}
+  KneeBandage: {fileID: 6841637174355786845, guid: 81de69e3707161b45881fcdb8fa5db5e, type: 3}
+  KneeTourniquet: {fileID: 8650706701222420918, guid: 3d89a2b8905cf9442930de13e06a1aaf, type: 3}
+  ShinBandage: {fileID: 457694086362375012, guid: 0f7dc056d7a4888499f8e8ebb6e96e38, type: 3}
+  ShinTourniquet: {fileID: 1012086525372700650, guid: 44dbe518b8ab7c6409ed610142f0ef16, type: 3}
+  Asherman: {fileID: 3763157064038063447, guid: d16fe82ba3abfbf40b49ff8b95b7ada3, type: 3}
+  EcgSticker: {fileID: 7969830685951190250, guid: 56f03cefaf0cae047be958a19c1fa9f0, type: 3}
+  ThroatTube: {fileID: 7078177329142914045, guid: 18576b4ee6fa8594aa4584ff50d3a886, type: 3}
+  InTube: {fileID: 8418897998401888532, guid: 27aa84d0ebba64a4f8ccd12ea2a15f4d, type: 3}
+  Venflon: {fileID: 334469467259357876, guid: bb28d9987b248de4bab29cdaf28a40ce, type: 3}
+  OxyTank: {fileID: 347916414935181267, guid: f47a20fc1a9f288499fbc9c38f717a9a, type: 3}
+  IVPole: {fileID: 8804856531339849900, guid: a5b7f72ff4f3bf84aaa0868093c5fe57, type: 3}
+  BloodPressureDevice: {fileID: 7712631654234265585, guid: 4594cb8ec5117ea43bf272a0254ef15f, type: 3}
+  Monitor: {fileID: 1147925305141470002, guid: f567f450560d1ba4c9705a625ac24b09, type: 3}
+  Respirator: {fileID: 7904817049621424509, guid: ed441cbc324f00642a4e545a058f40c3, type: 3}
+  Vests:
+  - {fileID: 7332229153094691024, guid: 5fb84d99299e4d245ade3230f78788b6, type: 3}
+  - {fileID: 7736205331385535747, guid: 14029e950a0793044be900c8c649bff9, type: 3}
+  - {fileID: 7597002613634986701, guid: e017f8b3d02bc7b4c976bb7e3d22259b, type: 3}
+  - {fileID: 2285276116438388824, guid: 0ab498cede1219544ae60ac2d1a75230, type: 3}
+  - {fileID: 8159867793750220494, guid: c9a05f1ca2a5511418d7313c9c6e625a, type: 3}
+  NextCrewIndex: 0
+  NatanPosTransforms:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

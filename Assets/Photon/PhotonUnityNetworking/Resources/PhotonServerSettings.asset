@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
+  m_Name: PhotonServerSettings
+  m_EditorClassIdentifier: 
+  AppSettings:
+    AppIdRealtime: 4e7cc211-e005-466e-a948-c19d56754917
+    AppIdFusion: 
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: Iron-Man v0.9.6 Bunny
+    UseNameServer: 1
+    FixedRegion: eu
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  DevRegion: eu
+  PunLogging: 0
+  EnableSupportLogger: 0
+  RunInBackground: 1
+  StartInOfflineMode: 0
+  RpcList:
+  - ClickRpc
+  - DestroyRpc
+  - DestroySpaceship
+  - Fire
+  - RespawnSpaceship
+  - AddUserToTreatingLists
+  - RPC_ClickJOine
+  - RPC_OnPatientClicked
+  - LeavePatient
+  - OnJoinPatient
+  - UpdateTreatingUsersListOverNetwork
+  - UpdatePatientInfoDisplay
+  - OnLeavePatient
+  - OnApplyMedicine
+  - EvacPatient_RPC
+  - ChangeCharControllerStateRPC
+  - SetThisActive
+  - SetThisInactive
+  - PutOnBed
+  - RemoveFromBed
+  - RPC_UpdatePatientLog
+  - ChangeClothingRPC
+  - ChangeHeartRateRPC
+  - SetMeasurementByIndexRPC
+  - AddingToRoomList_RPC
+  - CrewCreateSubmit_RPC
+  - ChangeCrewColors
+  - RemovingFromRoomList_RPC
+  - ChangeConciouncenessRPC
+  - SetMonitorGraphRPC
+  - SpawnVehicle_RPC
+  - CloseCrewUI_RPC
+  - ShowCrewUI_RPC
+  - AddtoUi_RPC
+  - RemoveFromUi_RPC
+  - SetToUi_RPC
+  - UpdateUiNameOnExit
+  - RemoveBandageFromUnusedListRPC
+  - GiveRoles
+  - DropdownPlayersNickNames
+  - GiveHenyonRole
+  - GivePinoyeRole
+  - GiveRefuaRole
+  - GiveMedicineRPC
+  - SetMeasurementsValuesRPC
+  - AddingPlayerToAllPlayersList
+  - GiveMokdanRole
+  - AnimateEranDoor
+  - RevealPropOnPatientRPC
+  - SetMeasurementsRPC
+  - AssignRole
+  - AssignAranRole
+  - AssignAranRoleRPC
+  - GivePikud10RoleRPC
+  - DropdownPlayersNickNamesMetargel
+  - DropdownPlayersNickNamesPikud10
+  - ActivateAreaRPC
+  - ActivateAreaMarkingRPC
+  - GiveMainMokdanRole
+  - DropdownPlayersNickNamesPikud
+  - GivePikudRole
+  - ShowMokdanMenu_RPC
+  - CloseMokdanMenu_RPC
+  - SpectatePikudCamera_RPC
+  - SetPikud10RPC
+  - InitializePikud10RPC
+  - SetMarkRPC
+  - UpdatePinuyList_RPC
+  - StartAran_RPC
+  - StopAran_RPC
+  - UpdateTaggedPatientListRPC
+  - UpdateVehicleListsRPC
+  - UrgentEvactionRPC
+  DisableAutoOpenWizard: 1
+  ShowSettings: 1
+  DevRegionSetOnce: 1
