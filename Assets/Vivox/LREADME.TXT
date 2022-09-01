@@ -1,0 +1,1 @@
+To get started, please see the Developer First Steps in the Knowledge Base->Advanced Documentation-><your platform> section of the Vivox Developer Portal (https://developer.vivox.com).
