@@ -11,7 +11,7 @@ public class LoginCredentials : MonoBehaviour
 {
     public static LoginCredentials Instance;
 
-    private Client client;
+    public Client client;
     private Uri server = new Uri("https://mt1s.www.vivox.com/api2");
     private string issuer = "mda0741-md03-dev";
     private string domain = "mt1s.vivox.com";
