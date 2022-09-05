@@ -8,6 +8,10 @@ using TMPro;
 
 public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
 {
+    [Header("ParentVehicle")]
+    [field: SerializeField] CarControllerSimple _parentVehicle;
+    public CarControllerSimple ParentVehicle => _parentVehicle;
+
     [Header("Player & Patient")]
     [SerializeField] private GameObject _patient;
     [SerializeField] private GameObject _player;
@@ -17,7 +21,9 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     [SerializeField] private GameObject _emergencyBedClosed, _emergencyBed;
 
     [Header("UI")]
-    [SerializeField] private GameObject _emergencyBedUI;
+    [field: SerializeField] private GameObject _emergencyBedUI;
+    public GameObject EmergencyBedUI => _emergencyBedUI;
+
     [SerializeField] private TextMeshProUGUI _takeReturnText;
     [SerializeField] private TextMeshProUGUI _followUnfollowText, _placeRemovePatientText;
     [SerializeField] private string _takeText, _returnText, _followText, _unfollowText, _placeText, _removeText;

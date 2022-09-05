@@ -59,6 +59,17 @@ public class EvacuationNpc : MonoBehaviour
         EmergencyBedController bed = bedRef.BedRefrence.GetComponent<EmergencyBedController>();
         EvacuationManager.Instance.ResetEmergencyBed(bed);
 
+        bed.EmergencyBedUI.SetActive(false);
+
+        if (bed.ParentVehicle.IsNatan)
+        {
+            UIManager.Instance.NatanBar.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.AmbulanceBar.SetActive(true);
+        }
+
         _evacuationUI.SetActive(false);
     }
 
