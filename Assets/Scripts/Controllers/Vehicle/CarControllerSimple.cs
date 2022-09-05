@@ -73,8 +73,11 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
      {
          GameManager.Instance.usedNamesValues.Remove(RandomName);
          GameManager.Instance.usedValues.Remove(RandomNumber);
-         GameManager.Instance.NatanCarList.Remove(_photonView);
-     }
+        if (IsNatan)
+            GameManager.Instance.NatanCarList.Remove(_photonView);
+        //else
+        //    GameManager.Instance.AmbulanceList.Remove(_photonView);
+    }
 
     private void Update()
     {
@@ -113,13 +116,11 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
         {
             moveSpeed = -_reverseSpeed;
             IsInPinuy = true;
-
         }
         else
         {
             moveSpeed = 0;
             IsInPinuy = false;
-
         }
 
         _carRb.AddForce(transform.forward * moveSpeed, ForceMode.Acceleration);

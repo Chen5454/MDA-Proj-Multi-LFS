@@ -18,7 +18,12 @@ public class CameraCollisionDetection : MonoBehaviour
         _distance = transform.localPosition.magnitude;
     }
 
-    void Update()
+    private void Update()
+    {
+        DetectCollisions();
+    }
+
+    private void DetectCollisions()
     {
         Vector3 desiredCameraPos = transform.parent.TransformPoint(_dollyDir * _maxDistance);
 

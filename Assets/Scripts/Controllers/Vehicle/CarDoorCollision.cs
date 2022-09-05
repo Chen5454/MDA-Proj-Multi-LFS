@@ -26,6 +26,12 @@ public class CarDoorCollision : MonoBehaviour
         _exitVehicleBtn = UIManager.Instance.VehicleUI.transform.GetChild(1).GetComponent<Button>();
         _headlightBtn = UIManager.Instance.VehicleUI.transform.GetChild(2).GetComponent<Button>();
         _sirenBtn = UIManager.Instance.VehicleUI.transform.GetChild(3).GetComponent<Button>();
+        _exitVehicleBtn.onClick.RemoveAllListeners();
+        _headlightBtn.onClick.RemoveAllListeners();
+        _sirenBtn.onClick.RemoveAllListeners();
+        
+        _headlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
+        _sirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
     }
 
     void Update()
@@ -70,7 +76,7 @@ public class CarDoorCollision : MonoBehaviour
             //    EnterExitToggle();
             //}
         }
-
+        _exitVehicleBtn.onClick.AddListener(delegate { EnterExitToggle(); });
         EnterExitToggle();
     }
 
@@ -81,7 +87,7 @@ public class CarDoorCollision : MonoBehaviour
 
     private void EnterExitVehicle()
     {
-        if (CollidingPlayer != null)
+        if (CollidingPlayer)
         {
             if (IsSeatOccupied)
             {
@@ -92,16 +98,14 @@ public class CarDoorCollision : MonoBehaviour
 
     public void EnterExitToggle()
     {
-        if (IsDoorOpen && CollidingPlayer != null)
+        if (IsDoorOpen && CollidingPlayer)
         {
             PlayerController playerController = CollidingPlayer.GetComponent<PlayerController>();
 
             if (!IsSeatOccupied)
             {
                 Debug.Log("supposed to drive");
-                _exitVehicleBtn.onClick.AddListener(delegate { EnterExitToggle(); });
-                _headlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
-                _sirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+                
                 IsSeatOccupied = true;
                 playerController.IsDriving = true;
                 _doorAnimator.SetBool("IsDoorOpen", false);
@@ -135,6 +139,7 @@ public class CarDoorCollision : MonoBehaviour
 
     public void ToggleHeadlights()
     {
+        Debug.Log("Attempting Toggle Lights");
         if (_carController.CarHeadLightsOn)
         {
             _carController.CarHeadLightsOn = false;
@@ -142,6 +147,7 @@ public class CarDoorCollision : MonoBehaviour
             _carController.CarSiren.GetComponent<Animator>().enabled = false;
             //CarSirenLightLeft.SetActive(false);
             //CarSirenLightRight.SetActive(false);
+            Debug.Log("Performed Toggle Lights");
         }
         else
         {
@@ -150,20 +156,24 @@ public class CarDoorCollision : MonoBehaviour
             _carController.CarSiren.GetComponent<Animator>().enabled = true;
             //CarSirenLightLeft.SetActive(true);
             //CarSirenLightRight.SetActive(true);
+            Debug.Log("Performed Toggle Lights");
         }
     }
 
     public void ToggleSiren()
     {
+        Debug.Log("Attempting Toggle Siren");
         if (_carController.CarSirenOn)
         {
             _carController.CarSirenOn = false;
             _carController.CarSirenAudioSource.Stop();
+            Debug.Log("Performed Toggle Siren");
         }
         else
         {
             _carController.CarSirenOn = true;
             _carController.CarSirenAudioSource.Play();
+            Debug.Log("Performed Toggle Siren");
         }
     }
 
