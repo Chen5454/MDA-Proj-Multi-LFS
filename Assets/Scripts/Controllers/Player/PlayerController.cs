@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
+        if (GameManager.Instance.metargelUsersList.Contains(_photonView.Owner.NickName))
+            PlayerData.IsMetargel = true;
     }
 
     private void Start()
