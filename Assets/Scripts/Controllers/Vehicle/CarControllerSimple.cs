@@ -55,7 +55,7 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
      {  
          _carRb = GetComponent<Rigidbody>();
          _carRb.centerOfMass = new Vector3(_carRb.centerOfMass.x, _centerOfMassOffset, _carRb.centerOfMass.z);
-        _carDashboardUI = UIManager.Instance.VehicleUI;
+        _carDashboardUI = UIManager.Instance.VehicleDriverUI;
 
         RandomNumber = GetRandomInt(100,999+1);
         GameManager.Instance.usedValues.Add(RandomNumber);
@@ -238,11 +238,6 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
             transform.position = (Vector3)stream.ReceiveNext();
             IsInPinuy = (bool)stream.ReceiveNext();
         }
-    }
-
-    public void ExitVehicle()
-    {
-
     }
 
     public int GetRandomInt(int min, int max)

@@ -27,9 +27,6 @@ public class UIManager : MonoBehaviour
     [Header("Player UI Parents")]
     public GameObject CurrentActionBarParent;
     public GameObject MapWindow, ContentPanel;
-    public GameObject AmbulanceBar, NatanBar;
-    public GameObject AmbulanceNoBagPanel, AmbulanceAmbuPanel, AmbulanceKidsAmbuPanel, AmbulanceMedicPanel, AmbulanceDefibrilationPanel, AmbulanceOxygenPanel, AmbulanceMonitorPanel;
-    public GameObject NatanNoBagPanel, NatanAmbuPanel, NatanKidsAmbuPanel, NatanMedicPanel, NatanQuickDrugsPanel, NatanOxygenPanel, NatanMonitorPanel;
     public GameObject TeamLeaderMenu;
     public GameObject TeamLeaderNavigationBtn;
 
@@ -77,8 +74,14 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Vehicle UI
-    [Header("Vehicle UI Texts")]
-    public GameObject VehicleUI;
+    [Header("Vehicle UI")]
+    public GameObject VehicleDriverUI;
+    public Button HeadlightBtn, SirenBtn, DriverExitBtn;
+    public GameObject VehiclePassangerUI;
+    public Button PassangerExitBtn;
+    public GameObject AmbulanceBar, NatanBar;
+    public GameObject AmbulanceNoBagPanel, AmbulanceAmbuPanel, AmbulanceKidsAmbuPanel, AmbulanceMedicPanel, AmbulanceDefibrilationPanel, AmbulanceOxygenPanel, AmbulanceMonitorPanel;
+    public GameObject NatanNoBagPanel, NatanAmbuPanel, NatanKidsAmbuPanel, NatanMedicPanel, NatanQuickDrugsPanel, NatanOxygenPanel, NatanMonitorPanel;
     
     #endregion
 

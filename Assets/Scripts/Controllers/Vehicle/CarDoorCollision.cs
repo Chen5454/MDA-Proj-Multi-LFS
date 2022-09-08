@@ -12,9 +12,6 @@ public class CarDoorCollision : MonoBehaviour
     public GameObject CollidingPlayer;
     public Transform SeatPosition;
     private OwnershipTransfer _transfer;
-    private Button _exitVehicleBtn;
-    private Button _headlightBtn;
-    private Button _sirenBtn;
 
     [SerializeField] private CarControllerSimple _carController;
     private Animator _doorAnimator;
@@ -23,15 +20,15 @@ public class CarDoorCollision : MonoBehaviour
     {
         _transfer = GetComponent<OwnershipTransfer>();
         _doorAnimator = GetComponent<Animator>();
-        _exitVehicleBtn = UIManager.Instance.VehicleUI.transform.GetChild(1).GetComponent<Button>();
-        _headlightBtn = UIManager.Instance.VehicleUI.transform.GetChild(2).GetComponent<Button>();
-        _sirenBtn = UIManager.Instance.VehicleUI.transform.GetChild(3).GetComponent<Button>();
-        _exitVehicleBtn.onClick.RemoveAllListeners();
-        _headlightBtn.onClick.RemoveAllListeners();
-        _sirenBtn.onClick.RemoveAllListeners();
-        
-        _headlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
-        _sirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+
+        UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
+        UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
+
+        UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
+        UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+
+        UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
+        UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
     }
 
     void Update()
@@ -76,7 +73,9 @@ public class CarDoorCollision : MonoBehaviour
             //    EnterExitToggle();
             //}
         }
-        _exitVehicleBtn.onClick.AddListener(delegate { EnterExitToggle(); });
+        UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { EnterExitToggle(); });
+        UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { EnterExitToggle(); });
+
         EnterExitToggle();
     }
 
@@ -114,8 +113,12 @@ public class CarDoorCollision : MonoBehaviour
                 {
                     _carController.Transfer.CarDriver();
                     playerController.CurrentCarController = _carController;
-                    
+
                     //playerController.PhotonView.RPC("ChangeCharControllerStateRPC", Photon.Pun.RpcTarget.Others);
+                }
+                else
+                {
+                    UIManager.Instance.VehiclePassangerUI.SetActive(true);
                 }
                 // use player driving state
             }
@@ -125,12 +128,15 @@ public class CarDoorCollision : MonoBehaviour
                 IsSeatOccupied = false;
                 CollidingPlayer.transform.position = gameObject.transform.position;
                 playerController.IsDriving = false;
-                playerController.PlayerData.LastCarController = _carController;
 
-                if (SeatNumber != 0)
+                if (SeatNumber == 0)
                 {
-                    playerController.CurrentCarController = null;
+                    playerController.PlayerData.LastCarController = _carController;
                     //playerController.PhotonView.RPC("ChangeCharControllerStateRPC", Photon.Pun.RpcTarget.Others);
+                }
+                else
+                {
+                    UIManager.Instance.VehiclePassangerUI.SetActive(false);
                 }
                 // use player driving state
             }
@@ -159,7 +165,6 @@ public class CarDoorCollision : MonoBehaviour
             Debug.Log("Performed Toggle Lights");
         }
     }
-
     public void ToggleSiren()
     {
         Debug.Log("Attempting Toggle Siren");
@@ -184,7 +189,6 @@ public class CarDoorCollision : MonoBehaviour
             CollidingPlayer = other.gameObject;
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (!IsSeatOccupied)
