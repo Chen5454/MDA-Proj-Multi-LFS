@@ -158,6 +158,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         _photonView.RPC("UpdatePinuyList_RPC", RpcTarget.AllBufferedViaServer);
     }
 
+    public void ChangeAranState(bool isActive)
+    {
+        photonView.RPC("ChangeAranStateRPC", RpcTarget.All, isActive);
+    }
+
     [PunRPC]
     public void UpdatePinuyList_RPC()
     {
@@ -178,5 +183,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
                     NatanFreeCarList.Add(car);
             }
         }
+    }
+
+    [PunRPC]
+    private void ChangeAranStateRPC(bool isActive)
+    {
+        IsAranActive = isActive;
     }
 }

@@ -42,7 +42,6 @@ public class EranCrew : MonoBehaviour
         }
         return Index;
     }
-
     public int GetMainMokdanIndex()
     {
         int Index = 0;
@@ -56,7 +55,6 @@ public class EranCrew : MonoBehaviour
         }
         return Index;
     }
-
     public void GiveMokdanRoleClick()
     {
         _photonView.RPC("GiveMokdanRole", RpcTarget.AllBufferedViaServer, GetMokdanIndex());
@@ -72,7 +70,14 @@ public class EranCrew : MonoBehaviour
         updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
 
     }
-
+    public void StartAran()
+    {
+        GameManager.Instance.ChangeAranState(true);
+    }
+    public void StopAran()
+    {
+        GameManager.Instance.ChangeAranState(false);
+    }
     public void CloseMetargelRoomMenu()
     {
         StopCoroutine(updatePlayerListCoroutine);
