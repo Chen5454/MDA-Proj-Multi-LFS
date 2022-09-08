@@ -97,8 +97,8 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (_isDrivable)
         {
-            _verticalInput = Input.GetAxis("Vertical");
             _horizontalInput = Input.GetAxis("Horizontal");
+            _verticalInput = Input.GetAxis("Vertical");
             _isBreaking = Input.GetKey(KeyCode.Space);
         }
     }
