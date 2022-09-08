@@ -163,7 +163,7 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
 
     public void CheckIsMovingBackwards()
     {
-        if (_carRb.angularVelocity.y > 0)
+        if (_isDrivable && Input.GetKey(KeyCode.S))
         {
             _isMovingBackwards = true;
         }
