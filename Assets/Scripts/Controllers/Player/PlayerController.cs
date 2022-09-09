@@ -36,8 +36,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #endregion
 
     #region Animations
-    [Header("Animation")]
-    [SerializeField] private Animator _playerAnimator;
+   // [Header("Animation")]
+    //[SerializeField] private Animator _playerAnimator;
+
+    private PlayerAnimationManager _anim;
     #endregion
 
     #region Controllers Behaviours
@@ -47,14 +49,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
-    [SerializeField] private float _turnSpeed = 90f, _walkingSpeed = 6f, _runningSpeed = 11f, _flyingSpeed = 16f;
+    [SerializeField] private float _turnSpeed = 90f, _runningSpeed = 11f, _flyingSpeed = 16f;
     [SerializeField] private float _flyUpwardsSpeed = 9f;
     private float _stateSpeed;
     private bool _isDriving;
     public bool IsDriving { get => _isDriving; set => _isDriving = value; }
 
-    private Vector2 _input;
-
+    public Vector2 _input;
+    public float _walkingSpeed = 6f, actualSpeed;
     [Header("Physics")]
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private Transform _groundCheckTransform;
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Monobehaviour Callbacks
     private void Awake()
     {
+        _anim = GetComponent<PlayerAnimationManager>();
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
@@ -175,9 +178,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (_photonView.IsMine)
         {
            //Debug.Log("Current State: Idle");
-
-            _playerAnimator.SetFloat("Movement Speed", 0f, 0.1f, Time.deltaTime);
-            _playerAnimator.SetFloat("Rotatation Speed", 0f, 0.1f, Time.deltaTime);
+            _anim.IdleStateAnimation();
 
             //GetInputAxis();
 
@@ -447,18 +448,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void UseTankMovement()
     {
         Vector3 moveDirerction;
-        float actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
+         actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
         moveDirerction = actualSpeed * _input.y * transform.forward;
-
-        if (_input.y > 0)
-        {
-            _playerAnimator.SetFloat("Movement Speed", actualSpeed == _walkingSpeed ? 0.5f : 1f, 0.1f, Time.deltaTime);
-        }
-        else
-        {
-            _playerAnimator.SetFloat("Movement Speed", 0f, 0.1f, Time.deltaTime);
-        }
-
+        _anim.MoveStateAnimation();
         // moves the character in diagonal direction
         _characterController.Move(moveDirerction * Time.deltaTime - Vector3.up * 0.1f);
     }
@@ -476,7 +468,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void UseTankRotate()
     {
-        _playerAnimator.SetFloat("Rotatation Speed", _input.x, 0.1f, Time.deltaTime);
+        _anim.RotateAnimation();
         transform.Rotate(0, _input.x * _turnSpeed * Time.deltaTime, 0);
     }
 

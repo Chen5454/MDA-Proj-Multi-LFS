@@ -3075,6 +3075,7 @@ GameObject:
   - component: {fileID: 4762676014754726370}
   - component: {fileID: 6518490309897315663}
   - component: {fileID: -9160614807362945681}
+  - component: {fileID: -8337753057258825210}
   m_Layer: 12
   m_Name: PlayerMale v2.0
   m_TagString: Player
@@ -3150,14 +3151,15 @@ MonoBehaviour:
   _firstPersonCameraTransform: {fileID: 8822803000982418763}
   _thirdPersonCameraTransform: {fileID: 8822803000880888004}
   _audioListener: {fileID: 5047984663928857288}
-  _playerAnimator: {fileID: 8361663717486844079}
   _characterController: {fileID: 8822803002174255574}
   _mouseSensitivity: {x: 60, y: 40}
   _turnSpeed: 90
-  _walkingSpeed: 1.8
   _runningSpeed: 11
   _flyingSpeed: 16
   _flyUpwardsSpeed: 9
+  _input: {x: 0, y: 0}
+  _walkingSpeed: 1.8
+  actualSpeed: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 520
@@ -3270,6 +3272,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6cfc5a904f6474391f72a2c5de0dc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8337753057258825210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822803002174255568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c7e8d9af7b6ee4480f55483870c024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerAnimator: {fileID: 8361663717486844079}
 --- !u!1 &8822803002723430980
 GameObject:
   m_ObjectHideFlags: 0
