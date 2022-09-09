@@ -92,13 +92,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             FreeMouse(true);
             _stateAction = UseTankIdleState;
             _MiniMaCamera.SetActive(true);
-            // CarCollider.SetActive(true);
             _characterController.enabled = true;
         }
         else
         {
             _MiniMaCamera.SetActive(false);
-            //  CarCollider.SetActive(false);
             _characterController.enabled = false;
             Destroy(_audioListener);
             Destroy(this);
@@ -109,24 +107,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (_stateAction != UseDrivingState)
-            {
-                GetInputAxis();
-            }
-            
-            if (_currentCarController != null)
-            {
-                //CarCollider = _currentCarController.gameObject.transform.GetChild(2).GetChild(0).gameObject;
-                //  CarCollider.SetActive(true);
-                _isGrounded = _characterController.isGrounded;
-                _currentCarController.CheckIfDriveable();
-                _currentCarController.GetInput();
-                _currentCarController.CheckIsMovingBackwards();
-            }
-        }
-        else
-        {
-           // CarCollider.SetActive(false);
+            _stateAction.Invoke();
         }
     }
 
@@ -134,9 +115,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            _stateAction.Invoke();
-
-            if (_currentCarController != null)
+            if (_photonView.IsMine && _currentCarController)
             {
                 _currentCarController.HandleMotor();
                 _currentCarController.HandleSteering();
@@ -180,7 +159,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
            //Debug.Log("Current State: Idle");
             _anim.IdleStateAnimation();
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_isDriving)
             {
@@ -214,7 +193,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: First Person Idle");
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_isDriving)
             {
@@ -249,7 +228,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
            // Debug.Log("Current State: Walking");
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_isDriving)
             {
@@ -285,7 +264,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: First Person Walking");
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_isDriving)
             {
@@ -341,7 +320,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: FlyingIdle");
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_isDriving)
             {
@@ -378,7 +357,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: FlyingMoving");
 
-            //GetInputAxis();
+            GetInputAxis();
 
             if (_input == Vector2.zero)
             {
@@ -417,6 +396,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _vehicleCamera.tag = "MainCamera";
             _currentCamera = _vehicleCamera;
             _characterController.enabled = false;
+
+            _isGrounded = _characterController.isGrounded;
+            _currentCarController.CheckIfDriveable();
+            _currentCarController.GetInput();
+            _currentCarController.CheckIsMovingBackwards();
 
             if (!_isDriving)
             {
