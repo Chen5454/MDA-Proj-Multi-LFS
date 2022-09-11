@@ -28,11 +28,15 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         if (_player._input.y > 0)
         {
-            _playerAnimator.SetFloat("VelocityZ", _player.actualSpeed == _player._walkingSpeed ? 0.5f : 1f, 0.1f, Time.deltaTime);
+            _playerAnimator.SetFloat("VelocityZ", _player.actualSpeed == _player._walkingSpeed ? 0.5f : 1f, 0.1f,
+                Time.deltaTime);
         }
         else
         {
-            _playerAnimator.SetFloat("VelocityZ", -1.0f, 0.1f, Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
+                _playerAnimator.SetFloat("VelocityZ", -1.0f, 0.1f, Time.deltaTime);
+            else
+                _playerAnimator.SetFloat("VelocityZ", -0.5f, 0.1f, Time.deltaTime);
         }
     }
 
