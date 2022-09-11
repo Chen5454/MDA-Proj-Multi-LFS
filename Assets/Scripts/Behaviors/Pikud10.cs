@@ -148,6 +148,7 @@ public class Pikud10 : MonoBehaviour
     }
     private void CameraTransmition()
     {
+        //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
         _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
     }
     #endregion
