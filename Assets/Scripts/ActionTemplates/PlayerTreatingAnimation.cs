@@ -19,16 +19,6 @@ public class PlayerTreatingAnimation : Action
     private Animator _playerAnimator;
     private string _playerName;
 
-    private void Start()
-    {
-        PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
-        PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
-        PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
-
-        EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
-        EquipmentPositions.Add(PatientChestPosEquipmentTransform);
-    }
-
     public void PlayAnimation()
     {
         GetActionData();

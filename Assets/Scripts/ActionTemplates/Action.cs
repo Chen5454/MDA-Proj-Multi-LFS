@@ -33,12 +33,17 @@ public class Action : MonoBehaviour
 
     private void Start()
     {
-        PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
-        PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
-        PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
+        if (PatientHeadPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
+        if (PatientChestPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
+        if (PatientLegPosPlayerTrasform)
+            PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
 
-        EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
-        EquipmentPositions.Add(PatientChestPosEquipmentTransform);
+        if (PatientHeadPosEquipmentTransform)
+            EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
+        if (PatientChestPosEquipmentTransform)
+            EquipmentPositions.Add(PatientChestPosEquipmentTransform);
     }
 
     public void GetActionData()
