@@ -390,6 +390,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: Driving");
 
+            if (!_isDriving)
+            {
+                _vehicleCamera.enabled = false;
+                _vehicleCamera.tag = "Untagged";
+                _playerCamera.enabled = true;
+                _playerCamera.tag = "MainCamera";
+                _currentCamera = _playerCamera;
+                _characterController.enabled = true;
+                _stateAction = UseTankIdleState;
+                return;
+            }
+
             _playerCamera.enabled = false;
             _playerCamera.tag = "Untagged";
             _vehicleCamera.enabled = true;
@@ -401,17 +413,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _currentCarController.CheckIfDriveable();
             _currentCarController.GetInput();
             _currentCarController.CheckIsMovingBackwards();
-
-            if (!_isDriving)
-            {
-                _vehicleCamera.enabled = false;
-                _vehicleCamera.tag = "Untagged";
-                _playerCamera.enabled = true;
-                _playerCamera.tag = "MainCamera";
-                _currentCamera = _playerCamera;
-                _characterController.enabled = true;
-                _stateAction = UseTankIdleState;
-            }
         }
     }
     private void UseTreatingState()

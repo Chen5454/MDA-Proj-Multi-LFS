@@ -126,7 +126,7 @@ public class CarDoorCollision : MonoBehaviour
             {
                 Debug.Log("NOT supposed to drive");
                 IsSeatOccupied = false;
-                CollidingPlayer.transform.position = gameObject.transform.position;
+                playerController.transform.position = gameObject.transform.position;
                 playerController.IsDriving = false;
 
                 if (SeatNumber == 0)
