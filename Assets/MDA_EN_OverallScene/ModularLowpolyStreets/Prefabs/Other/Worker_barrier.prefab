@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3292233774070192945}
   - component: {fileID: 3774469810324311446}
   - component: {fileID: 295150586082779243}
-  - component: {fileID: 1331394450371539429}
+  - component: {fileID: 3883248967468923982}
   m_Layer: 0
   m_Name: Worker_barrier
   m_TagString: Untagged
@@ -56,6 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,8 +81,9 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &1331394450371539429
-MeshCollider:
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3883248967468923982
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +92,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7074070664044614309, guid: c15ce5f2551c01c4b9208fd4a9811fa2, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.60000014, y: 0.26005977, z: 0.20440112}
+  m_Center: {x: 0, y: 0.13002989, z: -0.0000038146973}

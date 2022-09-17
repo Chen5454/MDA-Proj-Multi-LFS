@@ -736,22 +736,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _photonView: {fileID: 6846980335483256472}
   PlayerData: {fileID: 0}
-  PlayerActions: {fileID: 0}
+  LineMaterial: {fileID: 0}
   _playerCamera: {fileID: 8822803001239547996}
   _vehicleCamera: {fileID: 8959073057551848424}
+  _pikud10Camera: {fileID: 0}
   _MiniMaCamera: {fileID: 666755789287419742}
   _firstPersonCameraTransform: {fileID: 8822803000982418763}
   _thirdPersonCameraTransform: {fileID: 8822803000880888004}
-  _playerAnimator: {fileID: 7292725682840954819}
+  _audioListener: {fileID: 0}
   _characterController: {fileID: 8822803002174255574}
   _mouseSensitivity: {x: 60, y: 40}
   _turnSpeed: 90
-  _walkingSpeed: 1.8
   _runningSpeed: 11
   _flyingSpeed: 16
-  _jumpForce: 3
   _flyUpwardsSpeed: 9
-  _maxFlyingHeight: 100
+  _input: {x: 0, y: 0}
+  _walkingSpeed: 1.8
+  actualSpeed: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 520
@@ -774,9 +775,13 @@ MonoBehaviour:
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 128
+  _selectableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _raycastDistance: 10
   _indicatorIcon: {fileID: 8774286273773846890, guid: 98382ce2162216d4bb2ca6711a8675f7, type: 3}
   _indicatorSound: {fileID: 1667097624735805022, guid: 6a4dd2558288bae49a843774015a1963, type: 3}
-  _raycastDistance: 10
+  _outlineMode: 0
 --- !u!114 &6846980335483256472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1172,6 +1177,12 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: Administering Cpr
+  - Type: 1
+    SynchronizeType: 0
+    Name: VelocityX
+  - Type: 1
+    SynchronizeType: 0
+    Name: VelocityZ
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

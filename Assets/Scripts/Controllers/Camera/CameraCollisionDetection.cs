@@ -10,7 +10,9 @@ public class CameraCollisionDetection : MonoBehaviour
     [SerializeField] private Transform _camZoomedTr;
     [SerializeField] private float _minDistance = 0.6f, _maxDistance = 2.9f, _smooth = 10.0f;
     [SerializeField] public float _distance;
+    [SerializeField] public LayerMask _layersToDisclude;
     private Vector3 _dollyDir;
+
 
     private void Awake()
     {
@@ -27,7 +29,7 @@ public class CameraCollisionDetection : MonoBehaviour
     {
         Vector3 desiredCameraPos = transform.parent.TransformPoint(_dollyDir * _maxDistance);
 
-        if (Physics.Linecast(transform.parent.position, desiredCameraPos, out RaycastHit hit))
+        if (Physics.Linecast(transform.parent.position, desiredCameraPos, out RaycastHit hit) && hit.collider.gameObject.layer != _layersToDisclude)
         {
             _distance = Mathf.Clamp(hit.distance, _minDistance, _maxDistance);
         }
