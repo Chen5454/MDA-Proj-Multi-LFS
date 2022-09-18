@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8436953939895846044}
   - component: {fileID: 9150337451621263245}
   - component: {fileID: 4364198857504981322}
-  - component: {fileID: 4818431108641067568}
+  - component: {fileID: 1516398713485043680}
   m_Layer: 0
   m_Name: Trash_can_1
   m_TagString: Untagged
@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6619925874618632410}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -82,8 +82,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4818431108641067568
-MeshCollider:
+--- !u!65 &1516398713485043680
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,7 +92,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1812954198827240293, guid: 4c6f685bea1640c42b2908774d41faee, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.17358065, y: 0.21921295, z: 0.17358065}
+  m_Center: {x: -0.0000038146973, y: 0.10960646, z: -0.0000076293945}

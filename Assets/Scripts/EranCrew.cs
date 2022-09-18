@@ -132,7 +132,6 @@ public class EranCrew : MonoBehaviour
     [PunRPC]
     public void GiveMokdanRole(int index)
     {
-  
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsMokdan = true;
         chosenPlayerData.AssignAranRole(AranRoles.Mokdan);
@@ -170,18 +169,6 @@ public class EranCrew : MonoBehaviour
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsPikud10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Pikud10);
-    }
-
-    [PunRPC]
-    private void StartAran_RPC()
-    {
-        GameManager.Instance.IsAranActive = true;
-    }
-
-    [PunRPC]
-    private void StopAran_RPC()
-    {
-        GameManager.Instance.IsAranActive = false;
     }
     #endregion
 }
