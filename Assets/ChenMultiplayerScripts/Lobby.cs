@@ -6,9 +6,11 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using VivoxUnity;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
+    public VivoxManager _VivoxManager;
 
     public TMP_Text buttonText;
     public TMP_InputField usernameInput;
@@ -19,6 +21,13 @@ public class Lobby : MonoBehaviourPunCallbacks
     public System.Action OnPlayerListChange;
 
 
+
+    public string _channelName;
+    public string _channelName2;
+    public TMP_InputField VivoxusernameInput;
+
+
+
     private void Awake()
     {
         // This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
@@ -27,6 +36,9 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
+
+
         if (PlayerPrefs.HasKey("username"))
         {
             usernameInput.text = PlayerPrefs.GetString("username");
@@ -38,12 +50,12 @@ public class Lobby : MonoBehaviourPunCallbacks
     public void Connect()
     {
 
-        if (usernameInput.text.Length>=1)
+        if (usernameInput.text.Length >= 1)
         {
             PhotonNetwork.NickName = usernameInput.text;
-            PlayerPrefs.SetString("username",usernameInput.text);
+            PlayerPrefs.SetString("username", usernameInput.text);
             buttonText.text = "Connecting...";
-            isConnecting =  PhotonNetwork.ConnectUsingSettings();
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
         }
 
 
@@ -59,10 +71,10 @@ public class Lobby : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
 
         if (isConnecting)
-      {
-          PhotonNetwork.JoinRandomRoom();
-          isConnecting = false;
-      }
+        {
+            PhotonNetwork.JoinRandomRoom();
+            isConnecting = false;
+        }
     }
 
     //public override void OnJoinedRoom()
@@ -98,4 +110,33 @@ public class Lobby : MonoBehaviourPunCallbacks
     //    SceneManager.LoadScene("Lobby");
 
     //}
+
+    #region MyRegion
+    public void LoginUser()
+    {
+        if (_VivoxManager.FilterChannelAndUserName(usernameInput.text))
+        {
+            _VivoxManager.Login(usernameInput.text);
+        }
+    }
+
+    public void JoinChannelClicked()
+    {
+        _VivoxManager.VivoxJoin3DPositional(_channelName, true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
+    }
+    public void LeaveChannelClick()
+    {
+        _VivoxManager.LeaveChannel(_VivoxManager.vivox.channelSession, _channelName);
+        // _VivoxManager.LeaveChannel(_VivoxManager.vivox.channelSession2, _channelName2);
+    }
+
+    public void Logout()
+    {
+        _VivoxManager.vivox.loginSession.Logout();
+        _VivoxManager.BindLoginCallBack(false, _VivoxManager.vivox.loginSession);
+    }
+
+    #endregion
+
+
 }

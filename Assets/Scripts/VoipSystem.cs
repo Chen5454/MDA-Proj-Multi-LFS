@@ -6,8 +6,16 @@ using VivoxUnity;
 
 public class VoipSystem : MonoBehaviour
 {
+    public VivoxManager _VivoxManager;
+
+
     void Start()
     {
+        _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
+
+        _VivoxManager.lobbyUi.JoinChannelClicked();
+        _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+
         StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
     }
 
@@ -15,15 +23,15 @@ public class VoipSystem : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
-            LocalMuteSelf(LoginCredentials.Instance.client);
+            LocalMuteSelf(_VivoxManager.vivox.client);
         if (Input.GetKeyDown(KeyCode.N))
-            LocalUnmuteSelf(LoginCredentials.Instance.client);
+            LocalUnmuteSelf(_VivoxManager.vivox.client);
     }
 
     IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
     {
         yield return new WaitForSeconds(nextUpdate);
-        LoginCredentials.Instance.GetChannelSession.Set3DPosition(transform.position, transform.position, transform.forward, transform.up);
+        _VivoxManager.vivox.channelSession.Set3DPosition(transform.position, transform.position, transform.forward, transform.up);
 
         StartCoroutine(Handle3DVoipPositionUpdate(nextUpdate));
 
@@ -41,4 +49,5 @@ public class VoipSystem : MonoBehaviour
     {
         client.AudioInputDevices.Muted = false;
     }
+
 }
