@@ -113,7 +113,7 @@ public class CarDoorCollision : MonoBehaviour
                 {
                     _carController.Transfer.CarDriver();
                     playerController.CurrentCarController = _carController;
-
+                    UIManager.Instance.VehicleDriverUI.SetActive(true);
                     //playerController.PhotonView.RPC("ChangeCharControllerStateRPC", Photon.Pun.RpcTarget.Others);
                 }
                 else
@@ -132,6 +132,7 @@ public class CarDoorCollision : MonoBehaviour
                 if (SeatNumber == 0)
                 {
                     playerController.PlayerData.LastCarController = _carController;
+                    UIManager.Instance.VehicleDriverUI.SetActive(false);
                     //playerController.PhotonView.RPC("ChangeCharControllerStateRPC", Photon.Pun.RpcTarget.Others);
                 }
                 else

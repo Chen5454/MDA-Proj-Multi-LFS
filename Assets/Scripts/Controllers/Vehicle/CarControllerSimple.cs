@@ -215,13 +215,13 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
             {
                 _isDrivable = true;
                 _carRb.isKinematic = false;
-                _carDashboardUI.SetActive(true);
+                //_carDashboardUI.SetActive(true);
             }
             else if (item.SeatNumber == 0 && !item.IsSeatOccupied)
             {
                 _isDrivable = false;
                 _carRb.isKinematic = true;
-                _carDashboardUI.SetActive(false);
+                //_carDashboardUI.SetActive(false);
             }
         }
     }
