@@ -1,13 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Runtime.ExceptionServices;
-using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
 
 public class CrewRoomManager : MonoBehaviour,IPunObservable
@@ -34,7 +30,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     [SerializeField] private GameObject _patientMale, _patientFemale;
     [SerializeField] private string _waitMemberText;
-    [SerializeField] private bool isUsed;
+    [SerializeField] private bool isUsed, _isNatanRequired;
 
 
     private OwnershipTransfer _transfer;
@@ -203,6 +199,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
     }
 
+    public void ChangeVehicleRequired(bool changeVehicle)
+    {
+        _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
+    }
+
     public void SpawnVehicle()
     {
         _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
@@ -339,8 +340,16 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
         if (!currentPosVehicleChecker.IsPosOccupied)
         {
+            if (_isNatanRequired)
+            {
+                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation);
+            }
+            else
+            {
+                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation);
+            }
             /* GameObject natan = */
-            PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation);
+            
             // natan.GetComponent<CarControllerSimple>().OwnerCrew = _crewRoomIndex;
         }
     }
@@ -389,6 +398,12 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     {
         isUsed = false;
         RoomCrewMenuUI.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    public void ChangeVehicleRequiredRPC(bool changeVehcile)
+    {
+        _isNatanRequired = changeVehcile;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

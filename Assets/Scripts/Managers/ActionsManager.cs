@@ -17,7 +17,7 @@ public class ActionsManager : MonoBehaviour
     public List<PlayerData> AllPlayerData;
 
     [Header("VehiclesPrefabs")]
-    //[SerializeField] private GameObject _ambulancePrefab;
+    public GameObject AmbulancePrefab;
     public GameObject NatanPrefab;
 
     #region Prefab References
