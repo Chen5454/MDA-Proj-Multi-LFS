@@ -10,6 +10,7 @@ public class HeartMassages : Action
     [SerializeField] private GameObject _heartMassagesWindow;
     [SerializeField] private int _newHeartRate;
 
+    private PlayerController _playerController;
     private Animator _playerAnimator;
 
     public void DoHeartMassage()
@@ -24,6 +25,9 @@ public class HeartMassages : Action
 
             _playerAnimator.SetBool("Administering Cpr", true);
             CurrentPatient.PhotonView.RPC("ChangeHeartRateRPC", RpcTarget.All, _newHeartRate);
+
+            _playerController = LocalPlayerData.GetComponent<PlayerController>();
+            _playerController.ChangeToTreatingState(true);
 
             _heartMassagesWindow.SetActive(true);
 
@@ -41,6 +45,8 @@ public class HeartMassages : Action
         TextToLog = $"Stopped Administering Heart Massages";
         _playerAnimator.SetBool("Administering Cpr", false);
         _heartMassagesWindow.SetActive(false);
+
+        _playerController.ChangeToTreatingState(false);
 
         if (_shouldUpdateLog)
         {

@@ -419,7 +419,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-
+            //RotateCameraWithMouse();
         }
     }
     #endregion
@@ -429,7 +429,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         _input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
-
     private void UseTankMovement()
     {
         Vector3 moveDirerction;
@@ -439,7 +438,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         // moves the character in diagonal direction
         _characterController.Move(moveDirerction * Time.deltaTime - Vector3.up * 0.1f);
     }
-
     private void UseFlyingMovement()
     {
         float yPosition = transform.position.y;
@@ -450,19 +448,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         _characterController.Move(moveDirerction * Time.deltaTime - Vector3.up * 0.1f);
         transform.position = new Vector3(transform.position.x, yPosition, transform.position.z);
     }
-
     private void UseTankRotate()
     {
         _anim.RotateAnimation();
         transform.Rotate(0, _input.x * _turnSpeed * Time.deltaTime, 0);
     }
-
     private void UseFirstPersonMovement()
     {
         float actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
         _characterController.Move(actualSpeed * _input.x * Time.deltaTime * transform.right + actualSpeed * _input.y * Time.deltaTime * transform.forward);
     }
-
     private void UseFirstPersonRotate()
     {
         Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
@@ -470,19 +465,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         transform.Rotate(_mouseSensitivity.x * mouseInput.x * Time.deltaTime * Vector3.up);
         _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
     }
-
     private void SetFirstPersonCamera(bool value)
     {
         _currentCamera.transform.position = value ? _firstPersonCameraTransform.position : _thirdPersonCameraTransform.position;
         _currentCamera.transform.rotation = value ? _firstPersonCameraTransform.rotation : _thirdPersonCameraTransform.rotation;
     }
-
     private void FreeMouse(bool value)
     {
         Cursor.visible = value;
         Cursor.lockState = value ? CursorLockMode.None : CursorLockMode.Locked;
     }
-
     private void RotateBodyWithMouse()
     {
         if (Input.GetMouseButton(1))
@@ -490,15 +482,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
 
             transform.Rotate(Vector3.up * mouseInput.x * _mouseSensitivity.x * Time.deltaTime);
-            _currentCamera.transform.Rotate(Vector3.right * mouseInput.y * _mouseSensitivity.y * Time.deltaTime);
+            _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
         }
     }
-
     private void FreeMouseWithAlt()
     {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             FreeMouse(!Cursor.visible);
+        }
+    }
+    #endregion
+
+    #region Public Methods
+    public void ChangeToTreatingState(bool isTreating)
+    {
+        if (isTreating)
+        {
+            _stateAction = UseTreatingState;
+        }
+        else
+        {
+            _stateAction = UseTankIdleState;
+            _currentCamera.transform.localRotation = new Quaternion(0.130525976f, 0, 0, 0.991444886f);
         }
     }
     #endregion
