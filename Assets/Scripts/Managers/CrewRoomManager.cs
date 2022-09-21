@@ -29,7 +29,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
     [SerializeField] private GameObject _patientMale, _patientFemale;
-    [SerializeField] private string _waitMemberText;
+    [SerializeField] private TMP_InputField _apartmentNumber;
+    [SerializeField] private string _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired;
 
 
@@ -60,7 +61,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         else
         {
             RoomCrewMenuUI.GetComponent<CanvasGroup>().interactable = false;
-
         }
     }
 
@@ -81,17 +81,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     private void InteractUICrew()
     {
-
-       // PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
-
-
         if (isUsed)
         {
             RoomCrewMenuUI.GetComponent<CanvasGroup>().interactable = true;
-
         }
-      
-
     }
 
 
@@ -178,24 +171,78 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         // RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
-    public void SpawnPatient()
+    public void StartRandomIncident()
     {
-        if (_crewRoomIndex < 2)
+        List<int> unavailableList = new List<int>();
+
+        for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
         {
-            switch (_crewRoomIndex)
+            if (GameManager.Instance.IsPatientSpawned[i])
+                unavailableList.Add(i);
+        }
+
+        int apartmentNum = Random.Range(0, 5);
+        Debug.Log("Starting aptNum" + apartmentNum);
+        try
+        {
+            while (!(unavailableList.Count >= 5) && GameManager.Instance.IsPatientSpawned[apartmentNum])
             {
-                case 1:
-                    PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[_crewRoomIndex].position, GameManager.Instance.IncidentPatientSpawns[_crewRoomIndex].rotation);
-                    GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[_crewRoomIndex]);
-                    break;
+                apartmentNum = Random.Range(0, 6);
+                Debug.Log("New aptNum" + apartmentNum);
 
-                case 2:
-                    PhotonNetwork.Instantiate(_patientFemale.name, GameManager.Instance.IncidentPatientSpawns[_crewRoomIndex].position, GameManager.Instance.IncidentPatientSpawns[_crewRoomIndex].rotation);
-                    break;
-
-                default:
-                    break;
+                //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
+                //    break;
             }
+        }
+        catch
+        {
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorFullString);
+        }
+        
+        if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
+        {
+            //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
+            //{
+                PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+                GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
+                GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
+                ActionTemplates.Instance.ShowAlertWindow(_incidentStartTitle, $"{_incidentStartText} + {apartmentNum +1}");
+            //}
+            //else
+            //{
+            //    ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorTryingAgainString);
+            //}
+        }
+        else
+        {
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorSomthingWentWrong);
+        }
+    }
+    public void StartIncident()
+    {
+        int apartmentNum = int.Parse(_apartmentNumber.text);
+        List<int> unavailableList = new List<int>();
+
+        for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
+        {
+            if (GameManager.Instance.IsPatientSpawned[i])
+                unavailableList.Add(i);
+        }
+
+        if (unavailableList.Count >= 5)
+        {
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorFullString);
+        }
+        else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
+        {
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorAptBusy);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
+            GameManager.Instance.IsPatientSpawned[apartmentNum - 1] = true;
+            GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1]);
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, $"{_incidentStartText} {apartmentNum}");
         }
     }
 
@@ -426,8 +473,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
-
-
         }
     }
 }

@@ -14,10 +14,12 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     [field: SerializeField] public bool IsAranActive { get; set; }
 
     [Header("General")]
-    public Transform[] IncidentPatientSpawns;
     public List<Transform> CurrentIncidentsTransforms;
     public List<Patient> AllPatients;
     public List<Patient> AllTaggedPatients;
+    //public List<int> OnGoingIncidents;
+    public Transform[] IncidentPatientSpawns;
+    public bool[] IsPatientSpawned;
 
     [Header("Aran")]
     public PhotonView Pikud10View; 
@@ -58,10 +60,15 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     }
 
-    void Start()
+    private void Start()
     {
         _photonView = GetComponent<PhotonView>();
         OnEscape(true);
+
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    OnGoingIncidents = new List<int>();
+        //}
     }
 
     private void Update()
