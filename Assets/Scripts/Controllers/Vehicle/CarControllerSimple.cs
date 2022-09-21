@@ -175,36 +175,12 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
 
     public void ToggleHeadlights()
     {
-        if (CarHeadLightsOn)
-        {
-            CarHeadLightsOn = false;
-            CarHeadLights.SetActive(false);
-            CarSiren.GetComponent<Animator>().enabled = false;
-            //CarSirenLightLeft.SetActive(false);
-            //CarSirenLightRight.SetActive(false);
-        }
-        else
-        {
-            CarHeadLightsOn = true;
-            CarHeadLights.SetActive(true);
-            CarSiren.GetComponent<Animator>().enabled = true;
-            //CarSirenLightLeft.SetActive(true);
-            //CarSirenLightRight.SetActive(true);
-        }
+        _photonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllViaServer);
     }
 
     public void ToggleSiren()
     {
-        if (CarSirenOn)
-        {
-            CarSirenOn = false;
-            CarSirenAudioSource.Stop();
-        }
-        else
-        {
-            CarSirenOn = true;
-            CarSirenAudioSource.Play();
-        }
+        _photonView.RPC("ToggleSirenRPC", RpcTarget.AllViaServer);
     }
 
     public void CheckIfDriveable()
@@ -271,4 +247,42 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
 
         return GameManager.Instance.usedNamesValues[val];
     }
+
+    #region PunRPC
+    [PunRPC]
+    private void ToggleHeadlightsRPC()
+    {
+        if (CarHeadLightsOn)
+        {
+            CarHeadLightsOn = false;
+            CarHeadLights.SetActive(false);
+            CarSiren.GetComponent<Animator>().enabled = false;
+            //CarSirenLightLeft.SetActive(false);
+            //CarSirenLightRight.SetActive(false);
+        }
+        else
+        {
+            CarHeadLightsOn = true;
+            CarHeadLights.SetActive(true);
+            CarSiren.GetComponent<Animator>().enabled = true;
+            //CarSirenLightLeft.SetActive(true);
+            //CarSirenLightRight.SetActive(true);
+        }
+    }
+
+    [PunRPC]
+    private void ToggleSirenRPC()
+    {
+        if (CarSirenOn)
+        {
+            CarSirenOn = false;
+            CarSirenAudioSource.Stop();
+        }
+        else
+        {
+            CarSirenOn = true;
+            CarSirenAudioSource.Play();
+        }
+    }
+    #endregion
 }
