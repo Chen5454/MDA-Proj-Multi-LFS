@@ -32,6 +32,7 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
     public bool CarHeadLightsOn = false;
 
     public GameObject CarSiren;
+    public Light CarEmergencyLightsLeft, CarEmergencyLightsRight;
     public AudioSource CarSirenAudioSource;
     public bool CarSirenOn = false;
 
@@ -275,11 +276,15 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (CarSirenOn)
         {
+            CarEmergencyLightsLeft.enabled = false;
+            CarEmergencyLightsRight.enabled = false;
             CarSirenOn = false;
             CarSirenAudioSource.Stop();
         }
         else
         {
+            CarEmergencyLightsLeft.enabled = true;
+            CarEmergencyLightsRight.enabled = true;
             CarSirenOn = true;
             CarSirenAudioSource.Play();
         }

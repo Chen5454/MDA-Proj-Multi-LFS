@@ -201,17 +201,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
-            //{
                 PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
-                GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
-                GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
-                ActionTemplates.Instance.ShowAlertWindow(_incidentStartTitle, $"{_incidentStartText} + {apartmentNum +1}");
-            //}
-            //else
-            //{
-            //    ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorTryingAgainString);
-            //}
+            GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
+            GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
+            ActionTemplates.Instance.ShowAlertWindow(_incidentStartTitle, $"{_incidentStartText} {apartmentNum +1}");
         }
         else
         {
@@ -242,7 +235,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
             GameManager.Instance.IsPatientSpawned[apartmentNum - 1] = true;
             GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1]);
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, $"{_incidentStartText} {apartmentNum}");
+            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, $"{_incidentStartText} {apartmentNum +0}");
         }
     }
 
