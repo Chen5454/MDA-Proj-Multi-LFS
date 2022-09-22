@@ -7,7 +7,8 @@ using VivoxUnity;
 public class VivoxBaseData 
 {
 
-    public Client client;
+    public VivoxUnity.Client client { get; set; } = new Client();
+
     public Uri server = new Uri("https://mt1s.www.vivox.com/api2");
     public string issuer = "mda0741-md03-dev";
     public string domain = "mt1s.vivox.com";
@@ -16,6 +17,8 @@ public class VivoxBaseData
     public TimeSpan timeSpan = TimeSpan.FromSeconds(90);
 
     // public bool isPikud10;
+    public string Channel3DName = "MDA3D";
+    public bool isClientInitialized;
 
     public ILoginSession loginSession;
     public IChannelSession channelSession;

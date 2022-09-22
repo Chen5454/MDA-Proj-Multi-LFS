@@ -13,7 +13,6 @@ public class VivoxManager : MonoBehaviour
     //public static VivoxManager Instance;
 
     public VivoxBaseData vivox = new VivoxBaseData();
-    public Lobby lobbyUi;
 
     private void Awake()
     {
@@ -25,26 +24,48 @@ public class VivoxManager : MonoBehaviour
 
         //Instance = this;
 
-        vivox.client = new Client();
-        vivox.client.Uninitialize();
-        vivox.client.Initialize();
+
+
+        InitializeClient();
+
         DontDestroyOnLoad(this);
 
 
     }
 
-    private void Start()
-    {
-        lobbyUi = GameObject.FindObjectOfType<Lobby>();
-    }
-
     private void OnApplicationQuit()
     {
+        
+
         // LeaveChannelClick();
-        LeaveChannel(vivox.channelSession, lobbyUi._channelName);
-        lobbyUi.Logout();
+        LeaveChannel(vivox.channelSession, vivox.Channel3DName);
+        vivox.loginSession.Logout();
+        BindLoginCallBack(false, vivox.loginSession);
         vivox.client.Uninitialize(); // closes all the net to the servers
     }
+
+
+    public void InitializeClient()
+    {
+
+        if (vivox.isClientInitialized)
+        {
+            Debug.Log($"{nameof(VivoxManager)} : Vivox Client is already initialized, skipping...");
+            return;
+        }
+        else
+        {
+            if (!vivox.client.Initialized)
+            {
+                vivox.client.Uninitialize();
+                vivox.client.Initialize();
+                vivox.isClientInitialized = true;
+                Debug.Log("Vivox Client Initialzed");
+            }
+        }
+    }
+
+
 
     #region BindCallBacks
 

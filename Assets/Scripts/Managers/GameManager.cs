@@ -87,6 +87,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
     private void OnEscape(bool paused)
     {
         ChangeCursorMode(paused);
@@ -119,9 +124,12 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
          while (PhotonNetwork.IsConnected)
             yield return null;
 
-        SceneManager.LoadScene(0);
+        // SceneManager.LoadScene(0);
+        //PhotonNetwork.LoadLevel(0);
+        Application.Quit();
     }
 
+    //Called from UI Quit
     public void OnPlayerDisconnect()
     {
         Debug.Log("attempting to Leave Room and Disconnecting");
@@ -135,9 +143,6 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            //PlayerData myPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
-            //ActionsManager.Instance.AllPlayersPhotonViews.Remove(myPlayerData.PhotonView);
-
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].OwnerActorNr == otherPlayer.ActorNumber)
             {
                 if (ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>().IsMine == true && PhotonNetwork.IsConnected == true)

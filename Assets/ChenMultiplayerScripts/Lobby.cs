@@ -10,7 +10,7 @@ using VivoxUnity;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
-    public VivoxManager _VivoxManager;
+    [SerializeField] private VivoxManager _VivoxManager;
 
     public TMP_Text buttonText;
     public TMP_InputField usernameInput;
@@ -20,23 +20,13 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public System.Action OnPlayerListChange;
 
-
-
-    public string _channelName;
-    public string _channelName2;
     public TMP_InputField VivoxusernameInput;
 
 
 
-    private void Awake()
-    {
-        // This client's version number. Users are separated from each other by gameVersion (which allows you to make breaking changes).
-        //PhotonNetwork.AutomaticallySyncScene = true;
-    }
-
     private void Start()
     {
-        _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
+        //_VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
 
         if (PlayerPrefs.HasKey("username"))
@@ -77,19 +67,6 @@ public class Lobby : MonoBehaviourPunCallbacks
         }
     }
 
-    //public override void OnJoinedRoom()
-    //{
-
-    //    if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-    //    {
-    //        PhotonNetwork.LoadLevel(1);
-    //    }
-    //    else
-    //    {
-    //        OnPlayerListChange?.Invoke();
-    //    }
-    //}
-
     public override void OnLeftRoom()
     {
         OnPlayerListChange?.Invoke();
@@ -104,12 +81,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     }
 
-    //When we joined the lobby we are opening our Scene. in this case Lobby
-    //public override void OnJoinedLobby()
-    //{
-    //    SceneManager.LoadScene("Lobby");
 
-    //}
 
     #region MyRegion
     public void LoginUser()
@@ -120,21 +92,7 @@ public class Lobby : MonoBehaviourPunCallbacks
         }
     }
 
-    public void JoinChannelClicked()
-    {
-        _VivoxManager.VivoxJoin3DPositional(_channelName, true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
-    }
-    public void LeaveChannelClick()
-    {
-        _VivoxManager.LeaveChannel(_VivoxManager.vivox.channelSession, _channelName);
-        // _VivoxManager.LeaveChannel(_VivoxManager.vivox.channelSession2, _channelName2);
-    }
 
-    public void Logout()
-    {
-        _VivoxManager.vivox.loginSession.Logout();
-        _VivoxManager.BindLoginCallBack(false, _VivoxManager.vivox.loginSession);
-    }
 
     #endregion
 

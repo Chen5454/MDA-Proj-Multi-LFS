@@ -36,8 +36,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
 
     }
-    
 
+    
     public override void OnEnable()
     {
         base.OnEnable();
@@ -49,7 +49,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         base.OnDisable();
         PhotonNetwork.RemoveCallbackTarget(this);
-       // SceneManager.sceneLoaded -= OnFinshedLoading;
+        DisconnectPlayer();
+        // SceneManager.sceneLoaded -= OnFinshedLoading;
     }
 
 
@@ -72,13 +73,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
     
     }
 
-    //private void CreatePlayer()
-    //{
-    //    Vector3 randomPos = new Vector3(Random.Range(_minX, _maxX), 1.3f, Random.Range(_minZ, _maxZ));
-
-    //    PhotonNetwork.Instantiate(SpawnManager.Instance._playerMalePrefab.name,randomPos,Quaternion.identity,0);
-
-    //}
 
     void StartGame()
     {
@@ -88,4 +82,24 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
         PhotonNetwork.LoadLevel(1);
 
     }
+
+
+    public void DisconnectPlayer()
+    {
+        StartCoroutine(DisconnectAndLoad());
+
+    }
+
+    IEnumerator DisconnectAndLoad()
+    {
+
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+        {
+            yield return null;
+        }
+        PhotonNetwork.LoadLevel(1);
+    }
+
+
 }
