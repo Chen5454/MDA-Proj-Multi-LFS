@@ -62,7 +62,9 @@ public class PlayerData : MonoBehaviour
     }
     private void OnDestroy()
     {
-        ActionsManager.Instance.AllPlayersPhotonViews.Remove(PhotonView);
+        if (PhotonNetwork.IsMasterClient)
+            PhotonView.RPC("RemovingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
+        
     }
     #endregion
 
@@ -202,6 +204,12 @@ public class PlayerData : MonoBehaviour
     void AddingPlayerToAllPlayersList()
     {
         ActionsManager.Instance.AllPlayersPhotonViews.Add(PhotonView);
+    }
+
+    [PunRPC]
+    void RemovingPlayerToAllPlayersList()
+    {
+        ActionsManager.Instance.AllPlayersPhotonViews.Remove(PhotonView);
     }
 
     [PunRPC]
