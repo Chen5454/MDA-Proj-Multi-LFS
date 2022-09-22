@@ -137,6 +137,47 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         DisconnectPlayer();
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        if (this.CanRecoverFromDisconnect(cause))
+        {
+            this.Recover();
+        }
+    }
+
+    private bool CanRecoverFromDisconnect(DisconnectCause cause)
+    {
+        switch (cause)
+        {
+            case DisconnectCause.Exception:
+            case DisconnectCause.ServerTimeout:
+            case DisconnectCause.ClientTimeout:
+            case DisconnectCause.DisconnectByServerLogic:
+            case DisconnectCause.DisconnectByServerReasonUnknown:
+                return true;
+                
+        }
+
+        return false;
+    }
+
+    private void Recover()
+    {
+        if (!PhotonNetwork.ReconnectAndRejoin())
+        {
+            Debug.LogError("ReconnectAndRejoin failed. trying to Reconnect");
+            if (!PhotonNetwork.Reconnect())
+            {
+                Debug.LogError("Reconnect failed. trying to ConnectUsingSettings");
+                if (!PhotonNetwork.ConnectUsingSettings())
+                {
+                    Debug.LogError("ConnectUsingSettings failed ");
+
+                }
+            }
+        }
+    }
+
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
@@ -158,6 +199,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     //{
     //    currentScene = scene.buildIndex;
     //}
+
 
 
     public void UpdateTaggedPatientList()

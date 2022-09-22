@@ -83,6 +83,50 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log("OnPlayerLeftRoom Activated Function");
+
+        var views = PhotonNetwork.PhotonViewCollection;
+
+        int leavingPlayerId = otherPlayer.ActorNumber;
+        bool isInactive = otherPlayer.IsInactive;
+
+        // SOFT DISCONNECT: A player has timed out to the relay but has not yet exceeded PlayerTTL and may reconnect.
+        // Master will take control of this objects until the player hard disconnects, or returns.
+        if (isInactive)
+        {
+            foreach (var view in views)
+            {
+                // v2.27: changed from owner-check to controller-check
+                if (view.ControllerActorNr == leavingPlayerId)
+                    view.ControllerActorNr = PhotonNetwork.MasterClient.ActorNumber;
+            }
+
+        }
+        // HARD DISCONNECT: Player permanently removed. Remove that actor as owner for all items they created (Unless AutoCleanUp is false)
+        else
+        {
+            bool autocleanup = PhotonNetwork.CurrentRoom.AutoCleanUp;
+
+            foreach (var view in views)
+            {
+                // Skip changing Owner/Controller for items that will be cleaned up.
+                if (autocleanup && view.CreatorActorNr == leavingPlayerId)
+                    continue;
+
+                // Any views owned by the leaving player, default to null owner (which will become master controlled).
+                if (view.OwnerActorNr == leavingPlayerId || view.ControllerActorNr == leavingPlayerId)
+                {
+                    view.OwnerActorNr = 0;
+                    view.ControllerActorNr = PhotonNetwork.MasterClient.ActorNumber;
+                }
+            }
+        }
+
+
+
+    }
 
     public void DisconnectPlayer()
     {

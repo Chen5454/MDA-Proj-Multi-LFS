@@ -76,11 +76,11 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         // if we failed to join a random room, maybe none exists or they are all full so we create a new room.
-
+        Debug.Log("Joining Room Failed. we are creating a new room......");
         PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
 
     }
-
+    
 
 
     #region MyRegion
