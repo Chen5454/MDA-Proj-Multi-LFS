@@ -9,6 +9,7 @@ public class LoginProcedure : MonoBehaviour
     [SerializeField] private float _lerpDuration;
     [SerializeField] private TMP_InputField _userName;
     [SerializeField] private TextMeshProUGUI _chosenUserName;
+    [SerializeField] private Image _chosenAvater;
 
     private Image _avatarPicked;
 
@@ -46,5 +47,6 @@ public class LoginProcedure : MonoBehaviour
     public void PickAvatar(Image avatarImage)
     {
         _avatarPicked = avatarImage;
+        _chosenAvater.sprite = _avatarPicked.sprite;
     }
 }
