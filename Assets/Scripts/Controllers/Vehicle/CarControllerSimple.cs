@@ -89,9 +89,7 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FixedUpdate()
     {
-        //HandleMotor();
-        //HandleSteering();
-        //UpdateWheels();
+        _carRb.AddForce(Vector3.down * 9);
     }
 
     public void GetInput()
@@ -111,20 +109,20 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
         if (_verticalInput > 0)
         {
             moveSpeed = _forwardSpeed;
-            IsInPinuy = true;
         }
         else if (_verticalInput < 0)
         {
             moveSpeed = -_reverseSpeed;
-            IsInPinuy = true;
         }
         else
         {
             moveSpeed = 0;
-            IsInPinuy = false;
         }
 
-        _carRb.AddForce(transform.forward * moveSpeed, ForceMode.Acceleration);
+        Vector3 moveVector = transform.forward * moveSpeed;
+        moveVector.y = 0;
+
+        _carRb.AddForce(moveVector);
     }
 
     private void ApplyBreaking(float moveSpeed)
