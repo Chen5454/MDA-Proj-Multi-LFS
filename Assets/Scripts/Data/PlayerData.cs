@@ -8,7 +8,7 @@ using Photon.Pun;
 public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor }
 public enum AranRoles { None, HeadMokdan, Mokdan, Pikud10, Refua10, Henyon10, Pinuy10 }
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : MonoBehaviourPunCallbacks
 {
     public PhotonView PhotonView => gameObject.GetPhotonView();
     public bool IsJoinedNearbyPatient => CurrentPatientNearby.IsPlayerJoined(this);
@@ -62,10 +62,15 @@ public class PlayerData : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if (PhotonNetwork.IsMasterClient)
-            PhotonView.RPC("RemovingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
-        
+
+        Debug.Log("RemovingPlayerFromAllPlayersListBefore");
+        ActionsManager.Instance.AllPlayersPhotonViews.Remove(PhotonView);
+        Debug.Log("RemovingPlayerFromAllPlayersListAfter");
+
+
     }
+
+
     #endregion
 
     #region Private Methods
@@ -206,11 +211,7 @@ public class PlayerData : MonoBehaviour
         ActionsManager.Instance.AllPlayersPhotonViews.Add(PhotonView);
     }
 
-    [PunRPC]
-    void RemovingPlayerToAllPlayersList()
-    {
-        ActionsManager.Instance.AllPlayersPhotonViews.Remove(PhotonView);
-    }
+
 
     [PunRPC]
     private void OnJoinPatient()

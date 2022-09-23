@@ -80,7 +80,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
                 Debug.Log(car.GetComponent<CarControllerSimple>().RandomNumber+" "+ car.GetComponent<CarControllerSimple>().RandomName);
             }
         }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+             Debug.Log(ActionsManager.Instance.AllPlayersPhotonViews.Count);
 
+        }
         if (IsAranActive)
         {
             UpdatePinuyList();
@@ -137,13 +141,13 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         DisconnectPlayer();
     }
 
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        if (this.CanRecoverFromDisconnect(cause))
-        {
-            this.Recover();
-        }
-    }
+    //public override void OnDisconnected(DisconnectCause cause)
+    //{
+    //    if (this.CanRecoverFromDisconnect(cause))
+    //    {
+    //        this.Recover();
+    //    }
+    //}
 
     private bool CanRecoverFromDisconnect(DisconnectCause cause)
     {
@@ -187,7 +191,9 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].OwnerActorNr == otherPlayer.ActorNumber)
             {
                 if (ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>().IsMine == true && PhotonNetwork.IsConnected == true)
+                {
                     PhotonNetwork.Destroy(ActionsManager.Instance.AllPlayersPhotonViews[i]);
+                }
             }
         }
 

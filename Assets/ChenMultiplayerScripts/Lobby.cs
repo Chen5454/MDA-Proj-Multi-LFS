@@ -22,7 +22,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public TMP_InputField VivoxusernameInput;
 
-
+    public string PhotonRoomName = "MDA";
 
     private void Start()
     {
@@ -52,16 +52,30 @@ public class Lobby : MonoBehaviourPunCallbacks
     }
 
 
+    private void CreateRoom()
+    {
+        Debug.Log(" we are creating a new room......");
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = maxPlayersPerRoom;
+        roomOptions.EmptyRoomTtl = 30000;
+        roomOptions.PlayerTtl = 1;
+        PhotonNetwork.CreateRoom(PhotonRoomName, roomOptions, TypedLobby.Default);
+    }
+
     // this function will be called automatically by photon if we successfully connected to photon.
     public override void OnConnectedToMaster()
     {
 
         // SceneManager.LoadScene("Lobby");
         // PhotonNetwork.JoinLobby(); ---- we gonna use other method to auto log us into the scene
+        Debug.Log("OnConnectedToMaster");
+
         PhotonNetwork.AutomaticallySyncScene = true;
 
         if (isConnecting)
         {
+
             PhotonNetwork.JoinRandomRoom();
             isConnecting = false;
         }
@@ -77,11 +91,16 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         // if we failed to join a random room, maybe none exists or they are all full so we create a new room.
         Debug.Log("Joining Room Failed. we are creating a new room......");
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+        CreateRoom();
+
+        //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
 
     }
-    
 
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Room Name Is :"+""+PhotonNetwork.CurrentRoom.Name);
+    }
 
     #region MyRegion
     public void LoginUser()
