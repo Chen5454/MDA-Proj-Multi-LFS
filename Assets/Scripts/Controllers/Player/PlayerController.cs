@@ -45,8 +45,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Controllers Behaviours
     [Header("Controllers")]
     [SerializeField] private CharacterController _characterController;
+    
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
+
+    private VehicleController _currentVehicleController;
+    public VehicleController CurrentVehicleController { get => _currentVehicleController; set => _currentVehicleController = value; }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
     [SerializeField] private float _turnSpeed = 90f, _runningSpeed = 11f, _flyingSpeed = 16f;
@@ -120,11 +124,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (_photonView.IsMine && _currentCarController)
+            if (_photonView.IsMine && _currentVehicleController)
             {
-                _currentCarController.HandleMotor();
-                _currentCarController.HandleSteering();
-                _currentCarController.UpdateWheels();
+                //_currentCarController.HandleMotor();
+                //_currentCarController.HandleSteering();
+                //_currentCarController.UpdateWheels();
             }
         }
     }

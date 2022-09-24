@@ -31,6 +31,7 @@ public class PlayerData : MonoBehaviour
     [field: SerializeField] public Patient CurrentPatientNearby { get; set; }
     [field: SerializeField] public Animation PlayerAnimation { get; set; }
     [field: SerializeField] public CarControllerSimple LastCarController { get; set; }
+    [field: SerializeField] public VehicleController LastVehicleController { get; set; }
 
     #region MonobehaviourCallbacks
     private void Awake()

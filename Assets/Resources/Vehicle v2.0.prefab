@@ -730,6 +730,8 @@ GameObject:
   - component: {fileID: 2697869843882740302}
   - component: {fileID: 492218503778102672}
   - component: {fileID: 172696219136593039}
+  - component: {fileID: 4328860242110319951}
+  - component: {fileID: 5232498664410506341}
   m_Layer: 0
   m_Name: Vehicle v2.0
   m_TagString: Untagged
@@ -813,7 +815,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee27a7e7e12ba884bbcd1536d48b93bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _photonView: {fileID: 172696219136593039}
   _motorForce: 1500
   _breakForce: 3000
   _maxSteerAngle: 18
@@ -832,11 +833,24 @@ MonoBehaviour:
   RightBackSit: {fileID: 3699941854268201686}
   CollidingPlayers: []
   CurrentDriverController: {fileID: 0}
+  CarHeadLights: {fileID: 5011465035260185859}
+  CarSiren: {fileID: 3914175821705871971}
+  CarEmergencyLightsLeft: {fileID: 144217439918927229}
+  CarEmergencyLightsRight: {fileID: 7918494537907223512}
+  CarSirenAudioSource: {fileID: 5195485284514530890}
+  Transfer: {fileID: 5232498664410506341}
+  IsNatan: 0
+  CarHeadLightsOn: 0
+  CarSirenOn: 0
   IsDriverIn: 0
   IsPassangerIn: 0
   IsMiddleIn: 0
   IsLeftBackIn: 0
   IsRightBackIn: 0
+  IsInPinuy: 0
+  OwnerCrew: 0
+  RandomNumber: 0
+  RandomName: 
 --- !u!114 &492218503778102672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,6 +864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vehicleController: {fileID: 2697869843882740302}
+  _vehicleAlertTitle: 
+  _vehicleFullContent: 
+  _barType: 0
 --- !u!114 &172696219136593039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,12 +883,58 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 2
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4328860242110319951}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4328860242110319951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842865863127081137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PositionModel:
+    SynchronizeEnabled: 1
+    TeleportEnabled: 1
+    TeleportIfDistanceGreaterThan: 3
+    InterpolateOption: 2
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 1
+    ExtrapolateOption: 0
+    ExtrapolateSpeed: 1
+    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateNumberOfStoredPositions: 1
+  m_RotationModel:
+    SynchronizeEnabled: 1
+    InterpolateOption: 1
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 5
+  m_ScaleModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 0
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 0
+--- !u!114 &5232498664410506341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842865863127081137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c313d5e2f1297f479bd3896b62a3283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &877359521950840575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 277d8103a323cd244ac13df20a936c23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parentVehicle: {fileID: 0}
+  _parentVehicle: {fileID: 2697869843882740302}
   _patient: {fileID: 0}
   _player: {fileID: 0}
   _emergencyBedOpen: {fileID: 3527804895022912932}
@@ -5793,13 +5856,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
---- !u!1 &3527804895022912932 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
-  m_PrefabInstance: {fileID: 4338142976593406197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4305044805366959902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
+  m_PrefabInstance: {fileID: 4338142976593406197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3527804895022912932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
   m_PrefabInstance: {fileID: 4338142976593406197}
   m_PrefabAsset: {fileID: 0}
