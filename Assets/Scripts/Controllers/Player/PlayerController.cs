@@ -45,15 +45,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Controllers Behaviours
     [Header("Controllers")]
     [SerializeField] private CharacterController _characterController;
+    
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
+
+    private VehicleController _currentVehicleController;
+    public VehicleController CurrentVehicleController { get => _currentVehicleController; set => _currentVehicleController = value; }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
     [SerializeField] private float _turnSpeed = 90f, _runningSpeed = 11f, _flyingSpeed = 16f;
     [SerializeField] private float _flyUpwardsSpeed = 9f;
     private float _stateSpeed;
+
+    private bool _isInVehicle;
+    public bool IsInVehicle { get => _isInVehicle; set => _isInVehicle = value; }
+
     private bool _isDriving;
     public bool IsDriving { get => _isDriving; set => _isDriving = value; }
+
 
     public Vector2 _input;
     public float _walkingSpeed = 6f, actualSpeed;
@@ -115,11 +124,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (_photonView.IsMine && _currentCarController)
+            if (_photonView.IsMine && _currentVehicleController)
             {
-                _currentCarController.HandleMotor();
-                _currentCarController.HandleSteering();
-                _currentCarController.UpdateWheels();
+                //_currentCarController.HandleMotor();
+                //_currentCarController.HandleSteering();
+                //_currentCarController.UpdateWheels();
             }
         }
     }
@@ -161,7 +170,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -195,7 +204,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -230,7 +239,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -266,7 +275,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -322,7 +331,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -390,7 +399,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: Driving");
 
-            if (!_isDriving)
+            if (!_isInVehicle)
             {
                 _vehicleCamera.enabled = false;
                 _vehicleCamera.tag = "Untagged";
@@ -410,9 +419,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _characterController.enabled = false;
 
             _isGrounded = _characterController.isGrounded;
-            _currentCarController.CheckIfDriveable();
-            _currentCarController.GetInput();
-            _currentCarController.CheckIsMovingBackwards();
+            //_currentCarController.CheckIfDriveable();
+            //_currentCarController.GetInput();
+            //_currentCarController.CheckIsMovingBackwards();
         }
     }
     private void UseTreatingState()

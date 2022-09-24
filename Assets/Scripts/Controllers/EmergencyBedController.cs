@@ -9,8 +9,8 @@ using TMPro;
 public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
 {
     [Header("ParentVehicle")]
-    [field: SerializeField] CarControllerSimple _parentVehicle;
-    public CarControllerSimple ParentVehicle => _parentVehicle;
+    [field: SerializeField] private VehicleController _parentVehicle;
+    public VehicleController ParentVehicle => _parentVehicle;
 
     [Header("Player & Patient")]
     [SerializeField] private GameObject _patient;

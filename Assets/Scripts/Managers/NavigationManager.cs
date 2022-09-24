@@ -40,9 +40,9 @@ public class NavigationManager : MonoBehaviour
         }
         else
         {
-            if (_playerController.CurrentCarController)
+            if (_playerController.CurrentVehicleController)
             {
-                transform.position = _playerController.CurrentCarController.transform.position;
+                transform.position = _playerController.CurrentVehicleController.transform.position;
             }
             else
             {
@@ -112,7 +112,7 @@ public class NavigationManager : MonoBehaviour
     {
         if (!_reachedDestination)
         {
-            _playerController.CurrentCarController.IsInPinuy = true;
+            _playerController.CurrentVehicleController.IsInPinuy = true;
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _agent.path.corners.Length;
             _lineRenderer.SetPosition(0, transform.position);
