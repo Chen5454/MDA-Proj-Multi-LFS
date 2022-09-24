@@ -52,8 +52,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private float _turnSpeed = 90f, _runningSpeed = 11f, _flyingSpeed = 16f;
     [SerializeField] private float _flyUpwardsSpeed = 9f;
     private float _stateSpeed;
+
+    private bool _isInVehicle;
+    public bool IsInVehicle { get => _isInVehicle; set => _isInVehicle = value; }
+
     private bool _isDriving;
     public bool IsDriving { get => _isDriving; set => _isDriving = value; }
+
 
     public Vector2 _input;
     public float _walkingSpeed = 6f, actualSpeed;
@@ -161,7 +166,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -195,7 +200,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -230,7 +235,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -266,7 +271,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -322,7 +327,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             GetInputAxis();
 
-            if (_isDriving)
+            if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
             }
@@ -390,7 +395,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             Debug.Log("Current State: Driving");
 
-            if (!_isDriving)
+            if (!_isInVehicle)
             {
                 _vehicleCamera.enabled = false;
                 _vehicleCamera.tag = "Untagged";
@@ -410,9 +415,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _characterController.enabled = false;
 
             _isGrounded = _characterController.isGrounded;
-            _currentCarController.CheckIfDriveable();
-            _currentCarController.GetInput();
-            _currentCarController.CheckIsMovingBackwards();
+            //_currentCarController.CheckIfDriveable();
+            //_currentCarController.GetInput();
+            //_currentCarController.CheckIsMovingBackwards();
         }
     }
     private void UseTreatingState()

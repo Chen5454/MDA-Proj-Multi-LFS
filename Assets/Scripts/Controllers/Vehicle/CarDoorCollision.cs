@@ -106,7 +106,7 @@ public class CarDoorCollision : MonoBehaviour
                 Debug.Log("supposed to drive");
                 
                 IsSeatOccupied = true;
-                playerController.IsDriving = true;
+                playerController.IsInVehicle = true;
                 _doorAnimator.SetBool("IsDoorOpen", false);
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
 
@@ -128,7 +128,7 @@ public class CarDoorCollision : MonoBehaviour
                 Debug.Log("NOT supposed to drive");
                 IsSeatOccupied = false;
                 playerController.transform.position = gameObject.transform.position;
-                playerController.IsDriving = false;
+                playerController.IsInVehicle = false;
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
 
                 if (SeatNumber == 0)
