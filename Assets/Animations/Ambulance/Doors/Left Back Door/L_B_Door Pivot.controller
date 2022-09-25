@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: Close_L_B_Door
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isDoorOpen
+    m_ConditionEvent: IsDoorOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4337868107194748458}
@@ -34,7 +34,7 @@ AnimatorStateTransition:
   m_Name: Open_L_B_Door
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: isDoorOpen
+    m_ConditionEvent: IsDoorOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5969945207487370167}
@@ -45,7 +45,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.5
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -57,7 +57,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anim_L_B_Door
+  m_Name: Open Door
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -86,12 +86,12 @@ AnimatorController:
   m_Name: L_B_Door Pivot
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isDoorOpen
+  - m_Name: IsDoorOpen
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -112,7 +112,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anim_L_B_Door 0
+  m_Name: Close Door
   m_Speed: -1
   m_CycleOffset: 0
   m_Transitions:
@@ -143,10 +143,10 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -4337868107194748458}
-    m_Position: {x: 400, y: 50, z: 0}
+    m_Position: {x: 400, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5969945207487370167}
-    m_Position: {x: 400, y: -20, z: 0}
+    m_Position: {x: 400, y: 60, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -156,4 +156,4 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 420, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -4337868107194748458}
+  m_DefaultState: {fileID: 5969945207487370167}

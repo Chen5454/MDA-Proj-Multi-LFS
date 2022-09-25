@@ -173,6 +173,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4637689751817602479}
   - component: {fileID: 3365013979305911754}
+  - component: {fileID: 3022245462057211660}
+  - component: {fileID: 85933326813391626}
+  - component: {fileID: 2259948338408224878}
   m_Layer: 7
   m_Name: L_B_Door Pivot
   m_TagString: Untagged
@@ -214,6 +217,63 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &3022245462057211660
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191435039932153960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9392309, y: 1.4588212, z: 0.21743274}
+  m_Center: {x: -0.46961546, y: 0, z: 0}
+--- !u!54 &85933326813391626
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191435039932153960}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2259948338408224878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191435039932153960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776dafb0c732397458b49010457131d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _disabledWhileUsed: 0
+  EventToCall:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 492218503778102672}
+        m_TargetAssemblyTypeName: VehicleInteraction, Assembly-CSharp
+        m_MethodName: OpenCloseBackDoor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &231561817480659272
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +880,8 @@ MonoBehaviour:
   _rearRightWheelCollider: {fileID: 1348282952857055217}
   _rb: {fileID: 5823922077512336260}
   VehicleCamera: {fileID: 5657186646971726350}
+  LeftBackDoorAnimator: {fileID: 3365013979305911754}
+  RightBackDoorAnimator: {fileID: 869680200116048906}
   CameraFollowTransform: {fileID: 1049440555324220186}
   DriverSit: {fileID: 3425248733659007571}
   PassangerSit: {fileID: 6852274554374782492}
@@ -838,14 +900,15 @@ MonoBehaviour:
   CarSirenAudioSource: {fileID: 5195485284514530890}
   Transfer: {fileID: 5232498664410506341}
   IsNatan: 0
-  CarHeadLightsOn: 0
-  CarSirenOn: 0
+  IsCarHeadLightsOn: 0
+  IsCarSirenOn: 0
   IsDriverIn: 0
   IsPassangerIn: 0
   IsMiddleIn: 0
   IsLeftBackIn: 0
   IsRightBackIn: 0
   IsInPinuy: 0
+  IsBackDoorsOpen: 0
   OwnerCrew: 0
   RandomNumber: 0
   RandomName: 
@@ -1119,10 +1182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2398510883357456675}
-  - component: {fileID: 774331661286944517}
-  - component: {fileID: 3897060529693001867}
-  - component: {fileID: 8243634253461503239}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BackDoors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1145,63 +1205,6 @@ Transform:
   m_Father: {fileID: 3561114729825493394}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &774331661286944517
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481773551687438375}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.8862334, y: 1.458821, z: 0.2174327}
-  m_Center: {x: 0, y: 0, z: 0.10871635}
---- !u!54 &3897060529693001867
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481773551687438375}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &8243634253461503239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481773551687438375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 776dafb0c732397458b49010457131d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _disabledWhileUsed: 0
-  EventToCall:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 842865863127081137}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &1530117755279238907
 GameObject:
   m_ObjectHideFlags: 0
@@ -5053,6 +5056,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1779480689720178448}
   - component: {fileID: 869680200116048906}
+  - component: {fileID: 4080269729903832446}
+  - component: {fileID: 2251006157737179392}
+  - component: {fileID: 1026176189239793391}
   m_Layer: 7
   m_Name: R_B_Door Pivot
   m_TagString: Untagged
@@ -5094,6 +5100,63 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &4080269729903832446
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7878613730267743191}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9392309, y: 1.4588212, z: 0.21743274}
+  m_Center: {x: 0.46961546, y: 0, z: 0}
+--- !u!54 &2251006157737179392
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7878613730267743191}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1026176189239793391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7878613730267743191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776dafb0c732397458b49010457131d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _disabledWhileUsed: 0
+  EventToCall:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 492218503778102672}
+        m_TargetAssemblyTypeName: VehicleInteraction, Assembly-CSharp
+        m_MethodName: OpenCloseBackDoor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7948387645092762092
 GameObject:
   m_ObjectHideFlags: 0
@@ -6292,13 +6355,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
---- !u!1 &3527804895022912932 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
-  m_PrefabInstance: {fileID: 4338142976593406197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4305044805366959902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
+  m_PrefabInstance: {fileID: 4338142976593406197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3527804895022912932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
   m_PrefabInstance: {fileID: 4338142976593406197}
   m_PrefabAsset: {fileID: 0}
