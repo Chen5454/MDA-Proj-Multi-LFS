@@ -182,7 +182,6 @@ public class VehicleInteraction : MonoBehaviour
 
     public void OpenCloseBackDoor()
     {
-        Debug.Log("Try to Open Doors");
         if (_vehicleController.IsBackDoorsOpen)
         {
             _vehicleController.LeftBackDoorAnimator.SetBool("IsDoorOpen", false);
