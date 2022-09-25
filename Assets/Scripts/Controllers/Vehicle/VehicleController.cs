@@ -23,6 +23,7 @@ public class VehicleController : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
 
     public Camera VehicleCamera;
+    public Animator LeftBackDoorAnimator, RightBackDoorAnimator;
     public Transform CameraFollowTransform;
     public Transform DriverSit, PassangerSit, MiddleSit, LeftBackSit, RightBackSit;
     public Transform DriverExit, PassangerExit, MiddleExit;
@@ -35,7 +36,8 @@ public class VehicleController : MonoBehaviour
 
     [Header("Vehicle Conditionals")]
     public bool IsNatan; 
-    public bool CarHeadLightsOn, CarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsInPinuy;
+    public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsInPinuy;
+    public bool IsBackDoorsOpen;
 
     [Header("Vehicle Data")]
     public int OwnerCrew, RandomNumber;
@@ -178,9 +180,9 @@ public class VehicleController : MonoBehaviour
     [PunRPC]
     private void ToggleHeadlightsRPC()
     {
-        if (CarHeadLightsOn)
+        if (IsCarHeadLightsOn)
         {
-            CarHeadLightsOn = false;
+            IsCarHeadLightsOn = false;
             CarHeadLights.SetActive(false);
             CarSiren.GetComponent<Animator>().enabled = false;
             //CarSirenLightLeft.SetActive(false);
@@ -188,7 +190,7 @@ public class VehicleController : MonoBehaviour
         }
         else
         {
-            CarHeadLightsOn = true;
+            IsCarHeadLightsOn = true;
             CarHeadLights.SetActive(true);
             CarSiren.GetComponent<Animator>().enabled = true;
             //CarSirenLightLeft.SetActive(true);
@@ -199,18 +201,18 @@ public class VehicleController : MonoBehaviour
     [PunRPC]
     private void ToggleSirenRPC()
     {
-        if (CarSirenOn)
+        if (IsCarSirenOn)
         {
             CarEmergencyLightsLeft.enabled = false;
             CarEmergencyLightsRight.enabled = false;
-            CarSirenOn = false;
+            IsCarSirenOn = false;
             CarSirenAudioSource.Stop();
         }
         else
         {
             CarEmergencyLightsLeft.enabled = true;
             CarEmergencyLightsRight.enabled = true;
-            CarSirenOn = true;
+            IsCarSirenOn = true;
             CarSirenAudioSource.Play();
         }
     }
