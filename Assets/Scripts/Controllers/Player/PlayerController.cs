@@ -63,6 +63,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private bool _isDriving;
     public bool IsDriving { get => _isDriving; set => _isDriving = value; }
 
+    private bool _isPassanger;
+    public bool IsPassanger { get => _isPassanger; set => _isPassanger = value; }
+
+    private bool _isMiddleSit;
+    public bool IsMiddleSit { get => _isMiddleSit; set => _isMiddleSit = value; }
+
+    private bool _isLeftBackSit;
+    public bool IsLeftBackSit { get => _isLeftBackSit; set => _isLeftBackSit = value; }
+
+    private bool _isRightBackSit;
+    public bool IsRightBackSit { get => _isRightBackSit; set => _isRightBackSit = value; }
+
 
     public Vector2 _input;
     public float _walkingSpeed = 6f, actualSpeed;
@@ -406,19 +418,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _playerCamera.enabled = true;
                 _playerCamera.tag = "MainCamera";
                 _currentCamera = _playerCamera;
+                _vehicleCamera.GetComponent<VehicleCameraFollow>().Target = null;
+                //_vehicleCamera = null;
                 _characterController.enabled = true;
                 _stateAction = UseTankIdleState;
                 return;
             }
 
-            _playerCamera.enabled = false;
-            _playerCamera.tag = "Untagged";
-            _vehicleCamera.enabled = true;
-            _vehicleCamera.tag = "MainCamera";
-            _currentCamera = _vehicleCamera;
-            _characterController.enabled = false;
-
-            _isGrounded = _characterController.isGrounded;
+            if (_playerCamera.enabled)
+            {
+                _playerCamera.enabled = false;
+                _playerCamera.tag = "Untagged";
+                //_vehicleCamera = _currentVehicleController.VehicleCamera;
+                _vehicleCamera.enabled = true;
+                _vehicleCamera.tag = "MainCamera";
+                _currentCamera = _vehicleCamera;
+                VehicleCameraFollow cameraFollow = _vehicleCamera.GetComponent<VehicleCameraFollow>();
+                cameraFollow.Target = _currentVehicleController.CameraFollowTransform;
+                _characterController.enabled = false;
+                _isGrounded = _characterController.isGrounded;
+            }
             //_currentCarController.CheckIfDriveable();
             //_currentCarController.GetInput();
             //_currentCarController.CheckIsMovingBackwards();
