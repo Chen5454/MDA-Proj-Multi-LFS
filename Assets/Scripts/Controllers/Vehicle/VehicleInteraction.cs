@@ -65,6 +65,7 @@ public class VehicleInteraction : MonoBehaviour
                         photonView.transform.localRotation = Quaternion.identity;
                         _vehicleController.CurrentDriverController = playerController;
                         _vehicleController.IsDriverIn = true;
+                        StartCoroutine(ChangeKinematicStateCorooutine());
                         break;
                     }
                     else if (_vehicleSit == VehicleSit.Passanger)
@@ -72,32 +73,36 @@ public class VehicleInteraction : MonoBehaviour
                         UIManager.Instance.VehiclePassangerUI.SetActive(true);
                         photonView.transform.position = _vehicleController.PassangerSit.position;
                         playerController.IsInVehicle = true;
+                        playerController.IsPassanger = true;
                         _vehicleController.IsPassangerIn = true;
                         break;
                     }
                     else
                     {
-                        if (_vehicleController.IsMiddleIn)
+                        if (!_vehicleController.IsMiddleIn)
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.MiddleSit.position;
                             playerController.IsInVehicle = true;
+                            playerController.IsMiddleSit = true;
                             _vehicleController.IsMiddleIn = true;
                             break;
                         }
-                        else if (_vehicleController.IsLeftBackIn)
+                        else if (!_vehicleController.IsLeftBackIn)
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.LeftBackSit.position;
                             playerController.IsInVehicle = true;
+                            playerController.IsLeftBackSit = true;
                             _vehicleController.IsLeftBackIn = true;
                             break;
                         }
-                        else if (_vehicleController.IsRightBackIn)
+                        else if (!_vehicleController.IsRightBackIn)
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.RightBackSit.position;
                             playerController.IsInVehicle = true;
+                            playerController.IsRightBackSit = true;
                             _vehicleController.IsRightBackIn = true;
                             break;
                         }
@@ -131,15 +136,45 @@ public class VehicleInteraction : MonoBehaviour
                     playerController.IsDriving = false;
                     _vehicleController.CurrentDriverController = null;
                     playerController.PlayerData.LastVehicleController = _vehicleController;
+                    StartCoroutine(ChangeKinematicStateCorooutine());
+                    photonView.transform.position = _vehicleController.DriverExit.position;
+                    photonView.transform.localRotation = _vehicleController.DriverExit.rotation;
+                }
+                else if (playerController.IsPassanger)
+                {
+                    _vehicleController.IsPassangerIn = false;
+                    playerController.IsPassanger = false;
+                    photonView.transform.position = _vehicleController.PassangerExit.position;
+                    photonView.transform.localRotation = _vehicleController.PassangerExit.rotation;
+                }
+                else if (playerController.IsMiddleSit)
+                {
+                    _vehicleController.IsMiddleIn = false;
+                    playerController.IsMiddleSit = false;
+                    photonView.transform.position = _vehicleController.MiddleExit.position;
+                    photonView.transform.localRotation = _vehicleController.MiddleExit.rotation;
+                }
+                else if (playerController.IsLeftBackSit)
+                {
+                    _vehicleController.IsLeftBackIn = false;
+                    playerController.IsLeftBackSit = false;
+                    photonView.transform.position = _vehicleController.MiddleExit.position;
+                    photonView.transform.localRotation = _vehicleController.MiddleExit.rotation;
+                }
+                else if (playerController.IsRightBackSit)
+                {
+                    _vehicleController.IsRightBackIn = false;
+                    playerController.IsRightBackSit = false;
+                    photonView.transform.position = _vehicleController.MiddleExit.position;
+                    photonView.transform.localRotation = _vehicleController.MiddleExit.rotation;
                 }
 
                 playerController.IsInVehicle = false;
                 playerController.CurrentVehicleController = null;
                 
-                
-                photonView.transform.SetParent(transform.root);
-                photonView.transform.localRotation = Quaternion.identity;
+                photonView.transform.SetParent(transform.root.parent);
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
+                DontDestroyOnLoad(photonView.gameObject);
             }
         }
     }
@@ -153,6 +188,15 @@ public class VehicleInteraction : MonoBehaviour
     public void ToggleSiren()
     {
         _vehicleController.PhotonView.RPC("ToggleSirenRPC", RpcTarget.AllViaServer);
+    }
+    #endregion
+
+    #region Coroutines
+    private IEnumerator ChangeKinematicStateCorooutine()
+    {
+        yield return null;
+
+        _vehicleController.ChangeKinematicState();
     }
     #endregion
 }

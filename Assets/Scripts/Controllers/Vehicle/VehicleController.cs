@@ -20,8 +20,12 @@ public class VehicleController : MonoBehaviour
     [SerializeField] private float _breakForce, _maxSteerAngle;
     [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform;
     [SerializeField] private WheelCollider _frontLeftWheelCollider, _frontRightWheelCollider, _rearLeftWheelCollider, _rearRightWheelCollider;
+    [SerializeField] private Rigidbody _rb;
 
+    public Camera VehicleCamera;
+    public Transform CameraFollowTransform;
     public Transform DriverSit, PassangerSit, MiddleSit, LeftBackSit, RightBackSit;
+    public Transform DriverExit, PassangerExit, MiddleExit;
     public List<GameObject> CollidingPlayers;
     public PlayerController CurrentDriverController;
     public GameObject CarHeadLights, CarSiren;
@@ -43,6 +47,7 @@ public class VehicleController : MonoBehaviour
     #region Monobehaviour Callbacks
     private void Start()
     {
+        _rb.isKinematic = true;
         _photonView = GetComponent<PhotonView>();
         _carDashboardUI = UIManager.Instance.VehicleDriverUI;
 
@@ -57,6 +62,9 @@ public class VehicleController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!CurrentDriverController)
+            return;
+
         if (CurrentDriverController.IsDriving)
         {
             GetInput();
@@ -157,6 +165,14 @@ public class VehicleController : MonoBehaviour
         wheelTransform.position = pos;
     }
     #endregion
+
+    public void ChangeKinematicState()
+    {
+        if (_rb.isKinematic)
+            _rb.isKinematic = false;
+        else
+            _rb.isKinematic = true;
+    }
 
     #region PunRPC
     [PunRPC]

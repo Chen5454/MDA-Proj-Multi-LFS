@@ -5,26 +5,30 @@ using UnityEngine;
 
 public class VehicleCameraFollow : MonoBehaviour
 {
-    [SerializeField] private Vector3 offset;
-    [SerializeField] private Transform target;
-    [SerializeField] private float translateSpeed;
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private Vector3 _offset;
+    [SerializeField] private float _translateSpeed;
+    [SerializeField] private float _rotationSpeed;
+
+    public Transform Target;
 
     private void FixedUpdate()
     {
+        if (!Target)
+            return;
+
         HandleTranslation();
         HandleRotation();
     }
 
     private void HandleTranslation()
     {
-        var targetPosition = target.TransformPoint(offset);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
+        Vector3 targetPosition = Target.TransformPoint(_offset);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, _translateSpeed * Time.deltaTime);
     }
     private void HandleRotation()
     {
-        var direction = target.position - transform.position;
-        var rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+        Vector3 direction = Target.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(direction, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, _rotationSpeed * Time.deltaTime);
     }
 }
