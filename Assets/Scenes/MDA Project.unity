@@ -575,7 +575,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325013573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 66.9, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 66.9, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2629,7 +2629,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110282071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 69.8, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 69.8, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4251,6 +4251,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3236320749043518727, guid: 9b40a7ed2322ce943b22cdb933f3f8fe, type: 3}
+      propertyPath: AmbulancePrefab
+      value: 
+      objectReference: {fileID: 842865863127081137, guid: e41c09f2c0cf5f146a329dfb2cd82b96, type: 3}
+    - target: {fileID: 3236320749043518727, guid: 9b40a7ed2322ce943b22cdb933f3f8fe, type: 3}
       propertyPath: VehiclePosTransforms.Array.data[0]
       value: 
       objectReference: {fileID: 1567054159}
@@ -4558,7 +4562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567054158}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55.25, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 55.25, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4678,7 +4682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658556884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.1, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 58.1, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4736,7 +4740,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701966039}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 63.9, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 63.9, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5451,7 +5455,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1982292471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 61, y: -0.15, z: -369.25}
+  m_LocalPosition: {x: 61, y: -0.606, z: -369.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6066,6 +6070,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vehicle v2.0
       objectReference: {fileID: 0}
+    - target: {fileID: 842865863127081137, guid: e41c09f2c0cf5f146a329dfb2cd82b96, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1312195625395595769, guid: e41c09f2c0cf5f146a329dfb2cd82b96, type: 3}
       propertyPath: sceneViewId
       value: 3
@@ -6080,7 +6088,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3831116778341837722, guid: e41c09f2c0cf5f146a329dfb2cd82b96, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.456
       objectReference: {fileID: 0}
     - target: {fileID: 3831116778341837722, guid: e41c09f2c0cf5f146a329dfb2cd82b96, type: 3}
       propertyPath: m_LocalPosition.z
