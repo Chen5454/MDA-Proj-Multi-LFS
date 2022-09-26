@@ -90,12 +90,18 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     
     public void ShowInteractionsToggle()
     {
-        if (_emergencyBedUI.activeInHierarchy)
+        if (_emergencyBedUI.activeInHierarchy&& _photonView.IsMine)
         {
             _emergencyBedUI.SetActive(false);
             UIManager.Instance.CurrentActionBarParent.SetActive(true);
         }
-        else
+        else if (!_emergencyBedUI.activeInHierarchy && _photonView.IsMine)
+        {
+            _emergencyBedUI.SetActive(true);
+            UIManager.Instance.CurrentActionBarParent.SetActive(false);
+        }
+
+        else if(!_isFollowingPlayer && !_emergencyBedUI.activeInHierarchy)
         {
             _transfer.BedPickUp();
             _emergencyBedUI.SetActive(true);
