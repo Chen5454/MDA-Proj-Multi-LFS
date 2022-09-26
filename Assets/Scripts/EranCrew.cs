@@ -119,6 +119,7 @@ public class EranCrew : MonoBehaviour
         List<string> value = new List<string>();
         foreach (PhotonView player in ActionsManager.Instance.AllPlayersPhotonViews)
         {
+            
             value.Add(player.Owner.NickName);
         }
 
