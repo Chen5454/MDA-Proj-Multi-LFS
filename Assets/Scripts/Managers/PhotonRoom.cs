@@ -150,13 +150,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
         PhotonNetwork.LoadLevel(1);
     }
 
-
-
     public void PickAvatar(int avatarIndex)
     {
-        //_avatarPicked = avatarImage;
         _avaterIndex = avatarIndex;
-        //_chosenAvater.sprite = _avatarPicked.sprite;
     }
-
 }

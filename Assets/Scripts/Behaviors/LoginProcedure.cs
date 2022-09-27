@@ -44,6 +44,11 @@ public class LoginProcedure : MonoBehaviour
     {
         _chosenUserName.text = _userName.text;
     }
+    public void PickAvatar(Image avatarImage)
+    {
+        _avatarPicked = avatarImage;
+        _chosenAvater.sprite = _avatarPicked.sprite;
+    }
     //public void PickAvatar(int avatarIndex) // Moved to "PhotonRoom" Script (Needed Script that stay from lobby to actual game. )
     //{
     //    //_avatarPicked = avatarImage;
