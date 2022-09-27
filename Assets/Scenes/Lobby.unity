@@ -396,14 +396,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1932967489}
-        m_TargetAssemblyTypeName: LoginProcedure, Assembly-CSharp
+      - m_Target: {fileID: 362941948}
+        m_TargetAssemblyTypeName: PhotonRoom, Assembly-CSharp
         m_MethodName: PickAvatar
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 308514636}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -487,6 +487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5edabe410c3082c4095972541cd40eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _avaterIndex: 0
   multiplayerScene: 1
   currentScene: 0
 --- !u!4 &362941949
@@ -573,6 +574,7 @@ MonoBehaviour:
   buttonText: {fileID: 802661791}
   usernameInput: {fileID: 1914731606}
   VivoxusernameInput: {fileID: 1914731606}
+  PhotonRoomName: MDA
 --- !u!4 &568849064
 Transform:
   m_ObjectHideFlags: 0
@@ -814,14 +816,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1932967489}
-        m_TargetAssemblyTypeName: LoginProcedure, Assembly-CSharp
+      - m_Target: {fileID: 362941948}
+        m_TargetAssemblyTypeName: PhotonRoom, Assembly-CSharp
         m_MethodName: PickAvatar
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 747951738}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2489,6 +2491,7 @@ MonoBehaviour:
   _userName: {fileID: 1914731606}
   _chosenUserName: {fileID: 1615832290}
   _chosenAvater: {fileID: 770096981}
+  _avaterIndex: 0
 --- !u!1 &1986304456
 GameObject:
   m_ObjectHideFlags: 0

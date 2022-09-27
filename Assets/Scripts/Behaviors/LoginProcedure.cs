@@ -10,7 +10,7 @@ public class LoginProcedure : MonoBehaviour
     [SerializeField] private TMP_InputField _userName;
     [SerializeField] private TextMeshProUGUI _chosenUserName;
     [SerializeField] private Image _chosenAvater;
-
+    [SerializeField] private int _avaterIndex;
     private Image _avatarPicked;
 
     private const int _scrollDistance = 640;
@@ -44,9 +44,10 @@ public class LoginProcedure : MonoBehaviour
     {
         _chosenUserName.text = _userName.text;
     }
-    public void PickAvatar(Image avatarImage)
-    {
-        _avatarPicked = avatarImage;
-        _chosenAvater.sprite = _avatarPicked.sprite;
-    }
+    //public void PickAvatar(int avatarIndex) // Moved to "PhotonRoom" Script (Needed Script that stay from lobby to actual game. )
+    //{
+    //    //_avatarPicked = avatarImage;
+    //    _avaterIndex = avatarIndex;
+    //    //_chosenAvater.sprite = _avatarPicked.sprite;
+    //}
 }

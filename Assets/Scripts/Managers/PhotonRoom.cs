@@ -14,13 +14,16 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     private PhotonView _photonView;
 
-   // public float _minX, _minZ, _maxX, _maxZ;
+   public int _avaterIndex;
+
+
+    // public float _minX, _minZ, _maxX, _maxZ;
 
     [SerializeField] public int multiplayerScene;
     [SerializeField] private int currentScene;
-
     private void Awake()
     {
+
         if (Instance == null)
         {
             Instance = this;
@@ -33,11 +36,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
         }
 
         DontDestroyOnLoad(this.gameObject);
+    }
 
+    private void Start()
+    {
 
     }
 
-    
     public override void OnEnable()
     {
         base.OnEnable();
@@ -145,5 +150,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
         PhotonNetwork.LoadLevel(1);
     }
 
+
+
+    public void PickAvatar(int avatarIndex)
+    {
+        //_avatarPicked = avatarImage;
+        _avaterIndex = avatarIndex;
+        //_chosenAvater.sprite = _avatarPicked.sprite;
+    }
 
 }

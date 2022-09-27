@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour
 
     [Header("PlayerPrefabs")]
     [SerializeField] public GameObject _playerMalePrefab;
-    //[SerializeField] private GameObject _playerFemalePrefab;
+    [SerializeField] private GameObject _playerFemalePrefab;
 
     [Header("PatientPrefabs")]
     [SerializeField] private GameObject _patientMalePrefab;
@@ -50,17 +50,24 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         Vector3 randomPos = new Vector3(Random.Range(_minX, _maxX), 1.3f, Random.Range(_minZ, _maxZ));
-        PhotonNetwork.Instantiate(_playerMalePrefab.name, randomPos, Quaternion.identity);
+        if (PhotonRoom.Instance._avaterIndex == 1)
+            PhotonNetwork.Instantiate(_playerMalePrefab.name, randomPos, Quaternion.identity);
+        else if (PhotonRoom.Instance._avaterIndex == 2)
+            PhotonNetwork.Instantiate(_playerFemalePrefab.name, randomPos, Quaternion.identity);
+
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.InstantiateRoomObject(_eranRoomPrefab.name, _eranRoomPosTransform.position,_eranRoomPosTransform.rotation);
-            PhotonNetwork.InstantiateRoomObject(_operationRoomPrefab.name, _operationRoomTransform.position, _operationRoomTransform.rotation);
+            PhotonNetwork.InstantiateRoomObject(_eranRoomPrefab.name, _eranRoomPosTransform.position,
+                _eranRoomPosTransform.rotation);
+            PhotonNetwork.InstantiateRoomObject(_operationRoomPrefab.name, _operationRoomTransform.position,
+                _operationRoomTransform.rotation);
 
             foreach (Transform crewRoomPosTr in _crewRoomPosTransforms)
             {
-                PhotonNetwork.InstantiateRoomObject(_crewRoomColliderPrefab.name, crewRoomPosTr.position, crewRoomPosTr.rotation);
+                PhotonNetwork.InstantiateRoomObject(_crewRoomColliderPrefab.name, crewRoomPosTr.position,
+                    crewRoomPosTr.rotation);
             }
-        }   
+        }
     }
 }
