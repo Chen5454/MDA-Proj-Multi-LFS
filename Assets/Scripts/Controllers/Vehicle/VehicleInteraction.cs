@@ -180,6 +180,7 @@ public class VehicleInteraction : MonoBehaviour
     }
     #endregion
 
+    #region OnClick Events
     public void OpenCloseBackDoor()
     {
         if (_vehicleController.IsBackDoorsOpen)
@@ -197,8 +198,6 @@ public class VehicleInteraction : MonoBehaviour
             //_vehicleController.RightBackDoorAnimator.Play("Open Back Doors");
         }
     }
-
-    #region OnClick Events
     public void ToggleHeadlights()
     {
         _vehicleController.PhotonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllViaServer);

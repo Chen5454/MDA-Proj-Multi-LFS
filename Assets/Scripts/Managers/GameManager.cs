@@ -28,8 +28,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     public PhotonView Henyon10View;
     public List<int> usedValues = new List<int>();
     public List<string> usedNamesValues = new List<string>();
+    public List<PhotonView> AmbulanceCarList = new List<PhotonView>();
     public List<PhotonView> NatanCarList = new List<PhotonView>();
+    public List<PhotonView> AmbulanceInPinuyCarList = new List<PhotonView>();
     public List<PhotonView> NatanInPinuyCarList = new List<PhotonView>();
+    public List<PhotonView> AmbulanceFreeCarList = new List<PhotonView>();
     public List<PhotonView> NatanFreeCarList = new List<PhotonView>();
 
     [Header("Pikud10")]
@@ -75,9 +78,13 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
+            foreach (PhotonView car in AmbulanceCarList)
+            {
+                Debug.Log("Ambulance" + "" + car.GetComponent<CarControllerSimple>().RandomNumber + " " + car.GetComponent<CarControllerSimple>().RandomName);
+            }
             foreach (PhotonView car in NatanCarList)
             {
-                Debug.Log(car.GetComponent<CarControllerSimple>().RandomNumber+" "+ car.GetComponent<CarControllerSimple>().RandomName);
+                Debug.Log("Natan" + "" + car.GetComponent<CarControllerSimple>().RandomNumber+" "+ car.GetComponent<CarControllerSimple>().RandomName);
             }
         }
         if (Input.GetKeyDown(KeyCode.V))
@@ -226,6 +233,23 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     [PunRPC]
     public void UpdatePinuyList_RPC()
     {
+        foreach (PhotonView car in AmbulanceCarList)
+        {
+            if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+            {
+                AmbulanceFreeCarList.Remove(car);
+
+                if (!AmbulanceInPinuyCarList.Contains(car))
+                    AmbulanceInPinuyCarList.Add(car);
+            }
+            else
+            {
+                AmbulanceInPinuyCarList.Remove(car);
+
+                if (!AmbulanceFreeCarList.Contains(car))
+                    AmbulanceFreeCarList.Add(car);
+            }
+        }
         foreach (PhotonView car in NatanCarList)
         {
             if (car.GetComponent<CarControllerSimple>().IsInPinuy)

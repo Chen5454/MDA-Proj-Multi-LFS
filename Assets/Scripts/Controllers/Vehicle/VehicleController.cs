@@ -61,6 +61,8 @@ public class VehicleController : MonoBehaviour
 
         if (IsNatan)
             GameManager.Instance.NatanCarList.Add(_photonView);
+        else
+            GameManager.Instance.AmbulanceCarList.Add(_photonView);
     }
     private void FixedUpdate()
     {
@@ -82,6 +84,8 @@ public class VehicleController : MonoBehaviour
 
         if (IsNatan)
             GameManager.Instance.NatanCarList.Remove(_photonView);
+        else
+            GameManager.Instance.AmbulanceCarList.Remove(_photonView);
     }
     #endregion
 
@@ -182,7 +186,11 @@ public class VehicleController : MonoBehaviour
     {
         if (IsCarHeadLightsOn)
         {
-            IsCarHeadLightsOn = false;
+            for (int i = 0; i < GameManager.Instance.; i++)
+            {
+                if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+                {
+                    IsCarHeadLightsOn = false;
             CarHeadLights.SetActive(false);
             CarSiren.GetComponent<Animator>().enabled = false;
             //CarSirenLightLeft.SetActive(false);

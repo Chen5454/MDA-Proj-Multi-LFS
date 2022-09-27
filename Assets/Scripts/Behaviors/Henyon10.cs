@@ -69,6 +69,39 @@ public class Henyon10 : MonoBehaviour
     [PunRPC]
     private void UpdateVehicleListsRPC()
     {
+        _ambulanceList.Clear();
+
+        for (int i = 0; i < _natanListContent.childCount; i++)
+        {
+            Destroy(_ambulanceListContent.GetChild(i).gameObject);
+        }
+
+        _ambulanceList.AddRange(GameManager.Instance.AmbulanceCarList);
+
+        for (int i = 0; i < _ambulanceList.Count; i++)
+        {
+            GameObject vehicleListRow = Instantiate(_vehicleListRow, _ambulanceListContent);
+            Transform vehicleListRowTr = vehicleListRow.transform;
+            PhotonView ambulance = _ambulanceList[i];
+            CarControllerSimple ambulanceController = ambulance.GetComponent<CarControllerSimple>();
+
+            string name = ambulanceController.RandomName;
+            int num = ambulanceController.RandomNumber;
+
+            vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {num}";
+
+            if (ambulanceController.IsInPinuy)
+            {
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
+            }
+            else
+            {
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
+            }
+        }
+
         _natanList.Clear();
 
         for (int i = 0; i < _natanListContent.childCount; i++)

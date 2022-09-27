@@ -66,8 +66,8 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
 
         if (IsNatan)
             GameManager.Instance.NatanCarList.Add(_photonView);
-        //else
-        //    GameManager.Instance.AmbulanceList.Add(_photonView);
+        else
+            GameManager.Instance.AmbulanceCarList.Add(_photonView);
      }
 
      private void OnDestroy() //When Car is Destroyed Delete from list for using data again later.
@@ -76,8 +76,8 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
          GameManager.Instance.usedValues.Remove(RandomNumber);
         if (IsNatan)
             GameManager.Instance.NatanCarList.Remove(_photonView);
-        //else
-        //    GameManager.Instance.AmbulanceList.Remove(_photonView);
+        else
+            GameManager.Instance.AmbulanceCarList.Remove(_photonView);
     }
 
     private void Update()

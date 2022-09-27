@@ -171,6 +171,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         }
 
         //_ambulanceList.AddRange(GameManager.Instance.AmbulanceList);
+        _ambulanceList.AddRange(GameManager.Instance.AmbulanceCarList);
         _natanList.AddRange(GameManager.Instance.NatanCarList);
 
         /* Ambulance Logic
