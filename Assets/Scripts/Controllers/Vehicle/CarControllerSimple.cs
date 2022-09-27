@@ -251,40 +251,103 @@ public class CarControllerSimple : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void ToggleHeadlightsRPC()
     {
-        if (CarHeadLightsOn)
+        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
-            CarHeadLightsOn = false;
-            CarHeadLights.SetActive(false);
-            CarSiren.GetComponent<Animator>().enabled = false;
-            //CarSirenLightLeft.SetActive(false);
-            //CarSirenLightRight.SetActive(false);
-        }
-        else
-        {
-            CarHeadLightsOn = true;
-            CarHeadLights.SetActive(true);
-            CarSiren.GetComponent<Animator>().enabled = true;
-            //CarSirenLightLeft.SetActive(true);
-            //CarSirenLightRight.SetActive(true);
+            if (GameManager.Instance.AmbulanceCarList[i].IsMine)
+            {
+                if (CarHeadLightsOn)
+                {
+                    CarHeadLightsOn = false;
+                    CarHeadLights.SetActive(false);
+                    CarSiren.GetComponent<Animator>().enabled = false;
+                    //CarSirenLightLeft.SetActive(false);
+                    //CarSirenLightRight.SetActive(false);
+                }
+                else
+                {
+                    CarHeadLightsOn = true;
+                    CarHeadLights.SetActive(true);
+                    CarSiren.GetComponent<Animator>().enabled = true;
+                    //CarSirenLightLeft.SetActive(true);
+                    //CarSirenLightRight.SetActive(true);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < GameManager.Instance.NatanCarList.Count; j++)
+                {
+                    if (GameManager.Instance.NatanCarList[i].IsMine)
+                    {
+                        if (CarHeadLightsOn)
+                        {
+                            CarHeadLightsOn = false;
+                            CarHeadLights.SetActive(false);
+                            CarSiren.GetComponent<Animator>().enabled = false;
+                            //CarSirenLightLeft.SetActive(false);
+                            //CarSirenLightRight.SetActive(false);
+                        }
+                        else
+                        {
+                            CarHeadLightsOn = true;
+                            CarHeadLights.SetActive(true);
+                            CarSiren.GetComponent<Animator>().enabled = true;
+                            //CarSirenLightLeft.SetActive(true);
+                            //CarSirenLightRight.SetActive(true);
+                        }
+                    }
+                }
+            }   
         }
     }
 
     [PunRPC]
     private void ToggleSirenRPC()
     {
-        if (CarSirenOn)
+        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
-            CarEmergencyLightsLeft.enabled = false;
-            CarEmergencyLightsRight.enabled = false;
-            CarSirenOn = false;
-            CarSirenAudioSource.Stop();
-        }
-        else
-        {
-            CarEmergencyLightsLeft.enabled = true;
-            CarEmergencyLightsRight.enabled = true;
-            CarSirenOn = true;
-            CarSirenAudioSource.Play();
+            if (GameManager.Instance.AmbulanceCarList[i].IsMine)
+            {
+                if (GameManager.Instance.AmbulanceCarList[i].IsMine)
+                {
+                    if (CarSirenOn)
+                    {
+                        CarEmergencyLightsLeft.enabled = false;
+                        CarEmergencyLightsRight.enabled = false;
+                        CarSirenOn = false;
+                        CarSirenAudioSource.Stop();
+                    }
+                    else
+                    {
+                        CarEmergencyLightsLeft.enabled = true;
+                        CarEmergencyLightsRight.enabled = true;
+                        CarSirenOn = true;
+                        CarSirenAudioSource.Play();
+                    }
+                }
+            }
+            else
+            {
+                for (int j = 0; j < GameManager.Instance.NatanCarList.Count; j++)
+                {
+                    if (GameManager.Instance.NatanCarList[i].IsMine)
+                    {
+                        if (CarSirenOn)
+                        {
+                            CarEmergencyLightsLeft.enabled = false;
+                            CarEmergencyLightsRight.enabled = false;
+                            CarSirenOn = false;
+                            CarSirenAudioSource.Stop();
+                        }
+                        else
+                        {
+                            CarEmergencyLightsLeft.enabled = true;
+                            CarEmergencyLightsRight.enabled = true;
+                            CarSirenOn = true;
+                            CarSirenAudioSource.Play();
+                        }
+                    }
+                }
+            }
         }
     }
     #endregion
