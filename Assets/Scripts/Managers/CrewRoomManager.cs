@@ -171,6 +171,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         // RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
+    private void AlertStartAll(string title, string content)
+    {
+        _photonView.RPC("AlertStartAllRPC", RpcTarget.All, title, content);
+    }
+
     public void StartRandomIncident()
     {
         List<int> unavailableList = new List<int>();
@@ -196,19 +201,19 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
         catch
         {
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorFullString);
+            AlertStartAll(_errorTitle, _errorFullString);
         }
         
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-                PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
             GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
-            ActionTemplates.Instance.ShowAlertWindow(_incidentStartTitle, $"{_incidentStartText} {apartmentNum +1}");
+            AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
         else
         {
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorSomthingWentWrong);
+            AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
     public void StartIncident()
@@ -224,18 +229,18 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
         if (unavailableList.Count >= 5)
         {
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorFullString);
+            AlertStartAll(_errorTitle, _errorFullString);
         }
         else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
         {
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, _errorAptBusy);
+            AlertStartAll(_errorTitle, _errorAptBusy);
         }
         else
         {
             PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
             GameManager.Instance.IsPatientSpawned[apartmentNum - 1] = true;
             GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1]);
-            ActionTemplates.Instance.ShowAlertWindow(_errorTitle, $"{_incidentStartText} {apartmentNum +0}");
+            AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
         }
     }
 
@@ -343,6 +348,12 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             desiredPlayerName.text.color = crewColor;
             currentPlayerData.CrewColor = crewColor;
         }
+    }
+
+    [PunRPC]
+    private void AlertStartAllRPC(string title, string content)
+    {
+        ActionTemplates.Instance.ShowAlertWindow(title, content);
     }
 
     [PunRPC]

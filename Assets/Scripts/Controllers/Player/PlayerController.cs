@@ -480,6 +480,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         _anim.RotateAnimation();
         transform.Rotate(0, _input.x * _turnSpeed * Time.deltaTime, 0);
+
+        //if (Input.GetMouseButton(1))
+        //    return;
     }
     private void UseFirstPersonMovement()
     {
