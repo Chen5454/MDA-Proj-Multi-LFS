@@ -58,7 +58,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = maxPlayersPerRoom;
-        roomOptions.EmptyRoomTtl = 30000;
+        roomOptions.EmptyRoomTtl = 1;
         roomOptions.PlayerTtl = 1;
         PhotonNetwork.CreateRoom(PhotonRoomName, roomOptions, TypedLobby.Default);
     }
