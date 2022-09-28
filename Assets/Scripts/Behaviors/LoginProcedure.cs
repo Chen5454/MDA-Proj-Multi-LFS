@@ -36,8 +36,11 @@ public class LoginProcedure : MonoBehaviour
 
         _desiredPosition = new Vector3(transform.position.x - _scrollDistance, transform.position.y, transform.position.z);
     }
-    public void Next()
+    public void Next(bool isForward)
     {
+        int direction = isForward ? -1 : 1;
+        _desiredPosition = new Vector3(transform.position.x + direction * _scrollDistance, transform.position.y, transform.position.z);
+
         StartCoroutine(LerpPosition(_desiredPosition, _lerpDuration));
     }
     public void KeepUserName()
