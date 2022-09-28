@@ -72,6 +72,7 @@ public class VehicleInteraction : MonoBehaviour
                     {
                         UIManager.Instance.VehiclePassangerUI.SetActive(true);
                         photonView.transform.position = _vehicleController.PassangerSit.position;
+                        photonView.transform.SetParent(_vehicleController.PassangerSit);
                         playerController.IsInVehicle = true;
                         playerController.IsPassanger = true;
                         _vehicleController.IsPassangerIn = true;
@@ -83,6 +84,7 @@ public class VehicleInteraction : MonoBehaviour
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.MiddleSit.position;
+                            photonView.transform.SetParent(_vehicleController.MiddleSit);
                             playerController.IsInVehicle = true;
                             playerController.IsMiddleSit = true;
                             _vehicleController.IsMiddleIn = true;
@@ -92,6 +94,7 @@ public class VehicleInteraction : MonoBehaviour
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.LeftBackSit.position;
+                            photonView.transform.SetParent(_vehicleController.LeftBackSit);
                             playerController.IsInVehicle = true;
                             playerController.IsLeftBackSit = true;
                             _vehicleController.IsLeftBackIn = true;
@@ -101,6 +104,7 @@ public class VehicleInteraction : MonoBehaviour
                         {
                             UIManager.Instance.VehiclePassangerUI.SetActive(true);
                             photonView.transform.position = _vehicleController.RightBackSit.position;
+                            photonView.transform.SetParent(_vehicleController.RightBackSit);
                             playerController.IsInVehicle = true;
                             playerController.IsRightBackSit = true;
                             _vehicleController.IsRightBackIn = true;

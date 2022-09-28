@@ -780,6 +780,7 @@ GameObject:
   - component: {fileID: 492218503778102672}
   - component: {fileID: 172696219136593039}
   - component: {fileID: 4328860242110319951}
+  - component: {fileID: 6449607413021822060}
   - component: {fileID: 5232498664410506341}
   m_Layer: 0
   m_Name: Ambulance v2.0
@@ -947,7 +948,9 @@ MonoBehaviour:
   OwnershipTransfer: 2
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 2697869843882740302}
   - {fileID: 4328860242110319951}
+  - {fileID: 6449607413021822060}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -984,6 +987,22 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &6449607413021822060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842865863127081137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &5232498664410506341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6355,13 +6374,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
---- !u!4 &4305044805366959902 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
-  m_PrefabInstance: {fileID: 4338142976593406197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3527804895022912932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
+  m_PrefabInstance: {fileID: 4338142976593406197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4305044805366959902 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
   m_PrefabInstance: {fileID: 4338142976593406197}
   m_PrefabAsset: {fileID: 0}

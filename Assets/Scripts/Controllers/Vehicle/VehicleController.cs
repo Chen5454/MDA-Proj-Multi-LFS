@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public enum VehicleSit { Driver, Passanger, Middle, LeftBack, RightBack }
 
-public class VehicleController : MonoBehaviour
+public class VehicleController : MonoBehaviour, IPunObservable
 {
     private PhotonView _photonView;
     public PhotonView PhotonView { get => _photonView; set => value = _photonView; }
