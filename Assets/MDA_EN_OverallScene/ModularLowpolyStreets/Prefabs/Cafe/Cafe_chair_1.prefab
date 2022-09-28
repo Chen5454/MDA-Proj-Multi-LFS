@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7599188440735085819}
   - component: {fileID: 8387135111624289213}
   - component: {fileID: 5856339367295456500}
-  - component: {fileID: 2674003519855908970}
+  - component: {fileID: 248555685093072980}
   m_Layer: 0
   m_Name: Cafe_chair_1
   m_TagString: Untagged
@@ -56,6 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,8 +81,9 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &2674003519855908970
-MeshCollider:
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &248555685093072980
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +92,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3374170930928508458, guid: 6fac82656381d8b498d040bed620026e, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.21173792, y: 0.3646994, z: 0.2460264}
+  m_Center: {x: -0.0000019073167, y: 0.18234968, z: -0.017142337}
