@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5710568991668660109}
   - component: {fileID: 2467975771259667122}
   - component: {fileID: 4958555248938887688}
-  - component: {fileID: 6837620822296395523}
+  - component: {fileID: 8015160218921492476}
   m_Layer: 0
   m_Name: Cafe_table_2
   m_TagString: Untagged
@@ -56,7 +56,6 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -81,9 +80,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6837620822296395523
-BoxCollider:
+--- !u!64 &8015160218921492476
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,6 +90,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.61770207, y: 0.308852, z: 0.4320957}
-  m_Center: {x: 0, y: 0.15442596, z: -0.0000009536743}
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7774359836572795193, guid: 6fac82656381d8b498d040bed620026e, type: 3}
