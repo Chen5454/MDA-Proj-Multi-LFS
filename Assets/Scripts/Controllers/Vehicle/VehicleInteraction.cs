@@ -17,6 +17,9 @@ public class VehicleInteraction : MonoBehaviour
         UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
         UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
 
+        UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+        UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+
         UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
         UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
 
@@ -46,8 +49,11 @@ public class VehicleInteraction : MonoBehaviour
 
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
 
-                UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
-                UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+                if (UIManager.Instance.VehicleDriverUI.activeInHierarchy)
+                    UIManager.Instance.VehicleDriverUI.SetActive(false);
+
+                if (UIManager.Instance.VehiclePassangerUI.activeInHierarchy)
+                    UIManager.Instance.VehiclePassangerUI.SetActive(false);
 
                 if (_vehicleController.CollidingPlayers.Contains(photonView.gameObject))
                 {
