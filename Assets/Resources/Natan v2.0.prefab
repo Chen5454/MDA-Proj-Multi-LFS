@@ -123,7 +123,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3037008947219810444}
         m_TargetAssemblyTypeName: EmergencyBedController, Assembly-CSharp
-        m_MethodName: PutRemovePatient
+        m_MethodName: ShowInteractionsToggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5346,6 +5346,7 @@ MonoBehaviour:
   OwnershipTransfer: 2
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 4778638792706805194}
   - {fileID: 6571547394580826827}
   sceneViewId: 0
   InstantiationId: 0
@@ -5714,7 +5715,7 @@ MonoBehaviour:
   _emergencyBedPositionInsideVehicle: {fileID: 1844949061783796070}
   _emergencyBedPositionOutsideVehicle: {fileID: 4911749809814041521}
   _takeOutBed: 0
-  _isBedClosed: 1
+  _isBedClosed: 0
   _isPatientOnBed: 0
   _isFollowingPlayer: 0
   _inCar: 1
