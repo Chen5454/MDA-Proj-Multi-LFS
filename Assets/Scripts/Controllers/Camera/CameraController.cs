@@ -53,16 +53,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (_photonView.IsMine)
+        if (_sendInteractRaycast)
         {
-            if (_sendInteractRaycast)
-            {
-                Interact();
-            }
+            Interact();
         }
-
     }
     #endregion
 

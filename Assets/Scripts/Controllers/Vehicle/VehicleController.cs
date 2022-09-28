@@ -186,19 +186,19 @@ public class VehicleController : MonoBehaviour
     {
         if (IsCarHeadLightsOn)
         {
-            IsCarHeadLightsOn = false;
             CarHeadLights.SetActive(false);
             CarSiren.GetComponent<Animator>().enabled = false;
-            //CarSirenLightLeft.SetActive(false);
-            //CarSirenLightRight.SetActive(false);
+            CarEmergencyLightsLeft.enabled = false;
+            CarEmergencyLightsRight.enabled = false;
+            IsCarHeadLightsOn = false;
         }
         else
         {
-            IsCarHeadLightsOn = true;
             CarHeadLights.SetActive(true);
             CarSiren.GetComponent<Animator>().enabled = true;
-            //CarSirenLightLeft.SetActive(true);
-            //CarSirenLightRight.SetActive(true);
+            CarEmergencyLightsLeft.enabled = true;
+            CarEmergencyLightsRight.enabled = true;
+            IsCarHeadLightsOn = true;
         }
 
         /* Fix Attempt
@@ -262,17 +262,13 @@ public class VehicleController : MonoBehaviour
     {
         if (IsCarSirenOn)
         {
-            CarEmergencyLightsLeft.enabled = false;
-            CarEmergencyLightsRight.enabled = false;
-            IsCarSirenOn = false;
             CarSirenAudioSource.Stop();
+            IsCarSirenOn = false;
         }
         else
         {
-            CarEmergencyLightsLeft.enabled = true;
-            CarEmergencyLightsRight.enabled = true;
-            IsCarSirenOn = true;
             CarSirenAudioSource.Play();
+            IsCarSirenOn = true;
         }
     }
     #endregion
