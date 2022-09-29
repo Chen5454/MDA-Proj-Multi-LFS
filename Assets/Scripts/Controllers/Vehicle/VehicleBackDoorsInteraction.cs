@@ -13,6 +13,9 @@ public class VehicleBackDoorsInteraction : MonoBehaviour
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
             {
+                if (UIManager.Instance.CurrentActionBarParent.activeInHierarchy)
+                    UIManager.Instance.CurrentActionBarParent.SetActive(false);
+
                 UIManager.Instance.CurrentActionBarParent = _barType switch
                 {
                     0 => UIManager.Instance.AmbulanceBar,

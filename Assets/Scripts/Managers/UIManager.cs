@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
     public Button PassangerExitBtn;
     public GameObject AmbulanceBar, NatanBar;
     public GameObject AmbulanceNoBagPanel, AmbulanceAmbuPanel, AmbulanceKidsAmbuPanel, AmbulanceMedicPanel, AmbulanceDefibrilationPanel, AmbulanceOxygenPanel, AmbulanceMonitorPanel;
-    public GameObject NatanNoBagPanel, NatanAmbuPanel, NatanKidsAmbuPanel, NatanMedicPanel, NatanQuickDrugsPanel, NatanOxygenPanel, NatanMonitorPanel;
+    public GameObject NatanNoBagPanel, NatanAmbuPanel, NatanKidsAmbuPanel, NatanMedicPanel, NatanQuickDrugsPanel, NatanDrugsPanel, NatanOxygenPanel, NatanMonitorPanel;
     
     #endregion
 

@@ -46,12 +46,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <IsAranActive>k__BackingField: 0
-  IncidentPatientSpawns:
-  - {fileID: 0}
-  - {fileID: 0}
   CurrentIncidentsTransforms: []
   AllPatients: []
   AllTaggedPatients: []
+  IncidentPatientSpawns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  IsPatientSpawned: 0000000000
   Pikud10View: {fileID: 0}
   Redua10View: {fileID: 0}
   Pinuy10View: {fileID: 0}
@@ -63,8 +67,11 @@ MonoBehaviour:
   - Eilat
   - Ramat-Gan
   - Haifa
+  AmbulanceCarList: []
   NatanCarList: []
+  AmbulanceInPinuyCarList: []
   NatanInPinuyCarList: []
+  AmbulanceFreeCarList: []
   NatanFreeCarList: []
   Pikud10Camera: {fileID: 0}
   LineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
