@@ -254,6 +254,16 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
     }
 
+    private void SetVest(int roleIndex)
+    {
+        _photonView.RPC("SetVestRPC", RpcTarget.AllBufferedViaServer, roleIndex);
+    }
+    private void SetVest(Roles role)
+    {
+        int roleIndex = (int)role;
+        _photonView.RPC("SetVestRPC", RpcTarget.AllBufferedViaServer, roleIndex);
+    }
+
 
     // Collision Methods
     // --------------------
@@ -364,13 +374,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         {
             PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
             desiredPlayerData.CrewIndex = _crewRoomIndex;
-            //desiredPlayerData.CrewIndex = ActionsManager.Instance.NextCrewIndex;
             desiredPlayerData.UserIndexInCrew = indexInCrewCounter;
             desiredPlayerData.UserRole = (Roles)roleIndex[i];
-            //MeshFilter vest = desiredPlayerData.transform.GetChild(5).GetChild(0).GetChild(0).GetComponent<MeshFilter>();
-            //vest.gameObject.SetActive(true);
-            //vest.mesh = ActionsManager.Instance.Vests[(int)desiredPlayerData.UserRole].mesh;
             indexInCrewCounter++;
+            SetVest(roleIndex[i]);
         }
 
         foreach (PhotonView player in _playersInRoomList)
@@ -455,6 +462,28 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public void ChangeVehicleRequiredRPC(bool changeVehcile)
     {
         _isNatanRequired = changeVehcile;
+    }
+
+    [PunRPC]
+    private void SetVestRPC(int roleIndex)
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+            {
+                PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
+                
+                if (photonView.IsMine)
+                {
+                    PlayerController playerController = photonView.GetComponent<PlayerController>();
+
+                    playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+
+                    if (!playerController.Vest.activeInHierarchy)
+                        playerController.Vest.SetActive(true);
+                }
+            }
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

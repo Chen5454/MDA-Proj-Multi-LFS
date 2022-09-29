@@ -8,6 +8,16 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 
+/*
+ * for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+            {
+                PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
+            }
+        }
+ */
+
 public class ActionsManager : MonoBehaviour
 {
     public static ActionsManager Instance;
@@ -39,7 +49,7 @@ public class ActionsManager : MonoBehaviour
     public GameObject Monitor, Respirator;
 
     [Header("Vests")]
-    public MeshFilter[] Vests;
+    public Mesh[] Vests;
     #endregion
 
     [Header("Crews")]
