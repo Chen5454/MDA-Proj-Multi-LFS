@@ -746,6 +746,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1141198437725113134}
+        m_TargetAssemblyTypeName: VehicleBackDoorsInteraction, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &875307584677864173
 GameObject:
   m_ObjectHideFlags: 0
@@ -5017,6 +5029,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1141198437725113134}
+        m_TargetAssemblyTypeName: VehicleBackDoorsInteraction, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7507302391809414509
 GameObject:
   m_ObjectHideFlags: 0
@@ -5177,6 +5201,7 @@ GameObject:
   - component: {fileID: 8016340316729578408}
   - component: {fileID: 4778638792706805194}
   - component: {fileID: 7058643523234376212}
+  - component: {fileID: 1141198437725113134}
   - component: {fileID: 7297074626169850635}
   - component: {fileID: 6571547394580826827}
   - component: {fileID: 3439748675638305761}
@@ -5326,7 +5351,20 @@ MonoBehaviour:
   _vehicleController: {fileID: 4778638792706805194}
   _vehicleAlertTitle: "\u05E8\u05DB\u05D1 \u05D4\u05E6\u05DC\u05D4"
   _vehicleFullContent: "\u05E8\u05DB\u05D1 \u05D4\u05D4\u05E6\u05DC\u05D4 \u05DE\u05DC\u05D0"
-  _barType: 0
+  _barType: 1
+--- !u!114 &1141198437725113134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7823762955460175669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f95c5f8b7b9332c48a70d940a2cddf69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barType: 1
 --- !u!114 &7297074626169850635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6359,14 +6397,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
---- !u!1 &7049521350333611154 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
-  m_PrefabInstance: {fileID: 7860337711006581187}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7682928749584246312 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
+  m_PrefabInstance: {fileID: 7860337711006581187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7049521350333611154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
   m_PrefabInstance: {fileID: 7860337711006581187}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8614810777682506455

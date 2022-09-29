@@ -472,16 +472,14 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
             {
                 PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
-                
-                if (photonView.IsMine)
-                {
-                    PlayerController playerController = photonView.GetComponent<PlayerController>();
+                PlayerController playerController = photonView.GetComponent<PlayerController>();
 
-                    playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+                playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
 
-                    if (!playerController.Vest.activeInHierarchy)
-                        playerController.Vest.SetActive(true);
-                }
+                if (!playerController.Vest.activeInHierarchy)
+                    playerController.Vest.SetActive(true);
+
+                break;
             }
         }
     }

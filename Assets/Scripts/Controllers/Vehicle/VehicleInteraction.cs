@@ -17,20 +17,13 @@ public class VehicleInteraction : MonoBehaviour
     #region Monobehaviour Callbacks
     private void Start()
     {
-       
-            UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
-            UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
-
-
-            UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
-            UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
-
-
-
+        UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
+        UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
+        UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
+        UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
     }
     #endregion
 
-    
     #region Enter & Exit Vehicle
     public void EnterVehicle(int sitNum)
     {
