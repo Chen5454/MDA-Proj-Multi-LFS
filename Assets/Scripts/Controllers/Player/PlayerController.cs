@@ -415,6 +415,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 _vehicleCamera.enabled = false;
                 _vehicleCamera.tag = "Untagged";
+                _playerCamera.gameObject.SetActive(true);
                 _playerCamera.enabled = true;
                 _playerCamera.tag = "MainCamera";
                 _currentCamera = _playerCamera;
@@ -429,6 +430,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 _playerCamera.enabled = false;
                 _playerCamera.tag = "Untagged";
+                _playerCamera.gameObject.SetActive(false);
                 //_vehicleCamera = _currentVehicleController.VehicleCamera;
                 _vehicleCamera.enabled = true;
                 _vehicleCamera.tag = "MainCamera";
