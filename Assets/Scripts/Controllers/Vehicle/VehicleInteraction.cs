@@ -9,25 +9,28 @@ public class VehicleInteraction : MonoBehaviour
     [SerializeField] private string _vehicleAlertTitle, _vehicleFullContent;
     [SerializeField] private int _barType;
     
+
+
+
     private VehicleSit _vehicleSit;
 
     #region Monobehaviour Callbacks
     private void Start()
     {
-        UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
-        UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
+       
+            UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
+            UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
 
-        UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
-        UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
 
-        UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
-        UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+            UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
+            UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
 
-        UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
-        UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+
+
     }
     #endregion
 
+    
     #region Enter & Exit Vehicle
     public void EnterVehicle(int sitNum)
     {
@@ -66,6 +69,13 @@ public class VehicleInteraction : MonoBehaviour
                         playerController.CurrentVehicleController = _vehicleController;
                         playerController.IsInVehicle = true;
                         playerController.IsDriving = true;
+                        UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
+                        UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
+                        UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+                        UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+                        UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); }); 
+                        UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+
                         photonView.transform.SetParent(_vehicleController.DriverSit);
                         photonView.transform.localPosition = Vector3.zero;
                         photonView.transform.localRotation = Quaternion.identity;
@@ -82,6 +92,10 @@ public class VehicleInteraction : MonoBehaviour
                         playerController.IsInVehicle = true;
                         playerController.IsPassanger = true;
                         _vehicleController.IsPassangerIn = true;
+
+                        UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
+                        UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+
                         break;
                     }
                     else
@@ -144,18 +158,25 @@ public class VehicleInteraction : MonoBehaviour
                 {
                     _vehicleController.IsDriverIn = false;
                     playerController.IsDriving = false;
+                    UIManager.Instance.HeadlightBtn.onClick.RemoveListener(delegate { ToggleHeadlights(); });
+                    UIManager.Instance.DriverExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });
+                    UIManager.Instance.SirenBtn.onClick.RemoveListener(delegate { ToggleSiren(); });
                     _vehicleController.CurrentDriverController = null;
                     playerController.PlayerData.LastVehicleController = _vehicleController;
                     StartCoroutine(ChangeKinematicStateCorooutine());
                     photonView.transform.position = _vehicleController.DriverExit.position;
                     photonView.transform.localRotation = _vehicleController.DriverExit.rotation;
                 }
+            
+
                 else if (playerController.IsPassanger)
                 {
                     _vehicleController.IsPassangerIn = false;
                     playerController.IsPassanger = false;
                     photonView.transform.position = _vehicleController.PassangerExit.position;
                     photonView.transform.localRotation = _vehicleController.PassangerExit.rotation;
+                    UIManager.Instance.PassangerExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });
+
                 }
                 else if (playerController.IsMiddleSit)
                 {
@@ -210,11 +231,11 @@ public class VehicleInteraction : MonoBehaviour
     }
     public void ToggleHeadlights()
     {
-        _vehicleController.PhotonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllViaServer);
+        _vehicleController.PhotonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllBufferedViaServer);
     }
     public void ToggleSiren()
     {
-        _vehicleController.PhotonView.RPC("ToggleSirenRPC", RpcTarget.AllViaServer);
+        _vehicleController.PhotonView.RPC("ToggleSirenRPC", RpcTarget.AllBufferedViaServer);
     }
     #endregion
 
