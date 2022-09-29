@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     [Header("Data")]
     public PlayerData PlayerData;
     public Material LineMaterial;
+    public GameObject Vest;
+    public MeshFilter VestMeshFilter;
     #endregion
 
     #region Cameras
