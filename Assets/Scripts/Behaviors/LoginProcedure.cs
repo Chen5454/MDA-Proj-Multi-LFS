@@ -10,7 +10,7 @@ public class LoginProcedure : MonoBehaviour
     [SerializeField] private TMP_InputField _userName;
     [SerializeField] private TextMeshProUGUI _chosenUserName;
     [SerializeField] private Image _chosenAvater;
-    [SerializeField] private int _avaterIndex;
+    [SerializeField] private int _avaterIndex, _halfScreenWidth = 960;
     private Image _avatarPicked;
 
     private const int _scrollDistance = 640;
@@ -41,7 +41,10 @@ public class LoginProcedure : MonoBehaviour
         int direction = isForward ? -1 : 1;
         _desiredPosition = new Vector3(transform.position.x + direction * _scrollDistance, transform.position.y, transform.position.z);
 
-        StartCoroutine(LerpPosition(_desiredPosition, _lerpDuration));
+        if (direction == -1)
+            StartCoroutine(LerpPosition(_desiredPosition, _lerpDuration));
+        else if (transform.position.x < _halfScreenWidth)
+            StartCoroutine(LerpPosition(_desiredPosition, _lerpDuration));
     }
     public void KeepUserName()
     {
