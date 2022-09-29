@@ -9,11 +9,33 @@ public class UsernameFaceCamera : MonoBehaviour
 
     private void Start()
     {
-        _mainCam = Camera.main.transform;
+        try
+        {
+            _mainCam = Camera.main.transform;
+        }
+        catch (Exception)
+        {
+
+            Debug.Log("No Camera");
+        }
     }
 
     void Update()
     {
-        transform.LookAt(transform.position + _mainCam.rotation * Vector3.forward, _mainCam.rotation * Vector3.up);
+        if (_mainCam)
+        {
+            transform.LookAt(transform.position + _mainCam.rotation * Vector3.forward, _mainCam.rotation * Vector3.up);
+            return;
+        }
+
+        try
+        {
+            _mainCam = Camera.main.transform;
+        }
+        catch (Exception)
+        {
+
+            Debug.Log("No Camera");
+        }
     }
 }
