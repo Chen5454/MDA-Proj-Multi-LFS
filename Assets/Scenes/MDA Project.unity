@@ -1021,10 +1021,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: sceneViewId
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 7818354940093800927, guid: 75b43920bbd10f14ca295885bb0c493c, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1490,6 +1486,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a8dfeefea73694da80d9c20fae745f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &406459570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 406459571}
+  - component: {fileID: 406459572}
+  m_Layer: 0
+  m_Name: NavMeshSurface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &406459571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406459570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 371250154436391363}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &406459572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406459570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abd0ccd8de3048d49b52d9da054d198b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 0a0f52c465cadd944b1c1582ac1ae17f, type: 2}
 --- !u!1001 &436264172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2467,10 +2523,6 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: sceneViewId
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8832064451122362894, guid: a7950737c0206194fa2f28e1acbb7da3, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -2735,7 +2787,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011662883}
   m_Enabled: 1
-  m_AgentTypeID: -1372625422
+  m_AgentTypeID: 0
   m_Radius: 3
   m_Speed: 3.5
   m_Acceleration: 8
@@ -3265,10 +3317,6 @@ PrefabInstance:
     - target: {fileID: 5590573445796922296, guid: 75b43920bbd10f14ca295885bb0c493c, type: 3}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: sceneViewId
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7818354940093800927, guid: 75b43920bbd10f14ca295885bb0c493c, type: 3}
       propertyPath: m_RootOrder
@@ -5028,10 +5076,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: sceneViewId
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7818354940093800927, guid: 75b43920bbd10f14ca295885bb0c493c, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -5339,10 +5383,6 @@ PrefabInstance:
       value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8668468150379078344, guid: a7950737c0206194fa2f28e1acbb7da3, type: 3}
-      propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
       propertyPath: sceneViewId
       value: 2
       objectReference: {fileID: 0}
@@ -6456,6 +6496,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+--- !u!4 &371250154436391363 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6872984790374217042, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+  m_PrefabInstance: {fileID: 371250154436391362}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &873003959848400001
 MeshRenderer:
   m_ObjectHideFlags: 0
