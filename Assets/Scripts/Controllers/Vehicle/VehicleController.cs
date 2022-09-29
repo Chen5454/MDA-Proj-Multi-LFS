@@ -47,11 +47,18 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private GameObject _carDashboardUI;
 
     #region Monobehaviour Callbacks
-    private void Start()
+
+    private void Awake()
     {
-        _rb.isKinematic = true;
         _photonView = GetComponent<PhotonView>();
         _carDashboardUI = UIManager.Instance.VehicleDriverUI;
+
+    }
+
+    private void Start()
+    {
+
+        _rb.isKinematic = true;
 
         RandomNumber = GetRandomInt(100, 999 + 1);
         GameManager.Instance.usedValues.Add(RandomNumber);
