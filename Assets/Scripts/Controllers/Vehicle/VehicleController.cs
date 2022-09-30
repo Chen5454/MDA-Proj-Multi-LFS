@@ -286,11 +286,13 @@ public class VehicleController : MonoBehaviour, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(IsInPinuy);
+            stream.SendNext(IsDriverIn);
         }
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
             IsInPinuy = (bool)stream.ReceiveNext();
+            IsDriverIn = (bool)stream.ReceiveNext();
         }
 
         /* Fix Attempt
