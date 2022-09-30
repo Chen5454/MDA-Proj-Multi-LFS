@@ -60,29 +60,37 @@ public class VehicleInteraction : MonoBehaviour
 
                 if (_vehicleController.CollidingPlayers.Contains(photonView.gameObject))
                 {
-                    playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
+                    //playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
 
                     if (_vehicleSit == VehicleSit.Driver)
                     {
-                        UIManager.Instance.VehicleDriverUI.SetActive(true);
-                        _vehicleController.Transfer.CarDriver();
-                        playerController.CurrentVehicleController = _vehicleController;
-                        playerController.IsInVehicle = true;
-                        playerController.IsDriving = true;
-                        UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
-                        UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
-                        UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
-                        UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
-                        UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); }); 
-                        UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+                        if (!_vehicleController.IsDriverIn)
+                        {
 
-                        photonView.transform.SetParent(_vehicleController.DriverSit);
-                        photonView.transform.localPosition = Vector3.zero;
-                        photonView.transform.localRotation = Quaternion.identity;
-                        _vehicleController.CurrentDriverController = playerController;
-                        _vehicleController.IsDriverIn = true;
-                        StartCoroutine(ChangeKinematicStateCorooutine());
-                        break;
+                            UIManager.Instance.VehicleDriverUI.SetActive(true);
+                            _vehicleController.Transfer.CarDriver();
+                            playerController.CurrentVehicleController = _vehicleController;
+                            playerController.IsInVehicle = true;
+                            playerController.IsDriving = true;
+                            UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
+                            UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
+                            UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+                            UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+                            UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
+                            UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+
+                            photonView.transform.SetParent(_vehicleController.DriverSit);
+                            photonView.transform.localPosition = Vector3.zero;
+                            photonView.transform.localRotation = Quaternion.identity;
+                            _vehicleController.CurrentDriverController = playerController;
+                            _vehicleController.IsDriverIn = true;
+                            StartCoroutine(ChangeKinematicStateCorooutine());
+                            break;
+                        }
+                        else
+                        {
+                            Debug.Log("There already a driver");
+                        }
                     }
                     else if (_vehicleSit == VehicleSit.Passanger)
                     {
