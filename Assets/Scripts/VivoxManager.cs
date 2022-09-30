@@ -158,10 +158,7 @@ public class VivoxManager : MonoBehaviour
 
             case LoginState.LoggedIn:
                 Debug.Log($"Logged In{vivox.loginSession.LoginSessionId.Name}");
-                //lobbyUi.VivoxusernameInput.text = vivox.loginSession.LoginSessionId.Name;
-                // VivoxJoin3DPositional(lobbyUi._channelName, true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
-                //vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
-
+                Debug.Log($"Logged Into Vivox Servers");
                 break;
         }
     }

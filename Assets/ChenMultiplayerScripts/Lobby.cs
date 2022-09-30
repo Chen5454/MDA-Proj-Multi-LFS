@@ -51,6 +51,10 @@ public class Lobby : MonoBehaviourPunCallbacks
             buttonText.text = "Connecting...";
             isConnecting = PhotonNetwork.ConnectUsingSettings();
             ConnectButton.interactable = false;
+
+
+            Debug.Log("Login Into Vivox now....");
+            LoginUser();
         }
 
        
@@ -105,8 +109,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Room Name Is :"+""+PhotonNetwork.CurrentRoom.Name);
-        Debug.Log("Login Into Vivox now....");
-        LoginUser();
+      
 
     }
 
