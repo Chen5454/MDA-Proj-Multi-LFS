@@ -193,6 +193,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         if (_inCar && !_takeOutBed)
         {
             _takeOutBed = true;
+            _inCar = false;
             _emergencyBedUI.SetActive(true);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
             FollowPlayerToggle();
@@ -205,6 +206,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         else if (!_inCar && _takeOutBed)
         {
             _takeOutBed = false;
+            _inCar = true;
             transform.position = _emergencyBedPositionInsideVehicle.position;
             transform.rotation = _emergencyBedPositionInsideVehicle.rotation;
             transform.SetParent(_emergencyBedPositionInsideVehicle);
@@ -221,7 +223,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             transform.SetParent(_emergencyBedPositionInsideVehicle);
             _takeReturnText.text = _takeText;
         }
-        else if (_inCar && _takeOutBed)
+        else if (!_inCar && _takeOutBed)
         {
             _takeReturnText.text = _returnText;
         }
@@ -244,10 +246,10 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             }
         }
 
-        if (other.CompareTag("Car"))
-        {
-            _inCar = true;
-        }
+        //if (other.CompareTag("Car"))
+        //{
+        //    _inCar = true;
+        //}
 
         if (other.CompareTag("Evac"))
         {
@@ -269,10 +271,10 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
                 _patient = null;
             }
         }
-        if (other.CompareTag("Car"))
-        {
-            _inCar = false;
-        }
+        //if (other.CompareTag("Car"))
+        //{
+        //    _inCar = false;
+        //}
         if (other.CompareTag("Evac"))
         {
             _patient.GetComponent<BoxCollider>().enabled = false;
