@@ -105,6 +105,9 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Room Name Is :"+""+PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Login Into Vivox now....");
+        LoginUser();
+
     }
 
     #region MyRegion
