@@ -254,14 +254,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
     }
 
-    private void SetVest(int roleIndex)
-    {
-        _photonView.RPC("SetVestRPC", RpcTarget.AllBufferedViaServer, roleIndex);
-    }
     private void SetVest(Roles role)
     {
         int roleIndex = (int)role;
-        _photonView.RPC("SetVestRPC", RpcTarget.AllBufferedViaServer, roleIndex);
+        _photonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, roleIndex);
     }
 
 
@@ -376,8 +372,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             desiredPlayerData.CrewIndex = _crewRoomIndex;
             desiredPlayerData.UserIndexInCrew = indexInCrewCounter;
             desiredPlayerData.UserRole = (Roles)roleIndex[i];
+            desiredPlayerData.PhotonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, desiredPlayerData.UserRole);
             indexInCrewCounter++;
-            SetVest(roleIndex[i]);
         }
 
         foreach (PhotonView player in _playersInRoomList)
@@ -464,25 +460,21 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _isNatanRequired = changeVehcile;
     }
 
-    [PunRPC]
-    private void SetVestRPC(int roleIndex)
-    {
-        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
-        {
-            if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
-            {
-                PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
-                PlayerController playerController = photonView.GetComponent<PlayerController>();
-
-                playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
-
-                if (!playerController.Vest.activeInHierarchy)
-                    playerController.Vest.SetActive(true);
-
-                break;
-            }
-        }
-    }
+    //[PunRPC]
+    //private void SetVestRPC()
+    //{
+    //    for (int i = 0; i < _playersInRoomList.Count; i++)
+    //    {
+    //        PlayerController playerController = _playersInRoomList[i].GetComponent<PlayerController>();
+    //        PlayerData playerData = _playersInRoomList[i].GetComponent<PlayerData>();
+    //
+    //        int vestNum = (int)playerData.UserRole;
+    //        playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[vestNum];
+    //
+    //        if (!playerController.Vest.activeInHierarchy)
+    //            playerController.Vest.SetActive(true);
+    //    }
+    //}
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

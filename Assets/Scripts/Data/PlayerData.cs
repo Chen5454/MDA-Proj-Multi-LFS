@@ -32,6 +32,8 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [field: SerializeField] public Animation PlayerAnimation { get; set; }
     [field: SerializeField] public CarControllerSimple LastCarController { get; set; }
     [field: SerializeField] public VehicleController LastVehicleController { get; set; }
+    [field: SerializeField] public GameObject Vest { get; set; }
+    [field: SerializeField] public MeshFilter VestMeshFilter { get; set; }
 
     #region MonobehaviourCallbacks
     private void Awake()
@@ -44,6 +46,12 @@ public class PlayerData : MonoBehaviourPunCallbacks
             PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
 
         AranRole = AranRoles.None;
+
+        if (TryGetComponent(out PlayerController playerController))
+        {
+            Vest = playerController.Vest;
+            VestMeshFilter = playerController.VestMeshFilter;
+        }
     }
     private void Update()
     {
@@ -371,6 +379,17 @@ public class PlayerData : MonoBehaviourPunCallbacks
             script.Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
             script.Pikud10Camera.gameObject.SetActive(true);
         }
+    }
+    #endregion
+
+    #region UserRPC
+    [PunRPC]
+    private void SetUserVestRPC(int roleIndex)
+    {
+        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+
+        if (!Vest.activeInHierarchy)
+            Vest.SetActive(true);
     }
     #endregion
 }
