@@ -5,7 +5,9 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using VivoxUnity;
 
 public class Lobby : MonoBehaviourPunCallbacks
@@ -23,6 +25,8 @@ public class Lobby : MonoBehaviourPunCallbacks
     public TMP_InputField VivoxusernameInput;
 
     public string PhotonRoomName = "MDA";
+    public Button ConnectButton;
+
 
     private void Start()
     {
@@ -46,9 +50,10 @@ public class Lobby : MonoBehaviourPunCallbacks
             PlayerPrefs.SetString("username", usernameInput.text);
             buttonText.text = "Connecting...";
             isConnecting = PhotonNetwork.ConnectUsingSettings();
+            ConnectButton.interactable = false;
         }
 
-
+       
     }
 
 
