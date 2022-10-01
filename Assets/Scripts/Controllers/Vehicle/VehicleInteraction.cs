@@ -61,23 +61,28 @@ public class VehicleInteraction : MonoBehaviour
                 if (_vehicleController.CollidingPlayers.Contains(photonView.gameObject))
                 {
                     //playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
+                    SliderButton sliderHeadlightBtn = UIManager.Instance.HeadlightBtn.GetComponent<SliderButton>();
+                    SliderButton sliderSirenBtn = UIManager.Instance.SirenBtn.GetComponent<SliderButton>();
 
                     if (_vehicleSit == VehicleSit.Driver)
                     {
                         if (!_vehicleController.IsDriverIn)
                         {
-
+                            
                             UIManager.Instance.VehicleDriverUI.SetActive(true);
                             _vehicleController.Transfer.CarDriver();
                             playerController.CurrentVehicleController = _vehicleController;
                             playerController.IsInVehicle = true;
                             playerController.IsDriving = true;
+
                             UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
                             UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
+                            UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { sliderHeadlightBtn.SliderBtnOnClick(); });
                             UIManager.Instance.SirenBtn.onClick.AddListener(delegate { ToggleSiren(); });
+                            UIManager.Instance.SirenBtn.onClick.AddListener(delegate { sliderSirenBtn.SliderBtnOnClick(); });
 
                             photonView.transform.SetParent(_vehicleController.DriverSit);
                             photonView.transform.localPosition = Vector3.zero;
