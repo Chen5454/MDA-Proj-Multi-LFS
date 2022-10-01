@@ -31,7 +31,12 @@ public class EvacuationNpc : MonoBehaviour
     public void OnEvacuateNPCClicked()
     {
         Debug.Log($"Attempting to Click On Npc");
-        _evacuationUI.SetActive(true);
+        EmergencyBedController bed = bedRef.BedRefrence.GetComponent<EmergencyBedController>();
+
+        if (bed.IsPatientOnBed)
+            _evacuationUI.SetActive(true);
+        else
+            ActionTemplates.Instance.ShowAlertWindow("Evac", "No Patient");
     }
 
     public void EvacPatient()
@@ -43,6 +48,8 @@ public class EvacuationNpc : MonoBehaviour
     [PunRPC]
     public void EvacPatient_RPC()
     {
+        EmergencyBedController bed = bedRef.BedRefrence.GetComponent<EmergencyBedController>();
+
         for (int i = 0; i < evacuation.NearbyPatient[0].NearbyUsers.Count; i++)
         {
             PlayerData playerData = evacuation.NearbyPatient[0].NearbyUsers[i];
@@ -57,7 +64,6 @@ public class EvacuationNpc : MonoBehaviour
         EvacuationManager.Instance.DestroyPatient(evacuation.NearbyPatient[0].PhotonView);
         evacuation.NearbyPatient.Clear();
 
-        EmergencyBedController bed = bedRef.BedRefrence.GetComponent<EmergencyBedController>();
         EvacuationManager.Instance.ResetEmergencyBed(bed);
 
         bed.EmergencyBedUI.SetActive(false);
@@ -72,6 +78,7 @@ public class EvacuationNpc : MonoBehaviour
         }
 
         _evacuationUI.SetActive(false);
+        
     }
 
     public void CancelEvac()

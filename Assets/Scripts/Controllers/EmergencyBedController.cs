@@ -33,8 +33,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     [SerializeField] private Transform _patientPosOnBed, _patientPosOffBed, _emergencyBedPositionInsideVehicle, _emergencyBedPositionOutsideVehicle;
 
     [Header("Booleans")]
-    [SerializeField] private bool _takeOutBed;
-    [SerializeField] private bool _isBedClosed, _isPatientOnBed, _isFollowingPlayer, _inCar;
+    public bool IsPatientOnBed;
+    [SerializeField] private bool _takeOutBed, _isBedClosed, _isFollowingPlayer, _inCar;
 
 
     private PhotonView _photonView;
@@ -176,12 +176,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     
     public void PutRemovePatient()
     {
-        if (_patient != null && !_isPatientOnBed)
+        if (_patient != null && !IsPatientOnBed)
         {
              _photonView.RPC("PutOnBed", RpcTarget.AllBufferedViaServer);
 
         }
-        else if (_patient != null && _isPatientOnBed && !_inCar)
+        else if (_patient != null && IsPatientOnBed && !_inCar)
         {
             _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer);
 
@@ -240,7 +240,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
 
         if (other.CompareTag("Patient"))
         {
-            if (!_isPatientOnBed)
+            if (!IsPatientOnBed)
             {
                 _patient = other.gameObject;
             }
@@ -266,7 +266,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         }
         if (other.CompareTag("Patient"))
         {
-            if (!_isPatientOnBed)
+            if (!IsPatientOnBed)
             {
                 _patient = null;
             }
@@ -302,7 +302,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(_emergencyBedPositionInsideVehicle.position);
             stream.SendNext(_emergencyBedPositionOutsideVehicle.position);
             stream.SendNext(_isBedClosed);
-            stream.SendNext(_isPatientOnBed);
+            stream.SendNext(IsPatientOnBed);
             stream.SendNext(_isFollowingPlayer);
             stream.SendNext(_inCar);
             stream.SendNext(_takeOutBed);
@@ -315,7 +315,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             _emergencyBedPositionInsideVehicle.position = (Vector3)stream.ReceiveNext();
             _emergencyBedPositionOutsideVehicle.position = (Vector3)stream.ReceiveNext();
             _isBedClosed = (bool)stream.ReceiveNext();
-            _isPatientOnBed = (bool)stream.ReceiveNext();
+            IsPatientOnBed = (bool)stream.ReceiveNext();
             _isFollowingPlayer = (bool)stream.ReceiveNext();
             _inCar = (bool)stream.ReceiveNext();
             _takeOutBed = (bool)stream.ReceiveNext();
@@ -328,7 +328,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     [PunRPC]
     void PutOnBed()
     {
-        _isPatientOnBed = true;
+        IsPatientOnBed = true;
         _patient.GetComponent<BoxCollider>().enabled = false;
         _patient.transform.SetPositionAndRotation(_patientPosOnBed.position, _patientPosOnBed.rotation); // parent
         _patient.transform.SetParent(this.transform);// parent
@@ -339,7 +339,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     [PunRPC]
     void RemoveFromBed()
     {
-        _isPatientOnBed = false;
+        IsPatientOnBed = false;
         _patient.GetComponent<BoxCollider>().enabled = true;
         _patient.transform.position = _patientPosOffBed.position;// parent
         _patient.transform.SetParent(null);// parent
