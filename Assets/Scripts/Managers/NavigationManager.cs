@@ -80,7 +80,7 @@ public class NavigationManager : MonoBehaviour
                 _agent.isStopped = true;
                 _reachedDestination = false;
 
-                _photonView.RPC("ShowNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
+                _photonView.RPC("ShowEvacNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
             }
         }
     }

@@ -30,6 +30,7 @@ public class SliderButton : MonoBehaviour
             _btnTxt.color = _offColor;
             _isBtnSelected = false;
         }
-    }
 
+        _btnTxt.alpha = 255f;
+    }
 }

@@ -207,8 +207,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
             PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
-            GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
-            GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
         else
@@ -238,8 +237,9 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         else
         {
             PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-            GameManager.Instance.IsPatientSpawned[apartmentNum - 1] = true;
-            GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1]);
+
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
+
             AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
         }
     }
@@ -458,6 +458,13 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public void ChangeVehicleRequiredRPC(bool changeVehcile)
     {
         _isNatanRequired = changeVehcile;
+    }
+
+    [PunRPC]
+    private void UpdateCurrentIncidents(int apartmentNum)
+    {
+        GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
+        GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
     }
 
     //[PunRPC]
