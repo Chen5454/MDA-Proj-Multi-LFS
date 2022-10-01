@@ -287,12 +287,20 @@ public class VehicleController : MonoBehaviour, IPunObservable
             stream.SendNext(transform.position);
             stream.SendNext(IsBusy);
             stream.SendNext(IsDriverIn);
+            stream.SendNext(IsPassangerIn);
+            stream.SendNext(IsMiddleIn);
+            stream.SendNext(IsLeftBackIn);
+            stream.SendNext(IsRightBackIn);
         }
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
             IsBusy = (bool)stream.ReceiveNext();
             IsDriverIn = (bool)stream.ReceiveNext();
+            IsPassangerIn = (bool)stream.ReceiveNext();
+            IsMiddleIn = (bool)stream.ReceiveNext();
+            IsLeftBackIn = (bool)stream.ReceiveNext();
+            IsRightBackIn = (bool)stream.ReceiveNext();
         }
 
         /* Fix Attempt

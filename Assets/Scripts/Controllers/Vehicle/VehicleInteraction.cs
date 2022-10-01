@@ -94,49 +94,62 @@ public class VehicleInteraction : MonoBehaviour
                     }
                     else if (_vehicleSit == VehicleSit.Passanger)
                     {
-                        UIManager.Instance.VehiclePassangerUI.SetActive(true);
-                        photonView.transform.position = _vehicleController.PassangerSit.position;
-                        photonView.transform.SetParent(_vehicleController.PassangerSit);
-                        playerController.IsInVehicle = true;
-                        playerController.IsPassanger = true;
-                        _vehicleController.IsPassangerIn = true;
+                        if (!_vehicleController.IsPassangerIn)
+                        {
+                            UIManager.Instance.VehiclePassangerUI.SetActive(true);
+                            photonView.transform.position = _vehicleController.PassangerSit.position;
+                            photonView.transform.SetParent(_vehicleController.PassangerSit);
+                            playerController.IsInVehicle = true;
+                            playerController.IsPassanger = true;
+                            _vehicleController.IsPassangerIn = true;
 
-                        UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
-                        UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+                            UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
+                            UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
 
-                        break;
+                            break;
+                        }
                     }
                     else
                     {
-                        if (!_vehicleController.IsMiddleIn)
+                        if (_vehicleSit == VehicleSit.Middle)
                         {
-                            UIManager.Instance.VehiclePassangerUI.SetActive(true);
-                            photonView.transform.position = _vehicleController.MiddleSit.position;
-                            photonView.transform.SetParent(_vehicleController.MiddleSit);
-                            playerController.IsInVehicle = true;
-                            playerController.IsMiddleSit = true;
-                            _vehicleController.IsMiddleIn = true;
-                            break;
+                            if (!_vehicleController.IsMiddleIn)
+                            {
+                                UIManager.Instance.VehiclePassangerUI.SetActive(true);
+                                photonView.transform.position = _vehicleController.MiddleSit.position;
+                                photonView.transform.SetParent(_vehicleController.MiddleSit);
+                                playerController.IsInVehicle = true;
+                                playerController.IsMiddleSit = true;
+                                _vehicleController.IsMiddleIn = true;
+                                break;
+                            }
                         }
-                        else if (!_vehicleController.IsLeftBackIn)
+
+                       else if (_vehicleSit == VehicleSit.LeftBack)
                         {
-                            UIManager.Instance.VehiclePassangerUI.SetActive(true);
-                            photonView.transform.position = _vehicleController.LeftBackSit.position;
-                            photonView.transform.SetParent(_vehicleController.LeftBackSit);
-                            playerController.IsInVehicle = true;
-                            playerController.IsLeftBackSit = true;
-                            _vehicleController.IsLeftBackIn = true;
-                            break;
+                             if (!_vehicleController.IsLeftBackIn)
+                            {
+                                UIManager.Instance.VehiclePassangerUI.SetActive(true);
+                                photonView.transform.position = _vehicleController.LeftBackSit.position;
+                                photonView.transform.SetParent(_vehicleController.LeftBackSit);
+                                playerController.IsInVehicle = true;
+                                playerController.IsLeftBackSit = true;
+                                _vehicleController.IsLeftBackIn = true;
+                                break;
+                            }
                         }
-                        else if (!_vehicleController.IsRightBackIn)
+                        else if (_vehicleSit == VehicleSit.RightBack)
                         {
-                            UIManager.Instance.VehiclePassangerUI.SetActive(true);
-                            photonView.transform.position = _vehicleController.RightBackSit.position;
-                            photonView.transform.SetParent(_vehicleController.RightBackSit);
-                            playerController.IsInVehicle = true;
-                            playerController.IsRightBackSit = true;
-                            _vehicleController.IsRightBackIn = true;
-                            break;
+                            if (!_vehicleController.IsRightBackIn)
+                            {
+                                UIManager.Instance.VehiclePassangerUI.SetActive(true);
+                                photonView.transform.position = _vehicleController.RightBackSit.position;
+                                photonView.transform.SetParent(_vehicleController.RightBackSit);
+                                playerController.IsInVehicle = true;
+                                playerController.IsRightBackSit = true;
+                                _vehicleController.IsRightBackIn = true;
+                                break;
+                            }
                         }
                         else
                         {
