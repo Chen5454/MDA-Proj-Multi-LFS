@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+/*
+ * for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+   {
+       if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+       {
+           
+       }
+   }
+ *
+ */
+
 public enum PlayerTreatingPosition { Head = 0, Chest = 1, Leg = 2}
 public enum EquipmentPosition { Head = 0, Chest = 1}
 

@@ -6,8 +6,11 @@ using Photon.Pun;
 
 public class NavigationManager : MonoBehaviour
 {
+    [SerializeField] private PhotonView _photonView;
+
     private PhotonView _playerPhotonView;
     private PlayerController _playerController;
+    private PlayerData _playerData;
     private NavMeshAgent _agent;
     private LineRenderer _lineRenderer;
     private bool _reachedDestination;
@@ -34,6 +37,7 @@ public class NavigationManager : MonoBehaviour
                 {
                     _playerPhotonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
                     _playerController = _playerPhotonView.GetComponent<PlayerController>();
+                    _playerData = _playerPhotonView.GetComponent<PlayerData>();
                     break;
                 }
             }
@@ -67,7 +71,6 @@ public class NavigationManager : MonoBehaviour
 
         for (int i = 0; i < listRoomEnums.Count; i++)
         {
-
             if (i == enumRoom)
             {
                 _destinationMarkerPrefab.SetActive(true);
@@ -76,6 +79,8 @@ public class NavigationManager : MonoBehaviour
                 _agent.SetDestination(listRoomEnums[i].transform.position);
                 _agent.isStopped = true;
                 _reachedDestination = false;
+
+                _photonView.RPC("ShowNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
             }
         }
     }
@@ -86,12 +91,12 @@ public class NavigationManager : MonoBehaviour
         int _incidentsCount = 0;
         _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
-        _destinationMarkerPrefab.transform.position =
-         GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount -1].position;
+        _destinationMarkerPrefab.transform.position = GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount -1].position;
         _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount -1].position);
         _agent.isStopped = true;
         _reachedDestination = false;
-        DrawPath();
+
+        _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
     }
 
     public void StopGPSNav()
@@ -112,15 +117,15 @@ public class NavigationManager : MonoBehaviour
     {
         if (!_reachedDestination)
         {
-            _playerController.CurrentVehicleController.IsInPinuy = true;
+            if (_playerController)
+                _playerController.CurrentVehicleController.IsBusy  = true;
+
             _lineRenderer.enabled = true;
             _lineRenderer.positionCount = _agent.path.corners.Length;
             _lineRenderer.SetPosition(0, transform.position);
 
             if (_agent.path.corners.Length < 2)
-            {
                 return;
-            }
 
             for (int i = 1; i < _agent.path.corners.Length; i++)
             {
@@ -139,5 +144,30 @@ public class NavigationManager : MonoBehaviour
     public void CarInEvac()
     {
 
+    }
+
+    [PunRPC]
+    private void ShowIncidentNavRPC(int crewIndex, int incidentCount)
+    {
+        if (_playerData.CrewIndex == crewIndex)
+        {
+            _destinationMarkerPrefab.transform.position = GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position;
+            _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position);
+            _agent.isStopped = true;
+            _reachedDestination = false;
+        }
+    }
+
+    [PunRPC]
+    private void ShowEvacNavRPC(int crewIndex, int roomIndex)
+    {
+        if (_playerData.CrewIndex == crewIndex)
+        {
+            _destinationMarkerPrefab.SetActive(true);
+            _destinationMarkerPrefab.transform.position = listRoomEnums[roomIndex].transform.position + new Vector3(0f, 4f, 0f);
+            _agent.SetDestination(listRoomEnums[roomIndex].transform.position);
+            _agent.isStopped = true;
+            _reachedDestination = false;
+        }
     }
 }

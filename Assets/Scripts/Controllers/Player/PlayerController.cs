@@ -557,6 +557,12 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _characterController.enabled = true;
         }
     }
+
+    [PunRPC]
+    private void SetUserVehicleController()
+    {
+        PlayerData.LastVehicleController = _currentVehicleController;
+    }
     #endregion
 
     #region Gizmos

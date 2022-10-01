@@ -36,7 +36,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
 
     [Header("Vehicle Conditionals")]
     public bool IsNatan; 
-    public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsInPinuy;
+    public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsBusy;
     public bool IsBackDoorsOpen;
 
     [Header("Vehicle Data")]
@@ -285,13 +285,13 @@ public class VehicleController : MonoBehaviour, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
-            stream.SendNext(IsInPinuy);
+            stream.SendNext(IsBusy);
             stream.SendNext(IsDriverIn);
         }
         else
         {
             transform.position = (Vector3)stream.ReceiveNext();
-            IsInPinuy = (bool)stream.ReceiveNext();
+            IsBusy = (bool)stream.ReceiveNext();
             IsDriverIn = (bool)stream.ReceiveNext();
         }
 

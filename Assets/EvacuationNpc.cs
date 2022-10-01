@@ -48,7 +48,7 @@ public class EvacuationNpc : MonoBehaviour
             PlayerData playerData = evacuation.NearbyPatient[0].NearbyUsers[i];
             if (playerData.LastCarController || playerData.LastVehicleController)
             {
-                playerData.LastVehicleController.IsInPinuy = false;
+                playerData.LastVehicleController.IsBusy = false;
                 playerData.LastCarController.IsInPinuy = false;
                 break;
             }

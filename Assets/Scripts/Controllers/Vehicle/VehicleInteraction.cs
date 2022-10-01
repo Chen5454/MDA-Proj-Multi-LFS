@@ -170,6 +170,7 @@ public class VehicleInteraction : MonoBehaviour
                     UIManager.Instance.DriverExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });
                     UIManager.Instance.SirenBtn.onClick.RemoveListener(delegate { ToggleSiren(); });
                     _vehicleController.CurrentDriverController = null;
+                    photonView.RPC("SetUserVehicleController", RpcTarget.AllBufferedViaServer);
                     playerController.PlayerData.LastVehicleController = _vehicleController;
                     StartCoroutine(ChangeKinematicStateCorooutine());
                     photonView.transform.position = _vehicleController.DriverExit.position;
