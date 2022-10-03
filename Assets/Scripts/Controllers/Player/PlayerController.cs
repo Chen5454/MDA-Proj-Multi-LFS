@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
+public class PlayerController : MonoBehaviourPunCallbacks
 {
     #region Photon
     [Header("Photon")]
@@ -578,18 +578,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(_groundCheckTransform.position, _groundCheckRadius);
-        }
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(IsDriving);
-        }
-        else
-        {
-            IsDriving = (bool)stream.ReceiveNext();
         }
     }
     #endregion
