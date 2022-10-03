@@ -303,54 +303,5 @@ public class VehicleController : MonoBehaviour, IPunObservable
             IsRightBackIn = (bool)stream.ReceiveNext();
         }
 
-        /* Fix Attempt
-         * [PunRPC]
-         * private void ToggleSirenRPC()
-         * {
-         *     for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
-         *     {
-         *         if (GameManager.Instance.AmbulanceCarList[i].IsMine)
-         *         {
-         *             if (IsCarSirenOn)
-         *             {
-         *                 CarEmergencyLightsLeft.enabled = false;
-         *                 CarEmergencyLightsRight.enabled = false;
-         *                 IsCarSirenOn = false;
-         *                 CarSirenAudioSource.Stop();
-         *             }
-         *             else
-         *             {
-         *                 CarEmergencyLightsLeft.enabled = true;
-         *                 CarEmergencyLightsRight.enabled = true;
-         *                 IsCarSirenOn = true;
-         *                 CarSirenAudioSource.Play();
-         *             }
-         *         }
-         *         else
-         *         {
-         *             for (int j = 0; j < GameManager.Instance.NatanCarList.Count; j++)
-         *             {
-         *                 if (GameManager.Instance.NatanCarList[i].IsMine)
-         *                 {
-         *                     if (IsCarSirenOn)
-         *                     {
-         *                         CarEmergencyLightsLeft.enabled = false;
-         *                         CarEmergencyLightsRight.enabled = false;
-         *                         IsCarSirenOn = false;
-         *                         CarSirenAudioSource.Stop();
-         *                     }
-         *                     else
-         *                     {
-         *                         CarEmergencyLightsLeft.enabled = true;
-         *                         CarEmergencyLightsRight.enabled = true;
-         *                         IsCarSirenOn = true;
-         *                         CarSirenAudioSource.Play();
-         *                     }
-         *                 }
-         *             }
-         *         }
-         *     }
-         * }
-         */
     }
 }

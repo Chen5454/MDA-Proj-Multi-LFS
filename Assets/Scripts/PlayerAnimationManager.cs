@@ -46,4 +46,17 @@ public class PlayerAnimationManager : MonoBehaviour
         _playerAnimator.SetFloat("VelocityX", _player._input.x, 0.1f, Time.deltaTime);
 
     }
+
+
+    public void IsSittedAnimation()
+    {
+        if(_player.IsInVehicle)
+        _playerAnimator.SetBool("IsSit", true);
+        else
+        {
+            _playerAnimator.SetBool("IsSit", false);
+
+        }
+
+    }
 }
