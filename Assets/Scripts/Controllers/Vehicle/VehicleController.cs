@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System.Reflection;
 
 public enum VehicleSit { Driver, Passanger, Middle, LeftBack, RightBack }
 
@@ -207,61 +208,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
             CarEmergencyLightsRight.enabled = true;
             IsCarHeadLightsOn = true;
         }
-
-        /* Fix Attempt
-         * [PunRPC]
-         * private void ToggleHeadlightsRPC()
-         * {
-         *     for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
-         *     {
-         *         if (GameManager.Instance.AmbulanceCarList[i].IsMine)
-         *         {
-         *             if (IsCarHeadLightsOn)
-         *             {
-         *                 IsCarHeadLightsOn = false;
-         *                 CarHeadLights.SetActive(false);
-         *                 CarSiren.GetComponent<Animator>().enabled = false;
-         *                 //CarSirenLightLeft.SetActive(false);
-         *                 //CarSirenLightRight.SetActive(false);
-         *             }
-         *             else
-         *             {
-         *                 IsCarHeadLightsOn = true;
-         *                 CarHeadLights.SetActive(true);
-         *                 CarSiren.GetComponent<Animator>().enabled = true;
-         *                 //CarSirenLightLeft.SetActive(true);
-         *                 //CarSirenLightRight.SetActive(true);
-         *             }
-         *         }
-         *         else
-         *         {
-         *             for (int j = 0; j < GameManager.Instance.NatanCarList.Count; j++)
-         *             {
-         *                 if (GameManager.Instance.NatanCarList[i].IsMine)
-         *                 {
-         *                     if (IsCarHeadLightsOn)
-         *                     {
-         *                         IsCarHeadLightsOn = false;
-         *                         CarHeadLights.SetActive(false);
-         *                         CarSiren.GetComponent<Animator>().enabled = false;
-         *                         //CarSirenLightLeft.SetActive(false);
-         *                         //CarSirenLightRight.SetActive(false);
-         *                     }
-         *                     else
-         *                     {
-         *                         IsCarHeadLightsOn = true;
-         *                         CarHeadLights.SetActive(true);
-         *                         CarSiren.GetComponent<Animator>().enabled = true;
-         *                         //CarSirenLightLeft.SetActive(true);
-         *                         //CarSirenLightRight.SetActive(true);
-         *                     }
-         *                 }
-         *             }
-         *         }
-         *     }
-         * }
-         */
-         
     }
 
     [PunRPC]
@@ -276,6 +222,45 @@ public class VehicleController : MonoBehaviour, IPunObservable
         {
             CarSirenAudioSource.Play();
             IsCarSirenOn = true;
+        }
+    }
+
+    [PunRPC]
+    private void ChangeSit(int playerViewIndex, int sitEnum, bool isEnteringVehicle)
+    {
+        PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[playerViewIndex];
+
+        if (isEnteringVehicle)
+        {
+            VehicleSit desiredVehicleSit = (VehicleSit)sitEnum;
+
+            switch (desiredVehicleSit)
+            {
+                case VehicleSit.Driver:
+                    photonView.transform.SetParent(DriverSit);
+                    break;
+                case VehicleSit.Passanger:
+                    photonView.transform.SetParent(PassangerSit);
+                    break;
+                case VehicleSit.Middle:
+                    photonView.transform.SetParent(MiddleSit);
+                    break;
+                case VehicleSit.LeftBack:
+                    photonView.transform.SetParent(LeftBackSit);
+                    break;
+                case VehicleSit.RightBack:
+                    photonView.transform.SetParent(RightBackSit);
+                    break;
+                default:
+                    break;
+            }
+
+            photonView.transform.localPosition = Vector3.zero;
+            photonView.transform.localRotation = Quaternion.identity;
+        }
+        else
+        {
+            photonView.transform.SetParent(transform.root.parent);
         }
     }
     #endregion
@@ -302,55 +287,5 @@ public class VehicleController : MonoBehaviour, IPunObservable
             IsLeftBackIn = (bool)stream.ReceiveNext();
             IsRightBackIn = (bool)stream.ReceiveNext();
         }
-
-        /* Fix Attempt
-         * [PunRPC]
-         * private void ToggleSirenRPC()
-         * {
-         *     for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
-         *     {
-         *         if (GameManager.Instance.AmbulanceCarList[i].IsMine)
-         *         {
-         *             if (IsCarSirenOn)
-         *             {
-         *                 CarEmergencyLightsLeft.enabled = false;
-         *                 CarEmergencyLightsRight.enabled = false;
-         *                 IsCarSirenOn = false;
-         *                 CarSirenAudioSource.Stop();
-         *             }
-         *             else
-         *             {
-         *                 CarEmergencyLightsLeft.enabled = true;
-         *                 CarEmergencyLightsRight.enabled = true;
-         *                 IsCarSirenOn = true;
-         *                 CarSirenAudioSource.Play();
-         *             }
-         *         }
-         *         else
-         *         {
-         *             for (int j = 0; j < GameManager.Instance.NatanCarList.Count; j++)
-         *             {
-         *                 if (GameManager.Instance.NatanCarList[i].IsMine)
-         *                 {
-         *                     if (IsCarSirenOn)
-         *                     {
-         *                         CarEmergencyLightsLeft.enabled = false;
-         *                         CarEmergencyLightsRight.enabled = false;
-         *                         IsCarSirenOn = false;
-         *                         CarSirenAudioSource.Stop();
-         *                     }
-         *                     else
-         *                     {
-         *                         CarEmergencyLightsLeft.enabled = true;
-         *                         CarEmergencyLightsRight.enabled = true;
-         *                         IsCarSirenOn = true;
-         *                         CarSirenAudioSource.Play();
-         *                     }
-         *                 }
-         *             }
-         *         }
-         *     }
-         * }
-         */
     }
 }
