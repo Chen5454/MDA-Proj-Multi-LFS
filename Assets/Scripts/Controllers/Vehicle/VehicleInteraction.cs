@@ -69,7 +69,8 @@ public class VehicleInteraction : MonoBehaviour
                     {
                         if (!_vehicleController.IsDriverIn)
                         {
-                           // playerController.transform.GetChild(5).GetChild(1).GetComponent<Collider>().enabled = false;
+                            // playerController.transform.GetChild(5).GetChild(1).GetComponent<Collider>().enabled = false;
+                            playerController.transform.GetComponent<CharacterController>().enabled = false;
 
                             UIManager.Instance.VehicleDriverUI.SetActive(true);
                             _vehicleController.Transfer.CarDriver();
@@ -89,6 +90,7 @@ public class VehicleInteraction : MonoBehaviour
                             photonView.transform.SetParent(_vehicleController.DriverSit);
                             photonView.transform.localPosition = Vector3.zero;
                             photonView.transform.localRotation = Quaternion.identity;
+
                             _vehicleController.CurrentDriverController = playerController;
                             _vehicleController.IsDriverIn = true;
                             StartCoroutine(ChangeKinematicStateCorooutine());
@@ -302,6 +304,5 @@ public class VehicleInteraction : MonoBehaviour
         _vehicleController.ChangeKinematicState();
     }
     #endregion
-
 
 }
