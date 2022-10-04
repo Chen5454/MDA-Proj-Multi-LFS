@@ -128,7 +128,6 @@ public class VehicleInteraction : MonoBehaviour
                                 break;
                             }
                         }
-
                        else if (_vehicleSit == VehicleSit.LeftBack)
                         {
                              if (!_vehicleController.IsLeftBackIn)
@@ -197,8 +196,6 @@ public class VehicleInteraction : MonoBehaviour
                     photonView.transform.position = _vehicleController.DriverExit.position;
                     photonView.transform.localRotation = _vehicleController.DriverExit.rotation;
                 }
-            
-
                 else if (playerController.IsPassanger)
                 {
                     _vehicleController.IsPassangerIn = false;
