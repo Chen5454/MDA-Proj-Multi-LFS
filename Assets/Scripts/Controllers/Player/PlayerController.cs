@@ -85,7 +85,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform _groundCheckTransform;
     [SerializeField] private float _groundCheckRadius = 0.5f;
     private bool _isGrounded;
+
+
     #endregion
+
+    private PlayerController thisScript;
 
     #region Colliders
     [Header("Colliders")]
@@ -106,10 +110,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
         _playerCamera.tag = "MainCamera";
         if (GameManager.Instance.metargelUsersList.Contains(_photonView.Owner.NickName))
             PlayerData.IsMetargel = true;
+         thisScript = GetComponent<PlayerController>();
     }
 
     private void Start()
     {
+
+
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -122,7 +129,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _MiniMaCamera.SetActive(false);
             _characterController.enabled = false;
             Destroy(_audioListener);
-            Destroy(this);
+            thisScript.enabled = false;
+            // Destroy(this);
         }
     }
 
@@ -181,7 +189,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
            //Debug.Log("Current State: Idle");
             _anim.IdleStateAnimation();
-
+            _anim.IsSittedAnimation();
             GetInputAxis();
 
             if (_isInVehicle)
@@ -217,7 +225,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Debug.Log("Current State: First Person Idle");
 
             GetInputAxis();
-
+            _anim.IsSittedAnimation();
             if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
@@ -252,7 +260,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
            // Debug.Log("Current State: Walking");
 
             GetInputAxis();
-
+            _anim.IsSittedAnimation();
             if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
@@ -288,7 +296,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             Debug.Log("Current State: First Person Walking");
 
             GetInputAxis();
-
+            _anim.IsSittedAnimation();
             if (_isInVehicle)
             {
                 _stateAction = UseDrivingState;
@@ -412,7 +420,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (_photonView.IsMine)
         {
             Debug.Log("Current State: Driving");
-
+            _anim.IsSittedAnimation();
             if (!_isInVehicle)
             {
                 _vehicleCamera.enabled = false;
