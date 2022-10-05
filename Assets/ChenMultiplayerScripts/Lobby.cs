@@ -13,8 +13,9 @@ using VivoxUnity;
 public class Lobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private VivoxManager _VivoxManager;
-    [SerializeField] private string _connectingText;
     [SerializeField] private ToggleButton _femaleAvatar, _maleAvatar;
+    [SerializeField] private string _pickAvatarText, _idleConnectText, _connectingText;
+    [SerializeField] private bool _isAvatarPicked;
 
     public TMP_Text buttonText;
     public TMP_InputField usernameInput;
@@ -34,35 +35,42 @@ public class Lobby : MonoBehaviourPunCallbacks
     {
         //_VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
-
         if (PlayerPrefs.HasKey("username"))
         {
             usernameInput.text = PlayerPrefs.GetString("username");
             PhotonNetwork.NickName = PlayerPrefs.GetString("username");
         }
 
+        ConnectButton.interactable = false;
+    }
+
+    private void Update()
+    {
+        if (!_maleAvatar.IsBtnSelected && !_femaleAvatar.IsBtnSelected)
+        {
+            Debug.Log("No Avatar Selected");
+            return;
+        }
+        else if (!_isAvatarPicked)
+        {
+            ConnectButton.interactable = true;
+            buttonText.text = _idleConnectText;
+            _isAvatarPicked = true;
+        }
     }
 
     public void Connect()
     {
-        if (_maleAvatar.IsBtnSelected || _femaleAvatar.IsBtnSelected)
+        if (usernameInput.text.Length >= 1)
         {
-            if (usernameInput.text.Length >= 1)
-            {
-                PhotonNetwork.NickName = usernameInput.text;
-                PlayerPrefs.SetString("username", usernameInput.text);
-                buttonText.text = _connectingText;
-                isConnecting = PhotonNetwork.ConnectUsingSettings();
-                ConnectButton.interactable = false;
+            PhotonNetwork.NickName = usernameInput.text;
+            PlayerPrefs.SetString("username", usernameInput.text);
+            buttonText.text = _connectingText;
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
 
 
-                Debug.Log("Login Into Vivox now....");
-                LoginUser();
-            }
-        }
-        else
-        {
-            Debug.Log("No Avatar Selected");
+            Debug.Log("Login Into Vivox now....");
+            LoginUser();
         }
     }
 

@@ -304,9 +304,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _VivoxManager: {fileID: 1384131865}
-  _connectingText: "\u05DE\u05EA\u05D7\u05D1\u05E8..."
-  _maleAvatar: {fileID: 1943752496}
   _femaleAvatar: {fileID: 1980848046}
+  _maleAvatar: {fileID: 1943752496}
+  _pickAvatarText: "\u05D1\u05D7\u05E8 \u05D0\u05D5\u05D5\u05D8\u05D0\u05E8 \u05E2\u05DC
+    \u05DE\u05E0\u05EA \u05DC\u05D4\u05EA\u05D7\u05D1\u05E8"
+  _idleConnectText: "\u05D4\u05EA\u05D7\u05D1\u05E8"
+  _connectingText: "\u05DE\u05EA\u05D7\u05D1\u05E8..."
+  _isAvatarPicked: 0
   buttonText: {fileID: 802661791}
   usernameInput: {fileID: 1914731606}
   VivoxusernameInput: {fileID: 1914731606}
@@ -383,7 +387,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u05D4\u05EA\u05D7\u05D1\u05E8"
+  m_text: "\u05E0\u05D0 \u05DC\u05D1\u05D7\u05D5\u05E8 \u05D0\u05D5\u05D5\u05D8\u05D0\u05E8"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: c4b6226968b26d744973921aca71c3eb, type: 2}
   m_sharedMaterial: {fileID: 1422090180869886765, guid: c4b6226968b26d744973921aca71c3eb, type: 2}
@@ -1791,7 +1795,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 1372002715119983965, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
     m_PressedSprite: {fileID: 1372002715119983965, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
     m_SelectedSprite: {fileID: 1372002715119983965, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 8099002234443782873, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -2376,7 +2380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1997577868
 RectTransform:
   m_ObjectHideFlags: 0
