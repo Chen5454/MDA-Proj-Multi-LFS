@@ -304,6 +304,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _VivoxManager: {fileID: 1384131865}
+  _connectingText: "\u05DE\u05EA\u05D7\u05D1\u05E8..."
+  _maleAvatar: {fileID: 1943752496}
+  _femaleAvatar: {fileID: 1980848046}
   buttonText: {fileID: 802661791}
   usernameInput: {fileID: 1914731606}
   VivoxusernameInput: {fileID: 1914731606}
@@ -2182,12 +2185,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d931de7597a32408df88085d9efb09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _toggleBtn: {fileID: 1943752493}
+  _isWithCheckmark: 0
   _cancelBtns:
   - {fileID: 1980848046}
   _btnOnImg: {fileID: 7294624412048613810, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   _btnOffImg: {fileID: -6759146946053502420, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   <BtnImg>k__BackingField: {fileID: 1943752494}
+  <CheckmarkImg>k__BackingField: {fileID: 0}
+  <IsBtnSelected>k__BackingField: 0
 --- !u!1 &1980848041
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,12 +2350,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d931de7597a32408df88085d9efb09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _toggleBtn: {fileID: 1980848045}
+  _isWithCheckmark: 0
   _cancelBtns:
   - {fileID: 1943752496}
   _btnOnImg: {fileID: 7884286034833568368, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   _btnOffImg: {fileID: -1327752704175661144, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   <BtnImg>k__BackingField: {fileID: 1980848043}
+  <CheckmarkImg>k__BackingField: {fileID: 0}
+  <IsBtnSelected>k__BackingField: 0
 --- !u!1 &1997577867
 GameObject:
   m_ObjectHideFlags: 0

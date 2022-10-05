@@ -31,7 +31,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [SerializeField] private GameObject _patientMale, _patientFemale;
     [SerializeField] private TMP_InputField _apartmentNumber;
     [SerializeField] private string _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
-    [SerializeField] private bool isUsed, _isNatanRequired;
+    [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
 
 
     private OwnershipTransfer _transfer;
@@ -176,7 +176,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView.RPC("AlertStartAllRPC", RpcTarget.All, title, content);
     }
 
-    public void StartRandomIncident()
+    private void StartRandomIncident()
     {
         List<int> unavailableList = new List<int>();
 
@@ -215,7 +215,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
-    public void StartIncident()
+    private void StartSpecificIncident()
     {
         int apartmentNum = int.Parse(_apartmentNumber.text);
         List<int> unavailableList = new List<int>();
@@ -243,6 +243,15 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
         }
     }
+
+    public void StartIncident()
+    {
+        if (_isRandomIncident)
+            StartRandomIncident();
+        else
+            StartSpecificIncident();
+    }
+
 
     public void ChangeVehicleRequired(bool changeVehicle)
     {

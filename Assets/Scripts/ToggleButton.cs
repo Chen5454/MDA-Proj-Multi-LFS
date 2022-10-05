@@ -6,7 +6,7 @@ using TMPro;
 
 public class ToggleButton : MonoBehaviour
 {
-    [SerializeField] private Button _toggleBtn;
+    [SerializeField] private bool _isWithCheckmark;
     [SerializeField] private ToggleButton[] _cancelBtns;
 
     [field: SerializeField] private Sprite _btnOnImg, _btnOffImg;
@@ -14,24 +14,48 @@ public class ToggleButton : MonoBehaviour
     public Sprite BtnOffImg => _btnOffImg;
 
     [field: SerializeField] public Image BtnImg { get; set; }
-
-    private bool _isBtnSelected = false;
-    public bool IsBtnSelected => _isBtnSelected;
+    [field: SerializeField] public Image CheckmarkImg { get; set; }
+    [field: SerializeField] public bool IsBtnSelected { get; set; }
 
     public void ToggleBtnOnClick()
     {
-        if (!_isBtnSelected)
+        if (!_isWithCheckmark)
         {
-            BtnImg.sprite = _btnOnImg;
-            _isBtnSelected = true;
+            foreach (ToggleButton tglBtn in _cancelBtns)
+                tglBtn.BtnImg.sprite = tglBtn.BtnOffImg;
+
+            if (!IsBtnSelected)
+            {
+                BtnImg.sprite = _btnOnImg;
+                IsBtnSelected = true;
+            }
+            else
+            {
+                BtnImg.sprite = _btnOffImg;
+                IsBtnSelected = false;
+            }
         }
         else
         {
-            BtnImg.sprite = _btnOffImg;
-            _isBtnSelected = false;
-        }
+            foreach (ToggleButton tglBtn in _cancelBtns)
+            {
+                tglBtn.BtnImg.sprite = tglBtn.BtnOffImg;
+                tglBtn.CheckmarkImg.gameObject.SetActive(false);
+                tglBtn.IsBtnSelected = false;
+            }
 
-        foreach (ToggleButton tglBtn in _cancelBtns)
-            tglBtn.BtnImg.sprite = tglBtn.BtnOffImg;
+            if (!IsBtnSelected)
+            {
+                BtnImg.sprite = _btnOnImg;
+                CheckmarkImg.gameObject.SetActive(true);
+                IsBtnSelected = true;
+            }
+            else
+            {
+                BtnImg.sprite = _btnOffImg;
+                CheckmarkImg.gameObject.SetActive(false);
+                IsBtnSelected = false;
+            }
+        }
     }
 }

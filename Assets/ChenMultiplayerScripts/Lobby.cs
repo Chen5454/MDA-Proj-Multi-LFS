@@ -13,6 +13,8 @@ using VivoxUnity;
 public class Lobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private VivoxManager _VivoxManager;
+    [SerializeField] private string _connectingText;
+    [SerializeField] private ToggleButton _femaleAvatar, _maleAvatar;
 
     public TMP_Text buttonText;
     public TMP_InputField usernameInput;
@@ -43,21 +45,25 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
-
-        if (usernameInput.text.Length >= 1)
+        if (_maleAvatar.IsBtnSelected || _femaleAvatar.IsBtnSelected)
         {
-            PhotonNetwork.NickName = usernameInput.text;
-            PlayerPrefs.SetString("username", usernameInput.text);
-            buttonText.text = "Connecting...";
-            isConnecting = PhotonNetwork.ConnectUsingSettings();
-            ConnectButton.interactable = false;
+            if (usernameInput.text.Length >= 1)
+            {
+                PhotonNetwork.NickName = usernameInput.text;
+                PlayerPrefs.SetString("username", usernameInput.text);
+                buttonText.text = _connectingText;
+                isConnecting = PhotonNetwork.ConnectUsingSettings();
+                ConnectButton.interactable = false;
 
 
-            Debug.Log("Login Into Vivox now....");
-            LoginUser();
+                Debug.Log("Login Into Vivox now....");
+                LoginUser();
+            }
         }
-
-       
+        else
+        {
+            Debug.Log("No Avatar Selected");
+        }
     }
 
 
