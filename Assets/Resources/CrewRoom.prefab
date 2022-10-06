@@ -8958,22 +8958,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4433377931286997351}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1722978832540727722}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5138764310284169353}
+        m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
+        m_MethodName: ChooseIncident
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11645,7 +11633,14 @@ MonoBehaviour:
   _playersInRoomList: []
   _patientMale: {fileID: 5550523932109703408, guid: dabe3131293e32f4787ed5a32f0ea73f, type: 3}
   _patientFemale: {fileID: 5550523932109703408, guid: 1f04bb736b3e9d74394678ab62fb7e93, type: 3}
+  _chooseIncidentMenu: {fileID: 1722978832540727722}
+  _overlay: {fileID: 5892678079453464744}
+  _chooseSimulationPanel: {fileID: 4433377931286997351}
+  _startSimulationBtn: {fileID: 6733279252839260410}
+  _startSimulationTMP: {fileID: 7702353244950193174}
   _apartmentNumber: {fileID: 7843834655423997474}
+  _noSimulationText: "\u05D1\u05D7\u05E8 \u05D0\u05D9\u05E8\u05D5\u05E2"
+  _startSimulationText: "\u05D4\u05EA\u05D7\u05DC \u05E1\u05D9\u05DE\u05D5\u05DC\u05E6\u05D9\u05D4"
   _waitMemberText: Available
   _incidentStartTitle: "\u05D9\u05E6\u05D9\u05E8\u05EA \u05D0\u05D9\u05E8\u05D5\u05E2"
   _incidentStartText: "\u05D4\u05EA\u05D7\u05D9\u05DC \u05D0\u05D9\u05E8\u05D5\u05E2
@@ -13297,7 +13292,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2975829108826765430}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5138764310284169353}
+        m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
+        m_MethodName: SetRandomIncident
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &972906036340464686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14281,7 +14288,7 @@ GameObject:
   - component: {fileID: 6757667425513371063}
   - component: {fileID: 4834936781049047694}
   m_Layer: 5
-  m_Name: CooseSimulation Panel
+  m_Name: ChooseSimulation Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15183,7 +15190,7 @@ GameObject:
   - component: {fileID: 7407201081972573198}
   - component: {fileID: 6733279252839260410}
   m_Layer: 5
-  m_Name: StartDrill Btn
+  m_Name: StartSimulation Btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15279,14 +15286,14 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 4124345613783628393, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
     m_PressedSprite: {fileID: 4124345613783628393, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
     m_SelectedSprite: {fileID: 4124345613783628393, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 8099002234443782873, guid: db871457a324dc646bcd4d0401d4a194, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7407201081972573198}
   m_OnClick:
     m_PersistentCalls:
@@ -23526,7 +23533,6 @@ GameObject:
   - component: {fileID: 1810812892514883663}
   - component: {fileID: 7285104695084101409}
   - component: {fileID: 3302115780101981019}
-  - component: {fileID: 3036541460339308956}
   m_Layer: 0
   m_Name: Mount
   m_TagString: Untagged
@@ -23597,19 +23603,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3036541460339308956
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7834153086759137548}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.046758655, y: 1.032907, z: 1.1979624}
-  m_Center: {x: 0.023379276, y: -0.000000059604645, z: 0}
 --- !u!1 &7863991237834211148
 GameObject:
   m_ObjectHideFlags: 0
@@ -23756,7 +23749,7 @@ GameObject:
   - component: {fileID: 8481919656525826112}
   - component: {fileID: 7702353244950193174}
   m_Layer: 5
-  m_Name: StartDrill Txt
+  m_Name: StartSimulation Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24147,7 +24140,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2240739700163141643}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5138764310284169353}
+        m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
+        m_MethodName: SetRandomIncident
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &5752195001887229823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25471,18 +25476,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1722978832540727722}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5892678079453464744}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
