@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -28,9 +29,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private Color crewColor;
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
-    [SerializeField] private GameObject _patientMale, _patientFemale;
+    [SerializeField] private GameObject _patientMale, _patientFemale, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
+    [SerializeField] private Button _startSimulationBtn;
+    [SerializeField] private TextMeshProUGUI _startSimulationTMP;
     [SerializeField] private TMP_InputField _apartmentNumber;
-    [SerializeField] private string _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
+    [SerializeField] private string _noSimulationText, _startSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
 
 
@@ -247,11 +250,37 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public void StartIncident()
     {
         if (_isRandomIncident)
+        {
             StartRandomIncident();
+            _isRandomIncident = false;
+            _startSimulationBtn.interactable = false;
+            _startSimulationTMP.text = _noSimulationText;
+        }
         else
+        {
             StartSpecificIncident();
+            _startSimulationBtn.interactable = false;
+            _startSimulationTMP.text = _noSimulationText;
+        }
     }
 
+    public void SetRandomIncident()
+    {
+        _isRandomIncident = true;
+    }
+
+    public void ChooseIncident()
+    {
+        if (_isRandomIncident)
+        {
+            _overlay.SetActive(false);
+            _startSimulationBtn.interactable = true;
+            _startSimulationTMP.text = _startSimulationText;
+            return;
+        }
+
+        _chooseSimulationPanel.SetActive(true);
+    }
 
     public void ChangeVehicleRequired(bool changeVehicle)
     {

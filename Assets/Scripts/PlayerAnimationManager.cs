@@ -5,25 +5,19 @@ using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
-
-    public Animator _playerAnimator;
+    [SerializeField] private Animator _playerAnimator;
     private PlayerController _player;
-
 
     private void Awake()
     {
         _player = GetComponent<PlayerController>();
     }
 
-
-
     public void IdleStateAnimation()
     {
         _playerAnimator.SetFloat("VelocityZ", 0f, 0.1f, Time.deltaTime);
         _playerAnimator.SetFloat("VelocityX", 0f, 0.1f, Time.deltaTime);
     }
-
-
     public void MoveStateAnimation()
     {
         if (_player._input.y > 0)
@@ -39,11 +33,15 @@ public class PlayerAnimationManager : MonoBehaviour
                 _playerAnimator.SetFloat("VelocityZ", -0.5f, 0.1f, Time.deltaTime);
         }
     }
-
-
     public void RotateAnimation()
     {
         _playerAnimator.SetFloat("VelocityX", _player._input.x, 0.1f, Time.deltaTime);
-
+    }
+    public void IsSittedAnimation()
+    {
+        if (_player.IsInVehicle)
+            _playerAnimator.SetBool("IsSit", true);
+        else
+            _playerAnimator.SetBool("IsSit", false);
     }
 }

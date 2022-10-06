@@ -36,7 +36,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public OwnershipTransfer Transfer;
 
     [Header("Vehicle Conditionals")]
-    public bool IsNatan; 
+    public bool IsNatan;
     public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsBusy;
     public bool IsBackDoorsOpen;
 
@@ -173,7 +173,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
     {
         Vector3 pos;
-        Quaternion rot; 
+        Quaternion rot;
         wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
@@ -256,7 +256,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             }
 
             photonView.transform.localPosition = Vector3.zero;
-            photonView.transform.localRotation = Quaternion.identity;
+            photonView.transform.localRotation = new Quaternion(0, 0, 0, 0);
         }
         else
         {
