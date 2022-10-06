@@ -123,8 +123,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     public void CreateCrewSubmit()
     {
+         _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex());
         var color = Random.ColorHSV();
-        _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex());
         _photonView.RPC("ChangeCrewColors", RpcTarget.AllBufferedViaServer, new Vector3(color.r, color.g, color.b));
 
         //_photonView.RPC("CrewLeaderIsChosen", RpcTarget.AllBufferedViaServer, GetCrewLeader());
@@ -307,7 +307,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
         if (other.CompareTag("test") && !_playersInRoomList.Contains(playerView))
         {
-            _playersInRoomList.Add(playerView);
+            // _playersInRoomList.Add(playerView);
+            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
             _photonView.RPC("SetToUi_RPC", RpcTarget.AllBufferedViaServer);
         }
     }
@@ -318,7 +319,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
         if (other.CompareTag("test") && !_playersInRoomList.Contains(playerView))
         {
-            _playersInRoomList.Add(playerView);
+            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            // _playersInRoomList.Add(playerView);
         }
     }
 
@@ -329,9 +331,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         if (other.CompareTag("test") && _playersInRoomList.Contains(playerView))
         {
             _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-            _playersInRoomList.Remove(playerView);
+            _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            //_playersInRoomList.Remove(playerView);
         }
     }
+
 
     // PUN RPC Methods
     // --------------------
