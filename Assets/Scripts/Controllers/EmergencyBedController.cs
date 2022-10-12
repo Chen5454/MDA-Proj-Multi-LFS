@@ -162,13 +162,13 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             {
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
-                gameObject.transform.SetParent(_player.transform);
+                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer,PhotonNetwork.NickName);
                 _followUnfollowText.text = _unfollowText;
             }
             else if (!_isFollowingPlayer)
             {
                 //_isFacingTrolley = false;
-                gameObject.transform.SetParent(null);
+                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _followText;
             }
         }
@@ -297,8 +297,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+           // stream.SendNext(transform.position);
+            //stream.SendNext(transform.rotation);
             stream.SendNext(_emergencyBedPositionInsideVehicle.position);
             stream.SendNext(_emergencyBedPositionOutsideVehicle.position);
             stream.SendNext(_isBedClosed);
@@ -310,8 +310,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         }
         else
         {
-            transform.position = (Vector3)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+           // transform.position = (Vector3)stream.ReceiveNext();
+           // transform.rotation = (Quaternion)stream.ReceiveNext();
             _emergencyBedPositionInsideVehicle.position = (Vector3)stream.ReceiveNext();
             _emergencyBedPositionOutsideVehicle.position = (Vector3)stream.ReceiveNext();
             _isBedClosed = (bool)stream.ReceiveNext();
@@ -362,6 +362,18 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         _emergencyBedClosed.SetActive(false);
     }
 
+    [PunRPC]
+    private void SetBedParent(string currentPlayer)
+    {
+        PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
 
+
+        if (_isFollowingPlayer)
+            gameObject.transform.SetParent(currentPlayerView.transform);
+
+        else if (!_isFollowingPlayer)
+            gameObject.transform.SetParent(null);
+
+    }
 
 }

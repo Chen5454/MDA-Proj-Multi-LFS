@@ -1265,6 +1265,7 @@ GameObject:
   - component: {fileID: 8779624945012766165}
   - component: {fileID: 1312195625395595769}
   - component: {fileID: 5611770843742887405}
+  - component: {fileID: 3690315871973034750}
   m_Layer: 0
   m_Name: EmergencyBed
   m_TagString: EmergencyBed
@@ -1392,6 +1393,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 5549700786370776840}
   - {fileID: 5611770843742887405}
+  - {fileID: 3690315871973034750}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1411,6 +1413,39 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &3690315871973034750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1530117755279238907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PositionModel:
+    SynchronizeEnabled: 1
+    TeleportEnabled: 1
+    TeleportIfDistanceGreaterThan: 1
+    InterpolateOption: 2
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 1
+    ExtrapolateOption: 2
+    ExtrapolateSpeed: 1
+    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateNumberOfStoredPositions: 1
+  m_RotationModel:
+    SynchronizeEnabled: 1
+    InterpolateOption: 1
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 5
+  m_ScaleModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 0
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 0
 --- !u!1 &1534249446778105772
 GameObject:
   m_ObjectHideFlags: 0
@@ -6412,13 +6447,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
---- !u!1 &3527804895022912932 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
-  m_PrefabInstance: {fileID: 4338142976593406197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4305044805366959902 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
+  m_PrefabInstance: {fileID: 4338142976593406197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3527804895022912932 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
   m_PrefabInstance: {fileID: 4338142976593406197}
   m_PrefabAsset: {fileID: 0}
