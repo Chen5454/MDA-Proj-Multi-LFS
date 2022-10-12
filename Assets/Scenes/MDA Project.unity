@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: b48343d9fccd4d94d804c5eb14b6e21c, type: 2}
 --- !u!1 &10235639
 GameObject:
   m_ObjectHideFlags: 0
@@ -2257,7 +2257,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 4.5
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!120 &1011662887
 LineRenderer:
@@ -2491,7 +2491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.00006814905}
   m_SizeDelta: {x: 0, y: 460.75}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1054739096
@@ -2898,7 +2898,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1970734414}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4499,6 +4499,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 406459570, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 406459572, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 675cbd29036c47d458f561d8df7015b8, type: 2}
+    - target: {fileID: 244004170155502651, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2910057791268636854, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2910057791268636854, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6872984790374217042, guid: 0aa2d724b7d06b046ad817996ce25ee6, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -5160,7 +5180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1729107427, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 169577378726150427, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_Name
@@ -5176,7 +5196,7 @@ PrefabInstance:
       objectReference: {fileID: 851170986}
     - target: {fileID: 742781417594320344, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1016382340343210002, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5224,7 +5244,7 @@ PrefabInstance:
       objectReference: {fileID: 851170986}
     - target: {fileID: 3278326425360501996, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3278326425360501996, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -5324,7 +5344,7 @@ PrefabInstance:
       objectReference: {fileID: 851170986}
     - target: {fileID: 7062617676226661561, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7498974690197417890, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5460,7 +5480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7994697899169374620, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7994697899169374620, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_SizeDelta.y
