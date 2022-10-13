@@ -18,6 +18,7 @@ public class VivoxBaseData
 
     // public bool isPikud10;
     public string Channel3DName = "MDA3D";
+    public string Channel2DName = "MDA2D";
     public bool isClientInitialized;
 
     public ILoginSession loginSession;

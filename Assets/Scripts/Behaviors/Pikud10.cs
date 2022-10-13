@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
+using VivoxUnity;
 
 public class Pikud10 : MonoBehaviour
 {
@@ -29,13 +30,27 @@ public class Pikud10 : MonoBehaviour
     public Button TopMenuHandle, AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button[] AllAreaMarkings = new Button[6];
 
+
+
+    public VivoxManager _VivoxManager;
+
+
     #region MonobehaviourCallbacks
     private void Start()
     {
+        _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
+
         InitializePikud10();
         CameraTransmition();
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
+
+        if (_VivoxManager.vivox.channelSession2.Channel.Type == ChannelType.NonPositional)
+        {
+            LocalUnmuteSelf(_VivoxManager.vivox.client);
+            Debug.Log("UNMuting time!");
+        }
+
     }
 
     private void Update()
@@ -311,4 +326,15 @@ public class Pikud10 : MonoBehaviour
         _isMarking = false;
     }
     #endregion
+
+
+    public void LocalMuteSelf(VivoxUnity.Client client)
+    {
+        client.AudioInputDevices.Muted = true;
+    }
+
+    public void LocalUnmuteSelf(VivoxUnity.Client client)
+    {
+        client.AudioInputDevices.Muted = false;
+    }
 }

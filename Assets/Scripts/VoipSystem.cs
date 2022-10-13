@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using VivoxUnity;
 
@@ -14,9 +15,11 @@ public class VoipSystem : MonoBehaviour
     {
         _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
-        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName , true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
+        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName , true, false, true, ChannelType.Positional, 10, 5, 30000, AudioFadeModel.InverseByDistance);
 
-        _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+        _VivoxManager.Join2DChannel(_VivoxManager.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
+
+        // _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
 
         StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
     }
@@ -25,9 +28,13 @@ public class VoipSystem : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
-            LocalMuteSelf(_VivoxManager.vivox.client);
+            if (_VivoxManager.vivox.channelSession.Channel.Type == ChannelType.Positional)
+                LocalMuteSelf(_VivoxManager.vivox.client);
+
+
         if (Input.GetKeyDown(KeyCode.N))
-            LocalUnmuteSelf(_VivoxManager.vivox.client);
+            if (_VivoxManager.vivox.channelSession.Channel.Type == ChannelType.Positional)
+                LocalUnmuteSelf(_VivoxManager.vivox.client);
     }
 
     IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
