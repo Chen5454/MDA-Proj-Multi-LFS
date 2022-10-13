@@ -45,11 +45,13 @@ public class Pikud10 : MonoBehaviour
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
 
-        if (_VivoxManager.vivox.channelSession2.Channel.Type == ChannelType.NonPositional)
-        {
-            LocalUnmuteSelf(_VivoxManager.vivox.client);
-            Debug.Log("UNMuting time!");
-        }
+       // _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+
+        //if (_VivoxManager.vivox.channelSession2.Channel.Type == ChannelType.NonPositional)
+        //{
+        //    LocalUnmuteSelf(_VivoxManager.vivox.client);
+        //    Debug.Log("UNMuting time!");
+        //}
 
     }
 

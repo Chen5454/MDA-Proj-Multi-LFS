@@ -130,6 +130,7 @@ public class Lobby : MonoBehaviourPunCallbacks
     #region MyRegion
     public void LoginUser()
     {
+
         if (_VivoxManager.FilterChannelAndUserName(usernameInput.text))
         {
             _VivoxManager.Login(usernameInput.text);

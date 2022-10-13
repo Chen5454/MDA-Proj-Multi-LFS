@@ -138,6 +138,11 @@ public class VivoxManager : MonoBehaviour
         AccountId accountId = new AccountId(vivox.issuer, userName, vivox.domain);
         vivox.loginSession = vivox.client.GetLoginSession(accountId);
         BindLoginCallBack(true, vivox.loginSession);
+
+#if UNITY_EDITOR
+        vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+#endif
+
         vivox.loginSession.BeginLogin(vivox.server, vivox.loginSession.GetLoginToken(vivox.tokeKey, vivox.timeSpan), ar =>
         {
             try

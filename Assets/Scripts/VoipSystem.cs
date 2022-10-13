@@ -15,10 +15,18 @@ public class VoipSystem : MonoBehaviour
     {
         _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
-        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName , true, false, true, ChannelType.Positional, 10, 5, 30000, AudioFadeModel.InverseByDistance);
+
+#if UNITY_EDITOR
+        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName, true, false, false, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
+        _VivoxManager.Join2DChannel(_VivoxManager.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
+
+#else
+
+        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName , true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
 
         _VivoxManager.Join2DChannel(_VivoxManager.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
 
+#endif
         // _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
 
         StartCoroutine(Handle3DVoipPositionUpdate(0.3f));

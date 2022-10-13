@@ -38,11 +38,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
         DontDestroyOnLoad(this.gameObject);
     }
 
-    private void Start()
-    {
-
-    }
-
     public override void OnEnable()
     {
         base.OnEnable();
