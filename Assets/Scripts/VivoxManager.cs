@@ -5,33 +5,42 @@ using UnityEngine;
 using VivoxUnity;
 using System.ComponentModel;
 using System.Reflection;
+using Photon.Pun;
 using TMPro;
 
 
 public class VivoxManager : MonoBehaviour
 {
-    //public static VivoxManager Instance;
+    public static VivoxManager Instance;
 
     public VivoxBaseData vivox = new VivoxBaseData();
-    public VivoxMute vivoxmute = new VivoxMute();
+    public Lobby Lobby;
 
     private void Awake()
     {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this);
+            Instance = this;
+
+        }
+
         InitializeClient();
+
         DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-
     }
 
     private void OnApplicationQuit()
     {
-        
 
         // LeaveChannelClick();
-        LeaveChannel(vivox.channelSession, vivox.Channel3DName);
+        LeaveChannel(vivox.channelSession);
+        LeaveChannel(vivox.channelSession2);
         vivox.loginSession.Logout();
         BindLoginCallBack(false, vivox.loginSession);
         vivox.client.Uninitialize(); // closes all the net to the servers
@@ -138,10 +147,10 @@ public class VivoxManager : MonoBehaviour
         AccountId accountId = new AccountId(vivox.issuer, userName, vivox.domain);
         vivox.loginSession = vivox.client.GetLoginSession(accountId);
         BindLoginCallBack(true, vivox.loginSession);
-
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
+        if(Lobby.ConnectAsPikud10.isOn)
         vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
-#endif
+//#endif
 
         vivox.loginSession.BeginLogin(vivox.server, vivox.loginSession.GetLoginToken(vivox.tokeKey, vivox.timeSpan), ar =>
         {
@@ -172,8 +181,10 @@ public class VivoxManager : MonoBehaviour
 
             case LoginState.LoggedIn:
                 Debug.Log($"Logged In{vivox.loginSession.LoginSessionId.Name}");
+               // isLoggedIn = true;
                 Debug.Log($"Logged Into Vivox Servers");
                 break;
+            
         }
     }
 
@@ -268,13 +279,12 @@ public class VivoxManager : MonoBehaviour
         });
     }
 
+   
 
-
-    public void LeaveChannel(IChannelSession channelToDisconnect, string channelName)
+    public void LeaveChannel(IChannelSession channelToDisconnect)
     {
         channelToDisconnect.Disconnect();
-        vivox.loginSession.DeleteChannelSession(new ChannelId(vivox.issuer, channelName, vivox.domain));
-
+        // vivox.loginSession.DeleteChannelSession(new ChannelId(vivox.issuer, channelName, vivox.domain));
     }
 
 
@@ -385,7 +395,7 @@ public class VivoxManager : MonoBehaviour
                     Debug.Log($"{source.Channel.Name}Channel2D Disconnected");
                     BindChannelCallBackListener2D(false, vivox.channelSession2);
                     BindUserCallBacks2D(false, vivox.channelSession2);
-
+                
                     break;
             }
         }
@@ -403,6 +413,7 @@ public class VivoxManager : MonoBehaviour
                     break;
                 case ConnectionState.Connected:
                     Debug.Log("Audio Channel Connected");
+                   // Channel3DOnline = true;
 
                     break;
                 case ConnectionState.Disconnecting:
@@ -412,6 +423,7 @@ public class VivoxManager : MonoBehaviour
                 case ConnectionState.Disconnected:
                     Debug.Log("Audio Channel Disconnected");
                     vivox.channelSession.PropertyChanged -= OnAudioStateChanged;
+                   // Channel3DOnline = false;
 
                     break;
             }
@@ -458,14 +470,8 @@ public class VivoxManager : MonoBehaviour
                     break;
                 case ConnectionState.Connected:
                     Debug.Log("Audio Channel2D Connected");
-                    //vivoxmute.MuteAllUsers(vivox.channelSession2);
-                    if (vivox.channelSession2.Channel.Type == ChannelType.NonPositional)
-                    {
-                        vivox.client.AudioInputDevices.Muted = true;
-                        Debug.Log(" muted at Ch2");
-
-                    }
-
+               
+               //     Channel2DOnline = true;
                     break;
                 case ConnectionState.Disconnecting:
                     Debug.Log("Audio Channel2D Disconnecting...");
@@ -474,6 +480,8 @@ public class VivoxManager : MonoBehaviour
                 case ConnectionState.Disconnected:
                     Debug.Log("Audio Channel2D Disconnected");
                     vivox.channelSession2.PropertyChanged -= OnAudioStateChanged2D;
+                 //   Channel2DOnline = false;
+                
                     break;
             }
         }

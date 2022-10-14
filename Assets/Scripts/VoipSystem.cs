@@ -7,28 +7,31 @@ using VivoxUnity;
 
 public class VoipSystem : MonoBehaviour
 {
-    public VivoxManager _VivoxManager;
 
     private string channelName;
     private bool positionalChannelExists;
+
     void Start()
     {
-        _VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
+//#if UNITY_EDITOR
+        if (VivoxManager.Instance.Lobby.ConnectAsPikud10.isOn)
+        {
+            VivoxManager.Instance.VivoxJoin3DPositional(VivoxManager.Instance.vivox.Channel3DName, true, false, false,
+                ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
+            VivoxManager.Instance.Join2DChannel(VivoxManager.Instance.vivox.Channel2DName, true, false, false,
+                ChannelType.NonPositional);
+        }
 
-#if UNITY_EDITOR
-        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName, true, false, false, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
-        _VivoxManager.Join2DChannel(_VivoxManager.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
+//#else
+        else
+        {
+            VivoxManager.Instance.VivoxJoin3DPositional(VivoxManager.Instance.vivox.Channel3DName, true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
 
-#else
-
-        _VivoxManager.VivoxJoin3DPositional(_VivoxManager.vivox.Channel3DName , true, false, true, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
-
-        _VivoxManager.Join2DChannel(_VivoxManager.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
-
-#endif
-        // _VivoxManager.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
-
+            VivoxManager.Instance.Join2DChannel(VivoxManager.Instance.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
+        }
+     
+//#endif
         StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
     }
 
@@ -36,60 +39,65 @@ public class VoipSystem : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.M))
-            if (_VivoxManager.vivox.channelSession.Channel.Type == ChannelType.Positional)
-                LocalMuteSelf(_VivoxManager.vivox.client);
+            if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+                LocalMuteSelf(VivoxManager.Instance.vivox.client);
 
 
         if (Input.GetKeyDown(KeyCode.N))
-            if (_VivoxManager.vivox.channelSession.Channel.Type == ChannelType.Positional)
-                LocalUnmuteSelf(_VivoxManager.vivox.client);
+            if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+                LocalUnmuteSelf(VivoxManager.Instance.vivox.client);
     }
 
     IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
     {
         yield return new WaitForSeconds(nextUpdate);
 
-        if (_VivoxManager.vivox.loginSession.State == LoginState.LoggedIn)
-        {
-            if (positionalChannelExists)
+            if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
             {
-                _VivoxManager.vivox.channelSession.Set3DPosition(transform.position, transform.position, transform.forward, transform.up);
-
-            }
-            else
-            {
-                positionalChannelExists = CheckIfChannelExists();
-            }
-        }
-
-
-        StartCoroutine(Handle3DVoipPositionUpdate(nextUpdate));
-
-    }
-
-
-    public bool CheckIfChannelExists()
-    {
-       
-            if (_VivoxManager.vivox.channelSession.Channel.Type == ChannelType.Positional)
-            {
-                channelName = _VivoxManager.vivox.channelSession.Channel.Name;
-                if (_VivoxManager.vivox.channelSession.ChannelState == ConnectionState.Connected)
+                if (positionalChannelExists)
                 {
-                    Debug.Log($"Channel : {channelName} is connected");
-                    if (_VivoxManager.vivox.channelSession.AudioState == ConnectionState.Connected)
-                    {
-                        Debug.Log($"Audio is Connected in Channel : {channelName}");
-                        return true;
-                    }
-                    Debug.Log($"Audio is Connected in Channel : {channelName}");
+                    VivoxManager.Instance.vivox.channelSession.Set3DPosition(transform.position, transform.position,
+                        transform.forward, transform.up);
+
                 }
                 else
                 {
-                    Debug.Log($"Channel : {channelName} is not Connected");
+                    positionalChannelExists = CheckIfChannelExists();
                 }
             }
+            StartCoroutine(Handle3DVoipPositionUpdate(nextUpdate));
+
         
+
+
+    }
+
+    
+  
+
+    public bool CheckIfChannelExists()
+    {
+
+        if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+        {
+            channelName = VivoxManager.Instance.vivox.channelSession.Channel.Name;
+            if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected)
+            {
+                Debug.Log($"Channel : {channelName} is connected");
+                if (VivoxManager.Instance.vivox.channelSession.AudioState == ConnectionState.Connected)
+                {
+                    Debug.Log($"Audio is Connected in Channel : {channelName}");
+                    return true;
+                }
+
+                Debug.Log($"Audio is Connected in Channel : {channelName}");
+            }
+            else
+            {
+                Debug.Log($"Channel : {channelName} is not Connected");
+            }
+        }
+
         return false;
     }
 
