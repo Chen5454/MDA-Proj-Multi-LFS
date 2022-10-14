@@ -256,11 +256,12 @@ public class VehicleController : MonoBehaviour, IPunObservable
             }
 
             photonView.transform.localPosition = Vector3.zero;
-            photonView.transform.localRotation = new Quaternion(0, 0, 0, 0);
+            photonView.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
         }
         else
         {
             photonView.transform.SetParent(transform.root.parent);
+            photonView.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
         }
     }
     #endregion
