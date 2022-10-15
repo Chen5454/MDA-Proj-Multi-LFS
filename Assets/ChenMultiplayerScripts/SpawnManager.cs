@@ -56,18 +56,17 @@ public class SpawnManager : MonoBehaviour
             PhotonNetwork.Instantiate(_playerFemalePrefab.name, randomPos, Quaternion.identity);
 
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.InstantiateRoomObject(_eranRoomPrefab.name, _eranRoomPosTransform.position,
-                _eranRoomPosTransform.rotation);
-            PhotonNetwork.InstantiateRoomObject(_operationRoomPrefab.name, _operationRoomTransform.position,
-                _operationRoomTransform.rotation);
 
-            foreach (Transform crewRoomPosTr in _crewRoomPosTransforms)
-            {
-                PhotonNetwork.InstantiateRoomObject(_crewRoomColliderPrefab.name, crewRoomPosTr.position,
-                    crewRoomPosTr.rotation);
-            }
+        PhotonNetwork.InstantiateRoomObject(_eranRoomPrefab.name, _eranRoomPosTransform.position,
+            _eranRoomPosTransform.rotation);
+        PhotonNetwork.InstantiateRoomObject(_operationRoomPrefab.name, _operationRoomTransform.position,
+            _operationRoomTransform.rotation);
+
+        foreach (Transform crewRoomPosTr in _crewRoomPosTransforms)
+        {
+            PhotonNetwork.InstantiateRoomObject(_crewRoomColliderPrefab.name, crewRoomPosTr.position,
+                crewRoomPosTr.rotation);
         }
+
     }
 }
