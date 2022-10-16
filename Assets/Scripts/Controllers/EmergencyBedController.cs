@@ -62,38 +62,22 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (photonView.IsMine)
         {
-            AlwaysChecking();
-
+            if (_inCar)
+            {
+                //_emergencyBed.GetComponent<BoxCollider>().isTrigger = true;
+                _isBedClosed = true;
+            }
+            else if (!_inCar)
+            {
+                //_emergencyBed.GetComponent<BoxCollider>().isTrigger = false;
+                _isBedClosed = false;
+            }
         }
-    }
-
-    public void AlwaysChecking()
-    {
-        // In Car
-        if (_inCar)
-        {
-            //_emergencyBed.GetComponent<BoxCollider>().isTrigger = true;
-            _isBedClosed = true;
-        }
-        else if (!_inCar)
-        {
-            //_emergencyBed.GetComponent<BoxCollider>().isTrigger = false;
-            _isBedClosed = false;
-        }
-    
-        // Fold
-        FoldUnfold();
-    
-        // Follow Player
-        FollowPlayer();
-    
-        // Take Out Bed
-        TakeOutReturnBed();
     }
     
     public void ShowInteractionsToggle()
     {
-        if (_emergencyBedUI.activeInHierarchy&& _photonView.IsMine)
+        if (_emergencyBedUI.activeInHierarchy && _photonView.IsMine)
         {
             _emergencyBedUI.SetActive(false);
             UIManager.Instance.CurrentActionBarParent.SetActive(true);
@@ -117,25 +101,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         if (_isBedClosed)
         {
             _isBedClosed = false;
+            _photonView.RPC("SetThisInactive", RpcTarget.AllBufferedViaServer);
         }
         else if (!_isBedClosed)
         {
             _isBedClosed = true;
-        }
-    }
-    
-    private void FoldUnfold()
-    {
-        if (_isBedClosed)
-        {
             _photonView.RPC("SetThisActive", RpcTarget.AllBufferedViaServer);
-
-        }
-        else if (!_isBedClosed)
-        {
-            _photonView.RPC("SetThisInactive", RpcTarget.AllBufferedViaServer);
-
-
         }
     }
     
@@ -147,33 +118,24 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             {
                 _isFollowingPlayer = false;
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
+                EmergencyBedUI.SetActive(false);
+
+                //_isFacingTrolley = false;
+                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
+                _followUnfollowText.text = _followText;
             }
             else if (!_isFollowingPlayer)
             {
                 _isFollowingPlayer = true;
                 UIManager.Instance.CurrentActionBarParent.SetActive(false);
-            }
-            _emergencyBedUI.SetActive(false);
-        }
-    }
-    
-    private void FollowPlayer()
-    {
-        if (_player != null)
-        {
-            if (_isFollowingPlayer)
-            {
+                EmergencyBedUI.SetActive(true);
+
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
-                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer,PhotonNetwork.NickName);
+                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _unfollowText;
             }
-            else if (!_isFollowingPlayer)
-            {
-                //_isFacingTrolley = false;
-                _photonView.RPC("SetBedParent", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
-                _followUnfollowText.text = _followText;
-            }
+            _emergencyBedUI.SetActive(false);
         }
     }
     
@@ -182,12 +144,10 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         if (_patient != null && !IsPatientOnBed)
         {
              _photonView.RPC("PutOnBed", RpcTarget.AllBufferedViaServer);
-
         }
         else if (_patient != null && IsPatientOnBed && !_inCar)
         {
             _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer);
-
         }
     }
     
@@ -200,6 +160,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             _emergencyBedUI.SetActive(true);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
             FollowPlayerToggle();
+            _takeReturnText.text = _returnText;
         }
         else if (_inCar && _takeOutBed)
         {
@@ -210,25 +171,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         {
             _takeOutBed = false;
             _inCar = true;
-            transform.position = _emergencyBedPositionInsideVehicle.position;
-            transform.rotation = _emergencyBedPositionInsideVehicle.rotation;
-            transform.SetParent(_emergencyBedPositionInsideVehicle);
-        }
-    }
-    
-    private void TakeOutReturnBed()
-    {
-        if (_inCar && !_takeOutBed)
-        {
             _isFollowingPlayer = false;
             transform.position = _emergencyBedPositionInsideVehicle.position;
             transform.rotation = _emergencyBedPositionInsideVehicle.rotation;
             transform.SetParent(_emergencyBedPositionInsideVehicle);
             _takeReturnText.text = _takeText;
-        }
-        else if (!_inCar && _takeOutBed)
-        {
-            _takeReturnText.text = _returnText;
         }
     }
 
@@ -302,7 +249,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
-           // stream.SendNext(transform.position);
+            // stream.SendNext(transform.position);
             //stream.SendNext(transform.rotation);
             stream.SendNext(_emergencyBedPositionInsideVehicle.position);
             stream.SendNext(_emergencyBedPositionOutsideVehicle.position);
@@ -315,8 +262,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         }
         else
         {
-           // transform.position = (Vector3)stream.ReceiveNext();
-           // transform.rotation = (Quaternion)stream.ReceiveNext();
+            // transform.position = (Vector3)stream.ReceiveNext();
+            // transform.rotation = (Quaternion)stream.ReceiveNext();
             _emergencyBedPositionInsideVehicle.position = (Vector3)stream.ReceiveNext();
             _emergencyBedPositionOutsideVehicle.position = (Vector3)stream.ReceiveNext();
             _isBedClosed = (bool)stream.ReceiveNext();

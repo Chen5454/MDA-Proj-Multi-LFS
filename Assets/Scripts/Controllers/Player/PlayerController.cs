@@ -161,10 +161,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (!other.gameObject.TryGetComponent(out Patient possiblePatient))
+            if (other.gameObject.CompareTag("Car"))
             {
-                return;
+                VehicleController vehicleController = other.gameObject.GetComponent<VehicleController>();
+
+                foreach (GameObject door in vehicleController.AllDoors)
+                {
+                    door.layer = 7;
+                }
             }
+
+            if (!other.gameObject.TryGetComponent(out Patient possiblePatient))
+                return;
+
             PlayerData.CurrentPatientNearby = possiblePatient;
         }
     }
@@ -173,10 +182,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (!other.gameObject.TryGetComponent(out Patient possiblePatient))
+            if (other.gameObject.CompareTag("Car"))
             {
-                return;
+                VehicleController vehicleController = other.gameObject.GetComponent<VehicleController>();
+
+                foreach (GameObject door in vehicleController.AllDoors)
+                {
+                    door.layer = 0;
+                }
             }
+
+            if (!other.gameObject.TryGetComponent(out Patient possiblePatient))
+                return;
+
             PlayerData.CurrentPatientNearby = null;
         }
     }
