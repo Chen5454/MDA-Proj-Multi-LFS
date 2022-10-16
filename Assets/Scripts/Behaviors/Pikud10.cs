@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
+using VivoxUnity;
 
 public class Pikud10 : MonoBehaviour
 {
+
+
     private PhotonView _photonView => GetComponent<PhotonView>();
     private Coroutine _updatePlayerListCoroutine;
     private GameObject _worldMarkCanvas;
@@ -20,22 +23,49 @@ public class Pikud10 : MonoBehaviour
     private bool _isPikud10MenuOpen;
     private bool _isMarking = false;
 
+
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
-    [Header("Pikod10 UI")]
-    public GameObject Pikud10Menu;
+    [Header("Pikod10 UI")] public GameObject Pikud10Menu;
     public Camera Pikud10Camera;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button TopMenuHandle, AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button[] AllAreaMarkings = new Button[6];
 
+
+  //  private string channelName;
+    //private bool positionalChannelExists;
+
+    private void Awake()
+    {
+       // VivoxManager.Instance.isPikud10 = true;
+    }
+
     #region MonobehaviourCallbacks
+
     private void Start()
     {
+
         InitializePikud10();
         CameraTransmition();
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
+
+        
+        //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession);
+        //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession2);
+        
+
+        //VivoxManager.Instance.vivox.loginSession.Logout();
+     
+        //VivoxManager.Instance.BindLoginCallBack(false, VivoxManager.Instance.vivox.loginSession);
+       
+        //Debug.Log("Pikud10 Logged out from everything.");
+
+
+        //StartCoroutine(ReconnectToVivox(2));
+
+
     }
 
     private void Update()
@@ -51,57 +81,69 @@ public class Pikud10 : MonoBehaviour
         UIManager.Instance.TeamLeaderMenu.SetActive(true);
         UIManager.Instance.Pikud10Menu.SetActive(false);
     }
+
     #endregion
 
     #region Getters
+
     public int GetRefuaIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
 
         }
+
         return Index;
     }
+
     public int GetPinoyeIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
 
         }
+
         return Index;
     }
+
     public int GetHenyonIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
 
         }
+
         return Index;
     }
+
     #endregion
 
     #region Coroutines
+
     IEnumerator HandleDropDownUpdates(float nextUpdate)
     {
         while (true)
@@ -111,34 +153,45 @@ public class Pikud10 : MonoBehaviour
                 _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
 
             }
+
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownPinuy10.options.Count)
             {
                 _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
 
             }
+
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownHenyon10.options.Count)
             {
                 _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
             }
+
             yield return new WaitForSeconds(nextUpdate);
         }
     }
+
     #endregion
 
     #region Private Methods
+
     private void InitializePikud10()
     {
         _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
     }
+
     private void SetLineTargetPos()
     {
         _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
-        _lineRenderer.SetPosition(1, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-        _lineRenderer.SetPosition(2, new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-        _lineRenderer.SetPosition(3, new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
-        _lineRenderer.SetPosition(4, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
+        _lineRenderer.SetPosition(1,
+            new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
+        _lineRenderer.SetPosition(2,
+            new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
+        _lineRenderer.SetPosition(3,
+            new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
+        _lineRenderer.SetPosition(4,
+            new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
         _lineRenderer.SetPosition(5, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
     }
+
     private void ChooseAreaPos(int markIndex)
     {
         if (Input.GetMouseButtonDown(0))
@@ -146,14 +199,17 @@ public class Pikud10 : MonoBehaviour
             _photonView.RPC("SetMarkRPC", RpcTarget.AllViaServer, markIndex);
         }
     }
+
     private void CameraTransmition()
     {
         //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
         _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
     }
+
     #endregion
 
     #region Public Methods
+
     public void OpenClosePikud10Menu()
     {
         if (!_isPikud10MenuOpen)
@@ -172,18 +228,22 @@ public class Pikud10 : MonoBehaviour
         TopMenuHandle.onClick.RemoveAllListeners();
         TopMenuHandle.onClick.AddListener(delegate { OpenClosePikud10Menu(); });
     }
+
     public void OnClickRefua()
     {
         _photonView.RPC("GiveRefuaRole", RpcTarget.AllBufferedViaServer, GetRefuaIndex());
     }
+
     public void OnClickPinoye()
     {
         _photonView.RPC("GivePinoyeRole", RpcTarget.AllBufferedViaServer, GetPinoyeIndex());
     }
+
     public void OnClickHenyon()
     {
         _photonView.RPC("GiveHenyonRole", RpcTarget.AllBufferedViaServer, GetHenyonIndex());
     }
+
     public void CreateMarkedArea(int markIndex, CameraController camController)
     {
         _isMarking = true;
@@ -217,13 +277,16 @@ public class Pikud10 : MonoBehaviour
                 break;
         }
     }
+
     public void OnClickMarker(int markIndex) // markerIndex is responsible for choosing the targeted btn
     {
         _photonView.RPC("ActivateAreaMarkingRPC", RpcTarget.AllViaServer, markIndex);
     }
+
     #endregion
 
     #region PunRPC
+
     [PunRPC]
     private void InitializePikud10RPC()
     {
@@ -301,14 +364,144 @@ public class Pikud10 : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit areaPosRaycastHit, 20f, _groundLayer))
             {
                 _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
-                GameObject worldMark = PhotonNetwork.Instantiate("WorldMark Canvas", new Vector3(_targetPos.x, _worldMarkHeight, _targetPos.y), Quaternion.identity);
-                worldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = worldMark.GetComponent<WorldMark>().Marks[markIndex];
+                GameObject worldMark = PhotonNetwork.Instantiate("WorldMark Canvas",
+                    new Vector3(_targetPos.x, _worldMarkHeight, _targetPos.y), Quaternion.identity);
+                worldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
+                    worldMark.GetComponent<WorldMark>().Marks[markIndex];
                 _allWorldMarks.Add(worldMark);
                 SetLineTargetPos();
             }
         }
-    
+
         _isMarking = false;
     }
+
     #endregion
+
+
+    //public void LocalMuteSelf(VivoxUnity.Client client)
+    //{
+    //    client.AudioInputDevices.Muted = true;
+    //}
+
+    //public void LocalUnmuteSelf(VivoxUnity.Client client)
+    //{
+    //    client.AudioInputDevices.Muted = false;
+    //}
+
+
+    //IEnumerator ReconnectToVivox(float refresh)
+    //{
+    //    yield return new WaitForSeconds(refresh);
+
+    //    //if (!VivoxManager.Instance.vivox.client.Initialized)
+    //    //    VivoxManager.Instance.InitializeClient();
+
+    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedOut)
+    //    {
+    //       // VivoxManager.Instance.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+
+    //        if (VivoxManager.Instance.FilterChannelAndUserName(PhotonNetwork.NickName))
+    //        {
+
+    //            VivoxManager.Instance.Login(PhotonNetwork.NickName);
+
+    //        }
+
+    //    }
+
+    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
+    //    {
+    //        VivoxManager.Instance.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+
+    //    }
+
+    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
+    //    {
+    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Disconnected)
+    //        {
+    //            VivoxManager.Instance.VivoxJoin3DPositional(VivoxManager.Instance.vivox.Channel3DName, true, false, false, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
+    //            Debug.Log(" Logging VivoxJoin3DPositional ");
+
+    //        }
+
+    //        if (VivoxManager.Instance.vivox.channelSession2.ChannelState == ConnectionState.Disconnected)
+    //        {
+    //            VivoxManager.Instance.Join2DChannel(VivoxManager.Instance.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
+    //            Debug.Log(" Logging Join2DChannel ");
+    //        }
+
+    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected)
+    //        {
+    //            StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
+
+    //        }
+
+
+
+    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected && VivoxManager.Instance.vivox.channelSession2.ChannelState == ConnectionState.Connected)
+    //        {
+    //            Debug.Log(" yield break ");
+    //            yield break;
+    //        }
+    //    }
+
+    //    StartCoroutine(ReconnectToVivox(refresh));
+
+        
+    //}
+
+    //IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
+    //{
+    //    yield return new WaitForSeconds(nextUpdate);
+
+
+
+    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
+    //    {
+    //        if (positionalChannelExists)
+    //        {
+    //            VivoxManager.Instance.vivox.channelSession.Set3DPosition(transform.position, transform.position,
+    //                transform.forward, transform.up);
+
+    //        }
+    //        else
+    //        {
+    //            positionalChannelExists = CheckIfChannelExists();
+    //        }
+    //    }
+
+    //    StartCoroutine(Handle3DVoipPositionUpdate(nextUpdate));
+
+
+
+
+    //}
+
+
+    //public bool CheckIfChannelExists()
+    //{
+
+    //    if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+    //    {
+    //        channelName = VivoxManager.Instance.vivox.channelSession.Channel.Name;
+    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected)
+    //        {
+    //            Debug.Log($"Channel : {channelName} is connected");
+    //            if (VivoxManager.Instance.vivox.channelSession.AudioState == ConnectionState.Connected)
+    //            {
+    //                Debug.Log($"Audio is Connected in Channel : {channelName}");
+    //                return true;
+    //            }
+
+    //            Debug.Log($"Audio is Connected in Channel : {channelName}");
+    //        }
+    //        else
+    //        {
+    //            Debug.Log($"Channel : {channelName} is not Connected");
+    //        }
+    //    }
+
+    //    return false;
+    //}
 }

@@ -5,32 +5,42 @@ using UnityEngine;
 using VivoxUnity;
 using System.ComponentModel;
 using System.Reflection;
+using Photon.Pun;
 using TMPro;
 
 
 public class VivoxManager : MonoBehaviour
 {
-    //public static VivoxManager Instance;
+    public static VivoxManager Instance;
 
     public VivoxBaseData vivox = new VivoxBaseData();
+    public Lobby Lobby;
 
     private void Awake()
     {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this);
+            Instance = this;
+
+        }
+
         InitializeClient();
+
         DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-
     }
 
     private void OnApplicationQuit()
     {
-        
 
         // LeaveChannelClick();
-        LeaveChannel(vivox.channelSession, vivox.Channel3DName);
+        LeaveChannel(vivox.channelSession);
+        LeaveChannel(vivox.channelSession2);
         vivox.loginSession.Logout();
         BindLoginCallBack(false, vivox.loginSession);
         vivox.client.Uninitialize(); // closes all the net to the servers
@@ -112,6 +122,22 @@ public class VivoxManager : MonoBehaviour
             channelSesh.Participants.AfterValueUpdated -= OnPraticipantUpdated;
         }
     }
+    public void BindUserCallBacks2D(bool bind, IChannelSession channelSesh)
+    {
+        if (bind)
+        {
+            channelSesh.Participants.AfterKeyAdded += OnPraticipantAdded2D;
+            channelSesh.Participants.BeforeKeyRemoved += OnPraticipantRemoved2D;
+            channelSesh.Participants.AfterValueUpdated += OnPraticipantUpdated2D;
+
+        }
+        else
+        {
+            channelSesh.Participants.AfterKeyAdded -= OnPraticipantAdded2D;
+            channelSesh.Participants.BeforeKeyRemoved -= OnPraticipantRemoved2D;
+            channelSesh.Participants.AfterValueUpdated -= OnPraticipantUpdated2D;
+        }
+    }
 
     #endregion
 
@@ -121,6 +147,11 @@ public class VivoxManager : MonoBehaviour
         AccountId accountId = new AccountId(vivox.issuer, userName, vivox.domain);
         vivox.loginSession = vivox.client.GetLoginSession(accountId);
         BindLoginCallBack(true, vivox.loginSession);
+//#if UNITY_EDITOR
+        if(Lobby.ConnectAsPikud10.isOn)
+        vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
+//#endif
+
         vivox.loginSession.BeginLogin(vivox.server, vivox.loginSession.GetLoginToken(vivox.tokeKey, vivox.timeSpan), ar =>
         {
             try
@@ -150,8 +181,10 @@ public class VivoxManager : MonoBehaviour
 
             case LoginState.LoggedIn:
                 Debug.Log($"Logged In{vivox.loginSession.LoginSessionId.Name}");
+               // isLoggedIn = true;
                 Debug.Log($"Logged Into Vivox Servers");
                 break;
+            
         }
     }
 
@@ -203,17 +236,23 @@ public class VivoxManager : MonoBehaviour
     }
 
 
-    public void Join2DChannel(string channelName, bool IsAudio, bool IsText, bool switchTransmission)
+    public void Join2DChannel(string channelName, bool IsAudio, bool IsText, bool switchTransmission, ChannelType channelType)
     {
-        ChannelId channelId = new ChannelId(vivox.issuer, channelName, vivox.domain);
+        ChannelId channelId = new ChannelId(vivox.issuer, channelName, vivox.domain, channelType);
         vivox.channelSession2 = vivox.loginSession.GetChannelSession(channelId);
         BindChannelCallBackListener2D(true, vivox.channelSession2);
-        BindUserCallBacks(true, vivox.channelSession2);
+        BindUserCallBacks2D(true, vivox.channelSession2);
 
         if (IsAudio)
         {
             vivox.channelSession2.PropertyChanged += OnAudioStateChanged2D;
         }
+
+        if (IsText)
+        {
+            vivox.channelSession2.PropertyChanged += OnTextStateChanged;
+        }
+
         vivox.channelSession2.BeginConnect(IsAudio, IsText, switchTransmission, vivox.channelSession2.GetConnectToken(vivox.tokeKey, vivox.timeSpan), ar =>
         {
             try
@@ -223,24 +262,29 @@ public class VivoxManager : MonoBehaviour
             catch (Exception e)
             {
                 BindChannelCallBackListener2D(false, vivox.channelSession2);
-                BindUserCallBacks(false, vivox.channelSession2);
+                BindUserCallBacks2D(false, vivox.channelSession2);
 
                 if (IsAudio)
                 {
                     vivox.channelSession2.PropertyChanged -= OnAudioStateChanged2D;
                 }
+
+                if (IsText)
+                {
+                    vivox.channelSession2.PropertyChanged -= OnTextStateChanged;
+                }
+
                 Debug.Log(e);
             }
         });
     }
 
+   
 
-
-    public void LeaveChannel(IChannelSession channelToDisconnect, string channelName)
+    public void LeaveChannel(IChannelSession channelToDisconnect)
     {
         channelToDisconnect.Disconnect();
-        vivox.loginSession.DeleteChannelSession(new ChannelId(vivox.issuer, channelName, vivox.domain));
-
+        // vivox.loginSession.DeleteChannelSession(new ChannelId(vivox.issuer, channelName, vivox.domain));
     }
 
 
@@ -266,6 +310,29 @@ public class VivoxManager : MonoBehaviour
 
     }
     public void OnPraticipantUpdated(object sender, ValueEventArg<string, IParticipant> participantArg)
+    {
+        var source = (VivoxUnity.IReadOnlyDictionary<string, IParticipant>)sender;
+
+        var user = source[participantArg.Key];
+    }
+    public void OnPraticipantAdded2D(object sender, KeyEventArg<string> participantArg)
+    {
+        var source = (VivoxUnity.IReadOnlyDictionary<string, IParticipant>)sender;
+
+        var user = source[participantArg.Key];
+
+        Debug.Log($"{user.Account.Name} has join the channel");
+    }
+    public void OnPraticipantRemoved2D(object sender, KeyEventArg<string> participantArg)
+    {
+        var source = (VivoxUnity.IReadOnlyDictionary<string, IParticipant>)sender;
+
+        var user = source[participantArg.Key];
+
+        Debug.Log($"{user.Account.Name} has left the channel");
+
+    }
+    public void OnPraticipantUpdated2D(object sender, ValueEventArg<string, IParticipant> participantArg)
     {
         var source = (VivoxUnity.IReadOnlyDictionary<string, IParticipant>)sender;
 
@@ -308,26 +375,30 @@ public class VivoxManager : MonoBehaviour
     public void OnChannelStatusChanged2D(object sender, PropertyChangedEventArgs channelArgs)
     {
         IChannelSession source = (IChannelSession)sender;
-
-        switch (source.ChannelState)
+        if (channelArgs.PropertyName == "ChannelState")
         {
-            case ConnectionState.Connecting:
-                Debug.Log("Channel2D Connecting...");
-                break;
-            case ConnectionState.Connected:
-                Debug.Log($"{source.Channel.Name}Channel2D Connected");
+            switch (source.ChannelState)
+            {
+                case ConnectionState.Connecting:
+                    Debug.Log("Channel2D Connecting...");
+                    break;
+                case ConnectionState.Connected:
+                    Debug.Log($"{source.Channel.Name}Channel2D Connected");
 
-                break;
-            case ConnectionState.Disconnecting:
-                Debug.Log($"{source.Channel.Name}Channel2D Disconnecting...");
 
-                break;
-            case ConnectionState.Disconnected:
-                Debug.Log($"{source.Channel.Name}Channel2D Disconnected");
+                    break;
+                case ConnectionState.Disconnecting:
+                    Debug.Log($"{source.Channel.Name}Channel2D Disconnecting...");
 
-                break;
+                    break;
+                case ConnectionState.Disconnected:
+                    Debug.Log($"{source.Channel.Name}Channel2D Disconnected");
+                    BindChannelCallBackListener2D(false, vivox.channelSession2);
+                    BindUserCallBacks2D(false, vivox.channelSession2);
+                
+                    break;
+            }
         }
-
     }
 
     public void OnAudioStateChanged(object sender, PropertyChangedEventArgs AudioArgs)
@@ -342,6 +413,7 @@ public class VivoxManager : MonoBehaviour
                     break;
                 case ConnectionState.Connected:
                     Debug.Log("Audio Channel Connected");
+                   // Channel3DOnline = true;
 
                     break;
                 case ConnectionState.Disconnecting:
@@ -351,6 +423,7 @@ public class VivoxManager : MonoBehaviour
                 case ConnectionState.Disconnected:
                     Debug.Log("Audio Channel Disconnected");
                     vivox.channelSession.PropertyChanged -= OnAudioStateChanged;
+                   // Channel3DOnline = false;
 
                     break;
             }
@@ -387,37 +460,37 @@ public class VivoxManager : MonoBehaviour
 
     public void OnAudioStateChanged2D(object sender, PropertyChangedEventArgs AudioArgs)
     {
-        IChannelSession source = (IChannelSession)sender;
-
-        switch (source.AudioState)
+        IChannelSession source = (IChannelSession) sender;
+        if (AudioArgs.PropertyName == "AudioState")
         {
-            case ConnectionState.Connecting:
-                Debug.Log("Audio Channel2D Connecting...");
-                break;
-            case ConnectionState.Connected:
-                Debug.Log("Audio Channel2D Connected");
+            switch (source.AudioState)
+            {
+                case ConnectionState.Connecting:
+                    Debug.Log("Audio Channel2D Connecting...");
+                    break;
+                case ConnectionState.Connected:
+                    Debug.Log("Audio Channel2D Connected");
+               
+               //     Channel2DOnline = true;
+                    break;
+                case ConnectionState.Disconnecting:
+                    Debug.Log("Audio Channel2D Disconnecting...");
 
-                break;
-            case ConnectionState.Disconnecting:
-                Debug.Log("Audio Channel2D Disconnecting...");
-
-                break;
-            case ConnectionState.Disconnected:
-                Debug.Log("Audio Channel2D Disconnected");
-                //if (isPikud10)
-                //{
-                //    LoginCredentials.Instance.VivoxJoinChannel(LoginCredentials.Instance._channelName2, true, false,
-                //        true, ChannelType.NonPositional);
-                //    LoginCredentials.Instance.loginSession.SetTransmissionMode(TransmissionMode.All);
-                //}
-
-                break;
+                    break;
+                case ConnectionState.Disconnected:
+                    Debug.Log("Audio Channel2D Disconnected");
+                    vivox.channelSession2.PropertyChanged -= OnAudioStateChanged2D;
+                 //   Channel2DOnline = false;
+                
+                    break;
+            }
         }
     }
+
     #endregion
 
 
-    public bool FilterChannelAndUserName(string nameToFilter)
+        public bool FilterChannelAndUserName(string nameToFilter)
     {
         char[] allowedChars = new char[] { '0','1','2','3', '4', '5', '6', '7', '8', '9',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n','o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -441,16 +514,9 @@ public class VivoxManager : MonoBehaviour
         Debug.Log("OnSendLog");
     }
 
-    public void VivoxJoinChannel(string channelName, bool includeVoice, bool includeText, bool switchToThisChannel)
+    public void VivoxJoinChannel(string channelName, bool includeVoice, bool includeText, bool switchToThisChannel, ChannelType channelType)
     {
-        if (FilterChannelAndUserName(channelName))
-        {
-            Join2DChannel(channelName, includeVoice, includeText, switchToThisChannel);
-        }
-        else
-        {
-            Debug.Log("error");
-        }
+        Join2DChannel(channelName, includeVoice, includeText, switchToThisChannel, channelType);
     }
 
     public void VivoxJoin3DPositional(string channelName, bool includeVoice, bool includeText, bool switchToThisChannel, ChannelType channelType,

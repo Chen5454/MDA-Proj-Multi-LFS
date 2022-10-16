@@ -365,7 +365,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             }
         }
         //BlockRoomAccess();
-        Debug.LogError("Added to room");
+       // Debug.LogError("Added to room");
 
     }
 
@@ -379,7 +379,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             _playersInRoomList.Remove(currentPlayerView);
         }
 
-        Debug.LogError("Remove from room");
+        //Debug.LogError("Remove from room");
 
     }
 

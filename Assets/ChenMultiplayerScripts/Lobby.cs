@@ -12,7 +12,6 @@ using VivoxUnity;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private VivoxManager _VivoxManager;
     [SerializeField] private ToggleButton _femaleAvatar, _maleAvatar;
     [SerializeField] private string _pickAvatarText, _idleConnectText, _connectingText;
     [SerializeField] private bool _isAvatarPicked;
@@ -29,11 +28,11 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public string PhotonRoomName = "MDA";
     public Button ConnectButton;
+    public Toggle ConnectAsPikud10;
 
 
     private void Start()
     {
-        //_VivoxManager = GameObject.FindObjectOfType<VivoxManager>();
 
         if (PlayerPrefs.HasKey("username"))
         {
@@ -42,6 +41,8 @@ public class Lobby : MonoBehaviourPunCallbacks
         }
 
         ConnectButton.interactable = false;
+        DontDestroyOnLoad(this.gameObject);
+
     }
 
     private void Update()
@@ -130,9 +131,10 @@ public class Lobby : MonoBehaviourPunCallbacks
     #region MyRegion
     public void LoginUser()
     {
-        if (_VivoxManager.FilterChannelAndUserName(usernameInput.text))
+
+        if (VivoxManager.Instance.FilterChannelAndUserName(usernameInput.text))
         {
-            _VivoxManager.Login(usernameInput.text);
+            VivoxManager.Instance.Login(usernameInput.text);
         }
     }
 
