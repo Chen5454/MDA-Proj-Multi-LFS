@@ -26,7 +26,7 @@ public class VehicleInteraction : MonoBehaviour
     {
         foreach (GameObject door in _vehicleController.AllDoors)
         {
-            door.layer = _vehicleController.DefaultLayerNum;
+            door.layer = (int)LayerMasks.Default;
         }
 
         _vehicleSit = (VehicleSit)sitNum;
@@ -176,7 +176,7 @@ public class VehicleInteraction : MonoBehaviour
     {
         foreach (GameObject door in _vehicleController.AllDoors)
         {
-            door.layer = _vehicleController.InteractableLayerNum;
+            door.layer = (int)LayerMasks.Interactable;
         }
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)

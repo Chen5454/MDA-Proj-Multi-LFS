@@ -6,6 +6,8 @@ using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+enum LayerMasks { Default, TransperentFX, IgnoreRaycast, Ground, Water, UI, Map, Interactable}
+
 public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 {
     public static GameManager Instance;

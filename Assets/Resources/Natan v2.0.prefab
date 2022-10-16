@@ -648,7 +648,7 @@ GameObject:
   - component: {fileID: 6882036030566574842}
   - component: {fileID: 8655019982163967620}
   - component: {fileID: 7574022353000354155}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: R_B_Door Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1016,7 @@ GameObject:
   - component: {fileID: 3902130007408321510}
   - component: {fileID: 8916669345503644858}
   - component: {fileID: 8737176028758100883}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: M_R_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1702,7 +1702,7 @@ GameObject:
   - component: {fileID: 2463263774110108315}
   - component: {fileID: 8214776518337550019}
   - component: {fileID: 7234823463482290334}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: R_F_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3125,7 +3125,7 @@ GameObject:
   - component: {fileID: 8423683840793445117}
   - component: {fileID: 1832762405607856623}
   - component: {fileID: 5524139641312242238}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: M_L_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4678,7 +4678,7 @@ GameObject:
   - component: {fileID: 1139890181063771115}
   - component: {fileID: 690999047765757101}
   - component: {fileID: 3689847333116823862}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: L_F_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4931,7 +4931,7 @@ GameObject:
   - component: {fileID: 5679264263409668232}
   - component: {fileID: 7354566319938350222}
   - component: {fileID: 8682117610808033258}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: L_B_Door Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5294,6 +5294,7 @@ MonoBehaviour:
   _motorForce: 2100
   _breakForce: 3000
   _maxSteerAngle: 18
+  _maxLean: 0
   _frontLeftWheelTransform: {fileID: 1857870792693714869}
   _frontRightWheeTransform: {fileID: 3835966314680864519}
   _rearLeftWheelTransform: {fileID: 8217453701622062125}
@@ -5322,8 +5323,17 @@ MonoBehaviour:
   CarEmergencyLightsLeft: {fileID: 7287312391105604345}
   CarEmergencyLightsRight: {fileID: 776242194858835036}
   CarSirenAudioSource: {fileID: 3403580760612684238}
+  AllDoors: []
+  InteractableLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  DefaultLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  InteractableLayerNum: 7
+  DefaultLayerNum: 0
   Transfer: {fileID: 3439748675638305761}
-  IsNatan: 0
+  IsNatan: 1
   IsCarHeadLightsOn: 0
   IsCarSirenOn: 0
   IsDriverIn: 0
@@ -5757,6 +5767,8 @@ MonoBehaviour:
   _isBedClosed: 0
   _isFollowingPlayer: 0
   _inCar: 1
+  _interactableLayerNum: 0
+  _defaultLayerNum: 0
   _transfer: {fileID: 2231145088984724049}
 --- !u!114 &2231145088984724049
 MonoBehaviour:

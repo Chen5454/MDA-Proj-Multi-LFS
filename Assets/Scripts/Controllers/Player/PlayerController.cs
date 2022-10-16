@@ -167,7 +167,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 foreach (GameObject door in vehicleController.AllDoors)
                 {
-                    door.layer = 7;
+                    door.layer = (int)LayerMasks.Interactable;
                 }
             }
 
@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 foreach (GameObject door in vehicleController.AllDoors)
                 {
-                    door.layer = 0;
+                    door.layer = (int)LayerMasks.Default;
                 }
             }
 

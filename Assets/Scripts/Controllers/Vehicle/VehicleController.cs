@@ -34,8 +34,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public Light CarEmergencyLightsLeft, CarEmergencyLightsRight;
     public AudioSource CarSirenAudioSource;
     public GameObject[] AllDoors;
-    public LayerMask InteractableLayer, DefaultLayer;
-    public int InteractableLayerNum, DefaultLayerNum;
     public OwnershipTransfer Transfer;
 
     [Header("Vehicle Conditionals")]
