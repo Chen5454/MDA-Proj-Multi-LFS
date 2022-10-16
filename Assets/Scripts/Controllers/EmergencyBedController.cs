@@ -36,6 +36,9 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     public bool IsPatientOnBed;
     [SerializeField] private bool _takeOutBed, _isBedClosed, _isFollowingPlayer, _inCar;
 
+    [Header("Layers")]
+    [SerializeField] private int _interactableLayerNum;
+    [SerializeField] private int _defaultLayerNum;
 
     private PhotonView _photonView;
 
@@ -243,6 +246,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             if (!IsPatientOnBed)
             {
                 _patient = other.gameObject;
+                _patient.layer = _defaultLayerNum;
             }
         }
 
@@ -268,6 +272,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         {
             if (!IsPatientOnBed)
             {
+                _patient.layer = _interactableLayerNum;
                 _patient = null;
             }
         }
@@ -328,23 +333,23 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
     [PunRPC]
     void PutOnBed()
     {
-        IsPatientOnBed = true;
+        _patient.layer = _defaultLayerNum;
         _patient.GetComponent<BoxCollider>().enabled = false;
         _patient.transform.SetPositionAndRotation(_patientPosOnBed.position, _patientPosOnBed.rotation); // parent
         _patient.transform.SetParent(this.transform);// parent
         _placeRemovePatientText.text = _removeText;
-        _emergencyBedUI.SetActive(false);
+        IsPatientOnBed = true;
     }
 
     [PunRPC]
     void RemoveFromBed()
     {
-        IsPatientOnBed = false;
+        _patient.layer = _interactableLayerNum;
         _patient.GetComponent<BoxCollider>().enabled = true;
         _patient.transform.position = _patientPosOffBed.position;// parent
         _patient.transform.SetParent(null);// parent
         _placeRemovePatientText.text = _placeText;
-        _emergencyBedUI.SetActive(false);
+        IsPatientOnBed = false;
     }
 
     [PunRPC]

@@ -24,6 +24,11 @@ public class VehicleInteraction : MonoBehaviour
     #region Enter & Exit Vehicle
     public void EnterVehicle(int sitNum)
     {
+        foreach (GameObject door in _vehicleController.AllDoors)
+        {
+            door.layer = _vehicleController.DefaultLayerNum;
+        }
+
         _vehicleSit = (VehicleSit)sitNum;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -169,6 +174,11 @@ public class VehicleInteraction : MonoBehaviour
     }
     public void ExitVehicle()
     {
+        foreach (GameObject door in _vehicleController.AllDoors)
+        {
+            door.layer = _vehicleController.InteractableLayerNum;
+        }
+
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)

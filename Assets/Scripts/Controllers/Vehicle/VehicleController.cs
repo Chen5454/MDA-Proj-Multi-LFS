@@ -18,7 +18,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
 
     [Header("Vehicle Components")]
     [SerializeField] private float _motorForce;
-    [SerializeField] private float _breakForce, _maxSteerAngle;
+    [SerializeField] private float _breakForce, _maxSteerAngle, _maxLean;
     [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform;
     [SerializeField] private WheelCollider _frontLeftWheelCollider, _frontRightWheelCollider, _rearLeftWheelCollider, _rearRightWheelCollider;
     [SerializeField] private Rigidbody _rb;
@@ -33,6 +33,9 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public GameObject CarHeadLights, CarSiren;
     public Light CarEmergencyLightsLeft, CarEmergencyLightsRight;
     public AudioSource CarSirenAudioSource;
+    public GameObject[] AllDoors;
+    public LayerMask InteractableLayer, DefaultLayer;
+    public int InteractableLayerNum, DefaultLayerNum;
     public OwnershipTransfer Transfer;
 
     [Header("Vehicle Conditionals")]
@@ -53,12 +56,9 @@ public class VehicleController : MonoBehaviour, IPunObservable
     {
         _photonView = GetComponent<PhotonView>();
         _carDashboardUI = UIManager.Instance.VehicleDriverUI;
-
     }
-
     private void Start()
     {
-
         _rb.isKinematic = true;
 
         RandomNumber = GetRandomInt(100, 999 + 1);

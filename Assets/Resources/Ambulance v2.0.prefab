@@ -824,6 +824,7 @@ Transform:
   - {fileID: 1251764883584310126}
   - {fileID: 3941282700914379423}
   - {fileID: 4759727536230206235}
+  - {fileID: 7824189577872611163}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -884,6 +885,7 @@ MonoBehaviour:
   _motorForce: 2100
   _breakForce: 3000
   _maxSteerAngle: 18
+  _maxLean: 11.5
   _frontLeftWheelTransform: {fileID: 9145011327708383281}
   _frontRightWheeTransform: {fileID: 5917158129136863363}
   _rearLeftWheelTransform: {fileID: 1525491463411506089}
@@ -912,6 +914,21 @@ MonoBehaviour:
   CarEmergencyLightsLeft: {fileID: 144217439918927229}
   CarEmergencyLightsRight: {fileID: 7918494537907223512}
   CarSirenAudioSource: {fileID: 5195485284514530890}
+  AllDoors:
+  - {fileID: 7269772518282729014}
+  - {fileID: 4594274460869049016}
+  - {fileID: 4184850593805158992}
+  - {fileID: 4207875832352345493}
+  - {fileID: 191435039932153960}
+  - {fileID: 7878613730267743191}
+  InteractableLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  DefaultLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  InteractableLayerNum: 7
+  DefaultLayerNum: 0
   Transfer: {fileID: 5232498664410506341}
   IsNatan: 0
   IsCarHeadLightsOn: 0
@@ -1359,6 +1376,8 @@ MonoBehaviour:
   _isBedClosed: 1
   _isFollowingPlayer: 0
   _inCar: 1
+  _interactableLayerNum: 7
+  _defaultLayerNum: 0
   _transfer: {fileID: 8779624945012766165}
 --- !u!114 &8779624945012766165
 MonoBehaviour:
@@ -1853,6 +1872,36 @@ WheelCollider:
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
+--- !u!1 &3076349257311531335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7824189577872611163}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7824189577872611163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3076349257311531335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3831116778341837722}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3093612070384241164
 GameObject:
   m_ObjectHideFlags: 0
