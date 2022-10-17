@@ -18,7 +18,6 @@ public class VivoxManager : MonoBehaviour
 
     private void Awake()
     {
-
         if (Instance == null)
         {
             Instance = this;
@@ -29,7 +28,6 @@ public class VivoxManager : MonoBehaviour
             Instance = this;
 
         }
-
         InitializeClient();
 
         DontDestroyOnLoad(this);
