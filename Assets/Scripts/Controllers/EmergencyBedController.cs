@@ -189,7 +189,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
             if (!IsPatientOnBed)
             {
                 _patient = other.gameObject;
-                _patient.layer = _defaultLayerNum;
+                _patient.layer = (int)LayerMasks.Default;
             }
         }
 
@@ -215,7 +215,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks,IPunObservable
         {
             if (!IsPatientOnBed)
             {
-                _patient.layer = _interactableLayerNum;
+                _patient.layer = (int)LayerMasks.Interactable;
                 _patient = null;
             }
         }
