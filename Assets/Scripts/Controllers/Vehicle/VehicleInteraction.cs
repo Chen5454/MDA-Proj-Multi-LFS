@@ -24,11 +24,6 @@ public class VehicleInteraction : MonoBehaviour
     #region Enter & Exit Vehicle
     public void EnterVehicle(int sitNum)
     {
-        foreach (GameObject door in _vehicleController.AllDoors)
-        {
-            door.layer = (int)LayerMasks.Default;
-        }
-
         _vehicleSit = (VehicleSit)sitNum;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -171,14 +166,14 @@ public class VehicleInteraction : MonoBehaviour
                 }
             }
         }
+
+        foreach (GameObject door in _vehicleController.AllDoors)
+        {
+            door.layer = (int)LayerMasks.Default;
+        }
     }
     public void ExitVehicle()
     {
-        foreach (GameObject door in _vehicleController.AllDoors)
-        {
-            door.layer = (int)LayerMasks.Interactable;
-        }
-
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
@@ -246,7 +241,13 @@ public class VehicleInteraction : MonoBehaviour
                 _vehicleController.PhotonView.RPC("ChangeSit", RpcTarget.All, i, 0, false);
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
                 DontDestroyOnLoad(photonView.gameObject);
+                break;
             }
+        }
+
+        foreach (GameObject door in _vehicleController.AllDoors)
+        {
+            door.layer = (int)LayerMasks.Interactable;
         }
     }
     #endregion
