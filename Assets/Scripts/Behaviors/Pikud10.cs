@@ -8,8 +8,6 @@ using VivoxUnity;
 
 public class Pikud10 : MonoBehaviour
 {
-
-
     private PhotonView _photonView => GetComponent<PhotonView>();
     private Coroutine _updatePlayerListCoroutine;
     private GameObject _worldMarkCanvas;
@@ -22,7 +20,6 @@ public class Pikud10 : MonoBehaviour
     private int _currentMarkIndex;
     private bool _isPikud10MenuOpen;
     private bool _isMarking = false;
-
 
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
@@ -45,16 +42,13 @@ public class Pikud10 : MonoBehaviour
 
     private void Start()
     {
-
         InitializePikud10();
         CameraTransmition();
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
-
         
         //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession);
         //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession2);
-        
 
         //VivoxManager.Instance.vivox.loginSession.Logout();
      
@@ -62,12 +56,8 @@ public class Pikud10 : MonoBehaviour
        
         //Debug.Log("Pikud10 Logged out from everything.");
 
-
         //StartCoroutine(ReconnectToVivox(2));
-
-
     }
-
     private void Update()
     {
         if (_isMarking)
@@ -75,75 +65,59 @@ public class Pikud10 : MonoBehaviour
             ChooseAreaPos(_currentMarkIndex);
         }
     }
-
     private void OnDestroy()
     {
         UIManager.Instance.TeamLeaderMenu.SetActive(true);
         UIManager.Instance.Pikud10Menu.SetActive(false);
     }
-
     #endregion
 
     #region Getters
-
     public int GetRefuaIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text ==
-                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
-
         }
-
         return Index;
     }
-
     public int GetPinoyeIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text ==
-                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
-
         }
-
         return Index;
     }
-
     public int GetHenyonIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text ==
-                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
-
         }
-
         return Index;
     }
-
     #endregion
 
     #region Coroutines
-
     IEnumerator HandleDropDownUpdates(float nextUpdate)
     {
         while (true)
@@ -151,13 +125,11 @@ public class Pikud10 : MonoBehaviour
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownRefua10.options.Count)
             {
                 _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
-
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownPinuy10.options.Count)
             {
                 _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
-
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownHenyon10.options.Count)
@@ -168,16 +140,13 @@ public class Pikud10 : MonoBehaviour
             yield return new WaitForSeconds(nextUpdate);
         }
     }
-
     #endregion
 
     #region Private Methods
-
     private void InitializePikud10()
     {
         _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
     }
-
     private void SetLineTargetPos()
     {
         _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
@@ -191,7 +160,6 @@ public class Pikud10 : MonoBehaviour
             new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
         _lineRenderer.SetPosition(5, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
     }
-
     private void ChooseAreaPos(int markIndex)
     {
         if (Input.GetMouseButtonDown(0))
@@ -199,17 +167,14 @@ public class Pikud10 : MonoBehaviour
             _photonView.RPC("SetMarkRPC", RpcTarget.AllViaServer, markIndex);
         }
     }
-
     private void CameraTransmition()
     {
         //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
         _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
     }
-
     #endregion
 
     #region Public Methods
-
     public void OpenClosePikud10Menu()
     {
         if (!_isPikud10MenuOpen)
@@ -228,22 +193,18 @@ public class Pikud10 : MonoBehaviour
         TopMenuHandle.onClick.RemoveAllListeners();
         TopMenuHandle.onClick.AddListener(delegate { OpenClosePikud10Menu(); });
     }
-
     public void OnClickRefua()
     {
         _photonView.RPC("GiveRefuaRole", RpcTarget.AllBufferedViaServer, GetRefuaIndex());
     }
-
     public void OnClickPinoye()
     {
         _photonView.RPC("GivePinoyeRole", RpcTarget.AllBufferedViaServer, GetPinoyeIndex());
     }
-
     public void OnClickHenyon()
     {
         _photonView.RPC("GiveHenyonRole", RpcTarget.AllBufferedViaServer, GetHenyonIndex());
     }
-
     public void CreateMarkedArea(int markIndex, CameraController camController)
     {
         _isMarking = true;
@@ -277,12 +238,10 @@ public class Pikud10 : MonoBehaviour
                 break;
         }
     }
-
     public void OnClickMarker(int markIndex) // markerIndex is responsible for choosing the targeted btn
     {
         _photonView.RPC("ActivateAreaMarkingRPC", RpcTarget.AllViaServer, markIndex);
     }
-
     #endregion
 
     #region PunRPC

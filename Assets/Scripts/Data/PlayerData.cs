@@ -372,12 +372,12 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SpectatePikudCamera_RPC()
     {
-        Pikud10 script = GameManager.Instance.Pikud10View.GetComponent<Pikud10>();
+        Pikud10 pikud10 = GameManager.Instance.Pikud10View.GetComponent<Pikud10>();
         GameManager.Instance.Pikud10View = PhotonView;
-        if (script != null)
+        if (pikud10 != null)
         {
-            script.Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
-            script.Pikud10Camera.gameObject.SetActive(true);
+            pikud10.Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
+            pikud10.Pikud10Camera.gameObject.SetActive(true);
         }
     }
     #endregion

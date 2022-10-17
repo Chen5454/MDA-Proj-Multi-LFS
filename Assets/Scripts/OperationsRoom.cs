@@ -36,7 +36,6 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         _transfer = GetComponent<OwnershipTransfer>();
         _photonView = GetComponent<PhotonView>();
     }
-
     private void Update()
     {
         if (_photonView.IsMine)
@@ -57,7 +56,6 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         if (isUsed)
         {
             MokdnMenuUI.GetComponentInParent<CanvasGroup>().interactable = true;
-
         }
     }
     #endregion
@@ -84,7 +82,6 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         _transfer.TvOwner();
         _photonView.RPC("ShowMokdanMenu_RPC", RpcTarget.AllBufferedViaServer);
         updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
-
     }
     public void RefreshPatientList()
     {
