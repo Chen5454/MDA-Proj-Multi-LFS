@@ -30,6 +30,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public GameObject PasswordInput;
     public GameObject PasswordTitle;
+    public GameObject WrongInput;
     private string filepath;
     private void Start()
     {
@@ -87,10 +88,12 @@ public class Lobby : MonoBehaviourPunCallbacks
                 buttonText.text = _connectingText;
                 isConnecting = PhotonNetwork.ConnectUsingSettings();
                 Debug.Log("Login Into Vivox now....");
+                WrongInput.SetActive(false);
                 LoginUser();
             }
             else
             {
+                WrongInput.SetActive(true);
                 ConnectButton.interactable = true;
                 Debug.Log("Username or Password is wrong");
             }
