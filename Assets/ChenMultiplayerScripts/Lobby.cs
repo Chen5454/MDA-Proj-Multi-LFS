@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
-using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using VivoxUnity;
 
 public class Lobby : MonoBehaviourPunCallbacks
 {
@@ -18,6 +14,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public TMP_Text buttonText;
     public TMP_InputField usernameInput;
+    public TMP_InputField passwordInput;
 
     private bool isConnecting;
     private byte maxPlayersPerRoom = 50;
@@ -29,10 +26,14 @@ public class Lobby : MonoBehaviourPunCallbacks
     public string PhotonRoomName = "MDA";
     public Button ConnectButton;
     public Toggle ConnectAsPikud10;
+    public Toggle ConnectAsInstructor;
 
-
+    public GameObject PasswordInput;
+    public GameObject PasswordTitle;
+    private string filepath;
     private void Start()
     {
+         filepath = Application.streamingAssetsPath + "/UsersAndPasswords/" + "UsersAndPasswords" + ".txt";
 
         if (PlayerPrefs.HasKey("username"))
         {
@@ -62,7 +63,7 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
-        if (usernameInput.text.Length >= 1)
+        if (usernameInput.text.Length >= 1 && !ConnectAsInstructor.isOn)
         {
             PhotonNetwork.NickName = usernameInput.text;
             PlayerPrefs.SetString("username", usernameInput.text);
@@ -72,6 +73,27 @@ public class Lobby : MonoBehaviourPunCallbacks
 
             Debug.Log("Login Into Vivox now....");
             LoginUser();
+        }
+
+
+
+        if (usernameInput.text.Length >= 1 && ConnectAsInstructor.isOn)
+        {
+
+            if (VerifyLogin(usernameInput.text, passwordInput.text, filepath))
+            {
+                PhotonNetwork.NickName = usernameInput.text;
+                PlayerPrefs.SetString("username", usernameInput.text);
+                buttonText.text = _connectingText;
+                isConnecting = PhotonNetwork.ConnectUsingSettings();
+                Debug.Log("Login Into Vivox now....");
+                LoginUser();
+            }
+            else
+            {
+                ConnectButton.interactable = true;
+                Debug.Log("Username or Password is wrong");
+            }
         }
     }
 
@@ -90,7 +112,6 @@ public class Lobby : MonoBehaviourPunCallbacks
     // this function will be called automatically by photon if we successfully connected to photon.
     public override void OnConnectedToMaster()
     {
-
         // SceneManager.LoadScene("Lobby");
         // PhotonNetwork.JoinLobby(); ---- we gonna use other method to auto log us into the scene
         Debug.Log("OnConnectedToMaster");
@@ -128,7 +149,22 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     }
 
-    #region MyRegion
+
+    public void InstructorButtonClick()
+    {
+        if (PasswordInput.activeInHierarchy&& PasswordTitle.activeInHierarchy)
+        {
+            PasswordInput.SetActive(false);
+            PasswordTitle.SetActive(false);
+        }
+        else
+        {
+            PasswordInput.SetActive(true);
+            PasswordTitle.SetActive(true);
+        }
+    }
+
+    #region VivoxLogin
     public void LoginUser()
     {
 
@@ -142,5 +178,23 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     #endregion
 
+    #region Authentication system
+
+    public static bool VerifyLogin(string username, string password, string filepath)
+    {
+        string[] lines = File.ReadAllLines(@filepath);
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string[] field = lines[i].Split(',');
+            if (field[0].Equals(username)&&field[1].Equals(password))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    #endregion
 
 }
