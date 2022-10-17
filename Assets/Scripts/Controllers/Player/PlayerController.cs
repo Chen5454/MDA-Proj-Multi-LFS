@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-            if (other.gameObject.CompareTag("Car"))
+            if (other.gameObject.CompareTag("Car") && !IsInVehicle)
             {
                 VehicleController vehicleController = other.gameObject.GetComponent<VehicleController>();
 
