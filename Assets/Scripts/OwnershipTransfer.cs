@@ -32,11 +32,7 @@ public class OwnershipTransfer : MonoBehaviourPun,IPunOwnershipCallbacks
         base.photonView.RequestOwnership();
 
     }
-    public void CarDoorAnimation()
-    {
-        base.photonView.RequestOwnership();
-
-    }
+ 
     public void BedPickUp()
     {
         base.photonView.RequestOwnership();
