@@ -28,7 +28,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public Transform CameraFollowTransform;
     public Transform DriverSit, PassangerSit, MiddleSit, LeftBackSit, RightBackSit;
     public Transform DriverExit, PassangerExit, MiddleExit;
-    public Transform BedTransform;
     public List<GameObject> CollidingPlayers;
     public PlayerController CurrentDriverController;
     public GameObject CarHeadLights, CarSiren;
@@ -276,7 +275,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
             stream.SendNext(IsMiddleIn);
             stream.SendNext(IsLeftBackIn);
             stream.SendNext(IsRightBackIn);
-            stream.SendNext(BedTransform.position);
         }
         else
         {
@@ -287,7 +285,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
             IsMiddleIn = (bool)stream.ReceiveNext();
             IsLeftBackIn = (bool)stream.ReceiveNext();
             IsRightBackIn = (bool)stream.ReceiveNext();
-            BedTransform.position = (Vector3)stream.ReceiveNext();
         }
     }
 }
