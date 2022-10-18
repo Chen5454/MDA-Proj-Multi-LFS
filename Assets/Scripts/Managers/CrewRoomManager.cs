@@ -29,6 +29,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private Color crewColor;
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
+    [SerializeField] private GameObject _tvScreen;
     [SerializeField] private GameObject _patientMale, _patientFemale, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
     [SerializeField] private Button _startSimulationBtn;
     [SerializeField] private TextMeshProUGUI _startSimulationTMP;
@@ -86,6 +87,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     {
         if (isUsed)
         {
+            _tvScreen.layer = (int)LayerMasks.Default;
             RoomCrewMenuUI.GetComponent<CanvasGroup>().interactable = true;
         }
     }
@@ -454,6 +456,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     void ShowCrewUI_RPC()
     {
         RoomCrewMenuUI.gameObject.SetActive(true);
+        _tvScreen.layer = (int)LayerMasks.Default;
         isUsed = true;
         
     }
@@ -493,6 +496,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     void CloseCrewUI_RPC()
     {
         isUsed = false;
+        _tvScreen.layer = (int)LayerMasks.Interactable;
         RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
