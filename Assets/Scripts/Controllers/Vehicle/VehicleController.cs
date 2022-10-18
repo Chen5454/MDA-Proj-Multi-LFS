@@ -262,6 +262,24 @@ public class VehicleController : MonoBehaviour, IPunObservable
             photonView.transform.localRotation = new Quaternion(0f, 0f, 0f, 0f);
         }
     }
+
+    [PunRPC]
+    public void OpenCloseBackDoorRPC()
+    {
+        if (IsBackDoorsOpen)
+        {
+            LeftBackDoorAnimator.SetBool("IsDoorOpen", false);
+            RightBackDoorAnimator.SetBool("IsDoorOpen", false);
+            IsBackDoorsOpen = false;
+            RightBackDoorAnimator.Play("Close Back Doors");
+        }
+        else
+        {
+            LeftBackDoorAnimator.SetBool("IsDoorOpen", true);
+            RightBackDoorAnimator.SetBool("IsDoorOpen", true);
+            IsBackDoorsOpen = true;
+        }
+    }
     #endregion
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

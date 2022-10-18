@@ -280,20 +280,7 @@ public class VehicleInteraction : MonoBehaviour
     #region OnClick Events
     public void OpenCloseBackDoor()
     {
-        if (_vehicleController.IsBackDoorsOpen)
-        {
-            _vehicleController.LeftBackDoorAnimator.SetBool("IsDoorOpen", false);
-            _vehicleController.RightBackDoorAnimator.SetBool("IsDoorOpen", false);
-            _vehicleController.IsBackDoorsOpen = false;
-            //_vehicleController.RightBackDoorAnimator.Play("Close Back Doors");
-        }
-        else
-        {
-            _vehicleController.LeftBackDoorAnimator.SetBool("IsDoorOpen", true);
-            _vehicleController.RightBackDoorAnimator.SetBool("IsDoorOpen", true);
-            _vehicleController.IsBackDoorsOpen = true;
-            //_vehicleController.RightBackDoorAnimator.Play("Open Back Doors");
-        }
+        _vehicleController.PhotonView.RPC("OpenCloseBackDoorRPC", RpcTarget.AllBufferedViaServer);
     }
     public void ToggleHeadlights()
     {

@@ -441,10 +441,10 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _isBedOut = true;
             _emergencyBedUI.SetActive(true);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
-            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true);
+            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, false);
 
-            _takeReturnText.text = _returnText;
             FollowPlayerToggle();
+            _takeReturnText.text = _returnText;
         }
         else if (!_inCar && _isBedOut)
         {
@@ -454,7 +454,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _inCar = true;
             _isBedOut = false;
             _emergencyBedUI.SetActive(false);
-            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, true, false);
+            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, true, false, false);
             transform.SetPositionAndRotation(_emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
 
             _takeReturnText.text = _takeText;
@@ -469,13 +469,13 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             {
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
-                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
+                _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, true);
                 _followUnfollowText.text = _unfollowText;
             }
             else if (!_isFollowingPlayer)
             {
                 //_isFacingTrolley = false;
-                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
+                _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, false, false);
                 _followUnfollowText.text = _followText;
             }
         }
@@ -487,7 +487,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             if (_isFollowingPlayer)
             {
                 _isFollowingPlayer = false;
-                _photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
+                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _followText;
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
             }
@@ -496,7 +496,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _isFollowingPlayer = true;
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
-                _photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
+                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _unfollowText;
                 UIManager.Instance.CurrentActionBarParent.SetActive(false);
             }
@@ -649,21 +649,25 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    private void SetBedParentRPC(string currentPlayer, bool shouldBeInCar, bool shouldBeWithPlayer)
+    private void SetBedParentRPC(string currentPlayer, bool shouldBeInCar, bool shouldBeOut, bool shouldFollowPlayer)
     {
         PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
 
-        if (shouldBeInCar && !shouldBeWithPlayer)
+        if (shouldBeInCar && !shouldBeOut && !shouldFollowPlayer)
         {
             transform.SetParent(_emergencyBedPositionInsideVehicle);
         }
-        else if (shouldBeWithPlayer && !shouldBeInCar)
+        else if (!shouldBeInCar && shouldBeOut && !shouldFollowPlayer)
         {
             gameObject.transform.SetParent(_emergencyBedPositionOutsideVehicle);
         }
-        else if (!shouldBeInCar && !shouldBeWithPlayer)
+        else if (!shouldBeInCar && !shouldBeOut && !shouldFollowPlayer)
         {
             gameObject.transform.SetParent(null);
+        }
+        else if (!shouldBeInCar && shouldBeOut && shouldFollowPlayer)
+        {
+            gameObject.transform.SetParent(currentPlayerView.transform);
         }
     }
 }
