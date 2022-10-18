@@ -5323,15 +5323,13 @@ MonoBehaviour:
   CarEmergencyLightsLeft: {fileID: 7287312391105604345}
   CarEmergencyLightsRight: {fileID: 776242194858835036}
   CarSirenAudioSource: {fileID: 3403580760612684238}
-  AllDoors: []
-  InteractableLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  DefaultLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  InteractableLayerNum: 7
-  DefaultLayerNum: 0
+  AllDoors:
+  - {fileID: 7252220097119544415}
+  - {fileID: 2265546415297288588}
+  - {fileID: 1271156342343122552}
+  - {fileID: 4278376817856738991}
+  - {fileID: 7316658183648724972}
+  - {fileID: 754235891956941907}
   Transfer: {fileID: 3439748675638305761}
   IsNatan: 1
   IsCarHeadLightsOn: 0
@@ -5688,8 +5686,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8222993477085012351}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
+  m_LocalPosition: {x: -0.00000029057264, y: 0, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3640822611665132533}
@@ -5699,7 +5697,7 @@ Transform:
   - {fileID: 4354621714300540252}
   m_Father: {fileID: 1844949061783796070}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!65 &6664187009277404177
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5763,11 +5761,11 @@ MonoBehaviour:
   _emergencyBedPositionInsideVehicle: {fileID: 1844949061783796070}
   _emergencyBedPositionOutsideVehicle: {fileID: 4911749809814041521}
   IsPatientOnBed: 0
-  _takeOutBed: 0
-  _isBedClosed: 0
+  _isBedOut: 0
   _isFollowingPlayer: 0
   _inCar: 1
-  _interactableLayerNum: 0
+  _isBedClosed: 1
+  _interactableLayerNum: 7
   _defaultLayerNum: 0
   _transfer: {fileID: 2231145088984724049}
 --- !u!114 &2231145088984724049
@@ -6306,7 +6304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6787493861624440810, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
       propertyPath: m_LocalPosition.x

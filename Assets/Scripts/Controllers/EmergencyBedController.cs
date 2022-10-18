@@ -441,6 +441,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _isBedOut = true;
             _emergencyBedUI.SetActive(true);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
+
+            // bed needs to be [in car], [just outside car] ,[with player]
             _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, false);
 
             FollowPlayerToggle();
@@ -454,6 +456,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _inCar = true;
             _isBedOut = false;
             _emergencyBedUI.SetActive(false);
+
+            // bed needs to be [in car], [just outside car] ,[with player]
             _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, true, false, false);
             transform.SetPositionAndRotation(_emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
 
@@ -469,13 +473,18 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             {
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
+
+                // bed needs to be [in car], [just outside car] ,[with player]
                 _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, true);
                 _followUnfollowText.text = _unfollowText;
             }
             else if (!_isFollowingPlayer)
             {
                 //_isFacingTrolley = false;
-                _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, false, false);
+                // bed needs to be [in car], [just outside car] ,[with player]
+                if (!_inCar)
+                    _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, false, false);
+
                 _followUnfollowText.text = _followText;
             }
         }
