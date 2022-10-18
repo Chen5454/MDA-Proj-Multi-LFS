@@ -82,9 +82,16 @@ public class UIManager : MonoBehaviour
     public GameObject AmbulanceBar, NatanBar;
     public GameObject AmbulanceNoBagPanel, AmbulanceAmbuPanel, AmbulanceKidsAmbuPanel, AmbulanceMedicPanel, AmbulanceDefibrilationPanel, AmbulanceOxygenPanel, AmbulanceMonitorPanel;
     public GameObject NatanNoBagPanel, NatanAmbuPanel, NatanKidsAmbuPanel, NatanMedicPanel, NatanQuickDrugsPanel, NatanDrugsPanel, NatanOxygenPanel, NatanMonitorPanel;
-    
+
     #endregion
 
+    #region Voice
+
+     public GameObject muteIcon;
+     public GameObject umuteIcon;
+
+    #endregion
+    
     private void Awake()
     {
         if (Instance == null)

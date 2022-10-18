@@ -7,10 +7,15 @@ using VivoxUnity;
 
 public class VoipSystem : MonoBehaviour
 {
+    public PhotonView PhotonView => gameObject.GetPhotonView();
 
     private string channelName;
     private bool positionalChannelExists;
+    private bool isMute;
+    [SerializeField] private GameObject muteIcon;
+    [SerializeField] private GameObject umuteIcon;
 
+    
     void Start()
     {
 
@@ -30,22 +35,28 @@ public class VoipSystem : MonoBehaviour
 
             VivoxManager.Instance.Join2DChannel(VivoxManager.Instance.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
         }
-     
-//#endif
+
+        //#endif
+        muteIcon = UIManager.Instance.muteIcon;
+        umuteIcon = UIManager.Instance.umuteIcon;
         StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
     }
 
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-            if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
-                LocalMuteSelf(VivoxManager.Instance.vivox.client);
+        //if (Input.GetKeyDown(KeyCode.M))
+        //    if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+        //        LocalMuteSelf(VivoxManager.Instance.vivox.client);
 
 
-        if (Input.GetKeyDown(KeyCode.N))
-            if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
-                LocalUnmuteSelf(VivoxManager.Instance.vivox.client);
+        //if (Input.GetKeyDown(KeyCode.N))
+        //    if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
+        //        LocalUnmuteSelf(VivoxManager.Instance.vivox.client);
+        if (PhotonView.IsMine)
+        {
+            MuteUnmuteToggle();
+        }
     }
 
     IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
@@ -103,7 +114,28 @@ public class VoipSystem : MonoBehaviour
 
 
 
+    public void MuteUnmuteToggle()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (!isMute)
+            {
+                LocalMuteSelf(VivoxManager.Instance.vivox.client);
+                muteIcon.SetActive(true);
+                umuteIcon.SetActive(false);
+            }
+            else
+            {
+                LocalUnmuteSelf(VivoxManager.Instance.vivox.client);
+                muteIcon.SetActive(false);
+                umuteIcon.SetActive(true);
 
+            }
+            isMute = !isMute;
+
+        }
+
+    }
 
 
 
