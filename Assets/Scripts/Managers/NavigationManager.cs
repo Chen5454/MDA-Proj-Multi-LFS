@@ -17,7 +17,7 @@ public class NavigationManager : MonoBehaviour
 
     [SerializeField] private EvacuationManager _evacuationManager;
     [SerializeField] private List<GameObject> listRoomEnums;
-    [SerializeField] private Transform _destination;
+    [SerializeField] private List<Transform> _destinationHospitals;
     [SerializeField] private GameObject _destinationMarkerPrefab;
 
     void Start()
@@ -63,26 +63,64 @@ public class NavigationManager : MonoBehaviour
         StopGPSNav();
     }
 
-    public void StartEvacuationGPSNav()
+    public void StartEvacuationGPSNav() // this
     {
-        Debug.Log(UIManager.Instance._dropDown.value); // Gives me the Enum value
+        //Debug.Log(UIManager.Instance._dropDown.value); // Gives me the Enum value
 
-        int enumRoom = UIManager.Instance._dropDown.value;
+        //int enumRoom = UIManager.Instance._dropDown.value;
 
-        for (int i = 0; i < listRoomEnums.Count; i++)
+        //for (int i = 0; i < listRoomEnums.Count; i++)
+        //{
+        //    if (i == enumRoom)
+        //    {
+        //        _destinationMarkerPrefab.SetActive(true);
+        //        _destinationMarkerPrefab.transform.position = listRoomEnums[i].transform.position + new Vector3(0f, 4f, 0f);
+        //        _agent.SetDestination(listRoomEnums[i].transform.position);
+        //        _agent.isStopped = true;
+        //        _reachedDestination = false;
+
+        //        _photonView.RPC("ShowEvacNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
+        //    }
+        //}
+
+    
+        Transform closestTarget = null;
+        float closestTargetDistance = float.MaxValue;
+        NavMeshPath Path = new NavMeshPath();
+        for (int i = 0; i < _destinationHospitals.Count; i++)
         {
-            if (i == enumRoom)
+            if (_destinationHospitals[i] == null)
             {
-                _destinationMarkerPrefab.SetActive(true);
-                _destinationMarkerPrefab.transform.position =
-                    listRoomEnums[i].transform.position + new Vector3(0f, 4f, 0f);
-                _agent.SetDestination(listRoomEnums[i].transform.position);
-                _agent.isStopped = true;
-                _reachedDestination = false;
+                continue;
+            }
 
-                _photonView.RPC("ShowEvacNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
+            if (NavMesh.CalculatePath(transform.position, _destinationHospitals[i].position, _agent.areaMask, Path))
+            {
+                float distance = Vector3.Distance(transform.position, Path.corners[0]);
+                for (int j = 1; j < Path.corners.Length; j++)
+                {
+                    distance += Vector3.Distance(Path.corners[j - 1], Path.corners[j]);
+                }
+
+                if (distance < closestTargetDistance)
+                {
+                    closestTargetDistance = distance;
+                    closestTarget = _destinationHospitals[i];
+                }
             }
         }
+
+        if (closestTarget != null)
+        {
+         _destinationMarkerPrefab.SetActive(true);
+         _destinationMarkerPrefab.transform.position = closestTarget.transform.position + new Vector3(0f, 4f, 0f);
+         _agent.isStopped = true;
+         _reachedDestination = false;
+         _agent.SetDestination(closestTarget.position); 
+         _photonView.RPC("ShowEvacNavRPC", RpcTarget.Others, _playerData.CrewIndex, closestTarget.position);
+
+        }
+
     }
 
     // need fixing - navigation always will go to last incident currently playing
@@ -141,11 +179,6 @@ public class NavigationManager : MonoBehaviour
     }
 
 
-    public void CarInEvac()
-    {
-
-    }
-
     [PunRPC]
     private void ShowIncidentNavRPC(int crewIndex, int incidentCount)
     {
@@ -159,13 +192,13 @@ public class NavigationManager : MonoBehaviour
     }
 
     [PunRPC]
-    private void ShowEvacNavRPC(int crewIndex, int roomIndex)
+    private void ShowEvacNavRPC(int crewIndex,Vector3 target)
     {
         if (_playerData.CrewIndex == crewIndex)
         {
             _destinationMarkerPrefab.SetActive(true);
-            _destinationMarkerPrefab.transform.position = listRoomEnums[roomIndex].transform.position + new Vector3(0f, 4f, 0f);
-            _agent.SetDestination(listRoomEnums[roomIndex].transform.position);
+            _destinationMarkerPrefab.transform.position = target + new Vector3(0f, 4f, 0f);
+            _agent.SetDestination(target);
             _agent.isStopped = true;
             _reachedDestination = false;
         }
