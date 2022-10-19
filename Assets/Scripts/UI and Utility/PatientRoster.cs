@@ -52,11 +52,16 @@ namespace PatientCreationSpace
 
             }
 
-            foreach (var item in names)
+            for (int i = 0; i < names.Count; i++)
             {
-                GameObject g = Instantiate(patientButtonPrefab, verticalGroup);
-                g.GetComponent<PatientToLoadButton>().Set(item, this);
+                patientButtons[i].Set(names[i], this);
             }
+
+            //foreach (var item in names)
+            //{
+            //    GameObject g = Instantiate(patientButtonPrefab, verticalGroup);
+            //    g.GetComponent<PatientToLoadButton>().Set(item, this);
+            //}
         }
         private void OnEnable()
         {

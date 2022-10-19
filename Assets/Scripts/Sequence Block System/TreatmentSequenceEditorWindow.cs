@@ -64,9 +64,12 @@ namespace PatientCreationSpace
 
         private void OnDisable()
         {
-            newPatientWindow.ClearPatientInfoFields();
-            newPatientWindow.ClearPatientMeasurementFields();
-            newPatientWindow.RefreshLoadedPatients();
+            if (newPatientWindow) //irrellavent to Group edior?
+            {
+                newPatientWindow.ClearPatientInfoFields();
+                newPatientWindow.ClearPatientMeasurementFields();
+                newPatientWindow.RefreshLoadedPatients();
+            }
         }
     }
 
