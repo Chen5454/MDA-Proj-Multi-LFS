@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,6 +6,7 @@ using UnityEngine;
 
 public class AutomaticDoors : MonoBehaviour
 {
+    [SerializeField] private PhotonView _photonView;
     [SerializeField] private bool _isSingleDoor, _isOpen;
     [SerializeField] private float _moveDuration = 0.65f;
     [SerializeField] private GameObject _leftDoor, _rightDoor;
@@ -17,7 +19,7 @@ public class AutomaticDoors : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag))
         {
             if (!_isOpen)
-                StartCoroutine(LerpDoors(_moveDuration));
+                _photonView.RPC("HandleDoorsRPC", RpcTarget.AllBufferedViaServer);
             else
                 return;
         }
@@ -27,7 +29,7 @@ public class AutomaticDoors : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag))
         {
             if (_isOpen)
-                StartCoroutine(LerpDoors(_moveDuration));
+                _photonView.RPC("HandleDoorsRPC", RpcTarget.AllBufferedViaServer);
             else
                 return;
         }
@@ -64,7 +66,12 @@ public class AutomaticDoors : MonoBehaviour
             _leftDoor.transform.localPosition = _leftDoorEnd;
             _rightDoor.transform.localPosition = _rightDoorEnd;
             _isOpen = false;
-        }
-        
+        } 
+    }
+
+    [PunRPC]
+    private void HandleDoorsRPC()
+    {
+        StartCoroutine(LerpDoors(_moveDuration));
     }
 }
