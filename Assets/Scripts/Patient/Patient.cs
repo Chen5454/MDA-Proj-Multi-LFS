@@ -190,9 +190,10 @@ public class Patient : MonoBehaviour
         SetUnusedBandages(false);
     }
 
-    public void InitializePatientData(NewPatientData newPatientDataFromSO)
+    public void InitializePatientData(NewPatientData newPatientDataFromSave)
     {
-        NewPatientData = new NewPatientData(newPatientDataFromSO);
+        //NewPatientData = new NewPatientData(newPatientDataFromSO);
+        NewPatientData = newPatientDataFromSave;
     }
 
     public void AddToTaggedPatientsList()

@@ -34,16 +34,25 @@ namespace PatientCreationSpace
         }
         private void OnEnable()
         {
+            if (!editPatientButton) //This is only relevant for the PatientCreationScene - irrelevant in Patient Selection
+                return;
+
             PatientCreator.OnPatientClear  += DisableEditButton;
             PatientCreator.OnLoadPatient +=  EnableEditButton;
         }
         private void OnDisable()
         {
+            if (!editPatientButton)//This is only relevant for the PatientCreationScene - irrelevant in Patient Selection
+                return;
+
             PatientCreator.OnPatientClear -= DisableEditButton;
             PatientCreator.OnLoadPatient -= EnableEditButton;
 
         }
-
+        /// <summary>
+        /// Loads patient into the PatientCreator - to edit or use as base for a new patient
+        /// </summary>
+        /// <param name="patientFullName"></param>
         public void LoadPatient(string patientFullName)
         {
             if (string.IsNullOrEmpty(patientFullName))
@@ -53,6 +62,7 @@ namespace PatientCreationSpace
             }
             PatientCreator.LoadPatient(patientFullName); 
         }
+
 
         void EnableEditButton()
         {
