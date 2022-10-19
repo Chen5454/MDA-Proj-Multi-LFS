@@ -43,6 +43,8 @@ namespace PatientCreationSpace
         private void OnDisable()
         {
             PatientCreator.OnLoadPatient -= DisplayPatient;
+            ClearPatientInfoFields();
+            ClearPatientMeasurementFields();
         }
         /// <summary>
         /// this also clears the currently loaded patient

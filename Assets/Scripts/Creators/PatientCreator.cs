@@ -97,9 +97,9 @@ namespace PatientCreationSpace
                         break;
                 }
             }
-            TreatmentSequence tsTest = DeSerializeTreatmentSequence(toReturn);
+            //TreatmentSequence tsTest = DeSerializeTreatmentSequence(toReturn);
 
-            Debug.Log(tsTest.AllDisplayStrings());
+            //Debug.Log(tsTest.AllDisplayStrings());
 
             return toReturn;
         }
