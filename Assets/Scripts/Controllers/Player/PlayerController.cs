@@ -24,11 +24,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Cameras
     [Header("Cameras")]
     private Camera _currentCamera;
-    [SerializeField] private Camera _playerCamera;
-    [SerializeField] private Camera _vehicleCamera;
-    [SerializeField] private Camera _pikud10Camera;
     [SerializeField] private GameObject _MiniMaCamera;
-    [SerializeField] private Transform _firstPersonCameraTransform, _thirdPersonCameraTransform;
+    //[SerializeField] private Transform _firstPersonCameraTransform;
+    [SerializeField] private Transform _thirdPersonCameraTransform;
+    [SerializeField] private Camera _playerCamera, _vehicleCamera, _pikud10Camera;
     public Camera CurrentCamera => _currentCamera;
     public Camera Pikud10Camera => _pikud10Camera;
     #endregion
@@ -108,16 +107,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
+
         if (VivoxManager.Instance.Lobby.ConnectAsInstructor.isOn)
            PlayerData.IsMetargel = true;
 
          thisScript = GetComponent<PlayerController>();
     }
-
     private void Start()
     {
-
-
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -134,25 +131,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             // Destroy(this);
         }
     }
-
     private void Update()
     {
         if (_photonView.IsMine)
         {
             _stateAction.Invoke();
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (_photonView.IsMine)
-        {
-            if (_photonView.IsMine && _currentVehicleController)
-            {
-                //_currentCarController.HandleMotor();
-                //_currentCarController.HandleSteering();
-                //_currentCarController.UpdateWheels();
-            }
         }
     }
     #endregion
@@ -202,6 +185,97 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #endregion
     
     #region States
+    //private void UseFirstPersonIdleState()
+    //{
+    //    if (_photonView)
+    //    {
+    //        Debug.Log("Current State: First Person Idle");
+    //
+    //        GetInputAxis();
+    //
+    //        if (_isInVehicle)
+    //        {
+    //            _stateAction = UseDrivingState;
+    //        }
+    //
+    //        if (_input != Vector2.zero)
+    //        {
+    //            FreeMouse(false);
+    //            _stateAction = UseFirstPersonWalkingState;
+    //        }
+    //
+    //        if (Input.GetKeyDown(KeyCode.V))
+    //        {
+    //            FreeMouse(true);
+    //            SetFirstPersonCamera(false);
+    //            _stateAction = UseTankIdleState;
+    //        }
+    //
+    //        if (Input.GetKeyDown(KeyCode.G))
+    //        {
+    //            _stateAction = UseFlyingIdleState;
+    //        }
+    //
+    //        UseFirstPersonRotate();
+    //        FreeMouseWithAlt();
+    //    }
+    //}
+    //private void UseFirstPersonWalkingState()
+    //{
+    //    if (_photonView.IsMine)
+    //    {
+    //        Debug.Log("Current State: First Person Walking");
+    //
+    //        GetInputAxis();
+    //
+    //        if (_isInVehicle)
+    //        {
+    //            _stateAction = UseDrivingState;
+    //        }
+    //
+    //        if (_input == Vector2.zero)
+    //        {
+    //            _stateAction = UseFirstPersonIdleState;
+    //        }
+    //
+    //        if (Input.GetKeyDown(KeyCode.V))
+    //        {
+    //            SetFirstPersonCamera(false);
+    //
+    //            if (_input == Vector2.zero)
+    //            {
+    //                FreeMouse(true);
+    //                _stateAction = UseTankIdleState;
+    //            }
+    //            else
+    //            {
+    //                FreeMouse(true);
+    //                _stateAction = UseTankWalkingState;
+    //            }
+    //        }
+    //
+    //        if (Input.GetKeyDown(KeyCode.G))
+    //        {
+    //            _stateAction = UseFlyingMovingState;
+    //        }
+    //
+    //        if (Input.GetMouseButtonDown(1))
+    //        {
+    //            if (Cursor.visible)
+    //            {
+    //                FreeMouse(false);
+    //            }
+    //            else
+    //            {
+    //                FreeMouse(true);
+    //            }
+    //        }
+    //
+    //        UseFirstPersonRotate();
+    //        UseFirstPersonMovement();
+    //        FreeMouseWithAlt();
+    //    }
+    //}
     private void UseTankIdleState()
     {
         if (_photonView.IsMine)
@@ -222,12 +296,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _stateAction = UseTankWalkingState;
             }
 
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                FreeMouse(false);
-                SetFirstPersonCamera(true);
-                _stateAction = UseFirstPersonIdleState;
-            }
+            //if (Input.GetKeyDown(KeyCode.V))
+            //{
+            //    FreeMouse(false);
+            //    SetFirstPersonCamera(true);
+            //    _stateAction = UseFirstPersonIdleState;
+            //}
 
             if (Input.GetKeyDown(KeyCode.G))
             {
@@ -235,41 +309,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
 
             RotateBodyWithMouse();
-        }
-    }
-    private void UseFirstPersonIdleState()
-    {
-        if (_photonView)
-        {
-            Debug.Log("Current State: First Person Idle");
-
-            GetInputAxis();
-
-            if (_isInVehicle)
-            {
-                _stateAction = UseDrivingState;
-            }
-
-            if (_input != Vector2.zero)
-            {
-                FreeMouse(false);
-                _stateAction = UseFirstPersonWalkingState;
-            }
-
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                FreeMouse(true);
-                SetFirstPersonCamera(false);
-                _stateAction = UseTankIdleState;
-            }
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                _stateAction = UseFlyingIdleState;
-            }
-
-            UseFirstPersonRotate();
-            FreeMouseWithAlt();
         }
     }
     private void UseTankWalkingState()
@@ -291,12 +330,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _stateAction = UseTankIdleState;
             }
 
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                FreeMouse(false);
-                SetFirstPersonCamera(true);
-                _stateAction = UseFirstPersonWalkingState;
-            }
+            //if (Input.GetKeyDown(KeyCode.V))
+            //{
+            //    FreeMouse(false);
+            //    SetFirstPersonCamera(true);
+            //    _stateAction = UseFirstPersonWalkingState;
+            //}
 
             if (Input.GetKeyDown(KeyCode.G))
             {
@@ -306,62 +345,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             RotateBodyWithMouse();
             UseTankRotate();
             UseTankMovement();
-        }
-    }
-    private void UseFirstPersonWalkingState()
-    {
-        if (_photonView.IsMine)
-        {
-            Debug.Log("Current State: First Person Walking");
-
-            GetInputAxis();
-
-            if (_isInVehicle)
-            {
-                _stateAction = UseDrivingState;
-            }
-
-            if (_input == Vector2.zero)
-            {
-                _stateAction = UseFirstPersonIdleState;
-            }
-
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                SetFirstPersonCamera(false);
-
-                if (_input == Vector2.zero)
-                {
-                    FreeMouse(true);
-                    _stateAction = UseTankIdleState;
-                }
-                else
-                {
-                    FreeMouse(true);
-                    _stateAction = UseTankWalkingState;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                _stateAction = UseFlyingMovingState;
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                if (Cursor.visible)
-                {
-                    FreeMouse(false);
-                }
-                else
-                {
-                    FreeMouse(true);
-                }
-            }
-
-            UseFirstPersonRotate();
-            UseFirstPersonMovement();
-            FreeMouseWithAlt();
         }
     }
     private void UseFlyingIdleState()
@@ -516,23 +499,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //if (Input.GetMouseButton(1))
         //    return;
     }
-    private void UseFirstPersonMovement()
-    {
-        float actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
-        _characterController.Move(actualSpeed * _input.x * Time.deltaTime * transform.right + actualSpeed * _input.y * Time.deltaTime * transform.forward);
-    }
-    private void UseFirstPersonRotate()
-    {
-        Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
-
-        transform.Rotate(_mouseSensitivity.x * mouseInput.x * Time.deltaTime * Vector3.up);
-        _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
-    }
-    private void SetFirstPersonCamera(bool value)
-    {
-        _currentCamera.transform.position = value ? _firstPersonCameraTransform.position : _thirdPersonCameraTransform.position;
-        _currentCamera.transform.rotation = value ? _firstPersonCameraTransform.rotation : _thirdPersonCameraTransform.rotation;
-    }
+    //private void UseFirstPersonMovement()
+    //{
+    //    float actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
+    //    _characterController.Move(actualSpeed * _input.x * Time.deltaTime * transform.right + actualSpeed * _input.y * Time.deltaTime * transform.forward);
+    //}
+    //private void UseFirstPersonRotate()
+    //{
+    //    Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
+    //
+    //    transform.Rotate(_mouseSensitivity.x * mouseInput.x * Time.deltaTime * Vector3.up);
+    //    _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
+    //}
+    //private void SetFirstPersonCamera(bool value)
+    //{
+    //    _currentCamera.transform.position = value ? _firstPersonCameraTransform.position : _thirdPersonCameraTransform.position;
+    //    _currentCamera.transform.rotation = value ? _firstPersonCameraTransform.rotation : _thirdPersonCameraTransform.rotation;
+    //}
     private void FreeMouse(bool value)
     {
         Cursor.visible = value;
