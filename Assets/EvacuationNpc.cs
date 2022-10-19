@@ -13,6 +13,8 @@ public class EvacuationNpc : MonoBehaviour
 
     public GameObject _evacuationUI;
 
+    public GameObject DoorLayer;
+
     private PhotonView _photonView;
     private void Start()
     {
@@ -21,11 +23,34 @@ public class EvacuationNpc : MonoBehaviour
         evacuation = GetComponentInParent<Evacuation>();
 
         bedRef = GetComponentInParent<TestingBedCollider>();
+
+        DoorLayer.layer = (int)LayerMasks.Default;
+
     }
 
     public void OnInteracted()
     {
         OnEvacuateNPCClicked();
+    }
+
+    //public void Update()
+    //{
+    //    CheckIfInteractable();
+
+    //}
+
+    public void CheckIfInteractable()
+    {
+        
+            if (bedRef.BedRefrence.GetComponent<EmergencyBedController>()._player.GetComponent<PlayerController>()._photonView.IsMine && bedRef.BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+            {
+                DoorLayer.layer = (int)LayerMasks.Interactable;
+            }
+            else
+            {
+                DoorLayer.layer = (int)LayerMasks.Default;
+            }
+        
     }
 
     public void OnEvacuateNPCClicked()
@@ -37,6 +62,7 @@ public class EvacuationNpc : MonoBehaviour
             _evacuationUI.SetActive(true);
         else
             ActionTemplates.Instance.ShowAlertWindow("Evac", "No Patient");
+
     }
 
     public void EvacPatient()

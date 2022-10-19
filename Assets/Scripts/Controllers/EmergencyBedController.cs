@@ -335,7 +335,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     [Header("Player & Patient")]
     [SerializeField] private GameObject _patient;
-    [SerializeField] private GameObject _player;
+    [SerializeField] public GameObject _player;
 
     [Header("Emergency Bed States")]
     [SerializeField] private GameObject _emergencyBedOpen;
@@ -355,7 +355,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     [Header("Booleans")]
     public bool IsPatientOnBed;
-    [SerializeField] private bool _isBedOut, _isFollowingPlayer = false, _inCar = true;
+    [SerializeField] private bool _isBedOut, _inCar = true;
+    public bool  _isFollowingPlayer = false;
     [field: SerializeField] private bool _isBedClosed = true;
     public bool IsBedClosed { get => _isBedClosed; set { ChangeIsBedClosed(value); } }
 
