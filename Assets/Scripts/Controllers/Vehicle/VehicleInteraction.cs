@@ -6,7 +6,7 @@ using Photon.Pun;
 public class VehicleInteraction : MonoBehaviour
 {
     [SerializeField] private VehicleController _vehicleController;
-    [SerializeField] private string _vehicleAlertTitle, _vehicleFullContent;
+    [SerializeField] private string _vehicleAlertTitle, _vehicleSitTaken, _vehicleFullContent;
     [SerializeField] private int _barType;
 
     private VehicleSit _vehicleSit;
@@ -69,7 +69,6 @@ public class VehicleInteraction : MonoBehaviour
                     {
                         if (!_vehicleController.IsDriverIn)
                         {
-
                             UIManager.Instance.VehicleDriverUI.SetActive(true);
                             _vehicleController.Transfer.CarDriver();
                             //playerController.CurrentVehicleController = _vehicleController;
@@ -93,7 +92,7 @@ public class VehicleInteraction : MonoBehaviour
                         }
                         else
                         {
-                            Debug.Log("There already a driver");
+                            ActionTemplates.Instance.ShowAlertWindow(_vehicleAlertTitle, _vehicleSitTaken);
                         }
                     }
                     else if (_vehicleSit == VehicleSit.Passanger)
@@ -108,6 +107,11 @@ public class VehicleInteraction : MonoBehaviour
 
                             UIManager.Instance.PassangerExitBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.PassangerExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
+                            break;
+                        }
+                        else
+                        {
+                            ActionTemplates.Instance.ShowAlertWindow(_vehicleAlertTitle, _vehicleFullContent);
                             break;
                         }
                     }
