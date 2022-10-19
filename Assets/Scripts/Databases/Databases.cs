@@ -17,13 +17,7 @@ namespace PatientCreationSpace
         {
             LoadAllDBs();
         }
-        //void Start()
-        //{
-        //    questionDB = new TreatmentDB<Question>();
-        //    testDB = new TreatmentDB<Test>();
-
-        //    //questionDB.LoadDatabase();
-        //}
+        
         [ContextMenu("Save All DBs")]
         public void SaveAllDBs()
         {
@@ -53,7 +47,6 @@ namespace PatientCreationSpace
             temp_questions = questionDB.treatments;
             temp_tests = testDB.treatments;
             temp_meds = medicineDB.treatments;
-            //medicineDB.SaveDatabase();
         }
     }
 
