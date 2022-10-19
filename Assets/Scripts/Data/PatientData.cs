@@ -22,7 +22,7 @@ public class PatientData : ScriptableObject
     // Health Data
     [Header("Measurments")]
     public int HeartRateBPM;
-    public int PainLevel, RespiratoryRate, CincinnatiLevel, BloodSuger, BloodPressure, OxygenSaturation, ETCO2;
+    public int PainLevel, RespiratoryRate, CincinnatiLevel, BloodSuger, BloodPressure, OxygenSaturation, ETCO2,/* from here should be strings*/ AdditionalMuscles, Breathing, BreathingSounds, Speakability, Conciousness, Pupils, SkinState;
     public bool IsConscious;
 
     public string[] MeasurementValues;
@@ -45,7 +45,7 @@ public class PatientData : ScriptableObject
 
     public void InitializeMeasurements()
     {
-        MeasurementValues = new string[] { HeartRateBPM.ToString(), PainLevel.ToString(), RespiratoryRate.ToString(), CincinnatiLevel.ToString(), BloodSuger.ToString(), BloodPressure.ToString(), OxygenSaturation.ToString(), ETCO2.ToString() };
+        MeasurementValues = new string[] { HeartRateBPM.ToString(), PainLevel.ToString(), RespiratoryRate.ToString(), CincinnatiLevel.ToString(), BloodSuger.ToString(), BloodPressure.ToString(), OxygenSaturation.ToString(), ETCO2.ToString(), AdditionalMuscles.ToString(), Breathing.ToString(), BreathingSounds.ToString(), Speakability.ToString(), Conciousness.ToString(), Pupils.ToString(), SkinState.ToString() };
     }
 
     public void SetMeasurementValues(string[] newValues)
@@ -62,7 +62,7 @@ public class PatientData : ScriptableObject
     // can do better, used by CheckMeasurement
     public int GetMeasurement(int index)
     {
-        Measurements = new List<int>() { HeartRateBPM, PainLevel, RespiratoryRate, CincinnatiLevel, BloodSuger, BloodPressure, OxygenSaturation, ETCO2 };
+        Measurements = new List<int>() { HeartRateBPM, PainLevel, RespiratoryRate, CincinnatiLevel, BloodSuger, BloodPressure, OxygenSaturation, ETCO2, /* from here should be strings*/ AdditionalMuscles, Breathing, BreathingSounds, Speakability, Conciousness, Pupils, SkinState };
 
         return Measurements[index];
     }
