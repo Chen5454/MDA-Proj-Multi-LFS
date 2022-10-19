@@ -296,8 +296,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8872777024116126445}
-  - component: {fileID: 6697047837222081577}
   - component: {fileID: 4671156223551771409}
+  - component: {fileID: 6697047837222081577}
+  - component: {fileID: 3472343568214973348}
   m_Layer: 0
   m_Name: DoubleDoors
   m_TagString: Untagged
@@ -322,28 +323,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6697047837222081577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4594343847454049632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 269e021577a2802438b3ba1951151d95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isSingleDoor: 0
-  _isOpen: 0
-  _moveDuration: 0.65
-  _leftDoor: {fileID: 7072578655107856952}
-  _rightDoor: {fileID: 2813361350583620950}
-  _leftDoorStart: {x: 2.291, y: 0, z: 0}
-  _leftDoorEnd: {x: 0.8339999, y: 0, z: 0}
-  _rightDoorStart: {x: -2.3620002, y: 0, z: 0}
-  _rightDoorEnd: {x: -0.9430001, y: 0, z: 0}
-  _playerTag: Player
 --- !u!65 &4671156223551771409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -357,6 +336,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.5, y: 1, z: 6}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6697047837222081577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4594343847454049632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269e021577a2802438b3ba1951151d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _photonView: {fileID: 3472343568214973348}
+  _isSingleDoor: 0
+  _isOpen: 0
+  _moveDuration: 0.65
+  _leftDoor: {fileID: 7072578655107856952}
+  _rightDoor: {fileID: 2813361350583620950}
+  _leftDoorStart: {x: 2.291, y: 0, z: 0}
+  _leftDoorEnd: {x: 0.8339999, y: 0, z: 0}
+  _rightDoorStart: {x: -2.3620002, y: 0, z: 0}
+  _rightDoorEnd: {x: -0.9430001, y: 0, z: 0}
+  _playerTag: Player
+--- !u!114 &3472343568214973348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4594343847454049632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 1
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4794413231186334091
 GameObject:
   m_ObjectHideFlags: 0
