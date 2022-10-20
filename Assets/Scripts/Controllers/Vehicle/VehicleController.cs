@@ -19,7 +19,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     [Header("Vehicle Components")]
     [SerializeField] private float _motorForce;
     [SerializeField] private float _breakForce, _maxSteerAngle, _maxLean;
-    [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform;
+    [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform, _centerOfMass;
     [SerializeField] private WheelCollider _frontLeftWheelCollider, _frontRightWheelCollider, _rearLeftWheelCollider, _rearRightWheelCollider;
     [SerializeField] private Rigidbody _rb;
 
@@ -58,6 +58,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     }
     private void Start()
     {
+        _rb.centerOfMass = _centerOfMass.localPosition;
         _rb.isKinematic = true;
 
         RandomNumber = GetRandomInt(100, 999 + 1);
