@@ -17,14 +17,18 @@ public class TestingBedCollider : MonoBehaviour
             Debug.Log("Bed Detected");
             BedRefrence = other.gameObject;
 
-            if (BedRefrence.GetComponent<EmergencyBedController>()._player.GetComponent<PlayerController>()._photonView.IsMine && BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+            if (BedRefrence!=null)
             {
-                DoorLayer.layer = (int)LayerMasks.Interactable;
+                if (BedRefrence.GetComponent<EmergencyBedController>()._player.GetComponent<PlayerController>()._photonView.IsMine && BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+                {
+                    DoorLayer.layer = (int)LayerMasks.Interactable;
+                }
             }
-            else
-            {
-                DoorLayer.layer = (int)LayerMasks.Default;
-            }
+       
+            //else
+            //{
+            //    DoorLayer.layer = (int)LayerMasks.Default;
+            //}
         }
 
 
@@ -32,9 +36,24 @@ public class TestingBedCollider : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (!BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+
+
+        if (other.CompareTag("EmergencyBed"))
         {
-            DoorLayer.layer = (int)LayerMasks.Default;
+            BedRefrence = other.gameObject;
+
+            if (BedRefrence!=null)
+            {
+                if (BedRefrence.GetComponent<EmergencyBedController>()._player.GetComponent<PlayerController>()._photonView.IsMine && BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+                {
+                    DoorLayer.layer = (int)LayerMasks.Interactable;
+                }
+
+                if (!BedRefrence.GetComponent<EmergencyBedController>()._isFollowingPlayer)
+                {
+                    DoorLayer.layer = (int)LayerMasks.Default;
+                }
+            }
         }
     }
 
