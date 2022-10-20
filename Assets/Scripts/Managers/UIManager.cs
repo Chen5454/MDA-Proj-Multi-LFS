@@ -65,6 +65,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI LastName, Id, Age, Gender, PhoneNumber, InsuranceCompany, Adress, Complaint;
     #endregion
 
+    #region Patient Creation
+    [Header("Patient Creation")]
+    public GameObject PatientCreationWindow;
+    #endregion
+
     #region Evacuation UI
 
     [Header("Evacuation UI Drop Down")]
@@ -248,6 +253,22 @@ public class UIManager : MonoBehaviour
                         break;
                 }
                 break;
+            }
+        }
+    }
+    public void OpenWindowIfInstructor(GameObject window)
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+            {
+                PlayerData playerData = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+
+                if (playerData.IsInstructor)
+                {
+                    window.SetActive(true);
+                    break;
+                }
             }
         }
     }
