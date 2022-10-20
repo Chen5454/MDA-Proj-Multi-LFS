@@ -15,7 +15,6 @@ public class NavigationManager : MonoBehaviour
     private LineRenderer _lineRenderer;
     private bool _reachedDestination;
 
-    [SerializeField] private EvacuationManager _evacuationManager;
     [SerializeField] private List<GameObject> listRoomEnums;
     [SerializeField] private List<Transform> _destinationHospitals;
     [SerializeField] private GameObject _destinationMarkerPrefab;
@@ -62,6 +61,13 @@ public class NavigationManager : MonoBehaviour
 
         StopGPSNav();
     }
+
+    public void StartEvacuationGPSNavButton()
+    {
+      //  if()
+        StartEvacuationGPSNav();
+    }
+
 
     public void StartEvacuationGPSNav() // this
     {
