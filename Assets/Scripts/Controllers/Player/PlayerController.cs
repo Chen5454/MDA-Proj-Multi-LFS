@@ -439,6 +439,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 return;
             }
 
+            if (Input.GetKey(KeyCode.F))
+            {
+                Transform vehicleTransform = transform.parent.parent.parent;
+                
+                vehicleTransform.rotation = Quaternion.Lerp(vehicleTransform.rotation, new Quaternion(0, vehicleTransform.rotation.y, 0, vehicleTransform.rotation.w), 0.1f);
+            }
+
             if (_playerCamera.enabled)
             {
                 _playerCamera.enabled = false;
