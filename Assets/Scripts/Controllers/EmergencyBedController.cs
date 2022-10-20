@@ -388,6 +388,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         {
             AlwaysChecking();
         }
+
+        PatientReadyToEvac();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -469,6 +471,20 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _emergencyBedUI.SetActive(true);
             UIManager.Instance.CurrentActionBarParent.SetActive(false);
         }
+    }
+
+    public void PatientReadyToEvac()
+    {
+        if (_inCar && IsPatientOnBed)
+        {
+            ParentVehicle.IsPatientIn = true;
+        }
+        else
+        {
+            ParentVehicle.IsPatientIn = false;
+        }
+
+      //  bool isInCar = _inCar && IsPatientOnBed ? ParentVehicle.IsPatientIn : ParentVehicle.IsPatientIn;
     }
 
     private void ChangeIsBedClosed(bool value)

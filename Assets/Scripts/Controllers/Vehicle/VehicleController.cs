@@ -40,6 +40,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public bool IsNatan;
     public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsBusy;
     public bool IsBackDoorsOpen;
+    public bool IsPatientIn;
 
     [Header("Vehicle Data")]
     public int OwnerCrew, RandomNumber;
@@ -293,6 +294,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             stream.SendNext(IsMiddleIn);
             stream.SendNext(IsLeftBackIn);
             stream.SendNext(IsRightBackIn);
+            stream.SendNext(IsPatientIn);
         }
         else
         {
@@ -303,6 +305,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             IsMiddleIn = (bool)stream.ReceiveNext();
             IsLeftBackIn = (bool)stream.ReceiveNext();
             IsRightBackIn = (bool)stream.ReceiveNext();
+            IsPatientIn = (bool)stream.ReceiveNext();
         }
     }
 }

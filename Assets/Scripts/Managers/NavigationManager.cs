@@ -64,7 +64,7 @@ public class NavigationManager : MonoBehaviour
 
     public void StartEvacuationGPSNavButton()
     {
-      //  if()
+        if(_playerController.CurrentVehicleController.IsPatientIn)
         StartEvacuationGPSNav();
     }
 

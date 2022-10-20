@@ -5543,7 +5543,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _photonView: {fileID: 1011662888}
-  _evacuationManager: {fileID: 8950140318339158944, guid: 90acd62650d52654fa7777663e48f373, type: 3}
   listRoomEnums:
   - {fileID: 1223420125774663340}
   - {fileID: 8601888889468048522}
@@ -13116,6 +13115,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 4134889593532345396, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartEvacuationGPSNavButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4897337105201974976, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
