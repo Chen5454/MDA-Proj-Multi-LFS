@@ -3651,6 +3651,7 @@ Transform:
   m_Children:
   - {fileID: 4196570372582256094}
   - {fileID: 7740956976810294346}
+  - {fileID: 7624170120889812687}
   m_Father: {fileID: 5911885545192352798}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5106,6 +5107,36 @@ Transform:
   m_Father: {fileID: 8048014317029332718}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7741493890197959761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7624170120889812687}
+  m_Layer: 0
+  m_Name: CenterOfMass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7624170120889812687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741493890197959761}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8009918948990033499}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7774019883568823430
 GameObject:
   m_ObjectHideFlags: 0
@@ -5299,6 +5330,7 @@ MonoBehaviour:
   _frontRightWheeTransform: {fileID: 3835966314680864519}
   _rearLeftWheelTransform: {fileID: 8217453701622062125}
   _rearRightWheelTransform: {fileID: 2932190260411892576}
+  _centerOfMass: {fileID: 7624170120889812687}
   _frontLeftWheelCollider: {fileID: 8805888519929202464}
   _frontRightWheelCollider: {fileID: 9036245059946701094}
   _rearLeftWheelCollider: {fileID: 1399706972772481200}
@@ -5341,6 +5373,7 @@ MonoBehaviour:
   IsRightBackIn: 0
   IsBusy: 0
   IsBackDoorsOpen: 0
+  IsPatientIn: 0
   OwnerCrew: 0
   RandomNumber: 0
   RandomName: 
