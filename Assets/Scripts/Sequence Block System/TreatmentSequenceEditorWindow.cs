@@ -13,6 +13,8 @@ namespace PatientCreationSpace
         //public TreatmentSequence NewTreatmeantSequence;
 
         [SerializeField]
+        NewPatientWindow newPatientWindow; //DONT LIKE THIS TBF
+        [SerializeField]
         TreatmentGroupEditor treatmentGroupEditor;
         [SerializeField]
         BlockCollectionDisplayer sequenceDisplayer;
@@ -58,6 +60,16 @@ namespace PatientCreationSpace
         {
             treatmentGroupEditor.gameObject.SetActive(true);
             treatmentGroupEditor.Init(newPatient);
+        }
+
+        private void OnDisable()
+        {
+            if (newPatientWindow) //irrellavent to Group edior?
+            {
+                newPatientWindow.ClearPatientInfoFields();
+                newPatientWindow.ClearPatientMeasurementFields();
+                newPatientWindow.RefreshLoadedPatients();
+            }
         }
     }
 

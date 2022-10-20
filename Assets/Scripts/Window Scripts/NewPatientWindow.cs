@@ -31,6 +31,8 @@ namespace PatientCreationSpace
 
         [SerializeField]
         TreatmentSequenceEditorWindow treatmentSequenceEditorWindow;
+        [SerializeField]
+        PatientRoster patientRoster; //Dont like this either TBF
 
         //private void Start()
         //{
@@ -189,6 +191,10 @@ namespace PatientCreationSpace
                 //measurementInputFields[i].ForceMeshUpdate(true);
             }
 
+        }
+        public void RefreshLoadedPatients()
+        {
+            patientRoster.SetUpNamesAsButtons();
         }
     }
     //cancel patient creation - delete all SOs that need to be deleted (keep questions, because why not?)

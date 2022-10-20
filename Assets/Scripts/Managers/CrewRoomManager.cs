@@ -211,7 +211,24 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            if(PatientCreationSpace.PatientCreator.newPatient == null)
+            {
+                Debug.LogError("no patient loaded!");
+                return;
+            }
+            //1) Get the NewPatientData to be spawned
+
+            //2) switchcase on which models/prefab to spawn from NewPatientData
+
+            //3) Instantiate correct prefab
+
+            GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            //3.5) Grab the Patient component from the instantiated object.
+            //4) Set this patients data to the NewPatientData to be spawned
+            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient); 
+
+
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
