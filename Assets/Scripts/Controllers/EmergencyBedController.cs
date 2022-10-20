@@ -390,12 +390,62 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _player = other.gameObject;
+        }
+
+        if (other.CompareTag("Patient"))
+        {
+            if (!IsPatientOnBed)
+            {
+                _patient = other.gameObject;
+            }
+        }
+
+        if (other.CompareTag("Evac"))
+        {
+            _patient.GetComponent<BoxCollider>().enabled = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _player = null;
+        }
+
+        if (other.CompareTag("Patient"))
+        {
+            if (!IsPatientOnBed)
+            {
+                _patient = null;
+            }
+        }
+
+        if (other.CompareTag("Evac"))
+        {
+            _patient.GetComponent<BoxCollider>().enabled = false;
+        }
+    }
+
     public void AlwaysChecking()
     {
         if (_inCar)
             IsBedClosed = true;
         else if (!_inCar)
             IsBedClosed = false;
+
+        if (_patient)
+        {
+            if (IsPatientOnBed)
+                _patient.layer = (int)LayerMasks.Default;
+            else
+                _patient.layer = (int)LayerMasks.Interactable;
+        }
 
         FollowPlayer();
     }
@@ -524,50 +574,6 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         else if (_patient != null && IsPatientOnBed && !_inCar)
         {
             _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _player = other.gameObject;
-        }
-
-        if (other.CompareTag("Patient"))
-        {
-            if (!IsPatientOnBed)
-            {
-                _patient = other.gameObject;
-                _patient.layer = (int)LayerMasks.Default;
-            }
-        }
-
-        if (other.CompareTag("Evac"))
-        {
-            _patient.GetComponent<BoxCollider>().enabled = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _player = null;
-        }
-
-        if (other.CompareTag("Patient"))
-        {
-            if (!IsPatientOnBed)
-            {
-                _patient.layer = (int)LayerMasks.Interactable;
-                _patient = null;
-            }
-        }
-
-        if (other.CompareTag("Evac"))
-        {
-            _patient.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
