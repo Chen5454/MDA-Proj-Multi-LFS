@@ -299,7 +299,7 @@ public class VehicleInteraction : MonoBehaviour
     #region Coroutines
     private IEnumerator ChangeKinematicStateCorooutine()
     {
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         _vehicleController.ChangeKinematicState();
     }
