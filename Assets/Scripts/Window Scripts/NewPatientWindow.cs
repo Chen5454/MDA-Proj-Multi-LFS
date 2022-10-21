@@ -62,7 +62,7 @@ namespace PatientCreationSpace
             AddressLocation.text = "";
             Complaint.text = "";
 
-            PatientCreator.ClearLoadedPatient();
+            //PatientCreator.ClearLoadedPatient();
         }
         public void ClearPatientMeasurementFields()//inspector button
         {
@@ -87,7 +87,7 @@ namespace PatientCreationSpace
             }
             //Initial Measurements nullorempty checks: in the grabbing bleow
 
-            PatientMeasurements patientMeasurements = new PatientMeasurements();
+            //PatientMeasurements patientMeasurements = new PatientMeasurements();
 
             string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             for (int i = 0; i < measurementInputFields.Count; i++)
