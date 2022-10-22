@@ -506,7 +506,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         {
             _inCar = false;
             _isBedOut = true;
-            _emergencyBedUI.SetActive(true);
+            _emergencyBedUI.SetActive(false);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
 
             // bed needs to be [in car], [just outside car] ,[with player]
