@@ -347,6 +347,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     [Header("UI")]
     [field: SerializeField] private GameObject _emergencyBedUI;
     public GameObject EmergencyBedUI => _emergencyBedUI;
+    [SerializeField] private GameObject PatientMenuParentUI;
+    [SerializeField] private GameObject JoinPatientParentUI;
+    [SerializeField] private GameObject TagMiunParentUI;
+
+
 
     [SerializeField] private TextMeshProUGUI _takeReturnText;
     [SerializeField] private TextMeshProUGUI _followUnfollowText, _placeRemovePatientText;
@@ -373,6 +378,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
+        #region PatientUI
+        PatientMenuParentUI = UIManager.Instance.PatientMenu;
+        JoinPatientParentUI = UIManager.Instance.JoinPatientPopUp;
+        TagMiunParentUI = UIManager.Instance.TagMiunMenu;
+        #endregion
     }
 
     void Start()
@@ -457,7 +467,31 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _patient.layer = (int)LayerMasks.Interactable;
         }
 
+        if (_inCar&&_parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(false);
+        }
+        if (_inCar && !_parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(true);
+        }
+
         FollowPlayer();
+        InteractiveLayerToggles();
+    }
+
+    public void InteractiveLayerToggles()
+    {
+        if (PatientMenuParentUI.activeInHierarchy || JoinPatientParentUI.activeInHierarchy|| TagMiunParentUI.activeInHierarchy)
+        {
+            _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+        }
+        else
+        {
+            _emergencyBedModelParent.layer = (int)LayerMasks.Interactable;
+
+        }
+
     }
 
     public void ShowInteractionsToggle()

@@ -12,8 +12,8 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private PhotonView _photonView;
     public PhotonView PhotonView { get => _photonView; set => value = _photonView; }
 
-    private Vector2 _input;
-    private float _currentSteerAngle, _currentbreakForce;
+    public Vector2 _input;
+    public float _currentSteerAngle, _currentbreakForce;
     private bool _isBreaking;
 
     [Header("Vehicle Components")]
@@ -41,6 +41,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public bool IsCarHeadLightsOn, IsCarSirenOn, IsDriverIn, IsPassangerIn, IsMiddleIn, IsLeftBackIn, IsRightBackIn, IsBusy;
     public bool IsBackDoorsOpen;
     public bool IsPatientIn;
+    public bool IsInMovement;
 
     [Header("Vehicle Data")]
     public int OwnerCrew, RandomNumber;
@@ -141,6 +142,21 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private void GetInput()
     {
         _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+        #region Is In Movemenet
+
+        if (_input.y != 0 && _input.x != 0)
+        {
+            IsInMovement = true;
+        }
+        else
+        {
+            IsInMovement = false;
+
+        }
+
+        #endregion
+
         _isBreaking = Input.GetKey(KeyCode.Space);
     }
     private void HandleMotor()
@@ -296,6 +312,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             stream.SendNext(IsLeftBackIn);
             stream.SendNext(IsRightBackIn);
             stream.SendNext(IsPatientIn);
+            stream.SendNext(IsInMovement);
         }
         else
         {
@@ -307,6 +324,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             IsLeftBackIn = (bool)stream.ReceiveNext();
             IsRightBackIn = (bool)stream.ReceiveNext();
             IsPatientIn = (bool)stream.ReceiveNext();
+            IsInMovement = (bool)stream.ReceiveNext();
         }
     }
 }
