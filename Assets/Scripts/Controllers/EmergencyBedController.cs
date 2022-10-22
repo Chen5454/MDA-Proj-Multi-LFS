@@ -338,8 +338,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] public GameObject _player;
 
     [Header("Emergency Bed States")]
+
     [SerializeField] private GameObject _emergencyBedOpen;
     [SerializeField] private GameObject _emergencyBedClosed, _emergencyBed;
+    [SerializeField] private GameObject _emergencyBedModelParent;
+
 
     [Header("UI")]
     [field: SerializeField] private GameObject _emergencyBedUI;
@@ -374,6 +377,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+        _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+
         ChangeIsBedClosed(true);
 
         if (photonView.IsMine)
@@ -397,6 +402,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Player"))
         {
             _player = other.gameObject;
+            _emergencyBedModelParent.layer = (int)LayerMasks.Interactable;
         }
 
         if (other.CompareTag("Patient"))
@@ -418,6 +424,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Player"))
         {
             _player = null;
+            _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+
         }
 
         if (other.CompareTag("Patient"))
