@@ -405,6 +405,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         PatientReadyToEvac();
+        ShowBedInCarToggle();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -467,14 +468,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _patient.layer = (int)LayerMasks.Interactable;
         }
 
-        if (_inCar&&_parentVehicle.IsInMovement)
-        {
-            _emergencyBedModelParent.SetActive(false);
-        }
-        if (_inCar && !_parentVehicle.IsInMovement)
-        {
-            _emergencyBedModelParent.SetActive(true);
-        }
+ 
 
         FollowPlayer();
         InteractiveLayerToggles();
@@ -492,6 +486,18 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
         }
 
+    }
+
+    public void ShowBedInCarToggle()
+    {
+        if (_inCar && _parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(false);
+        }
+        if (_inCar && !_parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(true);
+        }
     }
 
     public void ShowInteractionsToggle()

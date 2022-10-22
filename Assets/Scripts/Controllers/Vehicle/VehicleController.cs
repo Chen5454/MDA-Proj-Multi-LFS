@@ -145,7 +145,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
 
         #region Is In Movemenet
 
-        if (_input.y != 0 && _input.x != 0)
+        if (_input.y != 0 || _input.x != 0)
         {
             IsInMovement = true;
         }
