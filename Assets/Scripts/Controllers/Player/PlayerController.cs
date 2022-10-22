@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         _playerCamera.tag = "MainCamera";
 
         if (VivoxManager.Instance.Lobby.ConnectAsInstructor.isOn)
-           PlayerData.IsMetargel = true;
+           PlayerData.IsInstructor = true;
 
          thisScript = GetComponent<PlayerController>();
     }
