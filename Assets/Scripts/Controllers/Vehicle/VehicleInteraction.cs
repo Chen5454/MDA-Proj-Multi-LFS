@@ -86,8 +86,8 @@ public class VehicleInteraction : MonoBehaviour
 
                             _vehicleController.PhotonView.RPC("ChangeSit", RpcTarget.All, i, (int)VehicleSit.Driver, true);
                             _vehicleController.CurrentDriverController = playerController;
-                            _vehicleController.IsDriverIn = true;
                             StartCoroutine(ChangeKinematicStateCorooutine());
+                            _vehicleController.IsDriverIn = true;
                             break;
                         }
                         else
