@@ -194,6 +194,7 @@ public class VehicleInteraction : MonoBehaviour
                 if (playerController.IsDriving)
                 {
                     _vehicleController.IsDriverIn = false;
+                    _vehicleController.IsInMovement = false;
                     playerController.IsDriving = false;
                     UIManager.Instance.HeadlightBtn.onClick.RemoveListener(delegate { ToggleHeadlights(); });
                     UIManager.Instance.DriverExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });

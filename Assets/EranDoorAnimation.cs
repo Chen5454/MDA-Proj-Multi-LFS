@@ -9,24 +9,27 @@ public class EranDoorAnimation : MonoBehaviour
     [SerializeField] private GameObject eranDoor;
     [SerializeField] private GameObject eranDoorUI;
     private Animator _eranDoorAnim;
-    [SerializeField] private PhotonView _photonView;
+   // [SerializeField] private PhotonView _photonView;
+    [SerializeField] private PlayerData PlayerRefrence;
 
     private OwnershipTransfer _transfer;
-    private bool _isOpen;
+    public bool _isOpen;
     private bool isClosed;
+  //  private bool AllowedToOpen;
 
 
     private void Start()
     {
         _transfer = GetComponent<OwnershipTransfer>();
-        _photonView = GetComponent<PhotonView>();
+      //  _photonView = GetComponent<PhotonView>();
         _eranDoorAnim = GetComponent<Animator>();
+        eranDoor.layer = (int)LayerMasks.Default;
+
     }
 
 
     void Update()
     {
-        //if (PhotonNetwork.IsMasterClient)
         //    _photonView.RPC("AnimateEranDoor", RpcTarget.AllBufferedViaServer);
         AnimateEranDoor();
     }
@@ -43,23 +46,40 @@ public class EranDoorAnimation : MonoBehaviour
         _isOpen = true;
     }
 
-    [PunRPC]
+   // [PunRPC]
     public void AnimateEranDoor()
     {
         if (_isOpen)
         {
-            eranDoor.GetComponent<BoxCollider>().enabled = false;
+           // eranDoor.GetComponent<BoxCollider>().enabled = false;
+           Debug.Log("Opening door ");
             _eranDoorAnim.SetBool("OpenDoor",true);
-            _eranDoorAnim.SetBool("CloseDoor",false);
+            //_eranDoorAnim.SetBool("CloseDoor",false);
 
         }
-        //else
-        //{
-        //    eranDoor.SetBool("OpenDoor", false);
-        //    eranDoor.SetBool("CloseDoor", true);
-
-        //}
     }
 
-  
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerRefrence = other.gameObject.GetComponent<PlayerData>();
+            if (PlayerRefrence.IsInstructor)
+            {
+                Debug.Log("Welcome Instructor ");
+                eranDoor.layer = (int)LayerMasks.Interactable;
+                //  AllowedToOpen = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerRefrence =null;
+            eranDoor.layer = (int)LayerMasks.Default;
+
+        }
+    }
 }

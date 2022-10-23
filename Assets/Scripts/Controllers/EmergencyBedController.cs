@@ -338,12 +338,20 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] public GameObject _player;
 
     [Header("Emergency Bed States")]
+
     [SerializeField] private GameObject _emergencyBedOpen;
     [SerializeField] private GameObject _emergencyBedClosed, _emergencyBed;
+    [SerializeField] private GameObject _emergencyBedModelParent;
+
 
     [Header("UI")]
     [field: SerializeField] private GameObject _emergencyBedUI;
     public GameObject EmergencyBedUI => _emergencyBedUI;
+    [SerializeField] private GameObject PatientMenuParentUI;
+    [SerializeField] private GameObject JoinPatientParentUI;
+    [SerializeField] private GameObject TagMiunParentUI;
+
+
 
     [SerializeField] private TextMeshProUGUI _takeReturnText;
     [SerializeField] private TextMeshProUGUI _followUnfollowText, _placeRemovePatientText;
@@ -370,10 +378,17 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
+        #region PatientUI
+        PatientMenuParentUI = UIManager.Instance.PatientMenu;
+        JoinPatientParentUI = UIManager.Instance.JoinPatientPopUp;
+        TagMiunParentUI = UIManager.Instance.TagMiunMenu;
+        #endregion
     }
 
     void Start()
     {
+        _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+
         ChangeIsBedClosed(true);
 
         if (photonView.IsMine)
@@ -390,6 +405,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         PatientReadyToEvac();
+        ShowBedInCarToggle();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -397,6 +413,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Player"))
         {
             _player = other.gameObject;
+            _emergencyBedModelParent.layer = (int)LayerMasks.Interactable;
         }
 
         if (other.CompareTag("Patient"))
@@ -418,6 +435,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Player"))
         {
             _player = null;
+            _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+
         }
 
         if (other.CompareTag("Patient"))
@@ -449,7 +468,36 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _patient.layer = (int)LayerMasks.Interactable;
         }
 
+ 
+
         FollowPlayer();
+        InteractiveLayerToggles();
+    }
+
+    public void InteractiveLayerToggles()
+    {
+        if (PatientMenuParentUI.activeInHierarchy || JoinPatientParentUI.activeInHierarchy|| TagMiunParentUI.activeInHierarchy)
+        {
+            _emergencyBedModelParent.layer = (int)LayerMasks.Default;
+        }
+        else
+        {
+            _emergencyBedModelParent.layer = (int)LayerMasks.Interactable;
+
+        }
+
+    }
+
+    public void ShowBedInCarToggle()
+    {
+        if (_inCar && _parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(false);
+        }
+        if (_inCar && !_parentVehicle.IsInMovement)
+        {
+            _emergencyBedModelParent.SetActive(true);
+        }
     }
 
     public void ShowInteractionsToggle()
@@ -506,7 +554,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         {
             _inCar = false;
             _isBedOut = true;
-            _emergencyBedUI.SetActive(true);
+            _emergencyBedUI.SetActive(false);
             transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
 
             // bed needs to be [in car], [just outside car] ,[with player]

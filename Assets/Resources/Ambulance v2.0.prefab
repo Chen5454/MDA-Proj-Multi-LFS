@@ -933,6 +933,7 @@ MonoBehaviour:
   IsBusy: 0
   IsBackDoorsOpen: 0
   IsPatientIn: 0
+  IsInMovement: 0
   OwnerCrew: 0
   RandomNumber: 0
   RandomName: 
@@ -1314,8 +1315,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 2, z: 4}
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Size: {x: 1.5334918, y: 1.7005626, z: 3.1199276}
+  m_Center: {x: -0.057406783, y: -0.1497187, z: 0.26361954}
 --- !u!54 &728397716423735891
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1350,7 +1351,11 @@ MonoBehaviour:
   _emergencyBedOpen: {fileID: 3527804895022912932}
   _emergencyBedClosed: {fileID: 501323068250323734}
   _emergencyBed: {fileID: 1530117755279238907}
+  _emergencyBedModelParent: {fileID: 8497191663089062095}
   _emergencyBedUI: {fileID: 3684063129329503944}
+  PatientMenuParentUI: {fileID: 0}
+  JoinPatientParentUI: {fileID: 0}
+  TagMiunParentUI: {fileID: 0}
   _takeReturnText: {fileID: 3138112749602979894}
   _followUnfollowText: {fileID: 6284889622598405390}
   _placeRemovePatientText: {fileID: 3093672119316198300}

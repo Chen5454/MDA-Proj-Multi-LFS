@@ -19,7 +19,6 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [field: SerializeField] public int CrewIndex { get; set; }
     [field: SerializeField] public bool IsCrewLeader { get; set; }
     [field: SerializeField] public bool IsInstructor { get; set; }
-    [field: SerializeField] public bool IsMetargel { get; set; }
     [field: SerializeField] public bool IsMokdan { get; set; }
     [field: SerializeField] public bool IsPikud10 { get; set; }
     [field: SerializeField] public bool IsRefua10 { get; set; }
