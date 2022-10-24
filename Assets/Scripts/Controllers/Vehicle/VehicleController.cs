@@ -245,6 +245,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private void ChangeSit(int playerViewIndex, int sitEnum, bool isEnteringVehicle)
     {
         PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[playerViewIndex];
+        PlayerController playerController = photonView.GetComponent<PlayerController>();
 
         if (isEnteringVehicle)
         {
@@ -253,18 +254,23 @@ public class VehicleController : MonoBehaviour, IPunObservable
             switch (desiredVehicleSit)
             {
                 case VehicleSit.Driver:
+                    playerController._characterController.enabled = false;
                     photonView.transform.SetParent(DriverSit);
                     break;
                 case VehicleSit.Passanger:
+                    playerController._characterController.enabled = false;
                     photonView.transform.SetParent(PassangerSit);
                     break;
                 case VehicleSit.Middle:
+                    playerController._characterController.enabled = false;
                     photonView.transform.SetParent(MiddleSit);
                     break;
                 case VehicleSit.LeftBack:
+                    playerController._characterController.enabled = false;
                     photonView.transform.SetParent(LeftBackSit);
                     break;
                 case VehicleSit.RightBack:
+                    playerController._characterController.enabled = false;
                     photonView.transform.SetParent(RightBackSit);
                     break;
                 default:

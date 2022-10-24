@@ -63,6 +63,7 @@ public class VehicleInteraction : MonoBehaviour
                     //playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
                     SliderButton sliderHeadlightBtn = UIManager.Instance.HeadlightBtn.GetComponent<SliderButton>();
                     SliderButton sliderSirenBtn = UIManager.Instance.SirenBtn.GetComponent<SliderButton>();
+                    playerController._characterController.enabled = true;
                     playerController.CurrentVehicleController = _vehicleController;
 
                     if (_vehicleSit == VehicleSit.Driver)
@@ -74,7 +75,7 @@ public class VehicleInteraction : MonoBehaviour
                             //playerController.CurrentVehicleController = _vehicleController;
                             playerController.IsInVehicle = true;
                             playerController.IsDriving = true;
-
+                            
                             UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
@@ -193,6 +194,8 @@ public class VehicleInteraction : MonoBehaviour
 
                 if (playerController.IsDriving)
                 {
+                  //  playerController._characterController.enabled = false;
+
                     _vehicleController.IsDriverIn = false;
                     _vehicleController.IsInMovement = false;
                     playerController.IsDriving = false;
