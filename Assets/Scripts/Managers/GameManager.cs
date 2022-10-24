@@ -49,6 +49,14 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     //[Header("Metargel")]
     //public List<string> metargelUsersList;
 
+    [Header("Permissions")]
+    public GameObject CallAmbulanceActionBtn;
+    public GameObject CallNatanActionBtn, AspirinActionBtn, EpipenAdultActionBtn, InfusionKitActionBtn, CPapActionBtn, LmaActionBtn, QTKitActionBtn, AdultQTKitActionBtn, IntubationKitActionBtn, ZondaKitActionBtn, RespiratorActionBtn, KateterBujiActionBtn, PeepActionBtn, BreslauScaleActionBtn, BigKidsActionBtn, InhalationMaskActionBtn, OxygenIndicatorsActionBtn, CapnoTubusActionBtn, CapnoNezaliActionBtn, ConnectDefibrilationActionBtn, DefibrilationAmbulanceActionBtn, DefibrilationNatanActionBtn, SyncedFlipActionBtn, PacingActionBtn, PinkVenflonActionBtn, GreenVenflonActionBtn, BlueVenflonActionBtn, OrangeVenflonActionBtn, YellowVenflonActionBtn, VeinBlockerActionBtn, LoicoplastActionBtn, Injector10ActionBtn, Injector25ActionBtn, Injector5ActionBtn, Saline10ActionBtn, Saline100ActionBtn, Saline500ActionBtn, SpongetaActionBtn, GauzePadActionBtn, ZofranActionBtn, Injector50ActionBtn, InjectorPOActionBtn, KatumaNeedleActionBtn, NezaliFitterActionBtn, NeedleActionBtn, NitrolingualActionBtn, NarkanActionBtn, SugmadexActionBtn, SodiumTiosolfatActionBtn, SolimedrolActionBtn, SuperDropsActionBtn, LopresorActionBtn, MagneziumActionBtn, OralTermometerActionBtn, VentolinActionBtn, TermadexActionBtn, Injector20ActionBtn, FusidActionBtn, DriedPlazmaActionBtn, PanetnileActionBtn, ChanokitActionBtn, KataminActionBtn, CalciumActionBtn, RukoroniumActionBtn, D5wActionBtn, AdenozinActionBtn, AdrenalineActionBtn, OptalginActionBtn, AtomidatActionBtn, AtropinActionBtn, IzokatActionBtn, IrobantActionBtn, AcamolIVActionBtn, BCarbonetActionBtn, HighPressureStopcockActionBtn, HlucogelActionBtn, Hlucose50ActionBtn, DopaminActionBtn, DormicomActionBtn, DropridolActionBtn, HaperinActionBtn, HexacfronActionBtn, Hertman;
+
+    [SerializeField] protected List<GameObject> _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
+
+    [SerializeField] protected bool _useMedicPermissions, _useSeniorMedicPermissions, _useParamedicDocPermissions;
+
     private void Awake()
     {
         if (Instance == null)
@@ -173,7 +181,6 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
         return false;
     }
-
     private void Recover()
     {
         if (!PhotonNetwork.ReconnectAndRejoin())
@@ -190,6 +197,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
             }
         }
     }
+
+    //void OnFinshedLoading(Scene scene, LoadSceneMode mode)
+    //{
+    //    currentScene = scene.buildIndex;
+    //}
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -209,24 +221,10 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         Debug.Log(otherPlayer.NickName + " has left the room");
         Debug.Log(ActionsManager.Instance.AllPlayersPhotonViews.Count);
     }
-
-    //void OnFinshedLoading(Scene scene, LoadSceneMode mode)
-    //{
-    //    currentScene = scene.buildIndex;
-    //}
-
-
-
-    public void UpdateTaggedPatientList()
-    {
-        
-    }
-
     public void UpdatePinuyList()
     {
         _photonView.RPC("UpdatePinuyList_RPC", RpcTarget.AllBufferedViaServer);
     }
-
     public void ChangeAranState(bool isActive)
     {
         photonView.RPC("ChangeAranStateRPC", RpcTarget.All, isActive);
