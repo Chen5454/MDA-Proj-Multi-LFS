@@ -63,7 +63,6 @@ public class VehicleInteraction : MonoBehaviour
                     //playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false;
                     SliderButton sliderHeadlightBtn = UIManager.Instance.HeadlightBtn.GetComponent<SliderButton>();
                     SliderButton sliderSirenBtn = UIManager.Instance.SirenBtn.GetComponent<SliderButton>();
-                    playerController._characterController.enabled = true;
                     playerController.CurrentVehicleController = _vehicleController;
 
                     if (_vehicleSit == VehicleSit.Driver)
