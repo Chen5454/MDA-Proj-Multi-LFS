@@ -324,7 +324,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     {
         PhotonView playerView = other.GetComponentInParent<PhotonView>();
 
-        if (other.CompareTag("test") && !_playersInRoomList.Contains(playerView))
+        if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
         {
             // _playersInRoomList.Add(playerView);
             _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
@@ -332,25 +332,27 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        PhotonView playerView = other.GetComponentInParent<PhotonView>();
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    PhotonView playerView = other.GetComponentInParent<PhotonView>();
 
-        if (other.CompareTag("test") && !_playersInRoomList.Contains(playerView))
-        {
-            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-            // _playersInRoomList.Add(playerView);
-        }
-    }
+    //    if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
+    //    {
+
+    //        _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+    //        _playersInRoomList.Add(playerView);
+    //    }
+    //}
 
     private void OnTriggerExit(Collider other)
     {
         PhotonView playerView = other.GetComponentInParent<PhotonView>();
 
-        if (other.CompareTag("test") && _playersInRoomList.Contains(playerView))
+        if (other.CompareTag("PlayerCollider") && _playersInRoomList.Contains(playerView))
         {
-            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
             _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+
+            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
             //_playersInRoomList.Remove(playerView);
         }
     }
@@ -398,7 +400,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             _playersInRoomList.Remove(currentPlayerView);
         }
 
-        //Debug.LogError("Remove from room");
+        Debug.Log("Remove from room");
 
     }
 
@@ -492,7 +494,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             if (playerNickName == memberName.text)
             {
                 memberName.text = _waitMemberText;
-                break;
+               // break;
             }
         }
     }
