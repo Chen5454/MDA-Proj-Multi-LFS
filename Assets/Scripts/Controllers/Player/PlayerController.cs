@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     #region Controllers Behaviours
     [Header("Controllers")]
-    [SerializeField] private CharacterController _characterController;
+    [SerializeField] public CharacterController _characterController;
     
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
@@ -426,6 +426,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (!_isInVehicle)
             {
+                _characterController.enabled = true;
                 _vehicleCamera.enabled = false;
                 _vehicleCamera.tag = "Untagged";
                 _playerCamera.gameObject.SetActive(true);
@@ -434,10 +435,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _currentCamera = _playerCamera;
                 _vehicleCamera.GetComponent<VehicleCameraFollow>().Target = null;
                 //_vehicleCamera = null;
-                _characterController.enabled = true;
                 _stateAction = UseTankIdleState;
                 return;
             }
+         
 
             if (Input.GetKey(KeyCode.F))
             {
@@ -448,6 +449,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (_playerCamera.enabled)
             {
+                _characterController.enabled = false;
                 _playerCamera.enabled = false;
                 _playerCamera.tag = "Untagged";
                 _playerCamera.gameObject.SetActive(false);
@@ -457,7 +459,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _currentCamera = _vehicleCamera;
                 VehicleCameraFollow cameraFollow = _vehicleCamera.GetComponent<VehicleCameraFollow>();
                 cameraFollow.Target = _currentVehicleController.CameraFollowTransform;
-                _characterController.enabled = false;
                 _isGrounded = _characterController.isGrounded;
             }
             //_currentCarController.CheckIfDriveable();
