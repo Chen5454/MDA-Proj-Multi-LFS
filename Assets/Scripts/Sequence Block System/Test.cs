@@ -9,7 +9,9 @@ namespace PatientCreationSpace
     {
         //public object patientDataDelta; //relevant information to display?
         [SerializeField]
-        string testName;
+        public string testName;
+
+        //Should not also hold the type of measurement checked for? TBD TBF ALON
 
         //TBF test setter?
         public override void Set(string newID, string treatmentType)
