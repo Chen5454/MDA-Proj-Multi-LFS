@@ -61,7 +61,7 @@ public class Pikud10 : MonoBehaviour
             {
                 if (hit.collider.tag == "test" )
                 {
-                    Destroy(hit.transform.root.gameObject);
+                    PhotonNetwork.Destroy(hit.transform.root.gameObject);
                     Debug.Log("Hit");
                 }
             }
