@@ -363,7 +363,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
     {
         if (TryGetComponent(out Pikud10 pikud10))
         {
-           // pikud10.AllAreaMarkings[markerIndex].onClick.Invoke();
+            // pikud10.AllAreaMarkings[markerIndex].onClick.Invoke();
             pikud10.CreateMarkedArea(markerIndex, GetComponent<CameraController>());
         }
     }

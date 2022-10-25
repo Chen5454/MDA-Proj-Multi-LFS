@@ -14,12 +14,13 @@ public class Pikud10 : MonoBehaviour
     private List<GameObject> _allWorldMarks;
     private GameObject _dropdownRefua10, _dropdownPinuy10, _dropdownHenyon10;
     private CameraController _camController;
-    private LineRenderer _lineRenderer;
+   // private LineRenderer _lineRenderer;
     private LayerMask _groundLayer;
     private Vector2 _targetPos;
     private int _currentMarkIndex;
     private bool _isPikud10MenuOpen;
     private bool _isMarking = false;
+ 
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
     [Header("Pikod10 UI")] public GameObject Pikud10Menu;
@@ -28,14 +29,8 @@ public class Pikud10 : MonoBehaviour
     public Button TopMenuHandle, AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button[] AllAreaMarkings = new Button[6];
 
+    private GameObject worldMark;
 
-  //  private string channelName;
-    //private bool positionalChannelExists;
-
-    private void Awake()
-    {
-       // VivoxManager.Instance.isPikud10 = true;
-    }
 
     #region MonobehaviourCallbacks
 
@@ -46,24 +41,34 @@ public class Pikud10 : MonoBehaviour
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
         
-        //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession);
-        //VivoxManager.Instance.LeaveChannel(VivoxManager.Instance.vivox.channelSession2);
-
-        //VivoxManager.Instance.vivox.loginSession.Logout();
-     
-        //VivoxManager.Instance.BindLoginCallBack(false, VivoxManager.Instance.vivox.loginSession);
-       
-        //Debug.Log("Pikud10 Logged out from everything.");
-
-        //StartCoroutine(ReconnectToVivox(2));
+ 
     }
+
     private void Update()
     {
         if (_isMarking)
         {
             ChooseAreaPos(_currentMarkIndex);
         }
+
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Casts the ray and get the first game object hit
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.tag == "test" )
+                {
+                    Destroy(hit.transform.root.gameObject);
+                    Debug.Log("Hit");
+                }
+            }
+       
+        }
     }
+
     private void OnDestroy()
     {
         UIManager.Instance.TeamLeaderMenu.SetActive(true);
@@ -146,19 +151,19 @@ public class Pikud10 : MonoBehaviour
     {
         _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
     }
-    private void SetLineTargetPos()
-    {
-        _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
-        _lineRenderer.SetPosition(1,
-            new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-        _lineRenderer.SetPosition(2,
-            new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-        _lineRenderer.SetPosition(3,
-            new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
-        _lineRenderer.SetPosition(4,
-            new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
-        _lineRenderer.SetPosition(5, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
-    }
+    //private void SetLineTargetPos()
+    //{
+    //    _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
+    //    _lineRenderer.SetPosition(1,
+    //        new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
+    //    _lineRenderer.SetPosition(2,
+    //        new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
+    //    _lineRenderer.SetPosition(3,
+    //        new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
+    //    _lineRenderer.SetPosition(4,
+    //        new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
+    //    _lineRenderer.SetPosition(5, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
+    //}
     private void ChooseAreaPos(int markIndex)
     {
         if (Input.GetMouseButtonDown(0))
@@ -214,28 +219,29 @@ public class Pikud10 : MonoBehaviour
         switch (markIndex)
         {
             case 0:
-                _lineRenderer.startColor = Color.red;
-                _lineRenderer.endColor = Color.red;
+                
+               // _lineRenderer.startColor = Color.red;
+              //  _lineRenderer.endColor = Color.red;
                 break;
             case 1:
-                _lineRenderer.startColor = Color.green;
-                _lineRenderer.endColor = Color.green;
+               // _lineRenderer.startColor = Color.green;
+               // _lineRenderer.endColor = Color.green;
                 break;
             case 2:
-                _lineRenderer.startColor = Color.blue;
-                _lineRenderer.endColor = Color.blue;
+              //  _lineRenderer.startColor = Color.blue;
+               // _lineRenderer.endColor = Color.blue;
                 break;
             case 3:
-                _lineRenderer.startColor = Color.white;
-                _lineRenderer.endColor = Color.white;
+               // _lineRenderer.startColor = Color.white;
+               // _lineRenderer.endColor = Color.white;
                 break;
             case 4:
-                _lineRenderer.startColor = Color.black;
-                _lineRenderer.endColor = Color.black;
+               // _lineRenderer.startColor = Color.black;
+               // _lineRenderer.endColor = Color.black;
                 break;
             case 5:
-                _lineRenderer.startColor = Color.yellow;
-                _lineRenderer.endColor = Color.yellow;
+              //  _lineRenderer.startColor = Color.yellow;
+               // _lineRenderer.endColor = Color.yellow;
                 break;
         }
     }
@@ -293,10 +299,10 @@ public class Pikud10 : MonoBehaviour
         AllAreaMarkings[5].onClick.AddListener(delegate { OnClickMarker(5); });
 
         gameObject.AddComponent<LineRenderer>();
-        _lineRenderer = GetComponent<LineRenderer>();
-        _lineRenderer.positionCount = 6;
-        _lineRenderer.widthMultiplier = 0.1f;
-        _lineRenderer.material = GameManager.Instance.LineMaterial;
+       // _lineRenderer = GetComponent<LineRenderer>();
+       // _lineRenderer.positionCount = 6;
+       // _lineRenderer.widthMultiplier = 0.1f;
+        //_lineRenderer.material = GameManager.Instance.LineMaterial;
         _groundLayer = LayerMask.GetMask("Ground");
         _groundLayer += LayerMask.GetMask("Road");
 
@@ -310,141 +316,39 @@ public class Pikud10 : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit areaPosRaycastHit, 20f, _groundLayer))
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
-            GameObject worldMark = PhotonNetwork.Instantiate("WorldMark Canvas", new Vector3(_targetPos.x, _worldMarkHeight, _targetPos.y), Quaternion.identity);
-            worldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = worldMark.GetComponent<WorldMark>().Marks[markIndex];
+             worldMark = PhotonNetwork.Instantiate("WorldMark Canvas", new Vector3(_targetPos.x, _worldMarkHeight, _targetPos.y), Quaternion.identity);
+             ChangeColorForArea(markIndex);
+             worldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = worldMark.GetComponent<WorldMark>().Marks[markIndex];
             _allWorldMarks.Add(worldMark);
-            SetLineTargetPos();
+            // SetLineTargetPos();
         }
 
         _isMarking = false;
     }
 
+    private void ChangeColorForArea(int markIndex)
+    {
+        switch (markIndex)
+        {
+            case 0:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+                break;
+            case 1:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+                break;
+            case 2:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+                break;
+            case 3:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                break;
+            case 4:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
+                break;
+            case 5:
+                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+                break;
+        }
+    }
     #endregion
-
-
-    //public void LocalMuteSelf(VivoxUnity.Client client)
-    //{
-    //    client.AudioInputDevices.Muted = true;
-    //}
-
-    //public void LocalUnmuteSelf(VivoxUnity.Client client)
-    //{
-    //    client.AudioInputDevices.Muted = false;
-    //}
-
-
-    //IEnumerator ReconnectToVivox(float refresh)
-    //{
-    //    yield return new WaitForSeconds(refresh);
-
-    //    //if (!VivoxManager.Instance.vivox.client.Initialized)
-    //    //    VivoxManager.Instance.InitializeClient();
-
-    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedOut)
-    //    {
-    //       // VivoxManager.Instance.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
-
-    //        if (VivoxManager.Instance.FilterChannelAndUserName(PhotonNetwork.NickName))
-    //        {
-
-    //            VivoxManager.Instance.Login(PhotonNetwork.NickName);
-
-    //        }
-
-    //    }
-
-    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
-    //    {
-    //        VivoxManager.Instance.vivox.loginSession.SetTransmissionMode(TransmissionMode.All);
-
-    //    }
-
-    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
-    //    {
-    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Disconnected)
-    //        {
-    //            VivoxManager.Instance.VivoxJoin3DPositional(VivoxManager.Instance.vivox.Channel3DName, true, false, false, ChannelType.Positional, 10, 5, 5, AudioFadeModel.InverseByDistance);
-    //            Debug.Log(" Logging VivoxJoin3DPositional ");
-
-    //        }
-
-    //        if (VivoxManager.Instance.vivox.channelSession2.ChannelState == ConnectionState.Disconnected)
-    //        {
-    //            VivoxManager.Instance.Join2DChannel(VivoxManager.Instance.vivox.Channel2DName, true, false, false, ChannelType.NonPositional);
-    //            Debug.Log(" Logging Join2DChannel ");
-    //        }
-
-    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected)
-    //        {
-    //            StartCoroutine(Handle3DVoipPositionUpdate(0.3f));
-
-    //        }
-
-
-
-    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected && VivoxManager.Instance.vivox.channelSession2.ChannelState == ConnectionState.Connected)
-    //        {
-    //            Debug.Log(" yield break ");
-    //            yield break;
-    //        }
-    //    }
-
-    //    StartCoroutine(ReconnectToVivox(refresh));
-
-        
-    //}
-
-    //IEnumerator Handle3DVoipPositionUpdate(float nextUpdate)
-    //{
-    //    yield return new WaitForSeconds(nextUpdate);
-
-
-
-    //    if (VivoxManager.Instance.vivox.loginSession.State == LoginState.LoggedIn)
-    //    {
-    //        if (positionalChannelExists)
-    //        {
-    //            VivoxManager.Instance.vivox.channelSession.Set3DPosition(transform.position, transform.position,
-    //                transform.forward, transform.up);
-
-    //        }
-    //        else
-    //        {
-    //            positionalChannelExists = CheckIfChannelExists();
-    //        }
-    //    }
-
-    //    StartCoroutine(Handle3DVoipPositionUpdate(nextUpdate));
-
-
-
-
-    //}
-
-
-    //public bool CheckIfChannelExists()
-    //{
-
-    //    if (VivoxManager.Instance.vivox.channelSession.Channel.Type == ChannelType.Positional)
-    //    {
-    //        channelName = VivoxManager.Instance.vivox.channelSession.Channel.Name;
-    //        if (VivoxManager.Instance.vivox.channelSession.ChannelState == ConnectionState.Connected)
-    //        {
-    //            Debug.Log($"Channel : {channelName} is connected");
-    //            if (VivoxManager.Instance.vivox.channelSession.AudioState == ConnectionState.Connected)
-    //            {
-    //                Debug.Log($"Audio is Connected in Channel : {channelName}");
-    //                return true;
-    //            }
-
-    //            Debug.Log($"Audio is Connected in Channel : {channelName}");
-    //        }
-    //        else
-    //        {
-    //            Debug.Log($"Channel : {channelName} is not Connected");
-    //        }
-    //    }
-
-    //    return false;
-    //}
 }
