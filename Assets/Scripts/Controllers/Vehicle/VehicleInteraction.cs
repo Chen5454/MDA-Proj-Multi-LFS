@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class VehicleInteraction : MonoBehaviour
@@ -32,6 +33,7 @@ public class VehicleInteraction : MonoBehaviour
             {
                 PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
                 PlayerController playerController = photonView.GetComponent<PlayerController>();
+                PlayerData playerData = photonView.GetComponent<PlayerData>();
 
                 if (UIManager.Instance.CurrentActionBarParent.activeInHierarchy)
                 {
@@ -43,12 +45,27 @@ public class VehicleInteraction : MonoBehaviour
                     UIManager.Instance.CurrentActionBarParent.SetActive(false);
                 }
 
-                UIManager.Instance.CurrentActionBarParent = _barType switch
+                if (_barType == 0)
                 {
-                    0 => UIManager.Instance.AmbulanceBar,
-                    1 => UIManager.Instance.NatanBar,
-                    _ => UIManager.Instance.AmbulanceBar,
-                };
+                    UIManager.Instance.CurrentActionBarParent = UIManager.Instance.AmbulanceBar;
+                    AmbulancePermissions ambulancePermissions = UIManager.Instance.AmbulanceBar.GetComponent<AmbulancePermissions>();
+                    ambulancePermissions.InitializePermissions(playerData.UserRole);
+                    ambulancePermissions.SetActions(ambulancePermissions.InitializePermissions(playerData.UserRole));
+                }
+                else if (_barType == 1)
+                {
+                    UIManager.Instance.CurrentActionBarParent = UIManager.Instance.NatanBar;
+                    NatanPermissions natanPermissions = UIManager.Instance.NatanBar.GetComponent<NatanPermissions>();
+                    natanPermissions.InitializePermissions(playerData.UserRole);
+                    natanPermissions.SetActions(natanPermissions.InitializePermissions(playerData.UserRole));
+                }
+
+                //UIManager.Instance.CurrentActionBarParent = _barType switch
+                //{
+                //    0 => UIManager.Instance.AmbulanceBar,
+                //    1 => UIManager.Instance.NatanBar,
+                //    _ => UIManager.Instance.AmbulanceBar,
+                //};
 
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
 
@@ -184,6 +201,10 @@ public class VehicleInteraction : MonoBehaviour
             {
                 PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
                 PlayerController playerController = photonView.GetComponent<PlayerController>();
+                PlayerData playerData = photonView.GetComponent<PlayerData>();
+
+                AmbulancePermissions ambulancePermissions = UIManager.Instance.AmbulanceBar.GetComponent<AmbulancePermissions>();
+                ambulancePermissions.RemovePermissions(playerData.UserRole);
 
                 if (UIManager.Instance.VehicleDriverUI.activeInHierarchy)
                     UIManager.Instance.VehicleDriverUI.SetActive(false);
