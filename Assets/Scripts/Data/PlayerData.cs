@@ -358,15 +358,14 @@ public class PlayerData : MonoBehaviourPunCallbacks
         chosenPlayerData.AssignAranRole(AranRoles.Henyon10);
     }
 
-    [PunRPC]
-    public void ActivateAreaMarkingRPC(int markerIndex)
-    {
-        if (TryGetComponent(out Pikud10 pikud10))
-        {
-            // pikud10.AllAreaMarkings[markerIndex].onClick.Invoke();
-            pikud10.CreateMarkedArea(markerIndex, GetComponent<CameraController>());
-        }
-    }
+    //[PunRPC]
+    //public void ActivateAreaMarkingRPC(int markerIndex)
+    //{
+    //    if (TryGetComponent(out Pikud10 pikud10))
+    //    {
+    //        pikud10.CreateMarkedArea(markerIndex, GetComponent<CameraController>());
+    //    }
+    //}
 
     [PunRPC]
     public void SpectatePikudCamera_RPC()

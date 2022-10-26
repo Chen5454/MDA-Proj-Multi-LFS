@@ -6,7 +6,7 @@ using Photon.Pun;
 using TMPro;
 using VivoxUnity;
 
-public class Pikud10 : MonoBehaviour
+public class Pikud10 : MonoBehaviour,IPunObservable
 {
     private PhotonView _photonView => GetComponent<PhotonView>();
     private Coroutine _updatePlayerListCoroutine;
@@ -30,44 +30,61 @@ public class Pikud10 : MonoBehaviour
     public Button[] AllAreaMarkings = new Button[6];
 
     private GameObject worldMark;
+    //private GameObject worldMark;
 
 
     #region MonobehaviourCallbacks
 
+
     private void Start()
     {
-        InitializePikud10();
+  
+        if (_photonView.IsMine)
+        {
+            _camController = GetComponent<CameraController>();
+        }
+
+        InitializePikud10RPC();
         CameraTransmition();
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Pikud10Menu.SetActive(true);
-        
- 
+        worldMark = UIManager.Instance.MarkerPrefab;
+
     }
 
     private void Update()
     {
-        if (_isMarking)
-        {
-            ChooseAreaPos(_currentMarkIndex);
-        }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            // Casts the ray and get the first game object hit
-            if (Physics.Raycast(ray, out hit))
+            if (_isMarking)
             {
-                if (hit.collider.tag == "test" )
-                {
-                    PhotonNetwork.Destroy(hit.transform.root.gameObject);
-                    Debug.Log("Hit");
-                }
+                //_photonView.RPC("ChooseAreaPos",RpcTarget.AllBufferedViaServer, _currentMarkIndex);
+                ChooseAreaPos(_currentMarkIndex);
             }
-       
         }
+
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //   _photonView.RPC("DestoryMarker",RpcTarget.AllBufferedViaServer);
+            
+        //}
     }
+    //[PunRPC]
+    //public void DestoryMarker()
+    //{
+    //    RaycastHit hit;
+
+    //    // Casts the ray and get the first game object hit
+    //    if (Physics.Raycast(ray, out hit))
+    //    {
+    //        if (hit.collider.tag == "test")
+    //        {
+    //            Destroy(hit.transform.parent.gameObject);
+    //            Debug.Log("Hit");
+    //        }
+    //    }
+    //}
 
     private void OnDestroy()
     {
@@ -147,10 +164,10 @@ public class Pikud10 : MonoBehaviour
     #endregion
 
     #region Private Methods
-    private void InitializePikud10()
-    {
-        _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
-    }
+    //private void InitializePikud10()
+    //{
+    //    _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
+    //}
     //private void SetLineTargetPos()
     //{
     //    _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
@@ -166,14 +183,9 @@ public class Pikud10 : MonoBehaviour
     //}
     private void ChooseAreaPos(int markIndex)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-          
-                _photonView.RPC("SetMarkRPC", RpcTarget.AllViaServer, markIndex);
-            
-        }
+        SetMarkRPC(markIndex);
     }
-    private void CameraTransmition()
+        private void CameraTransmition()
     {
         //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
         _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
@@ -211,49 +223,20 @@ public class Pikud10 : MonoBehaviour
     {
         _photonView.RPC("GiveHenyonRole", RpcTarget.AllBufferedViaServer, GetHenyonIndex());
     }
-    public void CreateMarkedArea(int markIndex, CameraController camController)
+    public void CreateMarkedArea(int markIndex)
     {
         _isMarking = true;
         _currentMarkIndex = markIndex;
-        _camController = camController;
-        switch (markIndex)
-        {
-            case 0:
-                
-               // _lineRenderer.startColor = Color.red;
-              //  _lineRenderer.endColor = Color.red;
-                break;
-            case 1:
-               // _lineRenderer.startColor = Color.green;
-               // _lineRenderer.endColor = Color.green;
-                break;
-            case 2:
-              //  _lineRenderer.startColor = Color.blue;
-               // _lineRenderer.endColor = Color.blue;
-                break;
-            case 3:
-               // _lineRenderer.startColor = Color.white;
-               // _lineRenderer.endColor = Color.white;
-                break;
-            case 4:
-               // _lineRenderer.startColor = Color.black;
-               // _lineRenderer.endColor = Color.black;
-                break;
-            case 5:
-              //  _lineRenderer.startColor = Color.yellow;
-               // _lineRenderer.endColor = Color.yellow;
-                break;
-        }
     }
     public void OnClickMarker(int markIndex) // markerIndex is responsible for choosing the targeted btn
     {
-        _photonView.RPC("ActivateAreaMarkingRPC", RpcTarget.AllViaServer, markIndex);
+        CreateMarkedArea(markIndex);
     }
+
     #endregion
 
     #region PunRPC
 
-    [PunRPC]
     private void InitializePikud10RPC()
     {
         Pikud10Camera = transform.GetChild(transform.childCount - 2).GetComponent<Camera>();
@@ -281,6 +264,13 @@ public class Pikud10 : MonoBehaviour
         AllAreaMarkings[3] = UIManager.Instance.MarkGeneral;
         AllAreaMarkings[4] = UIManager.Instance.MarkDeceased;
         AllAreaMarkings[5] = UIManager.Instance.MarkBomb;
+        AllAreaMarkings[0].onClick.AddListener(delegate { OnClickMarker(0); });
+        AllAreaMarkings[1].onClick.AddListener(delegate { OnClickMarker(1); });
+        AllAreaMarkings[2].onClick.AddListener(delegate { OnClickMarker(2); });
+        AllAreaMarkings[3].onClick.AddListener(delegate { OnClickMarker(3); });
+        AllAreaMarkings[4].onClick.AddListener(delegate { OnClickMarker(4); });
+        AllAreaMarkings[5].onClick.AddListener(delegate { OnClickMarker(5); });
+
 
         AssignRefua10.onClick.RemoveAllListeners();
         AssignRefua10.onClick.AddListener(delegate { OnClickRefua(); });
@@ -290,13 +280,6 @@ public class Pikud10 : MonoBehaviour
 
         AssignHenyon10.onClick.RemoveAllListeners();
         AssignHenyon10.onClick.AddListener(delegate { OnClickHenyon(); });
-
-        AllAreaMarkings[0].onClick.AddListener(delegate { OnClickMarker(0); });
-        AllAreaMarkings[1].onClick.AddListener(delegate { OnClickMarker(1); });
-        AllAreaMarkings[2].onClick.AddListener(delegate { OnClickMarker(2); });
-        AllAreaMarkings[3].onClick.AddListener(delegate { OnClickMarker(3); });
-        AllAreaMarkings[4].onClick.AddListener(delegate { OnClickMarker(4); });
-        AllAreaMarkings[5].onClick.AddListener(delegate { OnClickMarker(5); });
 
         gameObject.AddComponent<LineRenderer>();
        // _lineRenderer = GetComponent<LineRenderer>();
@@ -309,45 +292,78 @@ public class Pikud10 : MonoBehaviour
         GameManager.Instance.Pikud10View = _photonView;
     }
 
-    [PunRPC]
     private void SetMarkRPC(int markIndex)
     {
+
         Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out RaycastHit areaPosRaycastHit, 20f, _groundLayer))
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
-             worldMark = PhotonNetwork.Instantiate("WorldMark Canvas", new Vector3(_targetPos.x, _worldMarkHeight, _targetPos.y), Quaternion.identity);
-             ChangeColorForArea(markIndex);
-             worldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = worldMark.GetComponent<WorldMark>().Marks[markIndex];
-            _allWorldMarks.Add(worldMark);
-            // SetLineTargetPos();
+            _photonView.RPC("SettingPrefabPos_RPC",RpcTarget.AllBufferedViaServer,markIndex, _targetPos);
         }
 
         _isMarking = false;
     }
 
-    private void ChangeColorForArea(int markIndex)
+    [PunRPC]
+    private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos)
     {
+        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity);
+        ChangeColorForArea(markIndex, instantiateWorldMark);
+            instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
+        _allWorldMarks.Add(instantiateWorldMark);
+    }
+
+    //[PunRPC]
+    //private void DestoryPrefabPos_RPC()
+    //{
+    //    Destroy(hit.transform.root.gameObject);
+    //    Debug.Log("Hit");
+    //}
+
+
+    private void ChangeColorForArea(int markIndex, GameObject worldMark)
+    {
+        var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
         switch (markIndex)
         {
             case 0:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+                colorArea.color = Color.red;
                 break;
             case 1:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+                colorArea.color = Color.green;
                 break;
             case 2:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.blue;
+                colorArea.color = Color.blue;
                 break;
             case 3:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+                colorArea.color = Color.white;
                 break;
             case 4:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
+                colorArea.color = Color.black;
                 break;
             case 5:
-                worldMark.transform.GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;
+                colorArea.color = Color.yellow;
                 break;
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(_isMarking);
+            stream.SendNext(_currentMarkIndex);
+          //stream.SendNext(_targetPos);
+
+        }
+        else
+        {
+            _isMarking = (bool)stream.ReceiveNext();
+            _currentMarkIndex = (int)stream.ReceiveNext();
+          //_targetPos = (Vector2)stream.ReceiveNext();
+
         }
     }
     #endregion
