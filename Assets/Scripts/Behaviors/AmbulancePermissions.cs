@@ -11,7 +11,7 @@ public class AmbulancePermissions : MonoBehaviour
     [SerializeField] private bool _useMedicPermissions;
     [SerializeField] private bool _useSeniorMedicPermissions, _useParamedicDocPermissions;
     [SerializeField] private List<Button> _cprActionPermissions, _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
-    [SerializeField] private Button _callNatanActionBtn, /*_aspirinActionBtn, _epipenAdultActionBtn, _infusionKitActionBtn, */_qTKitActionBtn, _adultQTKitActionBtn, _intubationKitAdultActionBtn, _intubationKitKidsActionBtn, _zondaKitActionBtn, _respiratorActionBtn, _kateterBujiActionBtn, _peepActionBtn, _breslauScaleActionBtn, _bigKidsActionBtn, _inhalationMaskActionBtn, _oxygenIndicatorsActionBtn, _capnoTubusActionBtn, _capnoNezaliActionBtn, _connectDefibrilationActionBtn, _defibrilationAmbulanceActionBtn, _syncedFlipActionBtn, _pacingActionBtn;
+    [SerializeField] private Button _callNatanActionBtn, _connectDefibrilationActionBtn, _defibrilationAmbulanceActionBtn;
 
     private void Start()
     {
@@ -32,24 +32,7 @@ public class AmbulancePermissions : MonoBehaviour
     private void InitializeParamedicDocPermissions()
     {
         _paramedicDocActionPermissions.Add(_callNatanActionBtn);
-
-        _paramedicDocActionPermissions.Add(_adultQTKitActionBtn);
-        _paramedicDocActionPermissions.Add(_intubationKitAdultActionBtn);
-        _paramedicDocActionPermissions.Add(_intubationKitKidsActionBtn);
-        _paramedicDocActionPermissions.Add(_zondaKitActionBtn);
-        _paramedicDocActionPermissions.Add(_respiratorActionBtn);
-        _paramedicDocActionPermissions.Add(_kateterBujiActionBtn);
-        _paramedicDocActionPermissions.Add(_peepActionBtn);
-        _paramedicDocActionPermissions.Add(_breslauScaleActionBtn);
-        _paramedicDocActionPermissions.Add(_bigKidsActionBtn);
-        _paramedicDocActionPermissions.Add(_inhalationMaskActionBtn);
-        _paramedicDocActionPermissions.Add(_oxygenIndicatorsActionBtn);
-        _paramedicDocActionPermissions.Add(_capnoTubusActionBtn);
-        _paramedicDocActionPermissions.Add(_capnoTubusActionBtn);
-        _paramedicDocActionPermissions.Add(_capnoNezaliActionBtn);
         _paramedicDocActionPermissions.Add(_connectDefibrilationActionBtn);
-        _paramedicDocActionPermissions.Add(_syncedFlipActionBtn);
-        _paramedicDocActionPermissions.Add(_pacingActionBtn);
     }
     public List<Button> InitializePermissions(Roles role)
     {
