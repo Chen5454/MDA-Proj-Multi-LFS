@@ -161,7 +161,9 @@ public class Patient : MonoBehaviour
     public void OnInteracted()
     {
         ActionsManager.Instance.OnPatientClicked();
-        UIManager.Instance.TagMiunSubmitBtn.onClick.AddListener(delegate { AddToTaggedPatientsList(); });
+
+        if (GameManager.Instance.IsAranActive)
+            UIManager.Instance.TagMiunSubmitBtn.onClick.AddListener(delegate { AddToTaggedPatientsList(); });
     }
 
     public void SetUnusedBandages(bool enableBandage)
