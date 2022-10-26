@@ -11,13 +11,6 @@ public class NatanPermissions : MonoBehaviour
     [SerializeField] private List<Button> _cprActionPermissions, _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
     [SerializeField] private Button _callAmbulanceActionBtn, _aspirinActionBtn, /*_epipenAdultActionBtn, _infusionKitActionBtn,*/ _cPapActionBtn, _lmaActionBtn, _qTKitActionBtn, _adultQTKitActionBtn, _intubationKitAdultActionBtn, _intubationKitKidsActionBtn, _zondaKitActionBtn, _respiratorActionBtn, _kateterBujiActionBtn, _peepActionBtn, _breslauScaleActionBtn, _bigKidsActionBtn, _inhalationMaskActionBtn, _oxygenIndicatorsActionBtn, _capnoTubusActionBtn, _capnoNezaliActionBtn, _connectDefibrilationActionBtn, _defibrilationNatanActionBtn, _syncedFlipActionBtn, _pacingActionBtn, _pinkVenflonActionBtn, _greenVenflonActionBtn, _blueVenflonActionBtn, _orangeVenflonActionBtn, _yellowVenflonActionBtn, _veinBlockerActionBtn, _loicoplastActionBtn, _injector10ActionBtn, _injector25ActionBtn, _injector5ActionBtn, _saline10ActionBtn, _saline100ActionBtn, _saline500ActionBtn, _spongetaActionBtn, _gauzePadActionBtn, _zofranActionBtn, _injector50ActionBtn, _injectorPOActionBtn, _katumaNeedleActionBtn, _nezaliFitterActionBtn, NeedleActionBtn, NitrolingualActionBtn, NarkanActionBtn, SugmadexActionBtn, _sodiumTiosolfatActionBtn, _solimedrolActionBtn, _superDropsActionBtn, _lopresorActionBtn, _magneziumActionBtn, _oralTermometerActionBtn, _ventolinActionBtn, _termadexActionBtn, _injector20ActionBtn, _fusidActionBtn, _driedPlazmaActionBtn, _panetnileActionBtn, _chanokitActionBtn, _kataminActionBtn, _calciumActionBtn, _rukoroniumActionBtn, _d5wActionBtn, _adenozinActionBtn, _adrenalineActionBtn, _optalginActionBtn, _atomidatActionBtn, _atropinActionBtn, _izokatActionBtn, _irobantActionBtn, _acamolIVActionBtn, _bCarbonetActionBtn, _highPressureStopcockActionBtn, _glucogelActionBtn, _glucose50ActionBtn, _dopaminActionBtn, _dormicomActionBtn, _dropridolActionBtn, _haperinActionBtn, _hexacfronActionBtn, _hertman;
 
-    private void Start()
-    {
-        //InitializeMedicPermissions();
-        //InitializeSeniorMedicPermissions();
-        //InitializeParamedicDocPermissions();
-    }
-
     private void InitializeMedicPermissions()
     {
         _medicActionPermissions.Add(_callAmbulanceActionBtn);

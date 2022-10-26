@@ -13,13 +13,6 @@ public class AmbulancePermissions : MonoBehaviour
     [SerializeField] private List<Button> _cprActionPermissions, _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
     [SerializeField] private Button _callNatanActionBtn, _connectDefibrilationActionBtn, _defibrilationAmbulanceActionBtn;
 
-    private void Start()
-    {
-        //InitializeMedicPermissions();
-        //InitializeSeniorMedicPermissions();
-        //InitializeParamedicDocPermissions();
-    }
-
     private void InitializeMedicPermissions()
     {
         _medicActionPermissions.Add(_callNatanActionBtn);
