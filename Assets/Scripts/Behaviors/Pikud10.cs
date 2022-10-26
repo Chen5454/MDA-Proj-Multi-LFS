@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -31,14 +32,15 @@ public class Pikud10 : MonoBehaviour,IPunObservable
 
     private GameObject worldMark;
     //private GameObject worldMark;
-
+    private OwnershipTransfer _transfer;
 
     #region MonobehaviourCallbacks
 
 
     private void Start()
     {
-  
+        _transfer = GetComponent<OwnershipTransfer>();
+
         if (_photonView.IsMine)
         {
             _camController = GetComponent<CameraController>();
@@ -64,27 +66,34 @@ public class Pikud10 : MonoBehaviour,IPunObservable
             }
         }
 
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //   _photonView.RPC("DestoryMarker",RpcTarget.AllBufferedViaServer);
-            
-        //}
+        if (Input.GetMouseButtonDown(1))
+        {
+            Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
+            // Casts the ray and get the first game object hit
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                
+                if (hit.collider.tag == "test")
+                {
+                    string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
+                    _photonView.RPC("DestroyWorldMark_RPC",RpcTarget.AllBufferedViaServer, nameIndx);
+                }
+            }
+        }
     }
-    //[PunRPC]
-    //public void DestoryMarker()
-    //{
-    //    RaycastHit hit;
 
-    //    // Casts the ray and get the first game object hit
-    //    if (Physics.Raycast(ray, out hit))
-    //    {
-    //        if (hit.collider.tag == "test")
-    //        {
-    //            Destroy(hit.transform.parent.gameObject);
-    //            Debug.Log("Hit");
-    //        }
-    //    }
-    //}
+    [PunRPC]
+    private void DestroyWorldMark_RPC(string nameIndex)
+    {
+        foreach (var mark in _allWorldMarks)
+        {
+            if (mark.GetComponent<WorldMark>().nameID == nameIndex)
+            {
+                Destroy(mark);
+                break;
+            }
+        }
+    }
 
     private void OnDestroy()
     {
@@ -300,18 +309,21 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         if (Physics.Raycast(ray, out RaycastHit areaPosRaycastHit, 20f, _groundLayer))
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
-            _photonView.RPC("SettingPrefabPos_RPC",RpcTarget.AllBufferedViaServer,markIndex, _targetPos);
+            string IndexRandom = Random.value.ToString();
+            _photonView.RPC("SettingPrefabPos_RPC",RpcTarget.AllBufferedViaServer,markIndex, _targetPos, IndexRandom);
         }
 
         _isMarking = false;
     }
 
     [PunRPC]
-    private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos)
+    private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos, string IndexRandom)
     {
+        
         var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity);
         ChangeColorForArea(markIndex, instantiateWorldMark);
             instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
+            instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
         _allWorldMarks.Add(instantiateWorldMark);
     }
 
