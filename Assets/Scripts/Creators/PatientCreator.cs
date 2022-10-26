@@ -9,7 +9,12 @@ namespace PatientCreationSpace
 
     public static class PatientCreator
     {
-        public static string streamingAssets_FolderPath;// = "Assets/StreamingAssets/Patients/";
+
+#if UNITY_EDITOR
+        public static readonly string streamingAssets_FolderPath = "Assets/StreamingAssets/Patients/";
+#else
+        public static readonly string streamingAssets_FolderPath = $"{Application.streamingAssetsPath}/Patients/";
+#endif
 
         //public static string patientID => newPatient.Id;
         //public static Patient currentPatient;
