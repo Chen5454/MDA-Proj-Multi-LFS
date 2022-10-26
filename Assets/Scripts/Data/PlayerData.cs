@@ -41,7 +41,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-       // if (PhotonNetwork.IsMasterClient)
+        if (PhotonView.IsMine)
             PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
 
         AranRole = AranRoles.None;
