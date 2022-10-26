@@ -49,6 +49,7 @@ public class VehicleInteraction : MonoBehaviour
                 {
                     UIManager.Instance.CurrentActionBarParent = UIManager.Instance.AmbulanceBar;
                     AmbulancePermissions ambulancePermissions = UIManager.Instance.AmbulanceBar.GetComponent<AmbulancePermissions>();
+                    ambulancePermissions.RemovePermissions();
                     ambulancePermissions.InitializePermissions(playerData.UserRole);
                     ambulancePermissions.SetActions(ambulancePermissions.InitializePermissions(playerData.UserRole));
                 }
@@ -56,6 +57,7 @@ public class VehicleInteraction : MonoBehaviour
                 {
                     UIManager.Instance.CurrentActionBarParent = UIManager.Instance.NatanBar;
                     NatanPermissions natanPermissions = UIManager.Instance.NatanBar.GetComponent<NatanPermissions>();
+                    natanPermissions.RemovePermissions();
                     natanPermissions.InitializePermissions(playerData.UserRole);
                     natanPermissions.SetActions(natanPermissions.InitializePermissions(playerData.UserRole));
                 }
@@ -201,10 +203,6 @@ public class VehicleInteraction : MonoBehaviour
             {
                 PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
                 PlayerController playerController = photonView.GetComponent<PlayerController>();
-                PlayerData playerData = photonView.GetComponent<PlayerData>();
-
-                AmbulancePermissions ambulancePermissions = UIManager.Instance.AmbulanceBar.GetComponent<AmbulancePermissions>();
-                ambulancePermissions.RemovePermissions(playerData.UserRole);
 
                 if (UIManager.Instance.VehicleDriverUI.activeInHierarchy)
                     UIManager.Instance.VehicleDriverUI.SetActive(false);

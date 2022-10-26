@@ -22,7 +22,8 @@ public class CheckMeasurement : Action
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
             int measurementNum = (int)_measurement;
-            _currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
+            //_currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
+            _currentMeasurement = int.Parse(CurrentPatientData.GetMeasurement(measurementNum));
 
             TextToLog = $"Checked Patient's {_measurementName}, it is {_currentMeasurement}";
 

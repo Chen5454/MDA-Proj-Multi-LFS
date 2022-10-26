@@ -84,23 +84,34 @@ public class AmbulancePermissions : MonoBehaviour
                 actionBtn.enabled = true;
         }
     }
-    public void RemovePermissions(Roles role)
+    public void RemovePermissions()
     {
-        if (role == Roles.Medic)
-        {
-            _medicActionPermissions.Clear();
-        }
-        else if (role == Roles.SeniorMedic)
-        {
-            _seniorMedicActionPermissions.Clear();
-        }
-        else if (role == Roles.Paramedic || role == Roles.Doctor)
-        {
-            _paramedicDocActionPermissions.Clear();
-        }
-        else
-        {
-            return;
-        }
+        //if (_medicActionPermissions[0])
+        //{
+        //    foreach (Button actionBtn in _medicActionPermissions)
+        //        actionBtn.enabled = false;
+        //
+        //    _medicActionPermissions.Clear();
+        //}
+        //
+        //if (_seniorMedicActionPermissions[0])
+        //{
+        //    foreach (Button actionBtn in _seniorMedicActionPermissions)
+        //        actionBtn.enabled = false;
+        //
+        //    _seniorMedicActionPermissions.Clear();
+        //}
+        //
+        //if (_paramedicDocActionPermissions[0])
+        //{
+        //    foreach (Button actionBtn in _paramedicDocActionPermissions)
+        //        actionBtn.enabled = false;
+        //
+        //    _paramedicDocActionPermissions.Clear();
+        //}
+
+        _medicActionPermissions.Clear();
+        _seniorMedicActionPermissions.Clear();
+        _paramedicDocActionPermissions.Clear();
     }
 }
