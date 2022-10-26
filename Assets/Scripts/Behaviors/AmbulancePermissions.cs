@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,22 +8,52 @@ public class AmbulancePermissions : MonoBehaviour
     [Header("Permissions")]
     [SerializeField] private bool _useMedicPermissions;
     [SerializeField] private bool _useSeniorMedicPermissions, _useParamedicDocPermissions;
-    [SerializeField] private List<Button> _cprActionPermissions, _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
-    [SerializeField] private Button _callNatanActionBtn, _connectDefibrilationActionBtn, _defibrilationAmbulanceActionBtn;
+    [SerializeField] private List<Button> _currentActionPermissions, _cprActionPermissions, _medicActionPermissions, _seniorMedicActionPermissions, _paramedicDocActionPermissions;
+    [SerializeField] private Button _callNatanActionBtn, _aspirinActionBtn, _epipenAdultActionBtn, _infusionKitActionBtn, _connectDefibrilationActionBtn, _defibrilationAmbulanceActionBtn;
 
     private void InitializeMedicPermissions()
     {
         _medicActionPermissions.Add(_callNatanActionBtn);
+        _medicActionPermissions.Add(_aspirinActionBtn);
+        _medicActionPermissions.Add(_epipenAdultActionBtn);
+
+        foreach (Button action in _medicActionPermissions)
+        {
+            action.interactable = true;
+        }
+
+        _currentActionPermissions = _medicActionPermissions;
     }
     private void InitializeSeniorMedicPermissions()
     {
         _seniorMedicActionPermissions.Add(_callNatanActionBtn);
+        _seniorMedicActionPermissions.Add(_aspirinActionBtn);
+        _seniorMedicActionPermissions.Add(_epipenAdultActionBtn);
+        _seniorMedicActionPermissions.Add(_infusionKitActionBtn);
+
         _seniorMedicActionPermissions.Add(_defibrilationAmbulanceActionBtn);
+
+        foreach (Button action in _seniorMedicActionPermissions)
+        {
+            action.interactable = true;
+        }
+
+        _currentActionPermissions = _seniorMedicActionPermissions;
     }
     private void InitializeParamedicDocPermissions()
     {
         _paramedicDocActionPermissions.Add(_callNatanActionBtn);
-        _paramedicDocActionPermissions.Add(_connectDefibrilationActionBtn);
+        _paramedicDocActionPermissions.Add(_aspirinActionBtn);
+        _paramedicDocActionPermissions.Add(_epipenAdultActionBtn);
+
+        _paramedicDocActionPermissions.Add(_defibrilationAmbulanceActionBtn);
+
+        foreach (Button action in _paramedicDocActionPermissions)
+        {
+            action.interactable = true;
+        }
+
+        _currentActionPermissions = _paramedicDocActionPermissions;
     }
     public List<Button> InitializePermissions(Roles role)
     {
@@ -56,25 +84,16 @@ public class AmbulancePermissions : MonoBehaviour
             return _cprActionPermissions;
         }
     }
-    public void SetActions(List<Button> permissionList)
+    public void SetActions()
     {
-        if (permissionList == _paramedicDocActionPermissions)
+        if (_currentActionPermissions == _paramedicDocActionPermissions)
         {
-            permissionList = _seniorMedicActionPermissions;
+            _currentActionPermissions.Clear();
+            _currentActionPermissions = _seniorMedicActionPermissions;
         }
-        foreach (Button actionBtn in _paramedicDocActionPermissions)
+        foreach (Button actionBtn in _currentActionPermissions)
         {
-            if (!actionBtn)
-                continue;
-            else
-                actionBtn.enabled = false;
-        }
-        foreach (Button actionBtn in permissionList)
-        {
-            if (!actionBtn)
-                continue;
-            else
-                actionBtn.enabled = true;
+            actionBtn.interactable = true;
         }
     }
     public void RemovePermissions()
@@ -106,5 +125,11 @@ public class AmbulancePermissions : MonoBehaviour
         _medicActionPermissions.Clear();
         _seniorMedicActionPermissions.Clear();
         _paramedicDocActionPermissions.Clear();
+
+        foreach (Button action in _paramedicDocActionPermissions)
+        {
+            if (action.interactable)
+                action.interactable = false;
+        }
     }
 }

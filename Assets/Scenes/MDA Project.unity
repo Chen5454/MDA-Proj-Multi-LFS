@@ -3498,10 +3498,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4134889592247787923}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
-      propertyPath: MarkerPrefab
-      value: 
-      objectReference: {fileID: 2331357891863953160, guid: d810ec2925841de448fa842094614d1b, type: 3}
-    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: AssignPinuy10
       value: 
       objectReference: {fileID: 4134889592247787918}
@@ -3657,6 +3653,10 @@ PrefabInstance:
       propertyPath: AmbulanceMonitorPanel
       value: 
       objectReference: {fileID: 4134889592247787944}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: PatientCreationWindow
+      value: 
+      objectReference: {fileID: 1052543109}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: AmbulanceKidsAmbuPanel
       value: 
@@ -7304,6 +7304,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+--- !u!1 &1052543109 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4020315513908517503, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+  m_PrefabInstance: {fileID: 1052543108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1059965723 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5383694963764285764, guid: a02938bd69e700c4da972c591dfcbeff, type: 3}
@@ -14393,6 +14398,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 2450342990482494055, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: EpifenInjectorAdult Txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 2458308791357102160, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_text
+      value: "\u05E2\u05E8\u05DB\u05EA \u05D0\u05D9\u05E0\u05E4\u05D5\u05D6\u05D9\u05D4"
+      objectReference: {fileID: 0}
     - target: {fileID: 2652743155366294710, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -14445,10 +14458,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 4183129818098567685, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_text
+      value: "\u05DE\u05D6\u05E8\u05E7 \u05D0\u05E4\u05D9\u05E4\u05DF \u05DE\u05D1\u05D5\u05D2\u05E8"
+      objectReference: {fileID: 0}
     - target: {fileID: 4897337105201974976, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 4959339907835029869, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_text
+      value: "\u05DE\u05D6\u05E8\u05E7 \u05D0\u05E4\u05D9\u05E4\u05DF \u05DE\u05D1\u05D5\u05D2\u05E8"
+      objectReference: {fileID: 0}
     - target: {fileID: 5394115925174864303, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -14465,6 +14486,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 6643690170403736774, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: InfusionKit Txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645295856156750750, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_text
+      value: "\u05E2\u05E8\u05DB\u05EA \u05D0\u05D9\u05E0\u05E4\u05D5\u05D6\u05D9\u05D4"
+      objectReference: {fileID: 0}
     - target: {fileID: 7052076968487710763, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -14485,6 +14514,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 7594102937302324827, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: InfusionKit Txt
+      objectReference: {fileID: 0}
     - target: {fileID: 7994697898488387235, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -14669,6 +14702,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 8647997172327584569, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: EpifenInjectorAdult Txt
+      objectReference: {fileID: 0}
     - target: {fileID: 8698131576589189360, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

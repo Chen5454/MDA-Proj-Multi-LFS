@@ -51,7 +51,7 @@ public class VehicleInteraction : MonoBehaviour
                     AmbulancePermissions ambulancePermissions = UIManager.Instance.AmbulanceBar.GetComponent<AmbulancePermissions>();
                     ambulancePermissions.RemovePermissions();
                     ambulancePermissions.InitializePermissions(playerData.UserRole);
-                    ambulancePermissions.SetActions(ambulancePermissions.InitializePermissions(playerData.UserRole));
+                    ambulancePermissions.SetActions();
                 }
                 else if (_barType == 1)
                 {
@@ -59,7 +59,7 @@ public class VehicleInteraction : MonoBehaviour
                     NatanPermissions natanPermissions = UIManager.Instance.NatanBar.GetComponent<NatanPermissions>();
                     natanPermissions.RemovePermissions();
                     natanPermissions.InitializePermissions(playerData.UserRole);
-                    natanPermissions.SetActions(natanPermissions.InitializePermissions(playerData.UserRole));
+                    natanPermissions.SetActions();
                 }
 
                 //UIManager.Instance.CurrentActionBarParent = _barType switch
