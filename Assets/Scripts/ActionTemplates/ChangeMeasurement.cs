@@ -11,7 +11,7 @@ public class ChangeMeasurement : Action
     [Header("Component's Data")]
     [SerializeField] private int _newMeasurement;
     [SerializeField] private string _treatmentName;
-    [SerializeField] private Measurements _measurement;
+    [SerializeField] private Measurements _measurement; //TBF ALON this needs to be a full list of all measurements - as measurementDelta (fields that need not change are left blank, and are to be ignored)
 
     public void ChangeMeasurementAction()
     {

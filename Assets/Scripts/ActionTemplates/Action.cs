@@ -29,8 +29,8 @@ public class Action : MonoBehaviour
 
     [Header("Currently joined Patient's Data")]
     protected Patient CurrentPatient;
-    protected PatientData CurrentPatientData;
-    protected NewPatientData CurrentNewPatientData;
+    //protected PatientData CurrentPatientData;
+    protected NewPatientData CurrentPatientData;
     protected Transform PatientChestPosPlayerTransform;
     protected Transform PatientChestPosEquipmentTransform, PatientHeadPosPlayerTransform, PatientHeadPosEquipmentTransform, PatientLegPosPlayerTrasform;
 
@@ -43,18 +43,7 @@ public class Action : MonoBehaviour
     [Header("Documentaion")]
     protected string TextToLog;
 
-    [Header("Permissions")]
-    [SerializeField] protected List<GameObject> _medicActionPermissions;
-    [SerializeField] protected List<GameObject> _seniorMedicActionPermissions, _paramedicDocActionPermissions;
-
-    [SerializeField] protected bool _useMedicPermissions, _useSeniorMedicPermissions, _useParamedicDocPermissions;
-
     private void Start()
-    {
-        Initialize();
-    }
-
-    protected void Initialize()
     {
         if (PatientHeadPosPlayerTransform)
             PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
@@ -92,7 +81,8 @@ public class Action : MonoBehaviour
 
                 // get Patient & PatientData
                 CurrentPatient = LocalPlayerData.CurrentPatientNearby;
-                CurrentPatientData = CurrentPatient.PatientData;
+                //CurrentPatientData = CurrentPatient.PatientData;
+                CurrentPatientData = CurrentPatient.NewPatientData;
 
                 PatientChestPosPlayerTransform = CurrentPatient.ChestPosPlayerTransform;
                 PatientChestPosEquipmentTransform = CurrentPatient.ChestPosEquipmentTransform;

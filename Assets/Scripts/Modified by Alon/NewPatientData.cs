@@ -20,6 +20,7 @@ public class NewPatientData
 
     [Header("Measurments")]
     [SerializeField] private PatientMeasurements _patientMeasurement;
+    public bool IsConscious; //Getter? TBF
 
     [Header("MonitorGraphTexture")]
     public List<Sprite> MonitorSpriteList;
