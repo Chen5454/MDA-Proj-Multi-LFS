@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
     public Button Pikud10MenuHandle;
     public Button AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button MarkUrgent, MarkUnUrgent, MarkVehicles, MarkGeneral, MarkDeceased, MarkBomb;
+    public GameObject MarkerPrefab;
+
 
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
