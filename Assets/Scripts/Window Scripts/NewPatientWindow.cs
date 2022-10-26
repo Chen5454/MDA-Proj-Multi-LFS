@@ -41,6 +41,10 @@ namespace PatientCreationSpace
         private void OnEnable()
         {
             PatientCreator.OnLoadPatient += DisplayPatient;
+            if(string.IsNullOrEmpty(PatientCreator.streamingAssets_FolderPath))
+            {
+                PatientCreator.streamingAssets_FolderPath = Application.streamingAssetsPath;
+            }
         }
         private void OnDisable()
         {

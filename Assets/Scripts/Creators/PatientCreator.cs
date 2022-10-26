@@ -9,7 +9,8 @@ namespace PatientCreationSpace
 
     public static class PatientCreator
     {
-        public static readonly string scriptableObjects_FolderPath = "Assets/StreamingAssets/Patients/";
+        public static string streamingAssets_FolderPath;// = "Assets/StreamingAssets/Patients/";
+
         //public static string patientID => newPatient.Id;
         //public static Patient currentPatient;
         public static NewPatientData newPatient;
@@ -17,6 +18,7 @@ namespace PatientCreationSpace
 
         public static System.Action OnLoadPatient;
         public static System.Action OnPatientClear;
+
 
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace PatientCreationSpace
             return newPatient;
         }
 
-       
+
         public static bool SaveNewPatient()
         {
             if (newPatient == null)
@@ -51,26 +53,30 @@ namespace PatientCreationSpace
                 Debug.LogError("no new patient!");
                 return false;
             }
-
             string patientJSON = JsonUtility.ToJson(newPatient);
-            if (!Directory.Exists($"{scriptableObjects_FolderPath}"))
+            string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
+
+            CreateSaveFiles(patientJSON, treatmentSequenceJSON);
+
+            return true; //successful save!
+        }
+
+        public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON)
+        {
+            if (!Directory.Exists($"{streamingAssets_FolderPath}"))
             {
-                Directory.CreateDirectory($"{scriptableObjects_FolderPath}");
+                Directory.CreateDirectory($"{streamingAssets_FolderPath}");
             }
-            StreamWriter sw = File.CreateText($"{scriptableObjects_FolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
+            StreamWriter sw = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
 
             sw.Write(patientJSON);
             sw.Close();
 
-            string treatmentSequence = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
-            StreamWriter sw2 = File.CreateText($"{scriptableObjects_FolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
+            StreamWriter sw2 = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
 
-            sw2.Write(treatmentSequence);
+            sw2.Write(treatmentSequenceJSON);
             sw2.Close();
-
-
-            return true; //successful save!
         }
 
 
@@ -111,10 +117,10 @@ namespace PatientCreationSpace
         public static void LoadPatient(string patientFullName)
         {
 
-            string json = File.ReadAllText($"{scriptableObjects_FolderPath}{patientFullName}.txt");
+            string json = File.ReadAllText($"{streamingAssets_FolderPath}{patientFullName}.txt");
             NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
 
-            string ts_json = File.ReadAllText($"{scriptableObjects_FolderPath}{patientFullName}_treatmentSequence.txt");
+            string ts_json = File.ReadAllText($"{streamingAssets_FolderPath}{patientFullName}_treatmentSequence.txt");
             TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
 
 
@@ -197,12 +203,12 @@ namespace PatientCreationSpace
         {
             List<string> toReturn = new List<string>();
 
-            if (!Directory.Exists(scriptableObjects_FolderPath))
+            if (!Directory.Exists(streamingAssets_FolderPath))
             {
                 Debug.LogError("Patient folder not found!");
                 return null;
             }
-            var collection = Directory.GetFiles(scriptableObjects_FolderPath, "*.txt");
+            var collection = Directory.GetFiles(streamingAssets_FolderPath, "*.txt");
             toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
             for (int i = 0; i < toReturn.Count; i++)
             {
