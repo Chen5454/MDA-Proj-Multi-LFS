@@ -359,6 +359,7 @@ GameObject:
   - component: {fileID: 5432011416783910119}
   - component: {fileID: 3180913919758561978}
   - component: {fileID: 8554843344001437052}
+  - component: {fileID: 8509783079996804296}
   m_Layer: 5
   m_Name: WorldMark Canvas
   m_TagString: Untagged
@@ -488,12 +489,24 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents: []
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8509783079996804296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331357891863953160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c313d5e2f1297f479bd3896b62a3283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3820110802953122814
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,14 +845,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4ae2aab8707d534ebb83dc50263c47a, type: 3}
---- !u!1 &7314422416888820310 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a4ae2aab8707d534ebb83dc50263c47a, type: 3}
-  m_PrefabInstance: {fileID: 7585018066887692039}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7983154548283779308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4ae2aab8707d534ebb83dc50263c47a, type: 3}
+  m_PrefabInstance: {fileID: 7585018066887692039}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7314422416888820310 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a4ae2aab8707d534ebb83dc50263c47a, type: 3}
   m_PrefabInstance: {fileID: 7585018066887692039}
   m_PrefabAsset: {fileID: 0}
 --- !u!65 &8896252336231730887
