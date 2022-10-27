@@ -16,6 +16,8 @@ namespace PatientCreationSpace
 
         [SerializeField]
         List<TMP_InputField> measurementInputFields;
+        [SerializeField]
+        TMP_InputField dosageInputField;
         //List<TMP_Text> measurementInputFields;
 
         //PatientMeasurementInput TBF!
@@ -80,7 +82,7 @@ namespace PatientCreationSpace
             }
             patientMeasurements.SetMeasurementValues(measurementArray);
             //Medicine med = MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, TEMP_patientData.text);
-            Medicine med = MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements);
+            Medicine med = MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, dosageInputField.text);
 
             //med.Init(TEMP_patientData.text); //This needs to just send patientMeasurementData tbf
             //Set med's result (as PatientMeasurementData - taken from the PatientMeasurementInput TBF!
