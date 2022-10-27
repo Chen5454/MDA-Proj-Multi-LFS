@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 namespace PatientCreationSpace
 {
@@ -19,14 +20,8 @@ namespace PatientCreationSpace
         [SerializeField]
         BlockCollectionDisplayer sequenceDisplayer;
 
+        public PhotonView _photonView;
 
-        //public void Init(Patient patient)
-        //{
-        //    newPatient = patient;
-        //    newTreatmeantSequence = newPatient.GetTreatmeantSequence;
-        //    //sequenceDisplayer.Set(newTreatmeantSequence as IBlockCollection);
-        //    sequenceDisplayer.Set(this);
-        //}
         public void Init(NewPatientData patient)
         {
             newPatient = patient;

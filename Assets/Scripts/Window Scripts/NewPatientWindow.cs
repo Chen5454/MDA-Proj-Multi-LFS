@@ -91,7 +91,8 @@ namespace PatientCreationSpace
             }
         }
 
-        public void ClickOnCreateNew()
+        [PunRPC]
+        public void ClickOnCreateNew_RPC()
         {
             //check are REQUIRED(?) fields TBD
 
@@ -133,11 +134,66 @@ namespace PatientCreationSpace
             newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
                 MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray);//parsing for ints is temp TBF
 
+            //_photonView.RPC("CreateNewPatient_RPC", RpcTarget.AllBufferedViaServer, Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
+            //    MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray);
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);
             //treatmentSequenceEditorWindow.Init(createdPatient);
             treatmentSequenceEditorWindow.Init(newCreatedPatient);
             //continue work on setting the patient and filling their Treatment Sequence
+        }
+
+        public void ClickOnCreateNew()
+        {
+
+            _photonView.RPC("ClickOnCreateNew_RPC",RpcTarget.AllBufferedViaServer);
+            ////check are REQUIRED(?) fields TBD
+
+            ////Basic info nullorempty checks:
+            //if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(SureName.text) ||
+            //    string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.text)
+            //     || string.IsNullOrEmpty(PhoneNumber.text) || string.IsNullOrEmpty(MedicalCompany.text)
+            //      || string.IsNullOrEmpty(AddressLocation.text) || string.IsNullOrEmpty(Complaint.text))
+            //{
+            //    Debug.LogError("all basic info fields need to be filled!");
+            //    return;
+            //}
+            ////Initial Measurements nullorempty checks: in the grabbing bleow
+
+            ////PatientMeasurements patientMeasurements = new PatientMeasurements();
+
+            //string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
+            //for (int i = 0; i < measurementInputFields.Count; i++)
+            //{
+            //    if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+            //    {
+            //        Debug.LogError("all initial measurement fields need to be filled!");
+
+            //        return;
+            //    }
+            //    measurementArray[i] = measurementInputFields[i].text;
+            //}
+
+            ////patientMeasurements.Initialize(measurementArray);
+
+            ////Other Settings section TBD
+
+
+
+            ////get unique ID placeholder - TBD
+            ////string s = System.DateTime.Now.ToString("m-s");
+
+            ////createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
+            ////newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
+            ////    MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray);//parsing for ints is temp TBF
+
+            //_photonView.RPC("CreateNewPatient_RPC",RpcTarget.AllBufferedViaServer, Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
+            //    MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray);
+
+            //treatmentSequenceEditorWindow.gameObject.SetActive(true);
+            ////treatmentSequenceEditorWindow.Init(createdPatient);
+            //treatmentSequenceEditorWindow.Init(newCreatedPatient);
+            ////continue work on setting the patient and filling their Treatment Sequence
         }
         public void ClickOnEditLoaded()
         {
@@ -182,6 +238,14 @@ namespace PatientCreationSpace
         }
 
 
+        [PunRPC]
+        public void CreateNewPatient_RPC(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements)
+        {
+            // PatientCreator.CreateNewPatient( name,  sureName,  id,  age,  gender, phoneNum,  medicalCompany,  adress,  complaint, measurements);
+            newCreatedPatient = PatientCreator.CreateNewPatient(name, sureName, id, age, gender, phoneNum, //TBF
+                medicalCompany, adress, complaint, measurements);//parsing for ints is temp TBF
+
+        }
 
 
         public void SavePatient()
