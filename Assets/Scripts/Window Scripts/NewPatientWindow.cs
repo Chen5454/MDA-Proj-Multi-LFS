@@ -7,7 +7,7 @@ using TMPro;
 namespace PatientCreationSpace
 {
 
-    public class NewPatientWindow : MonoBehaviour
+    public class NewPatientWindow : MonoBehaviour,IPunObservable
     {
         public static NewPatientWindow Instance;
 
@@ -288,6 +288,39 @@ namespace PatientCreationSpace
         public void RefreshLoadedPatients()
         {
             patientRoster.SetUpNamesAsButtons();
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+           
+          
+         
+            if (stream.IsWriting)
+            {
+                stream.SendNext(Name.text);
+                stream.SendNext(SureName.text);
+                stream.SendNext(Id.text);
+                stream.SendNext(Age.text);
+                stream.SendNext(Gender.text);
+                stream.SendNext(PhoneNumber.text);
+                stream.SendNext(MedicalCompany.text);
+                stream.SendNext(AddressLocation.text);
+                stream.SendNext(Complaint.text);
+            }
+            else
+            {
+                Name.text = (string)stream.ReceiveNext();
+                SureName.text = (string)stream.ReceiveNext();
+                Id.text = (string)stream.ReceiveNext();
+                Age.text = (string)stream.ReceiveNext();
+                Gender.text = (string)stream.ReceiveNext();
+                PhoneNumber.text = (string)stream.ReceiveNext();
+                MedicalCompany.text = (string)stream.ReceiveNext();
+                AddressLocation.text = (string)stream.ReceiveNext();
+                Complaint.text = (string)stream.ReceiveNext();
+
+
+            }
         }
     }
     //cancel patient creation - delete all SOs that need to be deleted (keep questions, because why not?)
