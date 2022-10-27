@@ -40,6 +40,7 @@ namespace PatientCreationSpace
             OnPatientClear?.Invoke();
             return wasCleared;
         }
+
         public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements)
         {
             newPatient = new NewPatientData();
@@ -63,24 +64,25 @@ namespace PatientCreationSpace
             string patientJSON = JsonUtility.ToJson(newPatient);
             string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
-            CreateSaveFiles(patientJSON, treatmentSequenceJSON);
+            // CreateSaveFiles(patientJSON, treatmentSequenceJSON);
+            NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
 
             return true; //successful save!
         }
 
-        public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON)
+        public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON,string name,string sureName)
         {
             if (!Directory.Exists($"{streamingAssets_FolderPath}"))
             {
                 Directory.CreateDirectory($"{streamingAssets_FolderPath}");
             }
-            StreamWriter sw = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
+            StreamWriter sw = File.CreateText($"{streamingAssets_FolderPath}{name}_{sureName}.txt");
 
             sw.Write(patientJSON);
             sw.Close();
 
 
-            StreamWriter sw2 = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
+            StreamWriter sw2 = File.CreateText($"{streamingAssets_FolderPath}{name}_{sureName}_treatmentSequence.txt");
 
             sw2.Write(treatmentSequenceJSON);
             sw2.Close();

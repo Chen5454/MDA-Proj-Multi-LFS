@@ -6,8 +6,11 @@ using TMPro;
 namespace PatientCreationSpace
 {
 
-    public class NewPatientWindow : MonoBehaviour,IPunObservable
+    public class NewPatientWindow : MonoBehaviour
     {
+
+        public static NewPatientWindow Instance;
+
         [Header("Bsaic Info Input Fields")]
         [SerializeField]
         TMP_InputField Name;
@@ -35,7 +38,7 @@ namespace PatientCreationSpace
         [SerializeField]
         PatientRoster patientRoster; //Dont like this either TBF
 
-        [SerializeField] PhotonView _photonView;
+       public PhotonView _photonView;
         //private void Start()
         //{
         //    LoadPatient("ש​_נ​");
@@ -50,6 +53,19 @@ namespace PatientCreationSpace
             ClearPatientInfoFields();
             ClearPatientMeasurementFields();
         }
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
         /// <summary>
         /// this also clears the currently loaded patient
         /// </summary>
@@ -157,17 +173,15 @@ namespace PatientCreationSpace
             //continue work on setting the patient and filling their Treatment Sequence
         }
         [PunRPC]
-        public void SavePatient_RPC()
+        public void CallPatientCreator(string patientJson, string treatmentSequenceJson,string name,string sureName)
         {
-            //PatientCreator.SaveCurrentPatient();
-             PatientCreator.SaveNewPatient();
+            PatientCreator.CreateSaveFiles(patientJson, treatmentSequenceJson,name,sureName);
         }
 
         public void SavePatient()
         {
             //PatientCreator.SaveCurrentPatient();
-           // PatientCreator.SaveNewPatient();
-            _photonView.RPC("SavePatient_RPC", RpcTarget.AllBufferedViaServer);
+            PatientCreator.SaveNewPatient();
         }
         public void LoadPatient(string patientName)
         {
@@ -205,38 +219,6 @@ namespace PatientCreationSpace
             patientRoster.SetUpNamesAsButtons();
         }
 
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-           
-          
-         
-            if (stream.IsWriting)
-            {
-                stream.SendNext(Name.text);
-                stream.SendNext(SureName.text);
-                stream.SendNext(Id.text);
-                stream.SendNext(Age.text);
-                stream.SendNext(Gender.text);
-                stream.SendNext(PhoneNumber.text);
-                stream.SendNext(MedicalCompany.text);
-                stream.SendNext(AddressLocation.text);
-                stream.SendNext(Complaint.text);
-            }
-            else
-            {
-                Name.text = (string)stream.ReceiveNext();
-                SureName.text = (string)stream.ReceiveNext();
-                Id.text = (string)stream.ReceiveNext();
-                Age.text = (string)stream.ReceiveNext();
-                Gender.text = (string)stream.ReceiveNext();
-                PhoneNumber.text = (string)stream.ReceiveNext();
-                MedicalCompany.text = (string)stream.ReceiveNext();
-                AddressLocation.text = (string)stream.ReceiveNext();
-                Complaint.text = (string)stream.ReceiveNext();
-
-
-            }
-        }
     }
     //cancel patient creation - delete all SOs that need to be deleted (keep questions, because why not?)
     //public void CancelPatientCreation()
