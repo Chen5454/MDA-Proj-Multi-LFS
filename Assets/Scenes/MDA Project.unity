@@ -3037,8 +3037,10 @@ MonoBehaviour:
   _crewRoomColliderPrefab: {fileID: 3545529276454079236, guid: c9325f547b7762548afbbb03ba3769c8, type: 3}
   _eranRoomPrefab: {fileID: 3545529276454079236, guid: 9228e86d3fbb61949bf46d8ab06035a2, type: 3}
   _operationRoomPrefab: {fileID: 3545529276454079236, guid: 7d743995ff7f041479d8ceafbfe84a7e, type: 3}
+  _PaitentCreation: {fileID: 4020315513908517503, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
   _eranRoomPosTransform: {fileID: 752305990}
   _operationRoomTransform: {fileID: 1059965723}
+  _PaitentCreationTransform: {fileID: 1052543110}
   _crewRoomPosTransforms:
   - {fileID: 764147718}
   - {fileID: 764147717}
@@ -7569,11 +7571,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatientCreation-WorldCanvasAttempt
       objectReference: {fileID: 0}
+    - target: {fileID: 4020315513908517503, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4273379430683278264, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+      propertyPath: sceneViewId
+      value: 23
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
 --- !u!1 &1052543109 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4020315513908517503, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+  m_PrefabInstance: {fileID: 1052543108}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1052543110 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3703914046419592882, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
   m_PrefabInstance: {fileID: 1052543108}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1059965723 stripped

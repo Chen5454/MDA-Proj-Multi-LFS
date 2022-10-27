@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using TMPro;
 namespace PatientCreationSpace
@@ -34,6 +35,7 @@ namespace PatientCreationSpace
         [SerializeField]
         PatientRoster patientRoster; //Dont like this either TBF
 
+        [SerializeField] PhotonView _photonView;
         //private void Start()
         //{
         //    LoadPatient("ש​_נ​");
@@ -154,12 +156,18 @@ namespace PatientCreationSpace
             treatmentSequenceEditorWindow.Init(PatientCreator.newPatient);
             //continue work on setting the patient and filling their Treatment Sequence
         }
-
+        [PunRPC]
+        public void SavePatient_RPC()
+        {
+            //PatientCreator.SaveCurrentPatient();
+             PatientCreator.SaveNewPatient();
+        }
 
         public void SavePatient()
         {
             //PatientCreator.SaveCurrentPatient();
-            PatientCreator.SaveNewPatient();
+           // PatientCreator.SaveNewPatient();
+            _photonView.RPC("SavePatient_RPC", RpcTarget.AllBufferedViaServer);
         }
         public void LoadPatient(string patientName)
         {
