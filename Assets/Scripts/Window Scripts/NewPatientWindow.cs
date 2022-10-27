@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -8,6 +9,9 @@ namespace PatientCreationSpace
 
     public class NewPatientWindow : MonoBehaviour
     {
+        public static NewPatientWindow Instance;
+
+
         [Header("Bsaic Info Input Fields")]
         [SerializeField]
         TMP_InputField Name;
@@ -35,7 +39,7 @@ namespace PatientCreationSpace
         [SerializeField]
         PatientRoster patientRoster; //Dont like this either TBF
 
-        [SerializeField] PhotonView _photonView;
+        public PhotonView _photonView;
         //private void Start()
         //{
         //    LoadPatient("ש​_נ​");
@@ -50,6 +54,19 @@ namespace PatientCreationSpace
             ClearPatientInfoFields();
             ClearPatientMeasurementFields();
         }
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
         /// <summary>
         /// this also clears the currently loaded patient
         /// </summary>
@@ -156,18 +173,22 @@ namespace PatientCreationSpace
             treatmentSequenceEditorWindow.Init(PatientCreator.newPatient);
             //continue work on setting the patient and filling their Treatment Sequence
         }
+
         [PunRPC]
-        public void SavePatient_RPC()
+        public void CallPatientCreator(string patientJson, string treatmentSequenceJson)
         {
             //PatientCreator.SaveCurrentPatient();
-             PatientCreator.SaveNewPatient();
+             PatientCreator.CreateSaveFiles(patientJson, treatmentSequenceJson);
         }
+
+
+
 
         public void SavePatient()
         {
             //PatientCreator.SaveCurrentPatient();
-           // PatientCreator.SaveNewPatient();
-            _photonView.RPC("SavePatient_RPC", RpcTarget.AllBufferedViaServer);
+            PatientCreator.SaveNewPatient();
+          //  _photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer);
         }
         public void LoadPatient(string patientName)
         {

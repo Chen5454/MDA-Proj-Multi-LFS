@@ -63,8 +63,8 @@ namespace PatientCreationSpace
             string patientJSON = JsonUtility.ToJson(newPatient);
             string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
-            CreateSaveFiles(patientJSON, treatmentSequenceJSON);
-
+            //CreateSaveFiles(patientJSON, treatmentSequenceJSON);
+            NewPatientWindow.Instance._photonView.RPC("CallPatientCreator",RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON);
             return true; //successful save!
         }
 
