@@ -194,6 +194,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     //{
     //    currentScene = scene.buildIndex;
     //}
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        base.OnMasterClientSwitched(newMasterClient);
+        Debug.Log(newMasterClient + "is the new master client");
+    }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {

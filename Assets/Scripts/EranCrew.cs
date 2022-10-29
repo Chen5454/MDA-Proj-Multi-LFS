@@ -28,6 +28,25 @@ public class EranCrew : MonoBehaviour
         _photonView = GetComponent<PhotonView>();
     }
 
+
+    #region StopEranMethods
+
+
+    public void ResetPlayerData()
+    {
+        foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        {
+            PlayerData currentPlayerData = player.GetComponent<PlayerData>();
+            NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+
+            desiredPlayerName.text.color = Color.white;
+            currentPlayerData.CrewColor = Color.white;
+        }
+    }
+
+    #endregion
+
+
     #region Metargel Methods
     public int GetMokdanIndex()
     {
@@ -72,7 +91,14 @@ public class EranCrew : MonoBehaviour
     }
     public void StartAran()
     {
-        GameManager.Instance.ChangeAranState(true);
+
+        // GameManager.Instance.ChangeAranState(true);
+        _photonView.RPC("ResetsEventsLists_RPC",RpcTarget.AllBufferedViaServer);
+        //PhotonNetwork.SetMasterClient(_photonView.Owner);
+        foreach (var patient in GameManager.Instance.AllPatients.ToList())
+        {
+          PhotonNetwork.Destroy(patient.gameObject);
+        }
     }
     public void StopAran()
     {
@@ -170,6 +196,23 @@ public class EranCrew : MonoBehaviour
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsPikud10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Pikud10);
+    }
+
+
+    [PunRPC]
+    public void ResetsEventsLists_RPC()
+    {
+    
+        foreach (var ambulanceCar in GameManager.Instance.AmbulanceCarList.ToList())
+        {
+            GameManager.Instance.AmbulanceCarList.Remove(ambulanceCar);
+            Destroy(ambulanceCar.gameObject);
+        }
+        foreach (var natanCar in GameManager.Instance.NatanCarList.ToList())
+        {
+            GameManager.Instance.NatanCarList.Remove(natanCar);
+            Destroy(natanCar.gameObject);
+        }
     }
     #endregion
 }
