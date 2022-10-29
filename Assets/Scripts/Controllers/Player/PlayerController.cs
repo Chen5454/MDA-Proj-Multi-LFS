@@ -477,8 +477,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
             //RotateCameraWithMouse();
         }
     }
+    private void UseUIState()
+    {
+        if (_photonView.IsMine)
+        {
+            RotateBodyWithMouse();
+        }
+    }
     #endregion
-    
+
     #region Private Methods
     private void GetInputAxis()
     {
