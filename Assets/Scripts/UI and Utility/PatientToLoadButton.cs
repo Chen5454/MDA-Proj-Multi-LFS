@@ -14,7 +14,8 @@ namespace PatientCreationSpace
         TMP_Text text;
         //[SerializeField]
         //Button button;
-        PatientRoster patientRoster;
+        PatientRoster patientRoster;//SHOULD HAVE MADE THESE CLASSES with inheritence, alas - no time
+        FilteredPatientsRoster filteredPatientRoster; //SHOULD HAVE MADE THESE CLASSES with inheritence, alas - no time
         string fileNameToLoad;
 
         public void Set(string patientName, PatientRoster pr)
@@ -23,12 +24,21 @@ namespace PatientCreationSpace
             text.text = patientName;
             fileNameToLoad = patientName;
         }
-
-
-
-        public void LoadThisPatient() // called in inspector by button
+        public void Set(string patientName, FilteredPatientsRoster fpr)
         {
-            patientRoster.LoadPatient(fileNameToLoad);
+            filteredPatientRoster = fpr;
+            text.text = patientName;
+            fileNameToLoad = patientName;
+        }
+
+
+
+        public void LoadThisPatient() // called in inspector by button //SHOULD HAVE MADE THESE CLASSES with inheritence, alas - no time
+        {
+            if (patientRoster)
+                patientRoster.LoadPatient(fileNameToLoad); 
+            else if (filteredPatientRoster)
+                filteredPatientRoster.LoadPatient(fileNameToLoad);
         }
     }
 

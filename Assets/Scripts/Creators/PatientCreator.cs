@@ -11,9 +11,9 @@ namespace PatientCreationSpace
     {
 
 #if UNITY_EDITOR
-        public static readonly string streamingAssets_FolderPath = "Assets/StreamingAssets/Patients/";
+        public static readonly string streamingAssets_PatientFolderPath = "Assets/StreamingAssets/Patients/";
 #else
-        public static readonly string streamingAssets_FolderPath = $"{Application.streamingAssetsPath}/Patients/";
+        public static readonly string streamingAssets_PatientFolderPath = $"{Application.streamingAssetsPath}/Patients/";
 #endif
 
         //public static string patientID => newPatient.Id;
@@ -68,17 +68,17 @@ namespace PatientCreationSpace
 
         public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON)
         {
-            if (!Directory.Exists($"{streamingAssets_FolderPath}"))
+            if (!Directory.Exists($"{streamingAssets_PatientFolderPath}"))
             {
-                Directory.CreateDirectory($"{streamingAssets_FolderPath}");
+                Directory.CreateDirectory($"{streamingAssets_PatientFolderPath}");
             }
-            StreamWriter sw = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
+            StreamWriter sw = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
 
             sw.Write(patientJSON);
             sw.Close();
 
 
-            StreamWriter sw2 = File.CreateText($"{streamingAssets_FolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
+            StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
 
             sw2.Write(treatmentSequenceJSON);
             sw2.Close();
@@ -121,21 +121,39 @@ namespace PatientCreationSpace
         /// <param name="patientFullName"></param>
         public static void LoadPatient(string patientFullName)
         {
-
-            string json = File.ReadAllText($"{streamingAssets_FolderPath}{patientFullName}.txt");
+            newPatient = DeSerializePatient_Full(patientFullName);
+            OnLoadPatient?.Invoke();
+        }
+        /// <summary>
+        /// With FullTreatmentSequence and all
+        /// </summary>
+        /// <param name="patientFullName"></param>
+        /// <returns></returns>
+        static NewPatientData DeSerializePatient_Full(string patientFullName)
+        {
+            string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
             NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
 
-            string ts_json = File.ReadAllText($"{streamingAssets_FolderPath}{patientFullName}_treatmentSequence.txt");
+            string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
             TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
 
 
             newPatientData.FullTreatmentSequence = ts;
-
-            newPatient = newPatientData;
-            OnLoadPatient?.Invoke();
+            return newPatientData;
+        }
+        /// <summary>
+        /// Without TreatmentSeuqence
+        /// </summary>
+        /// <param name="patientFullName"></param>
+        /// <returns></returns>
+        static NewPatientData DeSerializePatient_Simple(string patientFullName)
+        {
+            string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+            NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+            return newPatientData;
         }
 
-        public static TreatmentSequence DeSerializeTreatmentSequence(string serializedTreatmentSequence)
+        static TreatmentSequence DeSerializeTreatmentSequence(string serializedTreatmentSequence)
         {
             TreatmentSequence toReturn = new TreatmentSequence();
             toReturn.Init();
@@ -208,12 +226,12 @@ namespace PatientCreationSpace
         {
             List<string> toReturn = new List<string>();
 
-            if (!Directory.Exists(streamingAssets_FolderPath))
+            if (!Directory.Exists(streamingAssets_PatientFolderPath))
             {
                 Debug.LogError("Patient folder not found!");
                 return null;
             }
-            var collection = Directory.GetFiles(streamingAssets_FolderPath, "*.txt");
+            var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
             toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
             for (int i = 0; i < toReturn.Count; i++)
             {
@@ -223,6 +241,88 @@ namespace PatientCreationSpace
 
             return toReturn;
         }
+        public static List<string> GetExistingPatientNames(bool isAls)
+        {
+            List<string> toFilter = new List<string>();
+            List<string> toReturn = new List<string>();
+
+            if (!Directory.Exists(streamingAssets_PatientFolderPath))
+            {
+                Debug.LogError("Patient folder not found!");
+                return null;
+            }
+            var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+            toFilter = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
+            for (int i = 0; i < toFilter.Count; i++)
+            {
+                string s = Path.GetFileName(toFilter[i]);
+                s = s.Substring(0, s.Length - 4); //removes ".txt"
+                NewPatientData temp = DeSerializePatient_Simple(s);
+                if(temp.isALS == isAls)
+                toReturn.Add(s); //removes ".txt"
+            }
+
+            return toReturn;
+        }
+        
+        ///// <summary>
+        ///// Returns Patient Names (as filenames to be loaded) - filtering over a list of the NewPatientData loaded from those patients.
+        ///// THIS METHOD DOES *NOT* LOAD TREATMENT_SEQUENCE into the NewPatientData.
+        ///// 
+        ///// To filter on a list of patients WITH treatment sequence, use GetExistingPatientNamesByTreatmentSequencePredicate()
+        ///// </summary>
+        ///// <param name="pred"></param>
+        ///// <returns></returns>
+        //public static List<string> GetExistingPatientNames(System.Func<NewPatientData, bool> pred)
+        //{
+        //    List<string> toReturn = new List<string>();
+        //    List<NewPatientData> tempList = new List<NewPatientData>();
+
+        //    if (!Directory.Exists(streamingAssets_PatientFolderPath))
+        //    {
+        //        Debug.LogError("Patient folder not found!");
+        //        return null;
+        //    }
+        //    var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+        //    toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
+        //    for (int i = 0; i < toReturn.Count; i++)
+        //    {
+        //        string s = Path.GetFileName(toReturn[i]);
+        //        s = s.Substring(0, s.Length - 4); //removes ".txt"
+        //        NewPatientData temp = DeSerializePatient_Simple(s);
+        //        //if(temp.isALS == )
+        //        tempList.Add(temp);
+        //    }
+        //    tempList = tempList.Where(pred).ToList();
+
+
+
+        //    return toReturn;
+        //}
+        ///// <summary>
+        ///// MORE EXPENSIVE! but can iterate of NewPatientData WITH FullTreatmentSequence
+        ///// </summary>
+        ///// <param name="pred"></param>
+        ///// <returns></returns>
+        //public static List<string> GetExistingPatientNamesByTreatmentSequencePredicate(System.Func<NewPatientData, bool> pred)
+        //{
+        //    List<string> toReturn = new List<string>();
+
+        //    if (!Directory.Exists(streamingAssets_PatientFolderPath))
+        //    {
+        //        Debug.LogError("Patient folder not found!");
+        //        return null;
+        //    }
+        //    var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+        //    toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
+        //    for (int i = 0; i < toReturn.Count; i++)
+        //    {
+        //        toReturn[i] = Path.GetFileName(toReturn[i]);
+        //        toReturn[i] = toReturn[i].Substring(0, toReturn[i].Length - 4); //removes ".txt"
+        //    }
+
+        //    return toReturn;
+        //}
         
     }
 

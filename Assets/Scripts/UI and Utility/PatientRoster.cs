@@ -57,25 +57,19 @@ namespace PatientCreationSpace
                 patientButtons[i].Set(names[i], this);
             }
 
-            //foreach (var item in names)
-            //{
-            //    GameObject g = Instantiate(patientButtonPrefab, verticalGroup);
-            //    g.GetComponent<PatientToLoadButton>().Set(item, this);
-            //}
+           
         }
         private void OnEnable()
         {
             SetUpNamesAsButtons();
-            if (!editPatientButton) //This is only relevant for the PatientCreationScene - irrelevant in Patient Selection
-                return;
+          
 
             PatientCreator.OnPatientClear  += DisableEditButton;
             PatientCreator.OnLoadPatient +=  EnableEditButton;
         }
         private void OnDisable()
         {
-            if (!editPatientButton)//This is only relevant for the PatientCreationScene - irrelevant in Patient Selection
-                return;
+           
 
             PatientCreator.OnPatientClear -= DisableEditButton;
             PatientCreator.OnLoadPatient -= EnableEditButton;
