@@ -262,6 +262,9 @@ public class Patient : MonoBehaviour
         UIManager.Instance.Age.text = NewPatientData.Age.ToString();
         UIManager.Instance.Id.text = NewPatientData.Id.ToString();
         UIManager.Instance.PhoneNumber.text = NewPatientData.PhoneNumber.ToString();
+
+        UIManager.Instance.StatsPanel.SetMe(NewPatientData);
+        UIManager.Instance.QuestionPanel.SetMe(NewPatientData);
     }
 
     [PunRPC]
