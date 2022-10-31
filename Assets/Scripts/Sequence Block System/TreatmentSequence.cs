@@ -125,27 +125,27 @@ namespace PatientCreationSpace
 
             foreach (var item in sequenceBlocks)
             {
-                Question temp = (Question)item;
-                if (temp == null)
+                if (item is Question)
+                {
+                    Question temp = (Question)item;
+                    toReturn.Add(temp);
+                }
+                else if (item is TreatmentGroup)
                 {
                     TreatmentGroup tg = (TreatmentGroup)item;
-                    if (tg == null)
-                        continue; //item is not a Question nor TreatmentGroup -> hence, continue
-                    else
+
+                    //THIS IS A TREATMENT GROUP WHICH MAY CONTAIN QUESTIONS!
+                    List<SequenceBlock> qs = tg.SequenceBlocks().Where(x => x is Question).ToList(); //!!((Question)x) parenthesis are NOT EXTRA (Question)x != null - would still consider x as SequenceBlock !
+
+                    if (qs == null || qs.Count == 0)
+                        continue; //no questions found in treatment group, continue on with the FullTreatmentSequence
+
+                    foreach (var tgQuestion in qs)
                     {
-                        //THIS IS A TREATMENT GROUP WHICH MAY CONTAIN QUESTIONS!
-                        List<SequenceBlock> qs = tg.SequenceBlocks().Where(x => ((Question)x) != null).ToList(); //!!((Question)x) parenthesis are NOT EXTRA (Question)x != null - would still consider x as SequenceBlock !
-
-                        if (qs == null || qs.Count == 0)
-                            continue; //no questions found in treatment group, continue on with the FullTreatmentSequence
-
-                        foreach (var tgQuestion in qs)
-                        {
-                            toReturn.Add(tgQuestion as Question);
-                        }
+                        toReturn.Add(tgQuestion as Question);
                     }
+
                 }
-                toReturn.Add(temp);
             }
             return toReturn;
         }
