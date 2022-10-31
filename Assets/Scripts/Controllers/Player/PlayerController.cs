@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -89,6 +90,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #endregion
 
     private PlayerController thisScript;
+
+    [SerializeField] private EventSystem _eventSystem;
 
     #region Colliders
     [Header("Colliders")]
@@ -570,6 +573,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             _stateAction = UseTankIdleState;
             _currentCamera.transform.localRotation = new Quaternion(0.130525976f, 0, 0, 0.991444886f);
+        }
+    }
+    public void ChangeToUseUIState(bool isFocusingOnUI)
+    {
+        if (isFocusingOnUI)
+        {
+            _stateAction = UseUIState;
+        }
+        else
+        {
+            _stateAction = UseTankIdleState;
         }
     }
     #endregion
