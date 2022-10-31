@@ -38,11 +38,11 @@ namespace PatientCreationSpace
             OnPatientClear?.Invoke();
             return wasCleared;
         }
-        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, bool isAls)
+        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, bool isAls, bool trauma)
         {
             newPatient = new NewPatientData();
 
-            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, adress, complaint, measurements, isAls);
+            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, adress, complaint, measurements, isAls, trauma);
 
             //create file already?
 
@@ -264,7 +264,30 @@ namespace PatientCreationSpace
 
             return toReturn;
         }
-        
+        public static List<string> GetExistingPatientNames(System.Func<NewPatientData, bool> pred)
+        {
+            List<string> toFilter = new List<string>();
+            List<string> toReturn = new List<string>();
+
+            if (!Directory.Exists(streamingAssets_PatientFolderPath))
+            {
+                Debug.LogError("Patient folder not found!");
+                return null;
+            }
+            var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+            toFilter = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
+            for (int i = 0; i < toFilter.Count; i++)
+            {
+                string s = Path.GetFileName(toFilter[i]);
+                s = s.Substring(0, s.Length - 4); //removes ".txt"
+                NewPatientData temp = DeSerializePatient_Simple(s);
+                if (pred(temp)) 
+                    toReturn.Add(s); //removes ".txt"
+            }
+
+            return toReturn;
+        }
+
         ///// <summary>
         ///// Returns Patient Names (as filenames to be loaded) - filtering over a list of the NewPatientData loaded from those patients.
         ///// THIS METHOD DOES *NOT* LOAD TREATMENT_SEQUENCE into the NewPatientData.
@@ -323,7 +346,7 @@ namespace PatientCreationSpace
 
         //    return toReturn;
         //}
-        
+
     }
 
 }

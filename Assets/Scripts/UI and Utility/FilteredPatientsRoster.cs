@@ -17,18 +17,23 @@ public class FilteredPatientsRoster : MonoBehaviour
 
     List<PatientToLoadButton> patientButtons;
 
-    bool isShowingALS;
+    bool isShowingALS; //false = BLS
+    bool isShowingTrauma; //false = Illness
     /// <summary>
-    /// False being BLS
+    /// False being BLS - this is 
     /// </summary>
     /// <param name="isALS"></param>
     public void SetFilterALS(bool isALS)
     {
         isShowingALS = isALS;
-        SetUpNamesAsButtons();
+    }
+    public void SetFilterTrauma(bool isTraumatic)
+    {
+        isShowingTrauma = isTraumatic;
+        //SetUpNamesAsButtons();
     }
 
-    public void SetUpNamesAsButtons()
+    public void SetUpNamesAsButtons() //called in inspector by the same buttons which perform the ALS/BLS Filtering
     {
         if (patientButtons == null)
             patientButtons = new List<PatientToLoadButton>();
@@ -38,9 +43,18 @@ public class FilteredPatientsRoster : MonoBehaviour
         //    blsPatients= new List<NewPatientData>();
         
         
-        names = PatientCreator.GetExistingPatientNames(isShowingALS);
+        //names = PatientCreator.GetExistingPatientNames(isShowingALS);
+        //names = PatientCreator.GetExistingPatientNames(x => x.isALS == isShowingALS);
+        names = PatientCreator.GetExistingPatientNames(x => (x.isALS == isShowingALS && x.isTrauma == isShowingTrauma));
+            Debug.Log(names.Count);
         if (names == null || names.Count == 0)
         {
+            //DESTROY/Hide ALL BUTTONS TBF HIDE
+            foreach (var item in patientButtons)
+            {
+                Destroy(item.gameObject);
+            }
+            patientButtons.Clear();
             Debug.Log("No files to load");
             return;
         }
@@ -50,7 +64,8 @@ public class FilteredPatientsRoster : MonoBehaviour
             int delta = patientButtons.Count - names.Count;
             for (int i = 0; i < delta; i++)
             {
-                Destroy(patientButtons[patientButtons.Count - 1]);
+                // TBF should really just hide spares instead... this is wasteful TBF 
+                Destroy(patientButtons[patientButtons.Count - 1].gameObject);
                 patientButtons.Remove(patientButtons[patientButtons.Count - 1]);
             }
         }

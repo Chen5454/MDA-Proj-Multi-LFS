@@ -26,6 +26,11 @@ namespace PatientCreationSpace
         /// </summary>
         [SerializeField]
         UnityEngine.UI.Toggle IsALS;
+           /// <summary>
+        /// true = trauma | false = illness
+        /// </summary>
+        [SerializeField]
+        UnityEngine.UI.Toggle IsTrauma;
 
 
         [SerializeField]
@@ -118,7 +123,7 @@ namespace PatientCreationSpace
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
             newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
-                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, IsALS.isOn);//parsing for ints is temp TBF
+                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, IsALS.isOn, IsTrauma.isOn);//parsing for ints is temp TBF
 
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);
