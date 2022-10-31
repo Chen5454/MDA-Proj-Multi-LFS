@@ -110,12 +110,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
+      //  PlayerData.IsInstructor = false;
 
-        if (VivoxManager.Instance.Lobby.ConnectAsInstructor.isOn)
+        if (VivoxManager.Instance.Lobby.ConnectAsInstructor.isOn && photonView.IsMine)
         {
             PlayerData.IsInstructor = true;
             PhotonNetwork.SetMasterClient(_photonView.Owner);
-
         }
 
         thisScript = GetComponent<PlayerController>();
@@ -625,4 +625,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
     #endregion
+
+
+
+
 }

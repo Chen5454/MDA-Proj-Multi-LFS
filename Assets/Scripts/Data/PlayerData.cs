@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using Photon.Pun;
 
@@ -54,19 +55,19 @@ public class PlayerData : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if (IsInstructor)
-        {
-            gameObject.AddComponent<Instructor>();
-            ActionsManager.Instance.AllPlayerData.Add(this);
-        }
-        else if (TryGetComponent(out Instructor instructor))
-        {
-            if (instructor)
-            {
-                ActionsManager.Instance.AllPlayerData.Remove(this);
-                Destroy(instructor);
-            }
-        }
+        //if (IsInstructor)
+        //{
+        //    gameObject.AddComponent<Instructor>();
+        //    ActionsManager.Instance.AllPlayerData.Add(this);
+        //}
+        //else if (TryGetComponent(out Instructor instructor))
+        //{
+        //    if (instructor)
+        //    {
+        //        ActionsManager.Instance.AllPlayerData.Remove(this);
+        //        Destroy(instructor);
+        //    }
+        //}
     }
     private void OnDestroy()
     {
@@ -389,5 +390,6 @@ public class PlayerData : MonoBehaviourPunCallbacks
         if (!Vest.activeInHierarchy)
             Vest.SetActive(true);
     }
+
     #endregion
 }

@@ -280,9 +280,6 @@ GameObject:
   - component: {fileID: 2130916838822657376}
   - component: {fileID: 4422565812509971007}
   - component: {fileID: 388818266792768534}
-  - component: {fileID: 1728815468365719440}
-  - component: {fileID: 4554568031277292888}
-  - component: {fileID: 2780236237923372430}
   - component: {fileID: 150908537122217882}
   m_Layer: 7
   m_Name: EranDoor
@@ -383,65 +380,6 @@ MonoBehaviour:
   eranDoorUI: {fileID: 1675542458934445651}
   PlayerRefrence: {fileID: 0}
   _isOpen: 0
---- !u!114 &1728815468365719440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455308418249198475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 1
-    Name: OpenDoor
-  - Type: 4
-    SynchronizeType: 1
-    Name: CloseDoor
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
---- !u!114 &4554568031277292888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455308418249198475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c313d5e2f1297f479bd3896b62a3283, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2780236237923372430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455308418249198475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 2
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1728815468365719440}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!65 &150908537122217882
 BoxCollider:
   m_ObjectHideFlags: 0

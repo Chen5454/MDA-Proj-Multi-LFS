@@ -310,7 +310,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(transform.position);
+          //  stream.SendNext(transform.position);
             stream.SendNext(IsBusy);
             stream.SendNext(IsDriverIn);
             stream.SendNext(IsPassangerIn);
@@ -322,7 +322,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
         }
         else
         {
-            transform.position = (Vector3)stream.ReceiveNext();
+           // transform.position = (Vector3)stream.ReceiveNext();
             IsBusy = (bool)stream.ReceiveNext();
             IsDriverIn = (bool)stream.ReceiveNext();
             IsPassangerIn = (bool)stream.ReceiveNext();

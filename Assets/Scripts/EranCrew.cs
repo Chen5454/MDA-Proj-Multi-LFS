@@ -31,16 +31,22 @@ public class EranCrew : MonoBehaviour
 
     #region StopEranMethods
 
-
-    public void ResetPlayerData()
+    [PunRPC]
+    public void ResetPlayerData_RPC()
     {
         foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
         {
             PlayerData currentPlayerData = player.GetComponent<PlayerData>();
             NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+            PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
 
+
+            currentPlayerData.UserRole = (Roles)0;
+            currentPlayerData.UserIndexInCrew = 0;
+            currentPlayerData.CrewIndex = 0;
             desiredPlayerName.text.color = Color.white;
             currentPlayerData.CrewColor = Color.white;
+            currentPlayer.Vest.SetActive(false);
         }
     }
 
@@ -94,11 +100,17 @@ public class EranCrew : MonoBehaviour
 
         // GameManager.Instance.ChangeAranState(true);
         _photonView.RPC("ResetsEventsLists_RPC",RpcTarget.AllBufferedViaServer);
-        //PhotonNetwork.SetMasterClient(_photonView.Owner);
+        _photonView.RPC("ResetPlayerData_RPC", RpcTarget.AllBufferedViaServer);
+        ClearAllPatient();
+    }
+
+    public void ClearAllPatient()
+    {
         foreach (var patient in GameManager.Instance.AllPatients.ToList())
         {
-          PhotonNetwork.Destroy(patient.gameObject);
+            PhotonNetwork.Destroy(patient.gameObject);
         }
+
     }
     public void StopAran()
     {

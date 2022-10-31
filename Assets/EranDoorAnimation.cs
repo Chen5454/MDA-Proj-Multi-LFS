@@ -12,7 +12,7 @@ public class EranDoorAnimation : MonoBehaviour
    // [SerializeField] private PhotonView _photonView;
     [SerializeField] private PlayerData PlayerRefrence;
 
-    private OwnershipTransfer _transfer;
+    //private OwnershipTransfer _transfer;
     public bool _isOpen;
     private bool isClosed;
   //  private bool AllowedToOpen;
@@ -20,7 +20,7 @@ public class EranDoorAnimation : MonoBehaviour
 
     private void Start()
     {
-        _transfer = GetComponent<OwnershipTransfer>();
+       // _transfer = GetComponent<OwnershipTransfer>();
       //  _photonView = GetComponent<PhotonView>();
         _eranDoorAnim = GetComponent<Animator>();
         eranDoor.layer = (int)LayerMasks.Default;
@@ -37,7 +37,7 @@ public class EranDoorAnimation : MonoBehaviour
 
     public void ShowDoorUI()
     {
-        _transfer.TvOwner();
+       //_transfer.TvOwner();
         eranDoorUI.SetActive(true);
     }
 
