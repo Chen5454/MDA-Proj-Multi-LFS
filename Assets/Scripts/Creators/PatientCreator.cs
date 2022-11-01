@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using Photon.Pun;
+
 namespace PatientCreationSpace
 {
 
@@ -61,28 +63,48 @@ namespace PatientCreationSpace
             string patientJSON = JsonUtility.ToJson(newPatient);
             string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
-            CreateSaveFiles(patientJSON, treatmentSequenceJSON);
+            NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
+
 
             return true; //successful save!
         }
 
-        public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON)
+        
+        public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON, string name, string sureName)
         {
             if (!Directory.Exists($"{streamingAssets_PatientFolderPath}"))
             {
                 Directory.CreateDirectory($"{streamingAssets_PatientFolderPath}");
             }
-            StreamWriter sw = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
+            StreamWriter sw = File.CreateText($"{streamingAssets_PatientFolderPath}{name}_{sureName}.txt");
 
             sw.Write(patientJSON);
             sw.Close();
 
 
-            StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
+            StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{name}_{sureName}_treatmentSequence.txt");
 
             sw2.Write(treatmentSequenceJSON);
             sw2.Close();
         }
+
+        //public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON)
+        //{
+        //    if (!Directory.Exists($"{streamingAssets_PatientFolderPath}"))
+        //    {
+        //        Directory.CreateDirectory($"{streamingAssets_PatientFolderPath}");
+        //    }
+        //    StreamWriter sw = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}.txt");
+        //
+        //    sw.Write(patientJSON);
+        //    sw.Close();
+        //
+        //
+        //    StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{newPatient.Name}_{newPatient.SureName}_treatmentSequence.txt");
+        //
+        //    sw2.Write(treatmentSequenceJSON);
+        //    sw2.Close();
+        //}
 
 
         public static string SerializeTreatmentSequence(TreatmentSequence treatmentSequence)

@@ -183,6 +183,7 @@ namespace PatientCreationSpace
             treatmentSequenceEditorWindow.Init(PatientCreator.newPatient);
             //continue work on setting the patient and filling their Treatment Sequence
         }
+
         [PunRPC]
         public void CallPatientCreator(string patientJson, string treatmentSequenceJson,string name,string sureName)
         {
