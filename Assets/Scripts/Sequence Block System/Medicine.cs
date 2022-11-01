@@ -15,12 +15,13 @@ namespace PatientCreationSpace
         //[SerializeField]
         //string TEMP_patientDataString; //PLACEHOLDER FOR PatientMeasurementData
         public PatientMeasurements measurements;
-
+        public string dosage;
         //Medicine Setter TBF (also a creator? I dont think so)
-        public void Init(string medNAme, PatientMeasurements newMeasurements) //temp! TBF //working on it
+        public void Init(string medNAme, PatientMeasurements newMeasurements, string newDosage) //temp! TBF //working on it
         {
             medicineName = medNAme;
             measurements = newMeasurements;
+            dosage = newDosage;
             Set(medNAme, GetType().ToString().Substring(21));//Ignores the initial namespace and period ("PatientCreationSpace.") - 21 chars
         }
         public override object Result()

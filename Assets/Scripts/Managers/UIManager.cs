@@ -64,6 +64,8 @@ public class UIManager : MonoBehaviour
     [Header("Patient UI Texts")]
     public TextMeshProUGUI SureName;
     public TextMeshProUGUI LastName, Id, Age, Gender, PhoneNumber, InsuranceCompany, Adress, Complaint;
+    public StatsPanel StatsPanel;
+    public QuestionPanel QuestionPanel;
     #endregion
 
     #region Patient Creation

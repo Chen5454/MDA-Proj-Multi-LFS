@@ -17,6 +17,14 @@ public class NewPatientData
     public string Gender;
     public string PhoneNumber;
     public string MedicalCompany, AddressLocation, Complaint;
+    /// <summary>
+    /// true = ALS | false = BLS
+    /// </summary>
+    public bool isALS;
+    /// <summary>
+    /// false is illness
+    /// </summary>
+    public bool isTrauma;
 
     [Header("Measurments")]
     [SerializeField] private PatientMeasurements _patientMeasurement;
@@ -30,22 +38,7 @@ public class NewPatientData
 
     public NewPatientData() { }
 
-    public NewPatientData(NewPatientData newPatientDataFromSO) //DONT USE! this was placeholder -> now needs to recieve input data instead
-    {
-        PatientType = newPatientDataFromSO.PatientType;
-        Name = newPatientDataFromSO.Name;
-        SureName = newPatientDataFromSO.SureName;
-        Id = newPatientDataFromSO.Id;
-        Age = newPatientDataFromSO.Age;
-        PhoneNumber = newPatientDataFromSO.PhoneNumber;
-        MedicalCompany = newPatientDataFromSO.MedicalCompany;
-        AddressLocation = newPatientDataFromSO.AddressLocation;
-        Complaint = newPatientDataFromSO.Complaint;
-        _patientMeasurement = newPatientDataFromSO._patientMeasurement;
-        MonitorSpriteList = newPatientDataFromSO.MonitorSpriteList;
-    }
-
-    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements)
+    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, bool isAls, bool trauma)
     {
         Name = name;
         SureName = sureName;
@@ -58,7 +51,8 @@ public class NewPatientData
         Complaint = complaint;
         _patientMeasurement = new PatientMeasurements();
         _patientMeasurement.Initialize(measurements);
-
+        isALS = isAls;
+        isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();
         FullTreatmentSequence.Init();
     }
