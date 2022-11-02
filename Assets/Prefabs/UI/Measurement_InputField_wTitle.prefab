@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 5915187814831566675}
   - component: {fileID: 5915187814831566674}
   - component: {fileID: 5915187814831566673}
+  - component: {fileID: 4988106371935712455}
   m_Layer: 5
   m_Name: Measurement_InputField
   m_TagString: Untagged
@@ -482,7 +483,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4988106371935712455}
+        m_TargetAssemblyTypeName: NumOrTextFlipper, Assembly-CSharp
+        m_MethodName: CheckIfRTL
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -501,6 +514,19 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &4988106371935712455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5915187814831566679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1edf5f98025d734991ccf28a686ef66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 5915187814831566673}
 --- !u!1 &5915187814889708955
 GameObject:
   m_ObjectHideFlags: 0
