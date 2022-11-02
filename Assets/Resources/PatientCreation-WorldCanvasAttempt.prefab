@@ -2683,6 +2683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3430261276848282570}
   - component: {fileID: 3430261276848282568}
+  - component: {fileID: 7682801721268867130}
   m_Layer: 5
   m_Name: ChooseTest_Window
   m_TagString: Untagged
@@ -2724,8 +2725,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doClose: {fileID: 9046741195684892659}
   dropdown: {fileID: 9046741196257676359}
+  searchText: {fileID: 9046741196948316346}
   databases: {fileID: 9046741197143606722}
   treatmentSequenceEditorWindow: {fileID: 9046741196501560878}
+--- !u!114 &7682801721268867130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3430261276848282569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea052b2c555fd44887509ed0fd50f6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3758410721199258471
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,6 +4158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doClose: {fileID: 9046741196653821419}
   dropdown: {fileID: 9046741196732774064}
+  searchText: {fileID: 0}
   measurementInputFields:
   - {fileID: 3430208915422500263}
   - {fileID: 3430208916883132208}
@@ -14518,6 +14533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doClose: {fileID: 9046741196349896635}
   dropdown: {fileID: 9046741197079832529}
+  searchText: {fileID: 9046741195623446333}
   databases: {fileID: 9046741197143606722}
   treatmentSequenceEditorWindow: {fileID: 9046741196560953051}
 --- !u!1 &9046741196491852950

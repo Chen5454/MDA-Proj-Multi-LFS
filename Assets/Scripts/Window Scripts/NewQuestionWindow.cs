@@ -12,6 +12,8 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField replyText;
 
+
+
         [SerializeField]
         BlockCollectionEditor treatmentSequenceEditorWindow;
         //private void OnEnable()
