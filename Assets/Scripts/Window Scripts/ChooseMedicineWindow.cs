@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -11,6 +12,9 @@ namespace PatientCreationSpace
         UnityEngine.UI.Toggle doClose;
         [SerializeField]
         TMP_Dropdown dropdown;
+
+        [SerializeField]
+        TMP_InputField searchText;
         //[SerializeField]
         //TMP_InputField TEMP_patientData; //Look below.
 
@@ -56,8 +60,30 @@ namespace PatientCreationSpace
         }
         private void RefreshDropdownMedicine()
         {
-            dropdown.ClearOptions();
-            dropdown.AddOptions(databases.medicineDB.GetListOfTreatmentNames());
+            List<Medicine> treatments = new List<Medicine>();
+            List<string> strings = new List<string>();
+            if (!string.IsNullOrEmpty(searchText.text))
+            {
+                treatments = databases.medicineDB.GetTreatmentsWithLinq(x => x.medicineName.StartsWith(searchText.text)).ToList();
+                if (treatments == null || treatments.Count == 0)
+                {
+                    treatments = databases.medicineDB.GetTreatmentsWithLinq(x => x.medicineName.Contains(searchText.text)).ToList();
+                }
+            }
+
+            foreach (Medicine m in treatments)
+            {
+                strings.Add(m.medicineName);
+            }
+
+            if (strings.Count > 0)
+                dropdown.AddOptions(strings);
+            else
+                dropdown.AddOptions(databases.medicineDB.GetListOfTreatmentNames());
+
+
+
+         
             dropdown.RefreshShownValue();
         }
 

@@ -41,6 +41,8 @@ namespace PatientCreationSpace
             }
             return toReturn;
         }
+
+
         public List<T> GetTreatmentsWithLinq(System.Func<T, bool> pred)
         {
             return treatments.Where(pred).ToList();
