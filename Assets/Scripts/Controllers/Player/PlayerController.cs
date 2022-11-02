@@ -307,9 +307,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _stateAction = UseTankWalkingState;
             }
 
-            if (UIManager.Instance.EventSystem.currentSelectedGameObject.layer == _worldCanvasLayer)
+            if (UIManager.Instance.EventSystem.currentSelectedGameObject)
             {
-                _stateAction = UseUIState;
+                if (UIManager.Instance.EventSystem.currentSelectedGameObject.layer == _worldCanvasLayer)
+                {
+                    _stateAction = UseUIState;
+                }
             }
 
             //if (Input.GetKeyDown(KeyCode.V))
