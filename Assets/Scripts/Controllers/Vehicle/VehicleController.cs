@@ -161,9 +161,31 @@ public class VehicleController : MonoBehaviour, IPunObservable
     }
     private void HandleMotor()
     {
-        _frontLeftWheelCollider.motorTorque = _input.y * _motorForce;
-        _frontRightWheelCollider.motorTorque = _input.y * _motorForce;
-        _currentbreakForce = _isBreaking ? _breakForce : 0f;
+        if (_isBreaking)
+        {
+            _rearLeftWheelCollider.motorTorque = 0;
+            _rearRightWheelCollider.motorTorque = 0;
+        }
+        else
+        {
+
+            _rearLeftWheelCollider.motorTorque = _input.y * _motorForce;
+            _rearRightWheelCollider.motorTorque = _input.y * _motorForce;
+        }
+
+        if (_isBreaking)
+        {
+            _currentbreakForce = _breakForce;
+        }
+        else if (_input.y == 0)
+        {
+            _currentbreakForce = _breakForce / 2;
+        }
+        else
+        {
+            _currentbreakForce = 0;
+        }
+        //_currentbreakForce = _isBreaking ? _breakForce : 0f;
         ApplyBreaking();
     }
     private void ApplyBreaking()
