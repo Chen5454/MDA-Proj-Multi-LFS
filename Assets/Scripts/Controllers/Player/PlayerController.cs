@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -80,6 +79,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public Vector2 _input;
     public float _walkingSpeed = 6f, actualSpeed;
+
+    [SerializeField] private float _focusedCanvasDistance;
+    [SerializeField] private int _worldCanvasLayer;
+    #endregion
+
+    #region Physics
     [Header("Physics")]
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private Transform _groundCheckTransform;
@@ -91,7 +96,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private PlayerController thisScript;
 
-    [SerializeField] private EventSystem _eventSystem;
 
     #region Colliders
     [Header("Colliders")]
@@ -303,6 +307,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _stateAction = UseTankWalkingState;
             }
 
+            if (UIManager.Instance.EventSystem.currentSelectedGameObject.layer == _worldCanvasLayer)
+            {
+                _stateAction = UseUIState;
+            }
+
             //if (Input.GetKeyDown(KeyCode.V))
             //{
             //    FreeMouse(false);
@@ -335,6 +344,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 FreeMouse(true);
                 _stateAction = UseTankIdleState;
+            }
+
+            if (UIManager.Instance.EventSystem.currentSelectedGameObject)
+            {
+                if (UIManager.Instance.EventSystem.currentSelectedGameObject.layer == _worldCanvasLayer)
+                {
+                    _stateAction = UseUIState;
+                }
             }
 
             //if (Input.GetKeyDown(KeyCode.V))
@@ -484,7 +501,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
+            if (Input.GetKeyDown(KeyCode.Escape) || !UIManager.Instance.EventSystem.currentSelectedGameObject)
+            {
+                _stateAction = UseTankIdleState;
+            }
+
+
+
             RotateBodyWithMouse();
+
         }
     }
     #endregion

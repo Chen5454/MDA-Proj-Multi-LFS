@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
     [SerializeField] private Vector3 _leaderMenuOffset;
     [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen;
+    public EventSystem EventSystem;
 
     #region Player UI
     [Header("Player UI Parents")]
