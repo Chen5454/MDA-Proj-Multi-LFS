@@ -58,8 +58,9 @@ namespace PatientCreationSpace
             }
             base.OnDisable();
         }
-        private void RefreshDropdownMedicine()
+        public void RefreshDropdownMedicine()
         {
+            dropdown.ClearOptions();
             List<Medicine> treatments = new List<Medicine>();
             List<string> strings = new List<string>();
             if (!string.IsNullOrEmpty(searchText.text))
