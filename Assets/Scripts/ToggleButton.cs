@@ -74,7 +74,6 @@ public class ToggleButton : MonoBehaviour
 
     public void ClickMe() //the only thing to be added to the button script - may do this via script to make sure TBF TBD ALON
     {
-        OnClick?.Invoke(); 
         if (!IsBtnSelected)
         {
             foreach (var item in _cancelBtns)
@@ -88,6 +87,7 @@ public class ToggleButton : MonoBehaviour
         {
             SetMe(false);
         }
+        OnClick?.Invoke();
 
     }
 
