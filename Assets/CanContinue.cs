@@ -24,6 +24,19 @@ public class CanContinue : MonoBehaviour
     {
         if (!button)
             button = GetComponent<UnityEngine.UI.Button>();
+
+        IsALS.OnClick.AddListener(CheckMe);
+        IsBLS.OnClick.AddListener(CheckMe);
+        IsTrauma.OnClick.AddListener(CheckMe);
+        IsIllness.OnClick.AddListener(CheckMe);
+    }
+
+    private void OnDisable()
+    {
+        IsALS.OnClick.RemoveListener(CheckMe);
+        IsBLS.OnClick.RemoveListener(CheckMe);
+        IsTrauma.OnClick.RemoveListener(CheckMe);
+        IsIllness.OnClick.RemoveListener(CheckMe);
     }
     public void CheckMe() //called on valued changed for those toggles? - on click is enough
     {

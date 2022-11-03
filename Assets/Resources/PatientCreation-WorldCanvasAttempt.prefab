@@ -2159,6 +2159,9 @@ MonoBehaviour:
   OnShutdown:
     m_PersistentCalls:
       m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6678107672079927675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2205,7 +2208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7266716773882162744}
         m_TargetAssemblyTypeName: ToggleButton, Assembly-CSharp
-        m_MethodName: ToggleBtnOnClick
+        m_MethodName: ClickMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2320,6 +2323,9 @@ MonoBehaviour:
   OnShutdown:
     m_PersistentCalls:
       m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5223529911535179234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2366,7 +2372,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5632351477884075827}
         m_TargetAssemblyTypeName: ToggleButton, Assembly-CSharp
-        m_MethodName: ToggleBtnOnClick
+        m_MethodName: ClickMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3662,6 +3668,9 @@ MonoBehaviour:
   OnShutdown:
     m_PersistentCalls:
       m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7499058554315933064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3708,7 +3717,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 351842191053056084}
         m_TargetAssemblyTypeName: ToggleButton, Assembly-CSharp
-        m_MethodName: ToggleBtnOnClick
+        m_MethodName: ClickMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4107,6 +4116,9 @@ MonoBehaviour:
   OnShutdown:
     m_PersistentCalls:
       m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &744417306750488607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4153,7 +4165,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4811034687034606101}
         m_TargetAssemblyTypeName: ToggleButton, Assembly-CSharp
-        m_MethodName: ToggleBtnOnClick
+        m_MethodName: ClickMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4577,7 +4589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 903245d63e85e2b4a803860600ad758d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button: {fileID: 0}
+  button: {fileID: 2629713149480614127}
   IsALS: {fileID: 351842191053056084}
   IsBLS: {fileID: 7266716773882162744}
   IsTrauma: {fileID: 4811034687034606101}
@@ -28776,7 +28788,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8148798073459638908, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleBtnOnClick
+      value: ClickMe
       objectReference: {fileID: 0}
     - target: {fileID: 8148798073459638908, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -28828,7 +28840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9032393980284882743, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleBtnOnClick
+      value: ClickMe
       objectReference: {fileID: 0}
     - target: {fileID: 9032393980284882743, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -28884,7 +28896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9219711625825451195, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleBtnOnClick
+      value: ClickMe
       objectReference: {fileID: 0}
     - target: {fileID: 9219711625825451195, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -29017,6 +29029,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8095421396064136817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29055,6 +29070,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnShutdown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClick:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8327810193954094947
@@ -29109,6 +29127,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &3223542288423762105
 PrefabInstance:
   m_ObjectHideFlags: 0

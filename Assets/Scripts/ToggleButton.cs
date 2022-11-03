@@ -26,6 +26,9 @@ public class ToggleButton : MonoBehaviour
     UnityEngine.Events.UnityEvent OnShutdown;
 
 
+    public UnityEngine.Events.UnityEvent OnClick;
+
+
     public void ToggleBtnOnClick()
     {
         if (!_isWithCheckmark)
@@ -71,6 +74,7 @@ public class ToggleButton : MonoBehaviour
 
     public void ClickMe() //the only thing to be added to the button script - may do this via script to make sure TBF TBD ALON
     {
+        OnClick?.Invoke(); 
         if (!IsBtnSelected)
         {
             foreach (var item in _cancelBtns)
