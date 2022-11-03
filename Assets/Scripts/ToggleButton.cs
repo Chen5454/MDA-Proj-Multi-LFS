@@ -17,6 +17,15 @@ public class ToggleButton : MonoBehaviour
     [field: SerializeField] public Image CheckmarkImg { get; set; }
     [field: SerializeField] public bool IsBtnSelected { get; set; }
 
+    //Dangerous attempt! ALON TBF 
+    [SerializeField]
+    bool canSelectNothing;
+    [SerializeField]
+    UnityEngine.Events.UnityEvent OnChoosen; //OnTurn on
+    [SerializeField]
+    UnityEngine.Events.UnityEvent OnShutdown;
+
+
     public void ToggleBtnOnClick()
     {
         if (!_isWithCheckmark)
@@ -57,5 +66,44 @@ public class ToggleButton : MonoBehaviour
                 IsBtnSelected = false;
             }
         }
+        
+    }
+
+    public void ClickMe() //the only thing to be added to the button script - may do this via script to make sure TBF TBD ALON
+    {
+        if (!IsBtnSelected)
+        {
+            foreach (var item in _cancelBtns)
+            {
+                if (item.gameObject.activeInHierarchy)
+                    item.SetMe(false);
+            }
+            SetMe(true);
+        }
+        else if (canSelectNothing)
+        {
+            SetMe(false);
+        }
+
+    }
+
+    void SetMe(bool isSelected)
+    {
+        if(isSelected)
+        {
+            BtnImg.sprite = _btnOnImg;
+            IsBtnSelected = true;
+            if(CheckmarkImg)
+            CheckmarkImg.gameObject.SetActive(true);
+            OnChoosen?.Invoke();
+        }
+        else
+        {
+            BtnImg.sprite = _btnOffImg;
+            IsBtnSelected = false;
+            if (CheckmarkImg)
+                CheckmarkImg.gameObject.SetActive(false);
+            OnShutdown?.Invoke();
+        }    
     }
 }

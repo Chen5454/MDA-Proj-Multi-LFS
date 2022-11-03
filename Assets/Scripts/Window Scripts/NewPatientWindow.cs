@@ -25,16 +25,21 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField MedicalCompany, AddressLocation, Complaint;
 
-        /// <summary>
-        /// true = ALS | false = BLS
-        /// </summary>
+        
         [SerializeField]
-        UnityEngine.UI.Toggle IsALS;
-           /// <summary>
-        /// true = trauma | false = illness
-        /// </summary>
+        //UnityEngine.UI.Toggle IsALS;
+        ToggleButton IsALS;
         [SerializeField]
-        UnityEngine.UI.Toggle IsTrauma;
+        //UnityEngine.UI.Toggle IsALS;
+        ToggleButton IsBLS;
+
+        
+        [SerializeField]
+        //UnityEngine.UI.Toggle IsTrauma;
+        ToggleButton IsTrauma;
+        [SerializeField]
+        //UnityEngine.UI.Toggle IsTrauma;
+        ToggleButton IsIllness;
 
 
         [SerializeField]
@@ -129,7 +134,11 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-
+            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected)
+            {
+                Debug.LogError("no type selected somehow?");
+                return;
+            }
             //patientMeasurements.Initialize(measurementArray);
 
             //Other Settings section TBD
@@ -141,7 +150,7 @@ namespace PatientCreationSpace
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
             newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
-                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, IsALS.isOn, IsTrauma.isOn);//parsing for ints is temp TBF
+                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);
