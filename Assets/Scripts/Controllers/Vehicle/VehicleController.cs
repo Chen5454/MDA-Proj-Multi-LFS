@@ -17,6 +17,8 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private bool _isBreaking;
 
     [Header("Vehicle Components")]
+    [SerializeField] private float _motorForce;
+    [SerializeField] private float _breakForce, _maxSteerAngle, _maxLean;
     [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform, _centerOfMass;
     [SerializeField] private WheelCollider _frontLeftWheelCollider, _frontRightWheelCollider, _rearLeftWheelCollider, _rearRightWheelCollider;
     [SerializeField] private Rigidbody _rb;
@@ -40,7 +42,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
     public bool IsBackDoorsOpen;
     public bool IsPatientIn;
     public bool IsInMovement;
-    [SerializeField] private bool _isDrivingForward, _isDrivingBackward;
 
     [Header("Vehicle Data")]
     public int OwnerCrew, RandomNumber;
@@ -48,11 +49,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
 
     [Header("Vehicle UI")]
     private GameObject _carDashboardUI;
-
-    [Header("VehiclePhysics")]
-    [SerializeField] private float _motorForce;
-    [SerializeField] private float _motorTorque, _breakForce, _maxSteerAngle, _maxLean;
-    [SerializeField] private Vector3 _localVelocity;
 
     #region Monobehaviour Callbacks
 
@@ -80,7 +76,6 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private void Update()
     {
         GetInput();
-        GetForwardDirection();
     }
     private void FixedUpdate()
     {
@@ -150,46 +145,41 @@ public class VehicleController : MonoBehaviour, IPunObservable
     private void GetInput()
     {
         _input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        _currentbreakForce = _input.y == 0 ? _breakForce / 2 : 0;
+
+        #region Is In Movemenet
 
         if (_input.y != 0 || _input.x != 0)
+        {
             IsInMovement = true;
+        }
         else
+        {
             IsInMovement = false;
+
+        }
+
+        #endregion
 
         _isBreaking = Input.GetKey(KeyCode.Space);
 
-        _motorTorque = _input.y * _motorForce;
-    }
-    private void GetForwardDirection()
-    {
-        _localVelocity = transform.InverseTransformDirection(_rb.velocity);
-
-        if (_input.y > 0)
-        {
-            _currentbreakForce = _localVelocity.z < 0 ? _breakForce / 2 : 0;
-        }
-        else if (_input.y < 0)
-        {
-            _currentbreakForce = _localVelocity.z > 0 ? _breakForce / 2 : 0;
-        }
-        else
-        {
-            _currentbreakForce = _breakForce / 2;
-        }
+        if (_isBreaking)
+            _currentbreakForce = _breakForce;
     }
     private void HandleMotor()
     {
-        _rearLeftWheelCollider.motorTorque = _motorTorque;
-        _rearRightWheelCollider.motorTorque = _motorTorque;
+        _rearLeftWheelCollider.motorTorque = _input.y * _motorForce;
+        _rearRightWheelCollider.motorTorque = _input.y * _motorForce;
 
         if (_isBreaking)
         {
-            _currentbreakForce = _breakForce;
             _rearLeftWheelCollider.motorTorque = 0;
             _rearRightWheelCollider.motorTorque = 0;
             ApplyBreaking();
             return;
         }
+
+        
 
         ApplyBreaking();
     }
