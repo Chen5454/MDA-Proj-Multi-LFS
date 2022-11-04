@@ -332,12 +332,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (_patient != null && !IsPatientOnBed)
         {
-            _photonView.RPC("PutOnBed", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("PutOnBed", RpcTarget.AllBufferedViaServer,_patient.GetComponent<PhotonView>().ViewID);
 
         }
         else if (_patient != null && IsPatientOnBed && !_inCar)
         {
-            _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer, _patient.GetComponent<PhotonView>().ViewID);
         }
     }
 
@@ -360,7 +360,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(_isFollowingPlayer);
             stream.SendNext(_inCar);
             stream.SendNext(_isBedOut);
-            stream.SendNext(_patientPosOnBed.position);
+           // stream.SendNext(_patientPosOnBed.position);
         }
         else
         {
@@ -369,32 +369,37 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _isFollowingPlayer = (bool)stream.ReceiveNext();
             _inCar = (bool)stream.ReceiveNext();
             _isBedOut = (bool)stream.ReceiveNext();
-            _patientPosOnBed.position = (Vector3)stream.ReceiveNext();
+          //  _patientPosOnBed.position = (Vector3)stream.ReceiveNext();
         }
     }
 
     [PunRPC]
-    void PutOnBed()
+    void PutOnBed(int ID)
     {
-        _patient.layer = (int)LayerMasks.Default;
-        _patient.GetComponent<BoxCollider>().enabled = false;
-        _patient.transform.SetPositionAndRotation(_patientPosOnBed.position, _patientPosOnBed.rotation); // parent
-        _patient.transform.SetParent(this.transform);// parent
+        PhotonView currentPatientView = GameManager.Instance.GetPatientPhotonViewByIDView(ID);
+
+
+        currentPatientView.gameObject.layer = (int)LayerMasks.Default;
+        currentPatientView.GetComponent<BoxCollider>().enabled = false;
+        currentPatientView.transform.SetPositionAndRotation(_patientPosOnBed.position, _patientPosOnBed.rotation); // parent
+        currentPatientView.transform.SetParent(_patientPosOnBed);// parent
         _placeRemovePatientText.text = _removeText;
         IsPatientOnBed = true;
-        _patient.GetComponent<Patient>().SmoothMovement.enabled = false;
+        currentPatientView.GetComponent<Patient>().SmoothMovement.enabled = false;
     }
 
     [PunRPC]
-    void RemoveFromBed()
+    void RemoveFromBed(int ID)
     {
-        _patient.layer = (int)LayerMasks.Interactable;
-        _patient.GetComponent<BoxCollider>().enabled = true;
-        _patient.transform.position = _patientPosOffBed.position;// parent
-        _patient.transform.SetParent(null);// parent
+        PhotonView currentPatientView = GameManager.Instance.GetPatientPhotonViewByIDView(ID);
+
+        currentPatientView.gameObject.layer = (int)LayerMasks.Interactable;
+        currentPatientView.GetComponent<BoxCollider>().enabled = true;
+        currentPatientView.transform.position = _patientPosOffBed.position;// parent
+        currentPatientView.transform.SetParent(null);// parent
         _placeRemovePatientText.text = _placeText;
         IsPatientOnBed = false;
-        _patient.GetComponent<Patient>().SmoothMovement.enabled = true;
+        currentPatientView.GetComponent<Patient>().SmoothMovement.enabled = true;
     }
 
     [PunRPC]

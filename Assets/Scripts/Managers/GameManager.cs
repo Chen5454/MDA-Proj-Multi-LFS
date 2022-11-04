@@ -271,4 +271,19 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         IsAranActive = isActive;
     }
+
+
+
+    public PhotonView GetPatientPhotonViewByIDView(int PatientID)
+    {
+        for (int i = 0; i < AllPatients.Count; i++)
+        {
+            if (AllPatients[i].GetComponent<PhotonView>().ViewID == PatientID)
+            {
+                return AllPatients[i].GetComponent<PhotonView>();
+            }
+        }
+
+        return null;
+    }
 }
