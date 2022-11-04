@@ -270,12 +270,14 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     public void SynchBedOFF()
     {
         _SmoothSync.enabled =false ;
+
     }
 
     [PunRPC]
     public void SynchBedON()
     {
         _SmoothSync.enabled = true;
+      
     }
 
     private void FollowPlayer()
@@ -380,6 +382,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         _patient.transform.SetParent(this.transform);// parent
         _placeRemovePatientText.text = _removeText;
         IsPatientOnBed = true;
+        _patient.GetComponent<Patient>().SmoothMovement.enabled = false;
     }
 
     [PunRPC]
@@ -391,6 +394,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         _patient.transform.SetParent(null);// parent
         _placeRemovePatientText.text = _placeText;
         IsPatientOnBed = false;
+        _patient.GetComponent<Patient>().SmoothMovement.enabled = true;
     }
 
     [PunRPC]

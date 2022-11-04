@@ -5689,7 +5689,7 @@ GameObject:
   - component: {fileID: 3037008947219810444}
   - component: {fileID: 2231145088984724049}
   - component: {fileID: 8436431798684675709}
-  - component: {fileID: 3080711890186148457}
+  - component: {fileID: 200267112126866637}
   m_Layer: 0
   m_Name: EmergencyBed
   m_TagString: EmergencyBed
@@ -5758,6 +5758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentVehicle: {fileID: 4778638792706805194}
+  _SmoothSync: {fileID: 200267112126866637}
   _patient: {fileID: 0}
   _player: {fileID: 0}
   _emergencyBedOpen: {fileID: 6328867139748352544}
@@ -5786,6 +5787,7 @@ MonoBehaviour:
   _isBedOut: 0
   _inCar: 1
   _isFollowingPlayer: 0
+  insideCar: 1
   _isBedClosed: 1
   _interactableLayerNum: 7
   _defaultLayerNum: 0
@@ -5822,11 +5824,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 3037008947219810444}
-  - {fileID: 3080711890186148457}
+  - {fileID: 200267112126866637}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3080711890186148457
+--- !u!114 &200267112126866637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5835,13 +5837,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8222993477085012351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 35144820bcc25444bb8f0fd767d9423e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 1
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
+  SmoothingDelay: 5
 --- !u!1 &8244788288022521896
 GameObject:
   m_ObjectHideFlags: 0
