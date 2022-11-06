@@ -2,52 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// CT and Maternity are the same for ALS and BLS (as in documentation)
-/// </summary>
-/// 
 namespace PatientCreationSpace
 {
 
-    public enum DestinationRoom { CT, Maternity, Bypass_ALS, Bypass_BLS };
+    //public enum DestinationRoom { CT, Maternity, Bypass_ALS, Bypass_BLS };
+
+    /// <summary>
+    /// Basically the record of treatment.
+    /// This functions as BOTH data and controller.
+    /// Basically via methods in this script, treatments will attempt to effect the patient.
+    /// See "AttemptTreatment()" summary for more
+    /// </summary>
     public class AnswerSheet : MonoBehaviour
     {
-        //held on patients - describes the actions required by the exam
-        public string patientID;
-        public List<string> correctActions;
-        public TreatmentSequence treatmeantSequence;
-        public DestinationRoom destinationRoom;
+        public NewPatientData data;
+        //public string patientID => data.Id;
+        int currentBlockIndex;
 
-        private void Start()
+        public TreatmentSequence treatmeantSequence => data.FullTreatmentSequence;
+
+        public void Set(NewPatientData newPatientData)
         {
-            FeedbackMaster.Instance.AddPatient(this);
+            data = newPatientData;
         }
-
-
-        void SetActions()
+        
+        public void AttemptTreatment(Treatment treatment) //this is probably not going to work without a more specific type...
+                                                          //but, with unique ID's this could rely on the Treatment.Result() if the ID mathces a relevant step
+                                                          //Regardless of Treatment type
         {
-
-            //TAKE THESE FROM THE SCRIPTABLE OBJECTS!!!
-            switch (destinationRoom)
+            if(currentBlockIndex >= treatmeantSequence.sequenceBlocks.Count)
             {
-                case DestinationRoom.CT:
-                    correctActions.Add("age");
-                    correctActions.Add("measure_golcuse");
-                    correctActions.Add("measure_bloodPressure");
-                    correctActions.Add("check_pupils"); //drop down of optional elements - does it already exist in the TagMeeyoon?
-                                                        //previous medical events (enums) -> follow up (bool), if yes, any limitations persist?
-                                                        //conciouse state
-                                                        //etc...
-                    break;
-                case DestinationRoom.Maternity:
-                    break;
-                case DestinationRoom.Bypass_ALS:
-                    break;
-                case DestinationRoom.Bypass_BLS:
-                    break;
-                default:
-                    break;
+                Debug.LogError("current blockindex is larger than the amount of blocks in the treatmentsequence");
+                return;
             }
+            //THINK OF A SMART WAY TO CHECK IF block.Containts(Treatment) - to bypass checking for treatments in the groups?
+
+            if(treatmeantSequence.sequenceBlocks[currentBlockIndex].)
 
         }
     }

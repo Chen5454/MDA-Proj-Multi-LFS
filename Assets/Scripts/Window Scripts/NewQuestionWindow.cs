@@ -12,15 +12,14 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField replyText;
 
+        //[SerializeField]
+        //TMP_Dropdown dropdown;
+
 
 
         [SerializeField]
         BlockCollectionEditor treatmentSequenceEditorWindow;
-        //private void OnEnable()
-        //{
-        //    questionText.text = " ";
-        //    replyText.text = " ";
-        //}
+        
         public override void OnDisable()
         {
             questionText.text = "";

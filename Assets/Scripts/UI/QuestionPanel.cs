@@ -11,16 +11,22 @@ public class QuestionPanel : MonoBehaviour
     GameObject answerPrefab;
     [SerializeField]
     Transform parent;
-    List<Question> questions;
 
+    /// <summary>
+    /// Questions available for player choosing
+    /// </summary>
+    List<Question> questionsBank;
+    /// <summary>
+    /// The current timeline of questions, answers AND the questions available to ask (i.e. questionBank)
+    /// </summary>
     List<GameObject> questionsAndAnswers;
-   public void SetMe(NewPatientData newPatientData)
+    public void SetMe(NewPatientData newPatientData)
     {
         if (questionsAndAnswers == null)
             questionsAndAnswers = new List<GameObject>();
 
-        questions = newPatientData.FullTreatmentSequence.GetQuestions();
-        foreach (var q in questions)
+        questionsBank = newPatientData.FullTreatmentSequence.GetQuestions();
+        foreach (var q in questionsBank)
         {
             GameObject go = Instantiate(questionPrefab, parent);
             go.GetComponentInChildren<TMPro.TMP_Text>().text = q.questionText;
