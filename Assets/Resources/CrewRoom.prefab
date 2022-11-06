@@ -355,7 +355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4059540364765376168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7604,6 +7604,7 @@ MonoBehaviour:
   isUsed: 0
   _isNatanRequired: 0
   _isRandomIncident: 0
+  _filterredRoaster: {fileID: 4895573465391814137}
 --- !u!114 &6340234360517652064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10742,7 +10743,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5138764310284169353}
         m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
-        m_MethodName: ChooseIncident
+        m_MethodName: SetStartIncidentBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

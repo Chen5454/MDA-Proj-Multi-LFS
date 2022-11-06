@@ -10,6 +10,9 @@ public class FilteredPatientsRoster : MonoBehaviour
     [SerializeField]
     Transform verticalGroup;
 
+    private CrewRoomManager _crewRoomManager;
+    public CrewRoomManager CrewRoomManager { get => _crewRoomManager; set => _crewRoomManager = value; }
+
     ////List<string> names;
     //List<NewPatientData> alsPatients;
     //List<NewPatientData> blsPatients;

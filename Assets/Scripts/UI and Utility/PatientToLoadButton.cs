@@ -9,6 +9,7 @@ namespace PatientCreationSpace
 
     public class PatientToLoadButton : MonoBehaviour
     {
+        [SerializeField] private Button _btn;
 
         [SerializeField]
         TMP_Text text;
@@ -17,6 +18,18 @@ namespace PatientCreationSpace
         PatientRoster patientRoster;//SHOULD HAVE MADE THESE CLASSES with inheritence, alas - no time
         FilteredPatientsRoster filteredPatientRoster; //SHOULD HAVE MADE THESE CLASSES with inheritence, alas - no time
         string fileNameToLoad;
+
+        private void OnEnable()
+        {
+            if (!_btn)
+            {
+                _btn = GetComponent<Button>();
+            }
+        }
+        private void OnDestroy()
+        {
+            _btn.onClick.RemoveListener(delegate { filteredPatientRoster.CrewRoomManager.SetStartIncidentBtn(); });
+        }
 
         public void Set(string patientName, PatientRoster pr)
         {
@@ -29,6 +42,7 @@ namespace PatientCreationSpace
             filteredPatientRoster = fpr;
             text.text = patientName;
             fileNameToLoad = patientName;
+            _btn.onClick.AddListener(delegate { filteredPatientRoster.CrewRoomManager.SetStartIncidentBtn(); });
         }
 
 

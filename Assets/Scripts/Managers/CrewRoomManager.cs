@@ -36,6 +36,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [SerializeField] private TMP_InputField _apartmentNumber;
     [SerializeField] private string _noSimulationText, _startSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
+    [SerializeField] private FilteredPatientsRoster _filterredRoaster;
 
 
     private OwnershipTransfer _transfer;
@@ -52,6 +53,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     private void Start()
     {
+        //GameManager.Instance.AllCrewRooms[_crewRoomIndex - 1] = this;
+        //GameManager.Instance.AllCrewRooms.Add(this);
         _crewRoomIndexStatic++;
         _crewRoomIndex = _crewRoomIndexStatic;
     }
@@ -66,6 +69,16 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         {
             RoomCrewMenuUI.GetComponent<CanvasGroup>().interactable = false;
         }
+    }
+
+    private void OnEnable()
+    {
+        _filterredRoaster.CrewRoomManager = this;
+    }
+
+    private void OnDisable()
+    {
+        
     }
 
     private bool CheckIfAlreadyInList(GameObject player)
@@ -265,7 +278,62 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
         }
     }
+    private void StartIncidentInRandomLocation()
+    {
+        List<int> unavailableList = new List<int>();
 
+        for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
+        {
+            if (GameManager.Instance.IsPatientSpawned[i])
+                unavailableList.Add(i);
+        }
+
+        int apartmentNum = Random.Range(0, 5);
+        Debug.Log("Starting aptNum" + apartmentNum);
+        try
+        {
+            while (!(unavailableList.Count >= 5) && GameManager.Instance.IsPatientSpawned[apartmentNum])
+            {
+                apartmentNum = Random.Range(0, 6);
+                Debug.Log("New aptNum" + apartmentNum);
+
+                //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
+                //    break;
+            }
+        }
+        catch
+        {
+            AlertStartAll(_errorTitle, _errorFullString);
+        }
+
+        if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
+        {
+            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            if (PatientCreationSpace.PatientCreator.newPatient == null)
+            {
+                Debug.LogError("no patient loaded!");
+                return;
+            }
+            //1) Get the NewPatientData to be spawned
+
+            //2) switchcase on which models/prefab to spawn from NewPatientData
+
+            //3) Instantiate correct prefab
+
+            GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            //3.5) Grab the Patient component from the instantiated object.
+            //4) Set this patients data to the NewPatientData to be spawned
+            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
+
+
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
+        }
+        else
+        {
+            AlertStartAll(_errorTitle, _errorSomthingWentWrong);
+        }
+    }
     public void StartIncident()
     {
         if (_isRandomIncident)
@@ -277,7 +345,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
         else
         {
-            StartSpecificIncident();
+            StartIncidentInRandomLocation();
             _startSimulationBtn.interactable = false;
             _startSimulationTMP.text = _noSimulationText;
         }
@@ -288,17 +356,25 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _isRandomIncident = true;
     }
 
-    public void ChooseIncident()
+    //public void ChooseIncidents()
+    //{
+    //    if (_isRandomIncident)
+    //    {
+    //        _overlay.SetActive(false);
+    //        _startSimulationBtn.interactable = true;
+    //        _startSimulationTMP.text = _startSimulationText;
+    //        return;
+    //    }
+    //
+    //    _chooseSimulationPanel.SetActive(true);
+    //}
+    public void SetStartIncidentBtn()
     {
-        if (_isRandomIncident)
-        {
-            _overlay.SetActive(false);
-            _startSimulationBtn.interactable = true;
-            _startSimulationTMP.text = _startSimulationText;
-            return;
-        }
+        _overlay.SetActive(false);
+        _startSimulationBtn.interactable = true;
+        _startSimulationTMP.text = _startSimulationText;
 
-        _chooseSimulationPanel.SetActive(true);
+        _chooseSimulationPanel.SetActive(false);
     }
 
     public void ChangeVehicleRequired(bool changeVehicle)

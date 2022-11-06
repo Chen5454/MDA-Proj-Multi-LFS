@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     //public List<int> OnGoingIncidents;
     public Transform[] IncidentPatientSpawns;
     public bool[] IsPatientSpawned;
+    //public List<CrewRoomManager> AllCrewRooms;
 
     [Header("Aran")]
     public PhotonView Pikud10View; 
@@ -271,8 +272,6 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         IsAranActive = isActive;
     }
-
-
 
     public PhotonView GetPatientPhotonViewByIDView(int PatientID)
     {
