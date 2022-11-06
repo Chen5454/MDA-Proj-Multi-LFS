@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
@@ -23,6 +24,7 @@ public class Patient : MonoBehaviour
     public PatientData PatientData;
     public NewPatientData NewPatientData;
     public List<ActionSequence> ActionSequences;
+    public SmoothSyncMovement SmoothMovement;
     #endregion
 
     #region UI
