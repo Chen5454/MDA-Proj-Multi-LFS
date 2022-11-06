@@ -132,15 +132,23 @@ public class NavigationManager : MonoBehaviour
     // need fixing - navigation always will go to last incident currently playing
     public void StartIncidentGPSNav()
     {
-        int _incidentsCount = 0;
-        _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
+        if (_playerController.IsDriving)
+        {
+            int _incidentsCount = 0;
+            _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
-        _destinationMarkerPrefab.transform.position = GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount -1].position;
-        _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount -1].position);
-        _agent.isStopped = true;
-        _reachedDestination = false;
+            _destinationMarkerPrefab.transform.position =
+                GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
+            _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
+            _agent.isStopped = true;
+            _reachedDestination = false;
 
-        _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+            _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+        }
+        else
+        {
+            Debug.Log("Only the driver can set to navigation.");
+        }
     }
 
     public void StopGPSNav()
