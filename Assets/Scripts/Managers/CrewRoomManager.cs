@@ -76,11 +76,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _filterredRoaster.CrewRoomManager = this;
     }
 
-    private void OnDisable()
-    {
-        
-    }
-
     private bool CheckIfAlreadyInList(GameObject player)
     {
         bool playerFound = false;
@@ -433,6 +428,27 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
     }
 
+    public void ShowOverlayUI()
+    {
+
+        _photonView.RPC("ShowOverlayUI_RPC",RpcTarget.AllBufferedViaServer);
+    }
+    public void RemoveOverlayUI()
+    {
+        _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+        
+    }
+    public void ShowSimulationPanelUI()
+    {
+        _photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        
+    }
+    public void RemoveShowSimulationPanelUI()
+    {
+        _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        
+    }
+
 
     // PUN RPC Methods
     // --------------------
@@ -608,24 +624,60 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
     }
 
-    //[PunRPC]
-    //private void SetVestRPC()
-    //{
-    //    for (int i = 0; i < _playersInRoomList.Count; i++)
-    //    {
-    //        PlayerController playerController = _playersInRoomList[i].GetComponent<PlayerController>();
-    //        PlayerData playerData = _playersInRoomList[i].GetComponent<PlayerData>();
-    //
-    //        int vestNum = (int)playerData.UserRole;
-    //        playerController.VestMeshFilter.mesh = ActionsManager.Instance.Vests[vestNum];
-    //
-    //        if (!playerController.Vest.activeInHierarchy)
-    //            playerController.Vest.SetActive(true);
-    //    }
-    //}
+    [PunRPC]
+    private void ShowOverlayUI_RPC()
+    {
+        _overlay.gameObject.SetActive(true);
+       var player =_photonView.Owner;
+       _filterredRoaster._photonView.TransferOwnership(player);
+    }
+    [PunRPC]
+    private void RemoveOverlayUI_RPC()
+    {
+        _overlay.gameObject.SetActive(false);
+    }
+    [PunRPC]
+    private void ShowSimulationPanelUI_RPC()
+    {
+        _chooseSimulationPanel.gameObject.SetActive(true);
+    }
+    [PunRPC]
+    private void RemoveSimulationPanelUI_RPC()
+    {
+        _chooseSimulationPanel.gameObject.SetActive(false);
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
+
+
+        //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        //{
+
+        //    if (stream.IsWriting)
+        //    {
+        //        foreach (var button in patientButtons)
+        //        {
+        //            stream.SendNext(button.name);
+        //        }
+
+        //        stream.SendNext(isShowingALS);
+        //        stream.SendNext(isShowingTrauma);
+
+
+        //    }
+        //    else
+        //    {
+        //        foreach (var button in patientButtons)
+        //        {
+        //            button.name = (string)stream.ReceiveNext();
+        //        }
+        //        isShowingALS = (bool)stream.ReceiveNext();
+        //        isShowingTrauma = (bool)stream.ReceiveNext();
+
+
+        //    }
+        //}
 
         if (stream.IsWriting)
         {
@@ -635,6 +687,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 stream.SendNext(dropdown.value);
             }
+
+ 
         }
         else
         {
@@ -644,6 +698,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
+      
+
         }
     }
 }
