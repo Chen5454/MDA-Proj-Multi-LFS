@@ -18,12 +18,16 @@ namespace PatientCreationSpace
         public NewPatientData data;
         //public string patientID => data.Id;
         int currentBlockIndex;
+        int currentInnerGroupIndex;
+        TreatmentGroup completedGroupSteps; //holds steps already performed in this group - making sure no doubles of the same action are counted as two different treatments
 
         public TreatmentSequence treatmeantSequence => data.FullTreatmentSequence;
 
         public void Set(NewPatientData newPatientData)
         {
             data = newPatientData;
+            currentBlockIndex = 0;
+            currentInnerGroupIndex = 0;
         }
         
         public void AttemptTreatment(Treatment treatment) //this is probably not going to work without a more specific type...
@@ -32,13 +36,51 @@ namespace PatientCreationSpace
         {
             if(currentBlockIndex >= treatmeantSequence.sequenceBlocks.Count)
             {
-                Debug.LogError("current blockindex is larger than the amount of blocks in the treatmentsequence");
+                Debug.LogError("DONE!");
                 return;
             }
             //THINK OF A SMART WAY TO CHECK IF block.Containts(Treatment) - to bypass checking for treatments in the groups?
+            //do dumb way now: TBF
 
-            if(treatmeantSequence.sequenceBlocks[currentBlockIndex].)
+            if(treatmeantSequence.sequenceBlocks[currentBlockIndex] is TreatmentGroup)
+            {
+                TreatmentGroup tg = treatmeantSequence.sequenceBlocks[currentBlockIndex] as TreatmentGroup;
 
+                if (completedGroupSteps == null) //True if this is the first time this group step has been accessed
+                {
+                    completedGroupSteps = new TreatmentGroup();
+                    completedGroupSteps.Init();
+                    currentInnerGroupIndex = 0;
+                }
+
+                if (!completedGroupSteps.SequenceBlocks().Contains(treatment) && tg.SequenceBlocks().Contains(treatment as SequenceBlock)) //True if the attempted treatment is contained within the group (Comparer would greatly help! TBF)
+                {
+                    ResolveTreatment(treatment);
+
+                    completedGroupSteps.AddTreatment(treatment);
+                    currentInnerGroupIndex++;
+
+                    if(currentInnerGroupIndex >= tg.SequenceBlocks().Count) //True if this treatmentgroup is completed
+                    {
+                        currentInnerGroupIndex = 0;
+                        completedGroupSteps = null; //important!
+                        currentBlockIndex++; //Advance to the next Block!
+                    }
+                }
+            }
+            else
+            {
+                if (treatment == treatmeantSequence.sequenceBlocks[currentBlockIndex])
+                {
+                    ResolveTreatment(treatment);
+                    currentBlockIndex++; //Advance to the next Block!
+                }
+            }
+        }
+        void ResolveTreatment(Treatment treatment)
+        {
+            //Causes the "result" of the current step?
+            //should recieve step?
         }
     }
 
