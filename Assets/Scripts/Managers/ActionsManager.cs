@@ -89,8 +89,8 @@ public class ActionsManager : MonoBehaviour
                 PlayerData myPlayerData = photonView.gameObject.GetComponent<PlayerData>();
                 _lastClickedPatient = myPlayerData.CurrentPatientNearby;
 
-                NewPatientData currentPatientData = myPlayerData.CurrentPatientNearby != null ? myPlayerData.CurrentPatientNearby.NewPatientData : null;
-                _lastClickedPatientData = currentPatientData;
+                //NewPatientData currentPatientData = myPlayerData.CurrentPatientNearby != null ? myPlayerData.CurrentPatientNearby.NewPatientData : null;
+                //_lastClickedPatientData = currentPatientData;
 
                 Debug.Log($"{myPlayerData.UserName} Clicked on: {myPlayerData.CurrentPatientNearby}");
 

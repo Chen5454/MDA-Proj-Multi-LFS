@@ -97,6 +97,7 @@ public class VehicleInteraction : MonoBehaviour
                             UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+
                             UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
                             UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
                             UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { sliderHeadlightBtn.SliderBtnOnClick(); });
