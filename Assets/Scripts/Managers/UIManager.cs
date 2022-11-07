@@ -98,6 +98,7 @@ public class UIManager : MonoBehaviour
 
      public GameObject muteIcon;
      public GameObject umuteIcon;
+     public Button MuteButton;
 
     #endregion
     
