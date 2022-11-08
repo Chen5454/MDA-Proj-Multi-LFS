@@ -79,8 +79,22 @@ namespace PatientCreationSpace
         }
         void ResolveTreatment(Treatment treatment)
         {
-            //Causes the "result" of the current step?
-            //should recieve step?
+            //treatment.Result();
+            //basically another if-switch on treatment to handle per-type
+
+            if(treatment is Question)
+            {
+                UIManager.Instance.QuestionPanel.RecieveAnswer((treatment as Question).answerText);
+            }
+            else if (treatment is Medicine)
+            {
+                //newPatientData.ApplyMedicine((treatment as Medicine).measurements);
+            }
+            else if (treatment is Test)
+            {
+                //MeasuremnetPanel.SetMeasurement((treatment as Test).measurementType); // tests hold no value, they merely tell MeasurementsPanel to refresh 1 measuremnets displayer
+            }
+
         }
     }
 

@@ -34,6 +34,8 @@ public class NewPatientData
     public List<Sprite> MonitorSpriteList;
 
     public TreatmentSequence FullTreatmentSequence;
+
+    public AnswerSheet AnswerSheet;
     //public TreatmentSequence GetTreatmeantSequence { get => paitent_FullTreatmentSequence; }
 
     public NewPatientData() { }
@@ -55,6 +57,7 @@ public class NewPatientData
         isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();
         FullTreatmentSequence.Init();
+        AnswerSheet.Set(this);
     }
 
     //TBC - Init with ALL required data (measrurements, basic info, models, everythig!)
