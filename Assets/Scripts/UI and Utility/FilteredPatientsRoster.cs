@@ -10,7 +10,7 @@ public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
     GameObject patientButtonPrefab;
     [SerializeField]
     Transform verticalGroup;
-
+    
     public PhotonView _photonView;
     private CrewRoomManager _crewRoomManager;
     public CrewRoomManager CrewRoomManager { get => _crewRoomManager; set => _crewRoomManager = value; }
@@ -58,11 +58,13 @@ public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
 
     public void SetUpNamesAsButtons() //called in inspector by the same buttons which perform the ALS/BLS Filtering
     {
-        _photonView.RPC("RPCUPDATENAMES",RpcTarget.AllBufferedViaServer);
+       
+
+        _photonView.RPC("SetUpNamesAsButtons_RPC", RpcTarget.AllBufferedViaServer, isShowingALS, isShowingTrauma);
     }
 
     [PunRPC]
-    public void RPCUPDATENAMES()
+    public void SetUpNamesAsButtons_RPC(bool isShowingALS , bool isShowingTrauma)
     {
         if (patientButtons == null)
             patientButtons = new List<PatientToLoadButton>();

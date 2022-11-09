@@ -569,7 +569,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         RoomCrewMenuUI.gameObject.SetActive(true);
         _tvScreen.layer = (int)LayerMasks.Default;
         isUsed = true;
-        
+
     }
 
     [PunRPC]
@@ -628,8 +628,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private void ShowOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(true);
-       var player =_photonView.Owner;
-       _filterredRoaster._photonView.TransferOwnership(player);
+        _filterredRoaster._photonView.TransferOwnership(_photonView.Owner);
     }
     [PunRPC]
     private void RemoveOverlayUI_RPC()
@@ -649,35 +648,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
-
-        //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        //{
-
-        //    if (stream.IsWriting)
-        //    {
-        //        foreach (var button in patientButtons)
-        //        {
-        //            stream.SendNext(button.name);
-        //        }
-
-        //        stream.SendNext(isShowingALS);
-        //        stream.SendNext(isShowingTrauma);
-
-
-        //    }
-        //    else
-        //    {
-        //        foreach (var button in patientButtons)
-        //        {
-        //            button.name = (string)stream.ReceiveNext();
-        //        }
-        //        isShowingALS = (bool)stream.ReceiveNext();
-        //        isShowingTrauma = (bool)stream.ReceiveNext();
-
-
-        //    }
-        //}
 
         if (stream.IsWriting)
         {
