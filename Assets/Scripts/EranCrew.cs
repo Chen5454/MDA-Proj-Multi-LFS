@@ -6,13 +6,15 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine;
 
+public enum AranType { PlaineCrash}
+
 public class EranCrew : MonoBehaviour
 {
     private PhotonView _photonView;
     private OwnershipTransfer _transfer;
     private Coroutine updatePlayerListCoroutine;
 
-    #region Mokdan Variables
+    #region Metargel Variables
     [Header("Metargel")]
     public GameObject MetargelEranMenuUI;
 
@@ -20,8 +22,12 @@ public class EranCrew : MonoBehaviour
     [SerializeField] private GameObject _mainMokdanDropDown;
     [SerializeField] private TMP_Dropdown _mainMokdanPlayerListDropDown;
     [SerializeField] private TMP_Dropdown _mokdanPlayerListDropDown;
+
     #endregion
 
+    #region Metargel Variables
+    [SerializeField] private GameObject[] _aranPrefabs;
+    #endregion
     void Start()
     {
         _transfer = GetComponent<OwnershipTransfer>();
@@ -97,11 +103,14 @@ public class EranCrew : MonoBehaviour
     }
     public void StartAran()
     {
-
-        // GameManager.Instance.ChangeAranState(true);
         _photonView.RPC("ResetsEventsLists_RPC",RpcTarget.AllBufferedViaServer);
         _photonView.RPC("ResetPlayerData_RPC", RpcTarget.AllBufferedViaServer);
         ClearAllPatient();
+
+        // should be replaced later with the Create Aran UI and behaviours
+        PhotonNetwork.Instantiate(_aranPrefabs[0].name, new Vector3(-130f, 0f, 210f), Quaternion.identity);
+        GameManager.Instance.ChangeAranState(true);
+
     }
 
     public void ClearAllPatient()
@@ -209,7 +218,6 @@ public class EranCrew : MonoBehaviour
         chosenPlayerData.IsPikud10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Pikud10);
     }
-
 
     [PunRPC]
     public void ResetsEventsLists_RPC()
