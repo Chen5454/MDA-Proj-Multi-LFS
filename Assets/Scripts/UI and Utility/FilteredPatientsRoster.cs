@@ -2,41 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PatientCreationSpace;
+using Photon.Pun;
 
-public class FilteredPatientsRoster : MonoBehaviour
+public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
 {
     [SerializeField]
     GameObject patientButtonPrefab;
     [SerializeField]
     Transform verticalGroup;
-
+    
+    public PhotonView _photonView;
     private CrewRoomManager _crewRoomManager;
     public CrewRoomManager CrewRoomManager { get => _crewRoomManager; set => _crewRoomManager = value; }
-
     ////List<string> names;
     //List<NewPatientData> alsPatients;
     //List<NewPatientData> blsPatients;
     List<string> names;
 
     List<PatientToLoadButton> patientButtons;
-
-    bool isShowingALS; //false = BLS
-    bool isShowingTrauma; //false = Illness
+    public bool isShowingALS; //false = BLS
+    public bool isShowingTrauma; //false = Illness
     /// <summary>
     /// False being BLS - this is 
     /// </summary>
     /// <param name="isALS"></param>
+    ///
+
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
+
+
     public void SetFilterALS(bool isALS)
     {
-        isShowingALS = isALS;
+        if (isALS)
+            isShowingALS = true;
+        else
+            isShowingALS = false;
+
+
     }
+
     public void SetFilterTrauma(bool isTraumatic)
     {
-        isShowingTrauma = isTraumatic;
+        if (isTraumatic)
+            isShowingTrauma = true;
+
+        else
+            isShowingTrauma = false;
+
         //SetUpNamesAsButtons();
     }
 
+
     public void SetUpNamesAsButtons() //called in inspector by the same buttons which perform the ALS/BLS Filtering
+    {
+       
+
+        _photonView.RPC("SetUpNamesAsButtons_RPC", RpcTarget.AllBufferedViaServer, isShowingALS, isShowingTrauma);
+    }
+
+    [PunRPC]
+    public void SetUpNamesAsButtons_RPC(bool isShowingALS , bool isShowingTrauma)
     {
         if (patientButtons == null)
             patientButtons = new List<PatientToLoadButton>();
@@ -44,12 +72,13 @@ public class FilteredPatientsRoster : MonoBehaviour
         //    alsPatients = new List<NewPatientData>(); 
         //if(blsPatients == null)
         //    blsPatients= new List<NewPatientData>();
-        
-        
+
+
         //names = PatientCreator.GetExistingPatientNames(isShowingALS);
         //names = PatientCreator.GetExistingPatientNames(x => x.isALS == isShowingALS);
         names = PatientCreator.GetExistingPatientNames(x => (x.isALS == isShowingALS && x.isTrauma == isShowingTrauma));
-            Debug.Log(names.Count);
+        Debug.Log(names.Count);
+
         if (names == null || names.Count == 0)
         {
             //DESTROY/Hide ALL BUTTONS TBF HIDE
@@ -88,10 +117,7 @@ public class FilteredPatientsRoster : MonoBehaviour
         {
             patientButtons[i].Set(names[i], this);
         }
-
-        
     }
-   
     /// <summary>
     /// Loads patient into the PatientCreator - to edit or use as base for a new patient
     /// </summary>
@@ -106,5 +132,19 @@ public class FilteredPatientsRoster : MonoBehaviour
         PatientCreator.LoadPatient(patientFullName);
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isShowingALS);
+            stream.SendNext(isShowingTrauma);
+        }
+        else
+        {
+            isShowingALS = (bool)stream.ReceiveNext();
+            isShowingTrauma = (bool)stream.ReceiveNext();
+
+        }
+    }
 }
 
