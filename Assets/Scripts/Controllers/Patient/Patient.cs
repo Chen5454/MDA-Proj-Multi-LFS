@@ -63,6 +63,7 @@ public class Patient : MonoBehaviour
     public List<int> AllCrewTreatedThisPatient;
     #endregion
 
+    private GameObject patientLayer;
     #region Model Related
     [Header("Appearance Material")]
     public Material FullyClothedMaterial;
@@ -81,6 +82,8 @@ public class Patient : MonoBehaviour
 
     private void Start()
     {
+        patientLayer = GetComponentInChildren<MakeItAButton>().gameObject;
+        patientLayer.layer = (int)LayerMasks.Default;
         GameManager.Instance.AllPatients.Add(this);
         MonitorWindow = UIManager.Instance.MonitorParent.transform.GetChild(0).GetChild(0).GetComponent<Image>();
 
@@ -107,6 +110,12 @@ public class Patient : MonoBehaviour
         {
             WorldCanvas.SetActive(true);
             NearbyUsers.Add(possiblePlayer);
+            patientLayer.layer = (int)LayerMasks.Interactable;
+
+        }
+        if (other.CompareTag("EmergencyBed"))
+        {
+            patientLayer.layer = (int)LayerMasks.Interactable;
         }
     }
 
@@ -122,7 +131,13 @@ public class Patient : MonoBehaviour
             {
                 WorldCanvas.SetActive(false);
                 NearbyUsers.Remove(possiblePlayer);
+                patientLayer.layer = (int)LayerMasks.Default;
+
             }
+        }
+        if (other.CompareTag("EmergencyBed"))
+        {
+            patientLayer.layer = (int)LayerMasks.Default;
         }
     }
     #endregion

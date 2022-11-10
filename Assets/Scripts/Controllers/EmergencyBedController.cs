@@ -147,12 +147,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (_patient)
         {
             if (IsPatientOnBed)
-                _patient.layer = (int)LayerMasks.Default;
+                _patient.transform.GetChild(0).gameObject.layer = (int)LayerMasks.Default;
             else
-                _patient.layer = (int)LayerMasks.Interactable;
+                _patient.transform.GetChild(0).gameObject.layer = (int)LayerMasks.Interactable;
         }
 
- 
+
 
         FollowPlayer();
       //  InteractiveLayerToggles();
@@ -236,6 +236,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             FollowPlayerToggle();
             _takeReturnText.text = _returnText;
             _photonView.RPC("SynchBedON", RpcTarget.AllBufferedViaServer);
+            transform.Rotate(transform.eulerAngles.x, transform.eulerAngles.y, 0);
 
         }
         else if (!_inCar && _isBedOut)
@@ -254,6 +255,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
             _takeReturnText.text = _takeText;
             _photonView.RPC("SynchBedOFF", RpcTarget.AllBufferedViaServer);
+
 
         }
     }
@@ -338,6 +340,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         else if (_patient != null && IsPatientOnBed && !_inCar)
         {
             _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer, _patient.GetComponent<PhotonView>().ViewID);
+            _patient.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int) LayerMasks.Default;
         }
     }
 
@@ -378,8 +381,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonView currentPatientView = GameManager.Instance.GetPatientPhotonViewByIDView(ID);
 
-
-        currentPatientView.gameObject.layer = (int)LayerMasks.Default;
+        currentPatientView.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int)LayerMasks.Default;
         currentPatientView.GetComponent<BoxCollider>().enabled = false;
         currentPatientView.transform.SetPositionAndRotation(_patientPosOnBed.position, _patientPosOnBed.rotation); // parent
         currentPatientView.transform.SetParent(_patientPosOnBed);// parent
@@ -393,7 +395,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     {
         PhotonView currentPatientView = GameManager.Instance.GetPatientPhotonViewByIDView(ID);
 
-        currentPatientView.gameObject.layer = (int)LayerMasks.Interactable;
+        currentPatientView.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int)LayerMasks.Interactable;
         currentPatientView.GetComponent<BoxCollider>().enabled = true;
         currentPatientView.transform.position = _patientPosOffBed.position;// parent
         currentPatientView.transform.SetParent(null);// parent
