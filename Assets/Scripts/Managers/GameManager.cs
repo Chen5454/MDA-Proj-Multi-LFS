@@ -231,40 +231,50 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     [PunRPC]
     public void UpdatePinuyList_RPC()
     {
-        foreach (PhotonView car in AmbulanceCarList)
+        if (AmbulanceCarList.Count != 0)
         {
-            if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+            foreach (PhotonView car in AmbulanceCarList)
             {
-                AmbulanceFreeCarList.Remove(car);
+                if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                {
+                    AmbulanceFreeCarList.Remove(car);
 
-                if (!AmbulanceInPinuyCarList.Contains(car))
-                    AmbulanceInPinuyCarList.Add(car);
-            }
-            else
-            {
-                AmbulanceInPinuyCarList.Remove(car);
+                    if (!AmbulanceInPinuyCarList.Contains(car))
+                        AmbulanceInPinuyCarList.Add(car);
+                }
+                else
+                {
+                    AmbulanceInPinuyCarList.Remove(car);
 
-                if (!AmbulanceFreeCarList.Contains(car))
-                    AmbulanceFreeCarList.Add(car);
+                    if (!AmbulanceFreeCarList.Contains(car))
+                        AmbulanceFreeCarList.Add(car);
+                }
             }
         }
-        foreach (PhotonView car in NatanCarList)
+
+        if (NatanCarList.Count != 0)
         {
-            if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+            foreach (PhotonView car in NatanCarList)
             {
-                NatanFreeCarList.Remove(car);
+                if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                {
+                    NatanFreeCarList.Remove(car);
 
-                if (!NatanInPinuyCarList.Contains(car))
-                    NatanInPinuyCarList.Add(car);
-            }
-            else
-            {
-                NatanInPinuyCarList.Remove(car);
+                    if (!NatanInPinuyCarList.Contains(car))
+                        NatanInPinuyCarList.Add(car);
+                }
+                else
+                {
+                    NatanInPinuyCarList.Remove(car);
 
-                if (!NatanFreeCarList.Contains(car))
-                    NatanFreeCarList.Add(car);
+                    if (!NatanFreeCarList.Contains(car))
+                        NatanFreeCarList.Add(car);
+                }
             }
         }
+
+
+        
     }
 
     [PunRPC]

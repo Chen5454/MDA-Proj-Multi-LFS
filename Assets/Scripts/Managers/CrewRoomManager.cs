@@ -34,7 +34,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [SerializeField] private Button _startSimulationBtn;
     [SerializeField] private TextMeshProUGUI _startSimulationTMP;
     [SerializeField] private TMP_InputField _apartmentNumber;
-    [SerializeField] private string _noSimulationText, _startSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
+    [SerializeField] private string _noSimulationText, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
     [SerializeField] private FilteredPatientsRoster _filterredRoaster;
 
@@ -331,19 +331,28 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     }
     public void StartIncident()
     {
-        if (_isRandomIncident)
+        if (!GameManager.Instance.IsAranActive)
         {
-            StartRandomIncident();
-            _isRandomIncident = false;
-            _startSimulationBtn.interactable = false;
-            _startSimulationTMP.text = _noSimulationText;
+            if (_isRandomIncident)
+            {
+                StartRandomIncident();
+                _isRandomIncident = false;
+                _startSimulationBtn.interactable = false;
+                _startSimulationTMP.text = _noSimulationText;
+            }
+            else
+            {
+                StartIncidentInRandomLocation();
+                _startSimulationBtn.interactable = false;
+                _startSimulationTMP.text = _noSimulationText;
+            }
         }
         else
         {
-            StartIncidentInRandomLocation();
             _startSimulationBtn.interactable = false;
             _startSimulationTMP.text = _noSimulationText;
         }
+        
     }
 
     public void SetRandomIncident()
@@ -448,7 +457,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
         
     }
-
+    public void ActivateAranBehaviour(bool isAranActive)
+    {
+        _photonView.RPC("CheckAranBehaviourRPC", RpcTarget.AllBufferedViaServer, isAranActive);
+    }
 
     // PUN RPC Methods
     // --------------------
@@ -644,6 +656,14 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private void RemoveSimulationPanelUI_RPC()
     {
         _chooseSimulationPanel.gameObject.SetActive(false);
+    }
+    [PunRPC]
+    private void CheckAranBehaviourRPC(bool isAranActive)
+    {
+        if (!isAranActive)
+            ShowOverlayUI();
+        else
+            SetStartIncidentBtn();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
