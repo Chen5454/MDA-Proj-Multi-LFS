@@ -169,7 +169,7 @@ public class NavigationManager : MonoBehaviour
     {
         if (!_reachedDestination)
         {
-            if (_playerController)
+            if (_playerController && _playerController.CurrentVehicleController)
                 _playerController.CurrentVehicleController.IsBusy  = true;
 
             _lineRenderer.enabled = true;
