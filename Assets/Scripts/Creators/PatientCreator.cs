@@ -14,18 +14,26 @@ namespace PatientCreationSpace
 
 #if UNITY_EDITOR
         public static readonly string streamingAssets_PatientFolderPath = "Assets/StreamingAssets/Patients/";
+        public static readonly string streamingAssets_ARAN_PatientFolderPath = "Assets/StreamingAssets/AranPatients/"; //Maybe there should be folders of AranPatient sets ? TBF
 #else
         public static readonly string streamingAssets_PatientFolderPath = $"{Application.streamingAssetsPath}/Patients/";
+        public static readonly string streamingAssets_ARAN_PatientFolderPath = $"{Application.streamingAssetsPath}/AranPatients/";//Maybe there should be folders of AranPatient sets ? TBF
 #endif
 
         //public static string patientID => newPatient.Id;
         //public static Patient currentPatient;
-        public static NewPatientData newPatient;
+        public static NewPatientData newPatient; //TBF newPatient shouldn't really be accessible like this
+        public static List<NewPatientData> AranListToLoad;
 
 
         public static System.Action OnLoadPatient;
         public static System.Action OnPatientClear;
 
+
+        public static void SetAranList(List<NewPatientData> aranList)
+        {
+            AranListToLoad = aranList;
+        }
 
 
         /// <summary>
@@ -40,11 +48,11 @@ namespace PatientCreationSpace
             OnPatientClear?.Invoke();
             return wasCleared;
         }
-        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, bool isAls, bool trauma)
+        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
         {
-            newPatient = new NewPatientData();
+            newPatient = new NewPatientData(); 
 
-            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, adress, complaint, measurements, isAls, trauma);
+            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, adress, complaint, measurements,room,  isAls, trauma);
 
             //create file already?
 

@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace PatientCreationSpace
 {
-
-    //public enum DestinationRoom { CT, Maternity, Bypass_ALS, Bypass_BLS };
+   
 
     /// <summary>
     /// Basically the record of treatment.

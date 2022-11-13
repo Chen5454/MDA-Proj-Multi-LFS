@@ -17,6 +17,9 @@ public class NewPatientData
     public string Gender;
     public string PhoneNumber;
     public string MedicalCompany, AddressLocation, Complaint;
+
+    public DestinationRoom _DestinationRoom;
+
     /// <summary>
     /// true = ALS | false = BLS
     /// </summary>
@@ -40,7 +43,7 @@ public class NewPatientData
 
     public NewPatientData() { }
 
-    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, bool isAls, bool trauma)
+    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
     {
         Name = name;
         SureName = sureName;
@@ -53,6 +56,9 @@ public class NewPatientData
         Complaint = complaint;
         _patientMeasurement = new PatientMeasurements();
         _patientMeasurement.Initialize(measurements);
+
+        _DestinationRoom = room;
+
         isALS = isAls;
         isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();

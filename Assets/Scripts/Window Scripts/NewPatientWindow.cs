@@ -25,7 +25,9 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField MedicalCompany, AddressLocation, Complaint;
 
-        
+        [SerializeField]
+        TMP_Dropdown DestinationDropdown;
+
         [SerializeField]
         //UnityEngine.UI.Toggle IsALS;
         ToggleButton IsALS;
@@ -150,7 +152,7 @@ namespace PatientCreationSpace
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
             newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
-                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
+                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, (DestinationRoom)DestinationDropdown.value, IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);
