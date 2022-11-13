@@ -20,6 +20,9 @@ public class NewPatientData
 
     public DestinationRoom _DestinationRoom;
 
+    public string GetSaveFileName => $"{Name}_{SureName}.txt";
+    public string GetTreatmentSequenceSaveFileName => $"{Name}_{SureName}_treatmentSequence.txt";
+
     /// <summary>
     /// true = ALS | false = BLS
     /// </summary>
