@@ -236,7 +236,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
             if (GameManager.Instance.AllPatients[i].PhotonView.ViewID == patientViewID)
             {
                 Debug.Log("Attempting leave patient");
-                CurrentPatientNearby.TreatingUsers.Remove(this);
+                GameManager.Instance.AllPatients[i].TreatingUsers.Remove(this);
                 Debug.Log("Left Patient Succesfully");
                 break;
             }
