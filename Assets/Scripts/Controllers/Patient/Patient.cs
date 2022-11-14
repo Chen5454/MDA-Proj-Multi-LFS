@@ -41,6 +41,7 @@ public class Patient : MonoBehaviour
     public List<GameObject> KidPropList;
     public List<GameObject> PropList;
     public List<GameObject> OldPropList;
+    public Collider PatientModelCollider;
 
     [Header("Bandages")]
     public bool UseTourniquet = false;

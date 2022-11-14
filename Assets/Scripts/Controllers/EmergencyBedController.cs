@@ -19,6 +19,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     [Header("Player & Patient")]
     [SerializeField] private GameObject _patient;
+    private Patient _patientScript;
     [SerializeField] public GameObject _player;
 
     [Header("Emergency Bed States")]
@@ -105,6 +106,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             if (!IsPatientOnBed)
             {
                 _patient = other.gameObject;
+                _patientScript = _patient.GetComponent<Patient>();
             }
         }
 
@@ -441,18 +443,50 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (shouldBeInCar && !shouldBeOut && !shouldFollowPlayer)
         {
             transform.SetParent(_emergencyBedPositionInsideVehicle);
+
+            if (_patientScript)
+            {
+
+                DisablePatientInteractions(false);
+            }
         }
         else if (!shouldBeInCar && shouldBeOut && !shouldFollowPlayer)
         {
             gameObject.transform.SetParent(_emergencyBedPositionOutsideVehicle);
+
+            if (_patientScript)
+            {
+
+                DisablePatientInteractions(false);
+            }
         }
         else if (!shouldBeInCar && !shouldBeOut && !shouldFollowPlayer)
         {
             gameObject.transform.SetParent(null);
+
+            if (_patientScript)
+            {
+
+                DisablePatientInteractions(true);
+            }
         }
         else if (!shouldBeInCar && shouldBeOut && shouldFollowPlayer)
         {
             gameObject.transform.SetParent(currentPlayerView.transform);
+
+            if (_patientScript)
+            {
+
+                DisablePatientInteractions(false);
+            }
         }
+    }
+
+    private void DisablePatientInteractions(bool shouldDisable)
+    {
+        _patientScript.PatientModelCollider.enabled = shouldDisable;
+
+        if (!shouldDisable)
+            _patientScript.WorldCanvas.SetActive(false);
     }
 }

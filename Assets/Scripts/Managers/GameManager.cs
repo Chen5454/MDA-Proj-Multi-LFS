@@ -235,20 +235,24 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         {
             foreach (PhotonView car in AmbulanceCarList)
             {
-                if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                if (car.GetComponent<CarControllerSimple>())
                 {
-                    AmbulanceFreeCarList.Remove(car);
+                    if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                    {
+                        AmbulanceFreeCarList.Remove(car);
 
-                    if (!AmbulanceInPinuyCarList.Contains(car))
-                        AmbulanceInPinuyCarList.Add(car);
-                }
-                else
-                {
-                    AmbulanceInPinuyCarList.Remove(car);
+                        if (!AmbulanceInPinuyCarList.Contains(car))
+                            AmbulanceInPinuyCarList.Add(car);
+                    }
+                    else
+                    {
+                        AmbulanceInPinuyCarList.Remove(car);
 
-                    if (!AmbulanceFreeCarList.Contains(car))
-                        AmbulanceFreeCarList.Add(car);
+                        if (!AmbulanceFreeCarList.Contains(car))
+                            AmbulanceFreeCarList.Add(car);
+                    }
                 }
+                
             }
         }
 
