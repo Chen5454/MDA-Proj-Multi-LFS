@@ -151,8 +151,8 @@ namespace PatientCreationSpace
             //string s = System.DateTime.Now.ToString("m-s");
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
-            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1, 3, Gender.text, PhoneNumber.text, //TBF
-                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, (DestinationRoom)DestinationDropdown.value, IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
+            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), Gender.text, PhoneNumber.text, //TBF
+                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);

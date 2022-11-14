@@ -90,8 +90,8 @@ namespace PatientCreationSpace
             sw.Close();
 
 
-            //StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{name}_{sureName}_treatmentSequence.txt");
-            StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{}");
+            StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{name}_{sureName}_treatmentSequence.txt");
+            //StreamWriter sw2 = File.CreateText($"{streamingAssets_PatientFolderPath}{}");
 
             sw2.Write(treatmentSequenceJSON);
             sw2.Close();

@@ -10,10 +10,11 @@ public class NumOrTextFlipper : MonoBehaviour
     TMPro.TMP_InputField inputField;
     private void OnEnable()
     {
-        inputField.onValueChanged.RemoveAllListeners();
 
         if (!inputField)
             inputField = GetComponent<TMPro.TMP_InputField>();
+
+        inputField.onValueChanged.RemoveAllListeners();
         
         inputField.onValueChanged.AddListener(delegate { CheckIfRTL(); });
     }
