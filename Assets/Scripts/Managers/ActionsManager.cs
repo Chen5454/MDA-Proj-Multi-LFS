@@ -135,11 +135,15 @@ public class ActionsManager : MonoBehaviour
 
         for (int i = 0; i < AllPlayersPhotonViews.Count; i++)
         {
+            if (!AllPlayersPhotonViews[i].IsMine)
+                continue;
+
             PlayerData myPlayerData = AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
 
             if (isJoined)
             {
-                myPlayerData.PhotonView.RPC("OnJoinPatient", RpcTarget.AllBufferedViaServer);
+                //myPlayerData.PhotonView.RPC("OnJoinPatient", RpcTarget.AllBufferedViaServer, myPlayerData.CurrentPatientNearby.PhotonView.ViewID);
+                myPlayerData.CurrentPatientNearby.PhotonView.RPC("AddUserToTreatingLists", RpcTarget.AllBufferedViaServer, myPlayerData.UserName);
                 UIManager.Instance.JoinPatientPopUp.SetActive(false);
                 UIManager.Instance.PatientInfoParent.SetActive(true);
             }
@@ -156,6 +160,9 @@ public class ActionsManager : MonoBehaviour
 
         for (int i = 0; i < AllPlayersPhotonViews.Count; i++)
         {
+            if (!AllPlayersPhotonViews[i].IsMine)
+                continue;
+
             PlayerData myPlayerData = AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
             myPlayerData.PhotonView.RPC("OnLeavePatient", RpcTarget.AllBufferedViaServer);
             UIManager.Instance.CloseAllPatientWindows();

@@ -63,7 +63,6 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
         }
         DontDestroyOnLoad(this.gameObject);
-
     }
 
     private void Start()
