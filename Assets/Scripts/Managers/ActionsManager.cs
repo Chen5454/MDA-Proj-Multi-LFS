@@ -164,7 +164,7 @@ public class ActionsManager : MonoBehaviour
                 continue;
 
             PlayerData myPlayerData = AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
-            myPlayerData.PhotonView.RPC("OnLeavePatient", RpcTarget.AllBufferedViaServer);
+            myPlayerData.PhotonView.RPC("OnLeavePatient", RpcTarget.AllBufferedViaServer, myPlayerData.CurrentPatientNearby.PhotonView.ViewID);
             UIManager.Instance.CloseAllPatientWindows();
         }
     }
