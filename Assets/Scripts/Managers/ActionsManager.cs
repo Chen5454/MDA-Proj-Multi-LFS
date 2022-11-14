@@ -94,6 +94,9 @@ public class ActionsManager : MonoBehaviour
 
                 Debug.Log($"{myPlayerData.UserName} Clicked on: {myPlayerData.CurrentPatientNearby}");
 
+                if (_lastClickedPatient == null)
+                    return;
+
                 if (!myPlayerData.CurrentPatientNearby.IsPlayerJoined(myPlayerData))
                 {
                     Debug.Log($"Attempting Join Patient");
