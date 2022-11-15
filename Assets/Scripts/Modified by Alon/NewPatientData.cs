@@ -66,6 +66,7 @@ public class NewPatientData
         isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();
         FullTreatmentSequence.Init();
+        AnswerSheet = new AnswerSheet();
         AnswerSheet.Set(this);
     }
 
