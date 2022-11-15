@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -266,13 +266,15 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         }
         else
         {
-            PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-
+            GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position,
+                GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
+            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
 
             AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
         }
     }
+    
     private void StartIncidentInRandomLocation()
     {
         List<int> unavailableList = new List<int>();
@@ -315,12 +317,16 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
             //3) Instantiate correct prefab
 
-            GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
+            object[] instantiationData =new object[1];
+            instantiationData[0] = PatientCreationSpace.PatientCreator.newPatient.Name + "_" +
+                                   PatientCreationSpace.PatientCreator.newPatient.SureName;
+
+            GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, 
+                GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
-            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
-
-
+             go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
+            // Debug.Log(PatientCreationSpace.PatientCreator.newPatient);
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
@@ -351,18 +357,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _isRandomIncident = true;
     }
 
-    //public void ChooseIncidents()
-    //{
-    //    if (_isRandomIncident)
-    //    {
-    //        _overlay.SetActive(false);
-    //        _startSimulationBtn.interactable = true;
-    //        _startSimulationTMP.text = _startSimulationText;
-    //        return;
-    //    }
-    //
-    //    _chooseSimulationPanel.SetActive(true);
-    //}
     public void SetStartIncidentBtn()
     {
         _overlay.SetActive(false);

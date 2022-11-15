@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using PatientCreationSpace;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -12,12 +13,25 @@ using Photon.Realtime;
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 {
     #region Photon
     [Header("Photon")]
     public PhotonView PhotonView;
+
+    public string PatientFullName;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        PatientFullName = instantiationData[0].ToString();
+        Debug.Log("Patient name is " + instantiationData[0]);
+        PatientCreator.LoadPatient(PatientFullName);
+        InitializePatientData(PatientCreator.newPatient);
+        //Debug.Log(PatientFullName);
+    }
     #endregion
+
 
     #region Script References
     [Header("Data & Scripts")]
@@ -269,6 +283,7 @@ public class Patient : MonoBehaviour
     [PunRPC]
     public void UpdatePatientInfoDisplay()
     {
+
         UIManager.Instance.SureName.text = NewPatientData.Name;
         UIManager.Instance.LastName.text = NewPatientData.SureName;
         UIManager.Instance.Gender.text = NewPatientData.Gender;
@@ -282,6 +297,7 @@ public class Patient : MonoBehaviour
 
         UIManager.Instance.StatsPanel.SetMe(NewPatientData);
         UIManager.Instance.QuestionPanel.SetMe(NewPatientData);
+
     }
 
     [PunRPC]
@@ -456,5 +472,7 @@ public class Patient : MonoBehaviour
     {
         UrgentEvacuationCanvas.SetActive(true);
     }
+
+
     #endregion
 }
