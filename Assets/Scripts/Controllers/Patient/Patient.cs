@@ -8,11 +8,12 @@ using UnityEngine.EventSystems;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using PatientCreationSpace;
 
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 {
     #region Photon
     [Header("Photon")]
@@ -26,6 +27,8 @@ public class Patient : MonoBehaviour
     public List<ActionSequence> ActionSequences;
     public SmoothSyncMovement SmoothMovement;
     #endregion
+
+    public string PatientFullName;
 
     #region UI
     [Header("UI - by UI Manager")]
@@ -458,4 +461,14 @@ public class Patient : MonoBehaviour
         UrgentEvacuationCanvas.SetActive(true);
     }
     #endregion
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        PatientFullName = instantiationData[0].ToString();
+        Debug.Log("Patient name is " + instantiationData[0]);
+        PatientCreator.LoadPatient(PatientFullName);
+        InitializePatientData(PatientCreator.newPatient);
+        //Debug.Log(PatientFullName);
+    }
 }
