@@ -12,17 +12,16 @@ namespace PatientCreationSpace
         UnityEngine.UI.Toggle doClose;
         [SerializeField]
         TMP_Dropdown dropdown;
-
         [SerializeField]
         TMP_InputField searchText;
-        //[SerializeField]
-        //TMP_InputField TEMP_patientData; //Look below.
+
+        [SerializeField]
+        TMP_Dropdown measurementToReveal;
 
         [SerializeField]
         List<TMP_InputField> measurementInputFields;
         [SerializeField]
         TMP_InputField dosageInputField;
-        //List<TMP_Text> measurementInputFields;
 
         //PatientMeasurementInput TBF!
         //^^^ much like a displayer, this component will provide string input fields, corresponding to the parameters of patientMeasurementData.
@@ -44,9 +43,13 @@ namespace PatientCreationSpace
                 Debug.LogError("Test database not found!");
                 return;
             }
-
             RefreshDropdownMedicine();
             base.OnEnable();
+        }
+        private void Start()
+        {
+            measurementToReveal.ClearOptions();
+            measurementToReveal.AddOptions(System.Enum.GetNames(typeof(Measurements)).ToList());
         }
         public override void OnDisable()
         {
@@ -55,7 +58,9 @@ namespace PatientCreationSpace
             foreach (var item in measurementInputFields)
             {
                 item.text = "";
+                item.gameObject.SetActive(false);
             }
+            measurementToReveal.value = 0; 
             base.OnDisable();
         }
         public void RefreshDropdownMedicine()
@@ -81,8 +86,6 @@ namespace PatientCreationSpace
                 dropdown.AddOptions(strings);
             else
                 dropdown.AddOptions(databases.medicineDB.GetListOfTreatmentNames());
-
-
 
          
             dropdown.RefreshShownValue();
@@ -119,6 +122,10 @@ namespace PatientCreationSpace
             {
                 gameObject.SetActive(false);
             }
+        }
+        public void RevealMeasurement()
+        {
+            measurementInputFields[measurementToReveal.value].gameObject.SetActive(true);
         }
 
     }

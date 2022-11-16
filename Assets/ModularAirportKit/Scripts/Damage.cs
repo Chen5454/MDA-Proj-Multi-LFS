@@ -14,12 +14,14 @@ public class Damage : MonoBehaviour
 	private MeshFilter[] meshfilters;
 	private float sqrDemRange;
 
-	public void Start()
+    private void Awake()
+    {
+        Destroy(this);
+    }
+
+    public void Start()
 	{
-     
-       
-        
-        if(optionalMeshList.Length>0)
+        if (optionalMeshList.Length>0)
         	meshfilters = optionalMeshList;
         else
         	meshfilters = GetComponentsInChildren<MeshFilter>();
