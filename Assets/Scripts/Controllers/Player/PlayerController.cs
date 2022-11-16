@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #endregion
 
     #region Animations
-   // [Header("Animation")]
+    // [Header("Animation")]
     //[SerializeField] private Animator _playerAnimator;
 
     private PlayerAnimationManager _anim;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Controllers Behaviours
     [Header("Controllers")]
     [SerializeField] public CharacterController _characterController;
-    
+
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
 
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
-      //  PlayerData.IsInstructor = false;
+        //  PlayerData.IsInstructor = false;
 
         if (VivoxManager.Instance.Lobby.ConnectAsInstructor.isOn && photonView.IsMine)
         {
@@ -147,6 +147,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (_photonView.IsMine)
         {
             _stateAction.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            CrewLeaderResetIncident();
         }
     }
     #endregion
@@ -194,7 +199,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
     #endregion
-    
+
     #region States
     //private void UseFirstPersonIdleState()
     //{
@@ -291,7 +296,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-           //Debug.Log("Current State: Idle");
+            //Debug.Log("Current State: Idle");
             _anim.IdleStateAnimation();
 
             GetInputAxis();
@@ -334,7 +339,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (_photonView.IsMine)
         {
-           // Debug.Log("Current State: Walking");
+            // Debug.Log("Current State: Walking");
 
             GetInputAxis();
 
@@ -465,12 +470,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 _stateAction = UseTankIdleState;
                 return;
             }
-         
+
 
             if (Input.GetKey(KeyCode.F))
             {
                 Transform vehicleTransform = transform.parent.parent.parent;
-                
+
                 vehicleTransform.rotation = Quaternion.Lerp(vehicleTransform.rotation, new Quaternion(0, vehicleTransform.rotation.y, 0, vehicleTransform.rotation.w), 0.1f);
             }
 
@@ -512,6 +517,31 @@ public class PlayerController : MonoBehaviourPunCallbacks
             RotateBodyWithMouse();
         }
     }
+
+
+    public void CrewLeaderResetIncident()
+    {
+        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.AmbulanceCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                PhotonNetwork.Destroy(desiredCar.gameObject);
+            }
+        }
+        for (int i = 0; i < GameManager.Instance.NatanCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.NatanCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                PhotonNetwork.Destroy(desiredCar.gameObject);
+            }
+        }
+    }
+
+
     #endregion
 
     #region Private Methods
@@ -522,7 +552,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void UseTankMovement()
     {
         Vector3 moveDirerction;
-         actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
+        actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
         moveDirerction = actualSpeed * _input.y * transform.forward;
         _anim.MoveStateAnimation();
         // moves the character in diagonal direction

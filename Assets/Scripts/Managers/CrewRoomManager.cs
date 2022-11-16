@@ -216,11 +216,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         {
             AlertStartAll(_errorTitle, _errorFullString);
         }
-        
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
             //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
-            if(PatientCreationSpace.PatientCreator.newPatient == null)
+            if (PatientCreationSpace.PatientCreator.newPatient == null)
             {
                 Debug.LogError("no patient loaded!");
                 return;
@@ -234,7 +233,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
-            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient); 
+            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
 
 
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
@@ -359,7 +358,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             _startSimulationBtn.interactable = false;
             _startSimulationTMP.text = _noSimulationText;
         }
-        
+
     }
 
     public void SetRandomIncident()
@@ -447,22 +446,22 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public void ShowOverlayUI()
     {
 
-        _photonView.RPC("ShowOverlayUI_RPC",RpcTarget.AllBufferedViaServer);
+        _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void RemoveOverlayUI()
     {
         _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
-        
+
     }
     public void ShowSimulationPanelUI()
     {
         _photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
-        
+
     }
     public void RemoveShowSimulationPanelUI()
     {
         _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
-        
+
     }
     public void ActivateAranBehaviour(bool isAranActive)
     {
@@ -477,7 +476,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     {
         PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
 
- 
+
         if (currentPlayerView == null)
         {
             Debug.LogError("CurrentPlayer is Null");
@@ -497,7 +496,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             }
         }
         //BlockRoomAccess();
-       // Debug.LogError("Added to room");
+        // Debug.LogError("Added to room");
 
     }
 
@@ -565,19 +564,20 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     void SpawnVehicle_RPC()
     {
         VehicleChecker currentPosVehicleChecker = ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].GetComponent<VehicleChecker>();
-
+        object[] crewRoom = new object[1];
+        crewRoom[0] = _crewRoomIndex;
         if (!currentPosVehicleChecker.IsPosOccupied)
         {
             if (_isNatanRequired)
             {
-                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation);
+                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
             }
             else
             {
-                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation);
+                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
             }
             /* GameObject natan = */
-            
+
             // natan.GetComponent<CarControllerSimple>().OwnerCrew = _crewRoomIndex;
         }
     }
@@ -605,7 +605,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             if (playerNickName == memberName.text)
             {
                 memberName.text = _waitMemberText;
-               // break;
+                // break;
             }
         }
     }
@@ -685,7 +685,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
                 stream.SendNext(dropdown.value);
             }
 
- 
+
         }
         else
         {
@@ -695,7 +695,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
-      
+
 
         }
     }
