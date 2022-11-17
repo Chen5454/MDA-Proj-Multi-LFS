@@ -125,7 +125,7 @@ namespace PatientCreationSpace
         }
         public void RevealMeasurement()
         {
-            measurementInputFields[measurementToReveal.value].transform.parent.gameObject.SetActive(true); //Turns on the whole title and field
+            measurementInputFields[measurementToReveal.value].transform.parent.gameObject.SetActive(true); //Turns on the whole title and field 
         }
 
     }
