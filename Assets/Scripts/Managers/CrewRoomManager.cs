@@ -167,20 +167,21 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         return leaderIndex;
     }
 
-    //public Player GetCrewLeader()
-    //{
-    //    foreach (var leaderPhoton in _playersInRoomList)
-    //    {
-    //        if (CrewLeaderDropDown.GetComponentInChildren<TextMeshProUGUI>().text == leaderPhoton.Owner.NickName)
-    //        {
-    //            Debug.Log("Returned Leader Owner : " + leaderPhoton.Owner);
-    //            return leaderPhoton.GetComponent<PlayerData>().PhotonView.Owner;
-    //        }
-    //    }
-    //    Debug.Log("No Crew Leader Owner Returned" );
+    public Player GetCrewLeader()
+    {
+        for (int i = 0; i < _playersInRoomList.Count; i++)
+        {
+            if (CrewLeaderDropDown.GetComponentInChildren<TextMeshProUGUI>().text == _playersInRoomList[i].Owner.NickName)
+            {
+                Debug.Log("Returned Leader Owner : " + _playersInRoomList[i].Owner);
+                return _playersInRoomList[i].GetComponent<PlayerData>().PhotonView.Owner;
+            }
+        }
+        Debug.Log("No Crew Leader Owner Returned");
 
-    //    return null;
-    //}
+        return null;
+    }
+
     // Show Hide MenuUI
     // --------------------
     public void ShowCrewRoomMenu()
@@ -250,7 +251,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             //4) Set this patients data to the NewPatientData to be spawned
             go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
             //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
-
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
 
@@ -342,6 +342,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             // Debug.Log(PatientCreationSpace.PatientCreator.newPatient);
             go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
 
+            go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
@@ -595,12 +596,13 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         {
             if (_isNatanRequired)
             {
-                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
-
+               var go = PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+                go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
             }
             else
             {
-             PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+              var go =  PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+              go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
 
             }
 
