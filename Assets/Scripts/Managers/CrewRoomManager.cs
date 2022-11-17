@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using Random = UnityEngine.Random;
 
@@ -166,6 +167,20 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         return leaderIndex;
     }
 
+    //public Player GetCrewLeader()
+    //{
+    //    foreach (var leaderPhoton in _playersInRoomList)
+    //    {
+    //        if (CrewLeaderDropDown.GetComponentInChildren<TextMeshProUGUI>().text == leaderPhoton.Owner.NickName)
+    //        {
+    //            Debug.Log("Returned Leader Owner : " + leaderPhoton.Owner);
+    //            return leaderPhoton.GetComponent<PlayerData>().PhotonView.Owner;
+    //        }
+    //    }
+    //    Debug.Log("No Crew Leader Owner Returned" );
+
+    //    return null;
+    //}
     // Show Hide MenuUI
     // --------------------
     public void ShowCrewRoomMenu()
@@ -234,10 +249,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
             go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
-
+            //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
+
         }
         else
         {
@@ -392,10 +408,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
     }
 
-    public void SpawnVehicle()
-    {
-        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
-    }
+    //public void SpawnVehicle()
+    //{
+    //    _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
+    //}
 
     private void SetVest(Roles role)
     {
@@ -552,16 +568,25 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         foreach (PhotonView player in _playersInRoomList)
         {
             player.GetComponent<PlayerData>().IsCrewLeader = false;
+            UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
         }
 
         PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
         leaderToBe.IsCrewLeader = true;
+        if (leaderToBe.IsCrewLeader)
+        {
+            if (leaderToBe.photonView.IsMine)
+            {
+                UIManager.Instance.ResetCrewRoom.gameObject.SetActive(true);
+
+            }
+        }
 
         ActionsManager.Instance.NextCrewIndex++;
     }
 
-    [PunRPC]
-    void SpawnVehicle_RPC()
+   
+    void SpawnVehicle()
     {
         VehicleChecker currentPosVehicleChecker = ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].GetComponent<VehicleChecker>();
         object[] crewRoom = new object[1];
@@ -571,14 +596,14 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             if (_isNatanRequired)
             {
                 PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+
             }
             else
             {
-                PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
-            }
-            /* GameObject natan = */
+             PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
 
-            // natan.GetComponent<CarControllerSimple>().OwnerCrew = _crewRoomIndex;
+            }
+
         }
     }
 
@@ -684,7 +709,10 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 stream.SendNext(dropdown.value);
             }
+            stream.SendNext(_crewRoomIndex);
+            stream.SendNext(_isNatanRequired);
 
+            
 
         }
         else
@@ -695,6 +723,8 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
+            _crewRoomIndex = (int)stream.ReceiveNext();
+            _isNatanRequired = (bool)stream.ReceiveNext();
 
 
         }

@@ -126,6 +126,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
+
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -147,11 +149,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (_photonView.IsMine)
         {
             _stateAction.Invoke();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            CrewLeaderResetIncident();
         }
     }
     #endregion
@@ -537,6 +534,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
             if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
             {
                 PhotonNetwork.Destroy(desiredCar.gameObject);
+            }
+        }
+        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        {
+            Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
+
+            if (desiredPatient.PhotonView.CreatorActorNr == photonView.CreatorActorNr)
+            {
+                PhotonNetwork.Destroy(desiredPatient.gameObject);
             }
         }
     }
