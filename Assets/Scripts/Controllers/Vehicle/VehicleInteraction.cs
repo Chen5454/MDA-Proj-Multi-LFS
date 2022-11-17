@@ -304,6 +304,11 @@ public class VehicleInteraction : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        ExitVehicle();
+    }
+
     #region OnClick Events
     public void OpenCloseBackDoor()
     {
