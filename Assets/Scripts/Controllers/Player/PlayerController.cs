@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 {
     #region Photon
     [Header("Photon")]
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private float _flyUpwardsSpeed = 9f;
     private float _stateSpeed;
 
-    private bool _isInVehicle;
+    public bool _isInVehicle;
     public bool IsInVehicle { get => _isInVehicle; set => _isInVehicle = value; }
 
     private bool _isDriving;
@@ -110,6 +110,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     #region Monobehaviour Callbacks
     private void Awake()
     {
+        UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
+
         _anim = GetComponent<PlayerAnimationManager>();
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
-        UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
+
 
         if (_photonView.IsMine)
         {
@@ -134,6 +136,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             _stateAction = UseTankIdleState;
             _MiniMaCamera.SetActive(true);
             _characterController.enabled = true;
+
+
         }
         else
         {
@@ -518,35 +522,115 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public void CrewLeaderResetIncident()
     {
-        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
-        {
-            VehicleController desiredCar = GameManager.Instance.AmbulanceCarList[i].GetComponent<VehicleController>();
+        _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
+        photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
-            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+    }
+
+
+    [PunRPC]
+    public void CrewLeaderResetIncident_RPC()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (desiredPlayer.IsInVehicle)
             {
-                PhotonNetwork.Destroy(desiredCar.gameObject);
+                desiredPlayer.CurrentVehicleController.GetComponent<VehicleInteraction>().ExitVehicle();
             }
         }
-        for (int i = 0; i < GameManager.Instance.NatanCarList.Count; i++)
-        {
-            VehicleController desiredCar = GameManager.Instance.NatanCarList[i].GetComponent<VehicleController>();
 
-            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
-            {
-                PhotonNetwork.Destroy(desiredCar.gameObject);
-            }
-        }
         for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
         {
             Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
 
             if (desiredPatient.PhotonView.CreatorActorNr == photonView.CreatorActorNr)
             {
-                PhotonNetwork.Destroy(desiredPatient.gameObject);
+                Destroy(desiredPatient.gameObject);
             }
         }
     }
 
+
+    public int  GetCarPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.AmbulanceCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                 int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
+                Debug.Log(carIndex);
+                return carIndex;
+            }
+        }
+
+
+        for (int i = 0; i < GameManager.Instance.NatanCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.NatanCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
+                Debug.Log(carIndex);
+                return carIndex;
+            }
+        }
+
+        Debug.Log("Return nothing");
+        return 0;
+    }
+
+
+    public Player GetCarOwner()
+    {
+        for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.AmbulanceCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                Player carIndex = desiredCar.GetComponent<PhotonView>().Controller;
+                return carIndex;
+            }
+        }
+
+
+        for (int i = 0; i < GameManager.Instance.NatanCarList.Count; i++)
+        {
+            VehicleController desiredCar = GameManager.Instance.NatanCarList[i].GetComponent<VehicleController>();
+
+            if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
+            {
+                Player carIndex = desiredCar.GetComponent<PhotonView>().Controller;
+                return carIndex;
+            }
+        }
+        return null;
+    }
+
+    [PunRPC]
+    public void FindPlayerOwner(int carIndex)
+    {
+        GameObject go = PhotonNetwork.GetPhotonView(carIndex).gameObject;
+        var goPhotonview = go.GetComponent<PhotonView>().Owner;
+
+
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
+
+            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
+            {
+                PhotonNetwork.Destroy(go);
+            }
+        }
+
+  
+    }
 
     #endregion
 
@@ -684,6 +768,33 @@ public class PlayerController : MonoBehaviourPunCallbacks
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(_groundCheckTransform.position, _groundCheckRadius);
         }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            //  stream.SendNext(transform.position);
+            stream.SendNext(_isInVehicle);
+            stream.SendNext(_isDriving);
+            stream.SendNext(_isPassanger);
+            stream.SendNext(_isMiddleSit);
+            stream.SendNext(_isLeftBackSit);
+            stream.SendNext(_isRightBackSit);
+   
+        }
+        else
+        {
+            // transform.position = (Vector3)stream.ReceiveNext();
+            _isInVehicle = (bool)stream.ReceiveNext();
+            _isDriving = (bool)stream.ReceiveNext();
+            _isPassanger = (bool)stream.ReceiveNext();
+            _isMiddleSit = (bool)stream.ReceiveNext();
+            _isLeftBackSit = (bool)stream.ReceiveNext();
+            _isRightBackSit = (bool)stream.ReceiveNext();
+          
+        }
+
     }
     #endregion
 

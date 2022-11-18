@@ -90,6 +90,7 @@ public class VehicleInteraction : MonoBehaviour
                         {
                             UIManager.Instance.VehicleDriverUI.SetActive(true);
                             _vehicleController.Transfer.CarDriver();
+                       
                             //playerController.CurrentVehicleController = _vehicleController;
                             playerController.IsInVehicle = true;
                             playerController.IsDriving = true;
@@ -196,6 +197,7 @@ public class VehicleInteraction : MonoBehaviour
             door.layer = (int)LayerMasks.Default;
         }
     }
+
     public void ExitVehicle()
     {
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -267,7 +269,7 @@ public class VehicleInteraction : MonoBehaviour
 
                 _vehicleController.PhotonView.RPC("ChangeSit", RpcTarget.All, i, 0, false);
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
-                DontDestroyOnLoad(photonView.gameObject);
+               // DontDestroyOnLoad(photonView.gameObject);
                 break;
             }
         }
@@ -304,10 +306,6 @@ public class VehicleInteraction : MonoBehaviour
         }
     }
 
-    void OnDestroy()
-    {
-        ExitVehicle();
-    }
 
     #region OnClick Events
     public void OpenCloseBackDoor()
