@@ -152,15 +152,13 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     [PunRPC]
     private void UpdateVehicleListsRPC()
     {
-        //_ambulanceList.Clear();
+        _ambulanceList.Clear();
         _natanList.Clear();
 
-        /* Ambulance Clear gameObjects
-         * for (int i = 0; i < _ambulanceListContent.childCount; i++)
-         * {
-         *     Destroy(_ambulanceListContent.GetChild(i).gameObject);
-         * }
-         */
+        for (int i = 0; i < _ambulanceListContent.childCount; i++)
+        {
+            Destroy(_ambulanceListContent.GetChild(i).gameObject);
+        }
 
         for (int i = 0; i < _natanListContent.childCount; i++)
         {
@@ -171,45 +169,43 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         _ambulanceList.AddRange(GameManager.Instance.AmbulanceCarList);
         _natanList.AddRange(GameManager.Instance.NatanCarList);
 
-        /* Ambulance Logic
-         * for (int i = 0; i < _ambulanceList.Count; i++)
-         * {
-         *     GameObject vehicleListRow = Instantiate(_vehicleListRow, _amb
-         *     Transform vehicleListRowTr = vehicleListRow.transform;
-         *     PhotonView ambulance = _natanList[i];
-         *     CarControllerSimple ambulanceController = ambulance.GetCompon
-         * 
-         *     string name = ambulanceController.RandomName;
-         *     int num = ambulanceController.RandomNumber;
-         * 
-         *     vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().
-         * 
-         *     if (ambulanceController.IsInPinuy)
-         *     {
-         *         vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
-         *         vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
-         *     }
-         *     else
-         *     {
-         *         vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
-         *         vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
-         *     }
-         * }
-         */
+        for (int i = 0; i < _ambulanceList.Count; i++)
+        {
+            GameObject vehicleListRow = Instantiate(_vehicleListRow, _ambulanceListContent);
+            Transform vehicleListRowTr = vehicleListRow.transform;
+            PhotonView ambulance = _ambulanceList[i];
+            VehicleController ambulanceController = ambulance.GetComponent<VehicleController>();
+
+            string name = ambulanceController.RandomName;
+            int num = ambulanceController.RandomNumber;
+
+            vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {num}";
+
+            if (ambulanceController.IsBusy)
+            {
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
+            }
+            else
+            {
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
+            }
+        }
 
         for (int i = 0; i < _natanList.Count; i++)
         {
             GameObject vehicleListRow = Instantiate(_vehicleListRow, _natanListContent);
             Transform vehicleListRowTr = vehicleListRow.transform;
             PhotonView natan = _natanList[i];
-            CarControllerSimple natanController = natan.GetComponent<CarControllerSimple>();
+            VehicleController natanController = natan.GetComponent<VehicleController>();
 
             string name = natanController.RandomName;
             int num = natanController.RandomNumber;
 
             vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {num}";
 
-            if (natanController.IsInPinuy)
+            if (natanController.IsBusy)
             {
                 vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
                 vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
