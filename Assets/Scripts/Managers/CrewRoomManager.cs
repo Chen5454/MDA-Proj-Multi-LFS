@@ -596,12 +596,12 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         {
             if (_isNatanRequired)
             {
-               var go = PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+               var go = PhotonNetwork.Instantiate(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
                 go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
             }
             else
             {
-              var go =  PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
+              var go = PhotonNetwork.Instantiate(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[_crewRoomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation,0, crewRoom);
               go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
 
             }
