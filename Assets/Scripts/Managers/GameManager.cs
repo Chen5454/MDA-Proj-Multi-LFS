@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
             {
                 if (car.GetComponent<CarControllerSimple>())
                 {
-                    if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                    if (car.GetComponent<VehicleController>().IsBusy)
                     {
                         AmbulanceFreeCarList.Remove(car);
 
@@ -259,7 +259,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         {
             foreach (PhotonView car in NatanCarList)
             {
-                if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+                if (car.GetComponent<VehicleController>().IsBusy)
                 {
                     NatanFreeCarList.Remove(car);
 
