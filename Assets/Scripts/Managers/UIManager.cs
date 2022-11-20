@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     public GameObject MapWindow, ContentPanel;
     public GameObject TeamLeaderMenu;
     public GameObject TeamLeaderNavigationBtn;
+    public Button ResetCrewRoom;
 
     [Header("Pikud10")]
     public GameObject Pikud10Menu;
@@ -98,6 +99,7 @@ public class UIManager : MonoBehaviour
 
      public GameObject muteIcon;
      public GameObject umuteIcon;
+     public Button MuteButton;
 
     #endregion
     

@@ -90,6 +90,7 @@ public class VehicleInteraction : MonoBehaviour
                         {
                             UIManager.Instance.VehicleDriverUI.SetActive(true);
                             _vehicleController.Transfer.CarDriver();
+                       
                             //playerController.CurrentVehicleController = _vehicleController;
                             playerController.IsInVehicle = true;
                             playerController.IsDriving = true;
@@ -97,6 +98,7 @@ public class VehicleInteraction : MonoBehaviour
                             UIManager.Instance.DriverExitBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.HeadlightBtn.onClick.RemoveAllListeners();
                             UIManager.Instance.SirenBtn.onClick.RemoveAllListeners();
+
                             UIManager.Instance.DriverExitBtn.onClick.AddListener(delegate { ExitVehicle(); });
                             UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { ToggleHeadlights(); });
                             UIManager.Instance.HeadlightBtn.onClick.AddListener(delegate { sliderHeadlightBtn.SliderBtnOnClick(); });
@@ -195,6 +197,7 @@ public class VehicleInteraction : MonoBehaviour
             door.layer = (int)LayerMasks.Default;
         }
     }
+
     public void ExitVehicle()
     {
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -266,7 +269,7 @@ public class VehicleInteraction : MonoBehaviour
 
                 _vehicleController.PhotonView.RPC("ChangeSit", RpcTarget.All, i, 0, false);
                 playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
-                DontDestroyOnLoad(photonView.gameObject);
+               // DontDestroyOnLoad(photonView.gameObject);
                 break;
             }
         }
@@ -302,6 +305,7 @@ public class VehicleInteraction : MonoBehaviour
             UIManager.Instance.NatanMonitorPanel.SetActive(false);
         }
     }
+
 
     #region OnClick Events
     public void OpenCloseBackDoor()

@@ -17,7 +17,7 @@ MonoBehaviour:
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
-    AppVersion: MDA Simulator - V.0.11.19 Gal
+    AppVersion: MDA Incidents Simulator - Legion - V.0.12.1 Gal
     UseNameServer: 1
     FixedRegion: eu
     Server: 
@@ -146,6 +146,19 @@ MonoBehaviour:
   - CallPatientCreator
   - ResetsEventsLists_RPC
   - ResetPlayerData_RPC
+  - SetPositionAndRotation_RPC
+  - SynchBedOFF
+  - SynchBedON
+  - AddStartIncidentToLoadedPatient
+  - RemoveOverlayUI_RPC
+  - RemoveSimulationPanelUI_RPC
+  - SetUpNamesAsButtons_RPC
+  - ShowOverlayUI_RPC
+  - ShowSimulationPanelUI_RPC
+  - ActivateAranBehaviour
+  - CheckAranBehaviourRPC
+  - CrewLeaderResetIncident_RPC
+  - FindPlayerOwner
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -6,12 +6,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using PatientCreationSpace;
 
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 {
     #region Photon
     [Header("Photon")]
@@ -23,7 +25,10 @@ public class Patient : MonoBehaviour
     public PatientData PatientData;
     public NewPatientData NewPatientData;
     public List<ActionSequence> ActionSequences;
+    public SmoothSyncMovement SmoothMovement;
     #endregion
+
+    public string PatientFullName;
 
     #region UI
     [Header("UI - by UI Manager")]
@@ -39,6 +44,7 @@ public class Patient : MonoBehaviour
     public List<GameObject> KidPropList;
     public List<GameObject> PropList;
     public List<GameObject> OldPropList;
+    public Collider PatientModelCollider;
 
     [Header("Bandages")]
     public bool UseTourniquet = false;
@@ -61,6 +67,7 @@ public class Patient : MonoBehaviour
     public List<int> AllCrewTreatedThisPatient;
     #endregion
 
+    private GameObject patientLayer;
     #region Model Related
     [Header("Appearance Material")]
     public Material FullyClothedMaterial;
@@ -79,6 +86,8 @@ public class Patient : MonoBehaviour
 
     private void Start()
     {
+        patientLayer = GetComponentInChildren<MakeItAButton>().gameObject;
+        patientLayer.layer = (int)LayerMasks.Default;
         GameManager.Instance.AllPatients.Add(this);
         MonitorWindow = UIManager.Instance.MonitorParent.transform.GetChild(0).GetChild(0).GetComponent<Image>();
 
@@ -105,6 +114,12 @@ public class Patient : MonoBehaviour
         {
             WorldCanvas.SetActive(true);
             NearbyUsers.Add(possiblePlayer);
+            patientLayer.layer = (int)LayerMasks.Interactable;
+
+        }
+        if (other.CompareTag("EmergencyBed"))
+        {
+            patientLayer.layer = (int)LayerMasks.Interactable;
         }
     }
 
@@ -120,7 +135,13 @@ public class Patient : MonoBehaviour
             {
                 WorldCanvas.SetActive(false);
                 NearbyUsers.Remove(possiblePlayer);
+                patientLayer.layer = (int)LayerMasks.Default;
+
             }
+        }
+        if (other.CompareTag("EmergencyBed"))
+        {
+            patientLayer.layer = (int)LayerMasks.Default;
         }
     }
     #endregion
@@ -162,8 +183,8 @@ public class Patient : MonoBehaviour
     {
         ActionsManager.Instance.OnPatientClicked();
 
-        //if (GameManager.Instance.IsAranActive)
-        //    UIManager.Instance.TagMiunSubmitBtn.onClick.AddListener(delegate { AddToTaggedPatientsList(); });
+        if (GameManager.Instance.IsAranActive)
+            UIManager.Instance.TagMiunSubmitBtn.onClick.AddListener(delegate { AddToTaggedPatientsList(); });
     }
 
     public void SetUnusedBandages(bool enableBandage)
@@ -440,4 +461,14 @@ public class Patient : MonoBehaviour
         UrgentEvacuationCanvas.SetActive(true);
     }
     #endregion
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        PatientFullName = instantiationData[0].ToString();
+        Debug.Log("Patient name is " + instantiationData[0]);
+        PatientCreator.LoadPatient(PatientFullName);
+        InitializePatientData(PatientCreator.newPatient);
+        //Debug.Log(PatientFullName);
+    }
 }

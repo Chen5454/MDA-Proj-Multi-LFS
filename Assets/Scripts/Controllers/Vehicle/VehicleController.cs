@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.Reflection;
+using TMPro;
 
 public enum VehicleSit { Driver, Passanger, Middle, LeftBack, RightBack }
 
-public class VehicleController : MonoBehaviour, IPunObservable
+public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateMagicCallback
 {
     private PhotonView _photonView;
     public PhotonView PhotonView { get => _photonView; set => value = _photonView; }
@@ -22,6 +23,9 @@ public class VehicleController : MonoBehaviour, IPunObservable
     [SerializeField] private Transform _frontLeftWheelTransform, _frontRightWheeTransform, _rearLeftWheelTransform, _rearRightWheelTransform, _centerOfMass;
     [SerializeField] private WheelCollider _frontLeftWheelCollider, _frontRightWheelCollider, _rearLeftWheelCollider, _rearRightWheelCollider;
     [SerializeField] private Rigidbody _rb;
+
+    [SerializeField] private GameObject VehiclePos;
+
 
     public Camera VehicleCamera;
     public Animator LeftBackDoorAnimator, RightBackDoorAnimator;
@@ -46,9 +50,12 @@ public class VehicleController : MonoBehaviour, IPunObservable
     [Header("Vehicle Data")]
     public int OwnerCrew, RandomNumber;
     public string RandomName;
+    public int _ownedCrewNumber;
 
     [Header("Vehicle UI")]
     private GameObject _carDashboardUI;
+    public List <TMP_Text> _CarNameTxt;
+    public List<TMP_Text> _CarNumberTxt;
 
     #region Monobehaviour Callbacks
 
@@ -68,10 +75,14 @@ public class VehicleController : MonoBehaviour, IPunObservable
         RandomName = GetRandomstring();
         GameManager.Instance.usedNamesValues.Add(RandomName);
 
+
+
         if (IsNatan)
             GameManager.Instance.NatanCarList.Add(_photonView);
         else
             GameManager.Instance.AmbulanceCarList.Add(_photonView);
+
+        AssginsTextToVehicle();
     }
     private void Update()
     {
@@ -98,6 +109,12 @@ public class VehicleController : MonoBehaviour, IPunObservable
             GameManager.Instance.NatanCarList.Remove(_photonView);
         else
             GameManager.Instance.AmbulanceCarList.Remove(_photonView);
+
+
+        if (VehiclePos != null)
+        {
+            VehiclePos.GetComponent<VehicleChecker>().IsPosOccupied = false;
+        }
     }
     #endregion
 
@@ -108,12 +125,21 @@ public class VehicleController : MonoBehaviour, IPunObservable
         {
             CollidingPlayers.Add(other.gameObject);
         }
+
+        if (other.CompareTag("VehiclePos"))
+        {
+            VehiclePos = other.gameObject;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             CollidingPlayers.Remove(other.gameObject);
+        }
+        if (other.CompareTag("VehiclePos"))
+        {
+            VehiclePos = null;
         }
     }
     #endregion
@@ -179,7 +205,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
             return;
         }
 
-        
+
 
         ApplyBreaking();
     }
@@ -219,6 +245,18 @@ public class VehicleController : MonoBehaviour, IPunObservable
             _rb.isKinematic = false;
         else
             _rb.isKinematic = true;
+    }
+
+    public void AssginsTextToVehicle()
+    {
+        foreach (var CarNameTxt in _CarNameTxt)
+        {
+            CarNameTxt.text = RandomName;
+        }
+        foreach (var CarNumberTxt in _CarNumberTxt)
+        {
+            CarNumberTxt.text = RandomNumber.ToString();
+        }
     }
 
     #region PunRPC
@@ -322,12 +360,17 @@ public class VehicleController : MonoBehaviour, IPunObservable
         }
     }
     #endregion
-
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        _ownedCrewNumber = (int)instantiationData[0];
+        Debug.Log("Room Number is " + _ownedCrewNumber);
+    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-          //  stream.SendNext(transform.position);
+            //  stream.SendNext(transform.position);
             stream.SendNext(IsBusy);
             stream.SendNext(IsDriverIn);
             stream.SendNext(IsPassangerIn);
@@ -339,7 +382,7 @@ public class VehicleController : MonoBehaviour, IPunObservable
         }
         else
         {
-           // transform.position = (Vector3)stream.ReceiveNext();
+            // transform.position = (Vector3)stream.ReceiveNext();
             IsBusy = (bool)stream.ReceiveNext();
             IsDriverIn = (bool)stream.ReceiveNext();
             IsPassangerIn = (bool)stream.ReceiveNext();

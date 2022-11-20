@@ -64,6 +64,12 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
+        if (usernameInput.text.Length < 1)
+        {
+            Debug.Log("Need name to proceed");
+            return;
+        }
+
         if (usernameInput.text.Length >= 1 && !ConnectAsInstructor.isOn)
         {
             PhotonNetwork.NickName = usernameInput.text;

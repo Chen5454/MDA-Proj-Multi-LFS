@@ -222,18 +222,25 @@ public class PlayerData : MonoBehaviourPunCallbacks
 
 
 
-    [PunRPC]
-    private void OnJoinPatient()
-    {
-        CurrentPatientNearby.PhotonView.RPC("AddUserToTreatingLists", RpcTarget.AllBufferedViaServer, UserName);
-    }
+    //[PunRPC]
+    //private void OnJoinPatient(int patientViewID)
+    //{
+    //    CurrentPatientNearby.PhotonView.RPC("AddUserToTreatingLists", RpcTarget.AllBufferedViaServer, UserName);
+    //}
 
     [PunRPC]
-    private void OnLeavePatient()
+    private void OnLeavePatient(int patientViewID)
     {
-        Debug.Log("Attempting leave patient");
-        CurrentPatientNearby.TreatingUsers.Remove(this);
-        Debug.Log("Left Patient Succesfully");
+        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        {
+            if (GameManager.Instance.AllPatients[i].PhotonView.ViewID == patientViewID)
+            {
+                Debug.Log("Attempting leave patient");
+                GameManager.Instance.AllPatients[i].TreatingUsers.Remove(this);
+                Debug.Log("Left Patient Succesfully");
+                break;
+            }
+        }
     }
 
     [PunRPC]

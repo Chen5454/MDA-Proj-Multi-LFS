@@ -89,10 +89,13 @@ public class ActionsManager : MonoBehaviour
                 PlayerData myPlayerData = photonView.gameObject.GetComponent<PlayerData>();
                 _lastClickedPatient = myPlayerData.CurrentPatientNearby;
 
-                NewPatientData currentPatientData = myPlayerData.CurrentPatientNearby != null ? myPlayerData.CurrentPatientNearby.NewPatientData : null;
-                _lastClickedPatientData = currentPatientData;
+                //NewPatientData currentPatientData = myPlayerData.CurrentPatientNearby != null ? myPlayerData.CurrentPatientNearby.NewPatientData : null;
+                //_lastClickedPatientData = currentPatientData;
 
                 Debug.Log($"{myPlayerData.UserName} Clicked on: {myPlayerData.CurrentPatientNearby}");
+
+                if (_lastClickedPatient == null)
+                    return;
 
                 if (!myPlayerData.CurrentPatientNearby.IsPlayerJoined(myPlayerData))
                 {
@@ -135,11 +138,15 @@ public class ActionsManager : MonoBehaviour
 
         for (int i = 0; i < AllPlayersPhotonViews.Count; i++)
         {
+            if (!AllPlayersPhotonViews[i].IsMine)
+                continue;
+
             PlayerData myPlayerData = AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
 
             if (isJoined)
             {
-                myPlayerData.PhotonView.RPC("OnJoinPatient", RpcTarget.AllBufferedViaServer);
+                //myPlayerData.PhotonView.RPC("OnJoinPatient", RpcTarget.AllBufferedViaServer, myPlayerData.CurrentPatientNearby.PhotonView.ViewID);
+                myPlayerData.CurrentPatientNearby.PhotonView.RPC("AddUserToTreatingLists", RpcTarget.AllBufferedViaServer, myPlayerData.UserName);
                 UIManager.Instance.JoinPatientPopUp.SetActive(false);
                 UIManager.Instance.PatientInfoParent.SetActive(true);
             }
@@ -156,8 +163,11 @@ public class ActionsManager : MonoBehaviour
 
         for (int i = 0; i < AllPlayersPhotonViews.Count; i++)
         {
+            if (!AllPlayersPhotonViews[i].IsMine)
+                continue;
+
             PlayerData myPlayerData = AllPlayersPhotonViews[i].gameObject.GetComponent<PlayerData>();
-            myPlayerData.PhotonView.RPC("OnLeavePatient", RpcTarget.AllBufferedViaServer);
+            myPlayerData.PhotonView.RPC("OnLeavePatient", RpcTarget.AllBufferedViaServer, myPlayerData.CurrentPatientNearby.PhotonView.ViewID);
             UIManager.Instance.CloseAllPatientWindows();
         }
     }

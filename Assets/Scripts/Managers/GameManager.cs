@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     //public List<int> OnGoingIncidents;
     public Transform[] IncidentPatientSpawns;
     public bool[] IsPatientSpawned;
+    //public List<CrewRoomManager> AllCrewRooms;
 
     [Header("Aran")]
     public PhotonView Pikud10View; 
@@ -62,7 +63,6 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
         }
         DontDestroyOnLoad(this.gameObject);
-
     }
 
     private void Start()
@@ -230,45 +230,72 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     [PunRPC]
     public void UpdatePinuyList_RPC()
     {
-        foreach (PhotonView car in AmbulanceCarList)
+        if (AmbulanceCarList.Count != 0)
         {
-            if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+            foreach (PhotonView car in AmbulanceCarList)
             {
-                AmbulanceFreeCarList.Remove(car);
+                if (car.GetComponent<CarControllerSimple>())
+                {
+                    if (car.GetComponent<VehicleController>().IsBusy)
+                    {
+                        AmbulanceFreeCarList.Remove(car);
 
-                if (!AmbulanceInPinuyCarList.Contains(car))
-                    AmbulanceInPinuyCarList.Add(car);
-            }
-            else
-            {
-                AmbulanceInPinuyCarList.Remove(car);
+                        if (!AmbulanceInPinuyCarList.Contains(car))
+                            AmbulanceInPinuyCarList.Add(car);
+                    }
+                    else
+                    {
+                        AmbulanceInPinuyCarList.Remove(car);
 
-                if (!AmbulanceFreeCarList.Contains(car))
-                    AmbulanceFreeCarList.Add(car);
+                        if (!AmbulanceFreeCarList.Contains(car))
+                            AmbulanceFreeCarList.Add(car);
+                    }
+                }
+                
             }
         }
-        foreach (PhotonView car in NatanCarList)
+
+        if (NatanCarList.Count != 0)
         {
-            if (car.GetComponent<CarControllerSimple>().IsInPinuy)
+            foreach (PhotonView car in NatanCarList)
             {
-                NatanFreeCarList.Remove(car);
+                if (car.GetComponent<VehicleController>().IsBusy)
+                {
+                    NatanFreeCarList.Remove(car);
 
-                if (!NatanInPinuyCarList.Contains(car))
-                    NatanInPinuyCarList.Add(car);
-            }
-            else
-            {
-                NatanInPinuyCarList.Remove(car);
+                    if (!NatanInPinuyCarList.Contains(car))
+                        NatanInPinuyCarList.Add(car);
+                }
+                else
+                {
+                    NatanInPinuyCarList.Remove(car);
 
-                if (!NatanFreeCarList.Contains(car))
-                    NatanFreeCarList.Add(car);
+                    if (!NatanFreeCarList.Contains(car))
+                        NatanFreeCarList.Add(car);
+                }
             }
         }
+
+
+        
     }
 
     [PunRPC]
     private void ChangeAranStateRPC(bool isActive)
     {
         IsAranActive = isActive;
+    }
+
+    public PhotonView GetPatientPhotonViewByIDView(int PatientID)
+    {
+        for (int i = 0; i < AllPatients.Count; i++)
+        {
+            if (AllPatients[i].GetComponent<PhotonView>().ViewID == PatientID)
+            {
+                return AllPatients[i].GetComponent<PhotonView>();
+            }
+        }
+
+        return null;
     }
 }
