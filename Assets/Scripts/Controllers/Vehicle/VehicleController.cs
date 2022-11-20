@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.Reflection;
+using TMPro;
 
 public enum VehicleSit { Driver, Passanger, Middle, LeftBack, RightBack }
 
@@ -53,6 +54,8 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
 
     [Header("Vehicle UI")]
     private GameObject _carDashboardUI;
+    public List <TMP_Text> _CarNameTxt;
+    public List<TMP_Text> _CarNumberTxt;
 
     #region Monobehaviour Callbacks
 
@@ -78,6 +81,8 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             GameManager.Instance.NatanCarList.Add(_photonView);
         else
             GameManager.Instance.AmbulanceCarList.Add(_photonView);
+
+        AssginsTextToVehicle();
     }
     private void Update()
     {
@@ -240,6 +245,18 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             _rb.isKinematic = false;
         else
             _rb.isKinematic = true;
+    }
+
+    public void AssginsTextToVehicle()
+    {
+        foreach (var CarNameTxt in _CarNameTxt)
+        {
+            CarNameTxt.text = RandomName;
+        }
+        foreach (var CarNumberTxt in _CarNumberTxt)
+        {
+            CarNumberTxt.text = RandomNumber.ToString();
+        }
     }
 
     #region PunRPC
