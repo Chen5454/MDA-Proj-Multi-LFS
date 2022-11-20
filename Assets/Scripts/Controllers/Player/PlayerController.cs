@@ -510,7 +510,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) || !UIManager.Instance.EventSystem.currentSelectedGameObject)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 _stateAction = UseTankIdleState;
             }
