@@ -56,6 +56,9 @@ namespace PatientCreationSpace
         [SerializeField]
         PatientRoster patientRoster; //Dont like this either TBF
 
+        [SerializeField]
+        AddBlockMaster addBlockMaster;
+
        public PhotonView _photonView;
         
         private void OnEnable()
@@ -201,6 +204,45 @@ namespace PatientCreationSpace
         public void SavePatient()
         {
             //PatientCreator.SaveCurrentPatient();
+            TreatmentSequence treatmentSequence = new TreatmentSequence();
+            treatmentSequence.Init();
+            //WAITING WITH ALL THIS - need to see if groups don't need parsing but will just return the TreatmentGroup 
+
+            foreach (var item in addBlockMaster.basicBlocks) 
+            {
+                Treatment t = item.GetTreatment();
+                if (t!=null)
+                {
+                    //Treatment confirmed!
+                    treatmentSequence.AddToSequence(item as SequenceBlock);
+                    //if(t is Question)
+                    //{
+
+                    //}
+                    //else if(t is Test)
+                    //{
+
+                    //}
+                    //else if (t is Medicine)
+                    //{
+
+                    //}
+                }
+                else
+                {
+                    TreatmentGroup tg = item.GetTreatmentGroup();
+                    if(tg ==null)
+                    {
+                        //neither treatment nor group??
+                        Debug.LogError("this block returns neither treatment nor group");
+                        continue;
+                    }
+                    //TreatmentGroup confirmed!
+                    treatmentSequence.AddToSequence(tg as SequenceBlock);
+                }
+            }
+
+
             PatientCreator.SaveNewPatient();
         }
         public void LoadPatient(string patientName)

@@ -7,7 +7,7 @@ public class AddBlockMaster : MonoBehaviour
     [SerializeField]
     Transform sequenceParent;
 
-    List<BasicBlock> basicBlocks;
+    public List<BasicBlock> basicBlocks;
 
     private void OnEnable()
     {

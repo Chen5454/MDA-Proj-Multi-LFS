@@ -30,6 +30,7 @@ namespace PatientCreationSpace
             sequenceBlocks.Add(sequenceBlock);
             OnSequenceChange?.Invoke();
         }
+  
         /// <summary>
         /// add block at index and push rest down
         /// </summary>

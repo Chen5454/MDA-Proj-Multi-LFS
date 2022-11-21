@@ -113,6 +113,11 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         return MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
     }
 
+    public TreatmentGroup GetTreatmentGroup()
+    {
+        return null;
+    }
+
     public bool IsInteractable()
     {
         return _isInteractable;

@@ -34,7 +34,10 @@ public class QuestionBlock : MonoBehaviour, BasicBlock
     {
         return QuestionCreator.CreateQuestion($"{System.DateTime.Now.ToString("m-s")}", questionText.text, replyText.text);
     }
-
+    public TreatmentGroup GetTreatmentGroup()
+    {
+        return null;
+    }
     public bool IsInteractable()
     {
         return _isInteractable;

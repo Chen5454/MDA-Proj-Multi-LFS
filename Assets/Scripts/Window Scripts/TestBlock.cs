@@ -20,7 +20,10 @@ public class TestBlock : MonoBehaviour, BasicBlock
     {
         return databases.testDB.GetTreatmentByIndex(dropdown.value);
     }
-    
+    public TreatmentGroup GetTreatmentGroup()
+    {
+        return null;
+    }
     public bool IsInteractable()
     {
         return _isInteractable;
