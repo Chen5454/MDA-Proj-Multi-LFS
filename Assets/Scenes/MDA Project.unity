@@ -1113,7 +1113,7 @@ MonoBehaviour:
   _crewRoomColliderPrefab: {fileID: 3545529276454079236, guid: c9325f547b7762548afbbb03ba3769c8, type: 3}
   _eranRoomPrefab: {fileID: 3545529276454079236, guid: 9228e86d3fbb61949bf46d8ab06035a2, type: 3}
   _operationRoomPrefab: {fileID: 3545529276454079236, guid: 7d743995ff7f041479d8ceafbfe84a7e, type: 3}
-  _PaitentCreation: {fileID: 4020315513908517503, guid: 2053a5e04838fff4baae0fa0bc691377, type: 3}
+  _PaitentCreation: {fileID: 2860667055758705106, guid: 34ad60bae4da29f4497fea4f4e4cc46a, type: 3}
   _eranRoomPosTransform: {fileID: 752305990}
   _operationRoomTransform: {fileID: 1059965723}
   _PaitentCreationTransform: {fileID: 1725522638}
@@ -11880,6 +11880,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -32.5
       objectReference: {fileID: 0}
+    - target: {fileID: 865324132, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 865324132, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 865324132, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 960833918, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -14778,6 +14790,24 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4273662431078215767, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
   m_PrefabInstance: {fileID: 4134889592247787895}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4134889592247787958 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 865324130, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4134889592247787959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134889592247787958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b3eb66f542cc5d4a9a0364901995cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 0}
 --- !u!4 &4187218042992442401
 Transform:
   m_ObjectHideFlags: 0
