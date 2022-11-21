@@ -42,7 +42,7 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
 
     private void OnDisable()
     {
-        if(inited)
+        if(_playerController)
         _playerController.ChangeToUseUIState(false);
     }
 }
