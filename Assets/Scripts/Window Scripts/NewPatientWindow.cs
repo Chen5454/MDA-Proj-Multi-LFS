@@ -17,13 +17,13 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField EventName;
         [SerializeField]
-        TMP_InputField Id, Age;
+        TMP_InputField Age;
         [SerializeField]
         TMP_Dropdown Gender;
         [SerializeField]
         TMP_InputField Weight;
         [SerializeField]
-        TMP_InputField Height, AddressLocation, Complaint;
+        TMP_InputField Height, Complaint;
 
         [SerializeField]
         TMP_Dropdown DestinationDropdown;
@@ -57,10 +57,7 @@ namespace PatientCreationSpace
         PatientRoster patientRoster; //Dont like this either TBF
 
        public PhotonView _photonView;
-        //private void Start()
-        //{
-        //    LoadPatient("ש​_נ​");
-        //}
+        
         private void OnEnable()
         {
             PatientCreator.OnLoadPatient += DisplayPatient;
@@ -95,7 +92,7 @@ namespace PatientCreationSpace
             Gender.value = 0;
             Weight.text = "";
             Height.text = "";
-            AddressLocation.text = "";
+            //AddressLocation.text = "";
             Complaint.text = "";
 
             //PatientCreator.ClearLoadedPatient();
@@ -166,7 +163,7 @@ namespace PatientCreationSpace
             if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
                 string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
                  || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
-                  || string.IsNullOrEmpty(AddressLocation.text) || string.IsNullOrEmpty(Complaint.text))
+                   || string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
@@ -227,7 +224,7 @@ namespace PatientCreationSpace
             Gender.value = int.Parse(patient.Gender);
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
-            AddressLocation.text = patient.AddressLocation;
+            //AddressLocation.text = patient.AddressLocation;
             Complaint.text = patient.Complaint;
 
             for (int i = 0; i < measurementInputFields.Count; i++)

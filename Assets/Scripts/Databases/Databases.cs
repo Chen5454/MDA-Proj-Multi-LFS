@@ -6,6 +6,9 @@ namespace PatientCreationSpace
 
     public class Databases : MonoBehaviour
     {
+        public static Databases Instance;
+
+
         public TreatmentDB<Question> questionDB;
         public TreatmentDB<Test> testDB;
         public TreatmentDB<Medicine> medicineDB;
@@ -13,6 +16,18 @@ namespace PatientCreationSpace
         public List<Question> temp_questions;
         public List<Test> temp_tests;
         public List<Medicine> temp_meds;
+
+        private void Awake()
+        {
+            if(Instance != null && Instance!=this)
+            {
+                Destroy(gameObject);
+                Debug.LogError("Kill the spare! databases");
+                return;
+            }
+            Instance = this;
+        }
+
         private void Start()
         {
             LoadAllDBs();

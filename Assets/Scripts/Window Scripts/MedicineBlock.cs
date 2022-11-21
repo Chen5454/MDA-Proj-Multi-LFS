@@ -31,8 +31,8 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
     //^^^ this UI prefab will then easily parse all input fields (each field to int/float/enum etc...) - to create a fresh patientMeasurementData.
     //^^^ use this to initially set all patientMeasurementData on a new patient AND for medicine effect (as a "delta_patientMeasurementData" -> where only "fields to be changed" have value)
 
-    [SerializeField]
-    Databases databases;
+    
+    Databases databases => Databases.Instance;
     
 
     bool _isInteractable;

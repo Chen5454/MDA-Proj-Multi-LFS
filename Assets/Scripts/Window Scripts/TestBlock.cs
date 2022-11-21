@@ -13,8 +13,9 @@ public class TestBlock : MonoBehaviour, BasicBlock
     TMP_InputField searchText;
 
     bool _isInteractable;
-    [SerializeField]
-    Databases databases;
+
+    Databases databases => Databases.Instance;
+
     public Treatment GetTreatment()
     {
         return databases.testDB.GetTreatmentByIndex(dropdown.value);
