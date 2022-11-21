@@ -52,7 +52,7 @@ namespace PatientCreationSpace
         NewPatientData newCreatedPatient;
 
         [SerializeField]
-        TreatmentSequenceEditorWindow treatmentSequenceEditorWindow;
+        GameObject treatmentSequenceEditorWindow;
         [SerializeField]
         PatientRoster patientRoster; //Dont like this either TBF
 
@@ -155,45 +155,45 @@ namespace PatientCreationSpace
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
-            treatmentSequenceEditorWindow.gameObject.SetActive(true);
+            treatmentSequenceEditorWindow.SetActive(true);
             //treatmentSequenceEditorWindow.Init(createdPatient);
-            treatmentSequenceEditorWindow.Init(newCreatedPatient);
+            //treatmentSequenceEditorWindow.Init(newCreatedPatient);
             //continue work on setting the patient and filling their Treatment Sequence
         }
-        public void ClickOnEditLoaded()
-        {
-            //If measurements were changed! TBF
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
-                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
-                 || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
-                   || string.IsNullOrEmpty(Complaint.text))
-            {
-                Debug.LogError("all basic info fields need to be filled!");
-                return;
-            }
-            //Initial Measurements nullorempty checks: in the grabbing bleow
+        //public void ClickOnEditLoaded()
+        //{
+        //    //If measurements were changed! TBF
+        //    if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
+        //        string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
+        //         || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
+        //           || string.IsNullOrEmpty(Complaint.text))
+        //    {
+        //        Debug.LogError("all basic info fields need to be filled!");
+        //        return;
+        //    }
+        //    //Initial Measurements nullorempty checks: in the grabbing bleow
 
-            PatientMeasurements patientMeasurements = new PatientMeasurements();
+        //    PatientMeasurements patientMeasurements = new PatientMeasurements();
 
-            string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
-            for (int i = 0; i < measurementInputFields.Count; i++)
-            {
-                if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
-                {
-                    Debug.LogError("all initial measurement fields need to be filled!");
+        //    string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
+        //    for (int i = 0; i < measurementInputFields.Count; i++)
+        //    {
+        //        if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+        //        {
+        //            Debug.LogError("all initial measurement fields need to be filled!");
 
-                    return;
-                }
-                measurementArray[i] = measurementInputFields[i].text;
-            }
-            PatientCreator.newPatient.SetPatientMeasurement(measurementArray); //sets new measurements
+        //            return;
+        //        }
+        //        measurementArray[i] = measurementInputFields[i].text;
+        //    }
+        //    PatientCreator.newPatient.SetPatientMeasurement(measurementArray); //sets new measurements
 
 
-            treatmentSequenceEditorWindow.gameObject.SetActive(true);
-            //treatmentSequenceEditorWindow.Init(createdPatient);
-            treatmentSequenceEditorWindow.Init(PatientCreator.newPatient);
-            //continue work on setting the patient and filling their Treatment Sequence
-        }
+        //    treatmentSequenceEditorWindow.SetActive(true);
+        //    //treatmentSequenceEditorWindow.Init(createdPatient);
+        //    //treatmentSequenceEditorWindow.Init(PatientCreator.newPatient);
+        //    //continue work on setting the patient and filling their Treatment Sequence
+        //}
 
         [PunRPC]
         public void CallPatientCreator(string patientJson, string treatmentSequenceJson,string name,string sureName)
@@ -241,7 +241,7 @@ namespace PatientCreationSpace
                     treatmentSequence.AddToSequence(tg as SequenceBlock);
                 }
             }
-
+            PatientCreator.newPatient.FullTreatmentSequence = treatmentSequence;
 
             PatientCreator.SaveNewPatient();
         }

@@ -10,7 +10,6 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
 
     void OnEnable()
     {
-       
         if (!_playerView)
         {
             for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -30,6 +29,14 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
         }
         _playerController.ChangeToUseUIState(true);
     }
+
+    private void Start()
+    {
+        UIManager.Instance.PatientCreationWindow = gameObject;
+        gameObject.SetActive(false);
+    }
+
+
     private void OnDisable()
     {
         _playerController.ChangeToUseUIState(false);

@@ -10,8 +10,8 @@ namespace PatientCreationSpace
 
         public TreatmentGroup treatmentGroup { get => (TreatmentGroup)blockCollection; set => blockCollection = value; }
 
-        [SerializeField]
-        TreatmentSequenceEditorWindow treatmentSequenceEditorWindow;
+        //[SerializeField]
+        //TreatmentSequenceEditorWindow treatmentSequenceEditorWindow;
         [SerializeField]
         BlockCollectionDisplayer sequenceDisplayer; //also works for treatmentGroup
 
@@ -59,12 +59,12 @@ namespace PatientCreationSpace
             sequenceDisplayer.Display();
         }
 
-        public void AddTreatmentGroupToSequence()
-        {
-            treatmentSequenceEditorWindow.AddTreatmentToCollection(treatmentGroup);
+        //public void AddTreatmentGroupToSequence()
+        //{
+        //    treatmentSequenceEditorWindow.AddTreatmentToCollection(treatmentGroup);
 
-            gameObject.SetActive(false);
-        }
+        //    gameObject.SetActive(false);
+        //}
     }
 
 }
