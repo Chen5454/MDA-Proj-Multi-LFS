@@ -10,6 +10,9 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
     [SerializeField]
     TMP_Dropdown dropdown;
     [SerializeField]
+    TMP_Dropdown applicationMethodDropdown;
+
+    [SerializeField]
     TMP_InputField searchText;
 
     [SerializeField]
@@ -17,8 +20,11 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     [SerializeField]
     List<TMP_InputField> measurementInputFields;
+
     [SerializeField]
-    TMP_InputField dosageInputField;
+    TMP_InputField minDosageInputField;
+    [SerializeField]
+    TMP_InputField maxDosageInputField;
 
     //PatientMeasurementInput TBF!
     //^^^ much like a displayer, this component will provide string input fields, corresponding to the parameters of patientMeasurementData.
@@ -104,7 +110,7 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
             measurementArray[i] = measurementInputFields[i].text;
         }
         patientMeasurements.SetMeasurementValues(measurementArray);
-        return MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, dosageInputField.text);
+        return MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
     }
 
     public bool IsInteractable()
@@ -114,7 +120,17 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     public void SetInteractable(bool isInteractable)
     {
+        minDosageInputField.interactable = isInteractable;
+        maxDosageInputField.interactable = isInteractable;
 
+        foreach (var item in measurementInputFields)
+        {
+            item.interactable = isInteractable;
+        }
+
+        measurementToReveal.interactable = isInteractable;
+        searchText.interactable = isInteractable;
+        dropdown.interactable = isInteractable;
 
         _isInteractable = isInteractable;
     }
