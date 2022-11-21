@@ -7,9 +7,11 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
 {
     private PhotonView _playerView;
     private PlayerController _playerController;
-
+    bool inited =false;
     void OnEnable()
     {
+        if (!inited)
+            return;
         if (!_playerView)
         {
             for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -33,6 +35,7 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.PatientCreationWindow = gameObject;
+        inited = true;
         gameObject.SetActive(false);
     }
 
