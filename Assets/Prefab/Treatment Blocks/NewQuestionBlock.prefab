@@ -467,7 +467,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7083497699732470299}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
         m_MethodName: ClickOnCreateNew
         m_Mode: 1
@@ -488,7 +488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7083497699732470298}
-  - component: {fileID: 7083497699732470299}
+  - component: {fileID: 9060214813482035748}
   m_Layer: 5
   m_Name: NewQuestionBlock
   m_TagString: Untagged
@@ -516,7 +516,7 @@ RectTransform:
   m_AnchoredPosition: {x: -127.22998, y: 311.62}
   m_SizeDelta: {x: 1400, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7083497699732470299
+--- !u!114 &9060214813482035748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -525,12 +525,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7083497699732470297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60b7cc9cf7984634c9c1c2dae13f2a9a, type: 3}
+  m_Script: {fileID: 11500000, guid: ef8acffdd694064449303659ba009c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   questionText: {fileID: 7083497700009542586}
   replyText: {fileID: 3502402709980122702}
-  treatmentSequenceEditorWindow: {fileID: 0}
 --- !u!1 &7083497699955505726
 GameObject:
   m_ObjectHideFlags: 0
