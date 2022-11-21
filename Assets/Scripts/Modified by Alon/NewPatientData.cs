@@ -46,7 +46,7 @@ public class NewPatientData
 
     public NewPatientData() { }
 
-    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
+    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
     {
         Name = name;
         SureName = sureName;
@@ -55,7 +55,7 @@ public class NewPatientData
         Gender = gender;
         PhoneNumber = phoneNum;
         MedicalCompany = medicalCompany;
-        AddressLocation = adress;
+        //AddressLocation = adress;
         Complaint = complaint;
         _patientMeasurement = new PatientMeasurements();
         _patientMeasurement.Initialize(measurements);

@@ -48,11 +48,11 @@ namespace PatientCreationSpace
             OnPatientClear?.Invoke();
             return wasCleared;
         }
-        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string adress, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
+        public static NewPatientData CreateNewPatient(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
         {
             newPatient = new NewPatientData(); 
 
-            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, adress, complaint, measurements,room,  isAls, trauma);
+            newPatient.Initialize(name, sureName, id, age, gender, phoneNum, medicalCompany, complaint, measurements,room,  isAls, trauma);
 
             //create file already?
 

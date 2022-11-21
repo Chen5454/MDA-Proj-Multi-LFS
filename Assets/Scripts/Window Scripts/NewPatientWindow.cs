@@ -15,15 +15,15 @@ namespace PatientCreationSpace
         [SerializeField]
         TMP_InputField Name;
         [SerializeField]
-        TMP_InputField SureName;
+        TMP_InputField EventName;
         [SerializeField]
         TMP_InputField Id, Age;
         [SerializeField]
-        TMP_InputField Gender;
+        TMP_Dropdown Gender;
         [SerializeField]
-        TMP_InputField PhoneNumber;
+        TMP_InputField Weight;
         [SerializeField]
-        TMP_InputField MedicalCompany, AddressLocation, Complaint;
+        TMP_InputField Height, AddressLocation, Complaint;
 
         [SerializeField]
         TMP_Dropdown DestinationDropdown;
@@ -90,11 +90,11 @@ namespace PatientCreationSpace
         public void ClearPatientInfoFields() //inspector button
         {
             Name.text = "";
-            SureName.text = "";
+            EventName.text = "";
             Age.text = "";
-            Gender.text = "";
-            PhoneNumber.text = "";
-            MedicalCompany.text = "";
+            Gender.value = 0;
+            Weight.text = "";
+            Height.text = "";
             AddressLocation.text = "";
             Complaint.text = "";
 
@@ -113,10 +113,10 @@ namespace PatientCreationSpace
             //check are REQUIRED(?) fields TBD
 
             //Basic info nullorempty checks:
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(SureName.text) ||
-                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.text)
-                 || string.IsNullOrEmpty(PhoneNumber.text) || string.IsNullOrEmpty(MedicalCompany.text)
-                  || string.IsNullOrEmpty(AddressLocation.text) || string.IsNullOrEmpty(Complaint.text))
+            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
+                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
+                 || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
+                  ||  string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
@@ -151,8 +151,8 @@ namespace PatientCreationSpace
             //string s = System.DateTime.Now.ToString("m-s");
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
-            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, SureName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), Gender.text, PhoneNumber.text, //TBF
-                MedicalCompany.text, AddressLocation.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
+            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), Gender.options[Gender.value].text, Weight.text, //TBF
+                Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
             treatmentSequenceEditorWindow.gameObject.SetActive(true);
@@ -163,9 +163,9 @@ namespace PatientCreationSpace
         public void ClickOnEditLoaded()
         {
             //If measurements were changed! TBF
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(SureName.text) ||
-                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.text)
-                 || string.IsNullOrEmpty(PhoneNumber.text) || string.IsNullOrEmpty(MedicalCompany.text)
+            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
+                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
+                 || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
                   || string.IsNullOrEmpty(AddressLocation.text) || string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
@@ -222,11 +222,11 @@ namespace PatientCreationSpace
             NewPatientData patient = PatientCreator.newPatient;
 
             Name.text = patient.Name;
-            SureName.text = patient.SureName;
+            EventName.text = patient.SureName;
             Age.text = patient.Age.ToString();
-            Gender.text = patient.Gender;
-            PhoneNumber.text = patient.PhoneNumber;
-            MedicalCompany.text = patient.MedicalCompany;
+            Gender.value = int.Parse(patient.Gender);
+            Weight.text = patient.PhoneNumber;
+            Height.text = patient.MedicalCompany;
             AddressLocation.text = patient.AddressLocation;
             Complaint.text = patient.Complaint;
 
