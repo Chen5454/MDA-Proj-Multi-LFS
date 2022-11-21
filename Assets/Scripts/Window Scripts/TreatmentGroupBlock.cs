@@ -25,7 +25,7 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
         _treatmentGroup.Init();
         foreach (var item in addBlockMaster.basicBlocks)
         {
-            _treatmentGroup.AddTreatment(item as SequenceBlock);
+            _treatmentGroup.AddTreatment(item.GetTreatment() as SequenceBlock);
         }
         return _treatmentGroup;
     }

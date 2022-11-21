@@ -214,7 +214,7 @@ namespace PatientCreationSpace
                 if (t!=null)
                 {
                     //Treatment confirmed!
-                    treatmentSequence.AddToSequence(item as SequenceBlock);
+                    treatmentSequence.AddToSequence(item.GetTreatment() as SequenceBlock);
                     //if(t is Question)
                     //{
 
