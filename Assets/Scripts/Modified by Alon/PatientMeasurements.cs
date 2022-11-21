@@ -4,8 +4,7 @@ using UnityEngine;
 
 public enum Measurements
 {
-    BPM, PainLevel, RespiratoryRate, CincinnatiLevel, BloodSugar, BloodPressure, OxygenSaturation,
-    ETCO2, AdditionalMuscles, Breathing, BreathingSounds, Speakability, Consciousness, Pupils, SkinState
+    דופק,טמפרטורה,קצב_נשימה,לחץ_דם,סטורציה,אקג,גלוקוז,הכרה
 }
 
 [System.Serializable]

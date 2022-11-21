@@ -303,49 +303,49 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     [PunRPC]
     private void SetMeasurementsRPC(string[] x) => NewPatientData.SetPatientMeasurement(x);
 
-    [PunRPC]
-    private void SetMeasurementByIndexRPC(int index, int value) // can do better without the new List
-    {
-        PatientData.Measurements = new List<int>() { PatientData.HeartRateBPM, PatientData.PainLevel, PatientData.RespiratoryRate, PatientData.CincinnatiLevel, PatientData.BloodSuger, PatientData.BloodPressure, PatientData.OxygenSaturation, PatientData.ETCO2 };
-        PatientData.Measurements[index] = value;
+    //[PunRPC]
+    //private void SetMeasurementByIndexRPC(int index, int value) // can do better without the new List
+    //{
+    //    PatientData.Measurements = new List<int>() { PatientData.HeartRateBPM, PatientData.PainLevel, PatientData.RespiratoryRate, PatientData.CincinnatiLevel, PatientData.BloodSuger, PatientData.BloodPressure, PatientData.OxygenSaturation, PatientData.ETCO2 };
+    //    PatientData.Measurements[index] = value;
 
-        Measurements measurements = (Measurements)index;
+    //    Measurements measurements = (Measurements)index;
 
-        switch (measurements)
-        {
-            case Measurements.BPM:
-                PatientData.HeartRateBPM = PatientData.Measurements[index];
-                break;
+    //    switch (measurements)
+    //    {
+    //        //case Measurements.BPM:
+    //        //    PatientData.HeartRateBPM = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.PainLevel:
-                PatientData.PainLevel = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.PainLevel:
+    //        //    PatientData.PainLevel = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.RespiratoryRate:
-                PatientData.RespiratoryRate = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.RespiratoryRate:
+    //        //    PatientData.RespiratoryRate = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.CincinnatiLevel:
-                PatientData.CincinnatiLevel = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.CincinnatiLevel:
+    //        //    PatientData.CincinnatiLevel = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.BloodSugar:
-                PatientData.BloodSuger = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.BloodSugar:
+    //        //    PatientData.BloodSuger = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.BloodPressure:
-                PatientData.BloodPressure = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.BloodPressure:
+    //        //    PatientData.BloodPressure = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.OxygenSaturation:
-                PatientData.OxygenSaturation = PatientData.Measurements[index];
-                break;
+    //        //case Measurements.OxygenSaturation:
+    //        //    PatientData.OxygenSaturation = PatientData.Measurements[index];
+    //        //    break;
 
-            case Measurements.ETCO2:
-                PatientData.ETCO2 = PatientData.Measurements[index];
-                break;
-        }
-    }
+    //        //case Measurements.ETCO2:
+    //        //    PatientData.ETCO2 = PatientData.Measurements[index];
+    //        //    break;
+    //    }
+    //}
 
     [PunRPC]
     private void ChangeClothingRPC(int index)
