@@ -33,7 +33,7 @@ namespace PatientCreationSpace
             LoadAllDBs();
         }
 
-        
+
 
 #if UNITY_EDITOR
         [ContextMenu("Save All DBs")]
@@ -50,6 +50,8 @@ namespace PatientCreationSpace
             medicineDB.SaveDatabase();
             //medicineDB.SaveDatabase();
         }
+#endif
+
         [ContextMenu("Load All DBs")]
         public void LoadAllDBs()
         {
@@ -66,7 +68,6 @@ namespace PatientCreationSpace
             temp_tests = testDB.treatments;
             temp_meds = medicineDB.treatments;
         }
-#endif
 
     }
 
