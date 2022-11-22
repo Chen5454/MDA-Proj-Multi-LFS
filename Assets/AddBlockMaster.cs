@@ -26,7 +26,9 @@ public class AddBlockMaster : MonoBehaviour
     public void AddBlockToSequence(GameObject prefab)
     {
         GameObject go = Instantiate(prefab, sequenceParent);
-        basicBlocks.Add(go.GetComponent<BasicBlock>());
+        BasicBlock bb = go.GetComponent<BasicBlock>();
+        bb.SetAddBlockMaster(this);
+        basicBlocks.Add(bb);
         //or group block if not basic? I dont love it TBF
     }
 }

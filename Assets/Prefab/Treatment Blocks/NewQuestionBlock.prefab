@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3710273600858840855
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -539.70667, y: -57.9606}
-  m_SizeDelta: {x: 72.1751, y: 34.9137}
+  m_AnchoredPosition: {x: -679.12445, y: 62.7}
+  m_SizeDelta: {x: 41.7462, y: 34.9137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3710273600858840850
 CanvasRenderer:
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ae23f31bed8898344b6e0e3531aae9f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4bc5e99853ced0b478db5b5f7a624ce0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -121,10 +121,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7083497699732470297}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 9060214813482035748}
+        m_TargetAssemblyTypeName: QuestionBlock, Assembly-CSharp
+        m_MethodName: DestroyMe
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

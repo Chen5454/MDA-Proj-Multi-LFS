@@ -4611,7 +4611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8043410865714726454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4629,8 +4629,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -405, y: -269}
-  m_SizeDelta: {x: 205.01416, y: 76.813324}
+  m_AnchoredPosition: {x: -502, y: -269}
+  m_SizeDelta: {x: 189.6732, y: 76.8133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8043410865714726451
 CanvasRenderer:
@@ -4713,7 +4713,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8043410865714726452}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9048076679810534105}
+        m_TargetAssemblyTypeName: MedicineBlock, Assembly-CSharp
+        m_MethodName: DestroyMe
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8043410865735203300
 GameObject:
   m_ObjectHideFlags: 0

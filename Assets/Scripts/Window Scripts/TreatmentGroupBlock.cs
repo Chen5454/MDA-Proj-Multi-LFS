@@ -12,7 +12,23 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
     //has 3 buttons that can add treatmentblocks to this parent
 
     [SerializeField]
-    AddBlockMaster addBlockMaster;
+    AddBlockMaster myAddBlock;
+
+    AddBlockMaster abm;//parent addblock, the addblockmaster in which THIS is a block
+    public AddBlockMaster addBlockMaster()
+    {
+        return abm;
+    }
+
+    public void DestroyMe()
+    {
+        abm.basicBlocks.Remove(this);
+        Destroy(gameObject);
+    }
+    public void SetAddBlockMaster(AddBlockMaster addBlockMaster)
+    {
+        abm = addBlockMaster;
+    }
 
     public Treatment GetTreatment()
     {
@@ -23,7 +39,7 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
     {
         _treatmentGroup = new TreatmentGroup();
         _treatmentGroup.Init();
-        foreach (var item in addBlockMaster.basicBlocks)
+        foreach (var item in myAddBlock.basicBlocks)
         {
             _treatmentGroup.AddTreatment(item.GetTreatment() as SequenceBlock);
         }

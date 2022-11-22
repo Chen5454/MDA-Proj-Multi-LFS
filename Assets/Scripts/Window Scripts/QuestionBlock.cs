@@ -30,6 +30,21 @@ public class QuestionBlock : MonoBehaviour, BasicBlock
     //{
     //    SetInteractable(true);
     //}
+    AddBlockMaster abm;
+    public AddBlockMaster addBlockMaster()
+    {
+        return abm;
+    }
+
+    public void DestroyMe()
+    {
+        abm.basicBlocks.Remove(this);
+        Destroy(gameObject);
+    }
+    public void SetAddBlockMaster(AddBlockMaster addBlockMaster)
+    {
+        abm = addBlockMaster;
+    }
     public Treatment GetTreatment()
     {
         return QuestionCreator.CreateQuestion($"{System.DateTime.Now.ToString("m-s")}", questionText.text, replyText.text);

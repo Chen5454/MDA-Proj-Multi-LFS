@@ -1463,7 +1463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7967811146668648576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1481,8 +1481,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -542.83093, y: -64.000015}
-  m_SizeDelta: {x: 65, y: 40.8556}
+  m_AnchoredPosition: {x: -670.83484, y: 51.85742}
+  m_SizeDelta: {x: 77.3303, y: 57.1409}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7967811146668648583
 CanvasRenderer:
@@ -1566,10 +1566,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4361064845268802078}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 620699663796243540}
+        m_TargetAssemblyTypeName: TestBlock, Assembly-CSharp
+        m_MethodName: DestroyMe
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2198,7 +2198,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.55
+  m_fontSize: 51.1
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

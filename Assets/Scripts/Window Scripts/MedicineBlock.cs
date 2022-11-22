@@ -36,7 +36,21 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
     
 
     bool _isInteractable;
+    AddBlockMaster abm;
+    public AddBlockMaster addBlockMaster()
+    {
+        return abm;
+    }
 
+    public void DestroyMe()
+    {
+        abm.basicBlocks.Remove(this);
+        Destroy(gameObject);
+    }
+    public void SetAddBlockMaster(AddBlockMaster addBlockMaster)
+    {
+        abm = addBlockMaster;
+    }
     public void OnEnable()
     {
         if (databases == null)

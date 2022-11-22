@@ -6,6 +6,9 @@ using PatientCreationSpace;
 public interface BasicBlock 
 {
     GameObject gameObject();
+    AddBlockMaster addBlockMaster();
+    void SetAddBlockMaster(AddBlockMaster addBlockMaster);
+    void DestroyMe();
     Treatment GetTreatment();
     TreatmentGroup GetTreatmentGroup();
     bool IsInteractable();

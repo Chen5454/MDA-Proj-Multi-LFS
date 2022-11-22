@@ -15,6 +15,21 @@ public class TestBlock : MonoBehaviour, BasicBlock
     bool _isInteractable;
 
     Databases databases => Databases.Instance;
+    AddBlockMaster abm;
+    public AddBlockMaster addBlockMaster()
+    {
+        return abm;
+    }
+
+    public void DestroyMe()
+    {
+        abm.basicBlocks.Remove(this);
+        Destroy(gameObject);
+    }
+    public void SetAddBlockMaster(AddBlockMaster addBlockMaster)
+    {
+        abm = addBlockMaster;
+    }
 
     public Treatment GetTreatment()
     {
@@ -66,6 +81,9 @@ public class TestBlock : MonoBehaviour, BasicBlock
 
         dropdown.RefreshShownValue();
     }
+
+   
+
     public void SetInteractable(bool isInteractable) //set solely by in scene buttons
     {
         dropdown.interactable = isInteractable;
