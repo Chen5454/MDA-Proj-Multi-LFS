@@ -56,6 +56,11 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
         //all interactables - including all treatments in group - set to isInteractable
         // TBD TBF soon
         //
+        foreach (var item in myAddBlock.basicBlocks)
+        {
+            item.SetInteractable(isInteractable);
+        }
+
         _isInteractable = isInteractable;
     }
 
