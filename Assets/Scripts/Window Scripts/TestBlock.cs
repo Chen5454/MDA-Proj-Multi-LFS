@@ -72,7 +72,12 @@ public class TestBlock : MonoBehaviour, BasicBlock
         searchText.interactable = isInteractable;
         _isInteractable = isInteractable;
     }
-    
+
+    GameObject BasicBlock.gameObject()
+    {
+        return gameObject;
+    }
+
     //public override void Save()
     //{
     //    base.Save();

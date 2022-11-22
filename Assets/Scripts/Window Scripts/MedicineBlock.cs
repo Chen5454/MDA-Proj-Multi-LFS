@@ -139,4 +139,9 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
         _isInteractable = isInteractable;
     }
+
+    GameObject BasicBlock.gameObject()
+    {
+        return gameObject;
+    }
 }

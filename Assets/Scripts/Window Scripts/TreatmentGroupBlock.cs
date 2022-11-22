@@ -43,4 +43,8 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
         _isInteractable = isInteractable;
     }
 
+    GameObject BasicBlock.gameObject()
+    {
+        return gameObject;
+    }
 }

@@ -66,8 +66,9 @@ public class NewPatientData
         isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();
         FullTreatmentSequence.Init();
-        AnswerSheet = new AnswerSheet();
-        AnswerSheet.Set(this);
+        //AnswerSheet = new AnswerSheet();
+        //AnswerSheet = 
+        //AnswerSheet.Set(this);
     }
 
     //TBC - Init with ALL required data (measrurements, basic info, models, everythig!)

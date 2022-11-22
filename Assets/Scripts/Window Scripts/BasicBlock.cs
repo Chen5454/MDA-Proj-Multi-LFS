@@ -5,6 +5,7 @@ using PatientCreationSpace;
 
 public interface BasicBlock 
 {
+    GameObject gameObject();
     Treatment GetTreatment();
     TreatmentGroup GetTreatmentGroup();
     bool IsInteractable();

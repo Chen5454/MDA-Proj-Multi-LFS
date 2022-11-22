@@ -50,4 +50,8 @@ public class QuestionBlock : MonoBehaviour, BasicBlock
         _isInteractable = isInteractable;
     }
 
+    GameObject BasicBlock.gameObject()
+    {
+        return gameObject;
+    }
 }

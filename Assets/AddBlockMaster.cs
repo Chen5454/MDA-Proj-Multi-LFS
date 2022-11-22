@@ -17,6 +17,11 @@ public class AddBlockMaster : MonoBehaviour
     private void OnDisable()
     {
         //destory everything!
+        foreach (var item in basicBlocks)
+        {
+            Destroy(item.gameObject());
+        }
+        basicBlocks.Clear();
     }
     public void AddBlockToSequence(GameObject prefab)
     {
