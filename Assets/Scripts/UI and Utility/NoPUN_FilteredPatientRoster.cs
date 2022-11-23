@@ -13,6 +13,8 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
     Transform verticalGroup;
     [SerializeField]
     NewPatientWindow newPatientWindow;
+    [SerializeField]
+    GameObject windowToClose;
     
     private CrewRoomManager _crewRoomManager;
     public CrewRoomManager CrewRoomManager { get => _crewRoomManager; set => _crewRoomManager = value; }
@@ -127,6 +129,7 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
         }
         newPatientWindow.gameObject.SetActive(true);
         PatientCreator.LoadPatient(patientFullName);
+        windowToClose.gameObject.SetActive(false);
         //newPatientWindow.LoadPatient(patientFullName); //same but more useless
         //newPatientWindow.DisplayPatient(); // this happens OnPatientLoad already!
         //LOAD THIS INTO THE DATA FIELDS IN UI

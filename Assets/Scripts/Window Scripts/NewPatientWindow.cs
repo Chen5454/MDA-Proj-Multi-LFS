@@ -151,7 +151,7 @@ namespace PatientCreationSpace
             //string s = System.DateTime.Now.ToString("m-s");
 
             //createdPatient = PatientCreator.CreatePatient(s, patient_name.text, patient_age.text);
-            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), Gender.options[Gender.value].text, Weight.text, //TBF
+            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
@@ -263,11 +263,36 @@ namespace PatientCreationSpace
             Name.text = patient.Name;
             EventName.text = patient.SureName;
             Age.text = patient.Age.ToString();
-            Gender.value = int.Parse(patient.Gender);
+            int option = -1;
+            if(patient.Gender.Equals("זכר"))
+            {
+                option = (int)PatientGender.זכר;
+            }
+                else if(patient.Gender.Equals("נקבה"))
+            {
+                option = (int)PatientGender.נקבה;
+
+            }
+            else
+            {
+                Debug.LogError("No binary options sadly are not available :(");
+                return;
+            }
+            Gender.value = option;
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
             //AddressLocation.text = patient.AddressLocation;
             Complaint.text = patient.Complaint;
+
+            if (patient.isALS)
+                IsALS.ClickMe();
+            else
+                IsBLS.ClickMe();
+
+            if (patient.isTrauma)
+                IsTrauma.ClickMe();
+            else
+                IsIllness.ClickMe();
 
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
