@@ -4180,10 +4180,10 @@ MonoBehaviour:
   treatmentSequenceEditorWindow: {fileID: 2860667054546169310}
   patientRoster: {fileID: 0}
   addBlockMaster: {fileID: 6484387909193359924}
-  questionBlockPrefab: {fileID: 0}
-  testBlockPrefab: {fileID: 0}
-  medicineBlockPrefab: {fileID: 0}
-  treatmentGroupBlockPrefab: {fileID: 0}
+  questionBlockPrefab: {fileID: 7083497699732470297, guid: 93cf866f63497d54da055ec93936fdeb, type: 3}
+  testBlockPrefab: {fileID: 4361064845268802078, guid: 8fad50cb5d4e076448f2f801071e2b6f, type: 3}
+  medicineBlockPrefab: {fileID: 8043410865889604780, guid: ea9d88a2802a6cf46ae2d1c919ff7ec4, type: 3}
+  treatmentGroupBlockPrefab: {fileID: 8043410865889604780, guid: 66e410662ef8a1b4ca8918a01ed1153f, type: 3}
   editSequenceButton: {fileID: 3540747617270297949}
   newSequenceButton: {fileID: 2424160510979254537}
   _photonView: {fileID: 1195062582268481988}
@@ -7685,7 +7685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4548232323141604484
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9733,6 +9733,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2860667055216325854}
+        m_TargetAssemblyTypeName: PatientCreationSpace.NewPatientWindow, Assembly-CSharp
+        m_MethodName: SetEditOrNew
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &6484387909135386983
 GameObject:
@@ -13438,6 +13450,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1873863412403345134}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2860667055216325854}
+        m_TargetAssemblyTypeName: PatientCreationSpace.NewPatientWindow, Assembly-CSharp
+        m_MethodName: SetEditOrNew
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
