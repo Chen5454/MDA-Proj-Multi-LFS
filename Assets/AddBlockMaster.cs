@@ -31,4 +31,14 @@ public class AddBlockMaster : MonoBehaviour
         basicBlocks.Add(bb);
         //or group block if not basic? I dont love it TBF
     }
+    public void AddInstantiatedBlockToSequence(BasicBlock bb)
+    {
+        //GameObject go = Instantiate(prefab, sequenceParent);
+        //BasicBlock bb = go.GetComponent<BasicBlock>();
+        bb.gameObject().transform.parent = sequenceParent;
+        bb.SetAddBlockMaster(this);
+        basicBlocks.Add(bb);
+        //or group block if not basic? I dont love it TBF
+    }
+
 }

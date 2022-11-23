@@ -37,6 +37,19 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     bool _isInteractable;
     AddBlockMaster abm;
+
+    public void SetMedicine(Medicine m)
+    {
+        applicationMethodDropdown.value = m.applicationMethod;
+        for (int i = 0; i < measurementInputFields.Count; i++)
+        {
+            measurementInputFields[i].text = m.measurements.MeasurementValues[i];
+        }
+        minDosageInputField.text = m.minDosage.ToString();
+        maxDosageInputField.text = m.maxDosage.ToString();
+
+    }
+
     public AddBlockMaster addBlockMaster()
     {
         return abm;

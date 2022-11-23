@@ -16,6 +16,18 @@ public class TestBlock : MonoBehaviour, BasicBlock
 
     Databases databases => Databases.Instance;
     AddBlockMaster abm;
+
+    public void SetTest(Test test)
+    {
+        for (int i = 0; i < dropdown.options.Count; i++)
+        {
+            if (dropdown.options[i].text.Equals(test.testName))
+            {
+
+                dropdown.value = i;
+            }
+        }
+    }
     public AddBlockMaster addBlockMaster()
     {
         return abm;

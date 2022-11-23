@@ -31,6 +31,12 @@ public class QuestionBlock : MonoBehaviour, BasicBlock
     //    SetInteractable(true);
     //}
     AddBlockMaster abm;
+
+    public void SetContent(string qText, string aText)
+    {
+        questionText.text = qText;
+        replyText.text = aText;
+    }
     public AddBlockMaster addBlockMaster()
     {
         return abm;
