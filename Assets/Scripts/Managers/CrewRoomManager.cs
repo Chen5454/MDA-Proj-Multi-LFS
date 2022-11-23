@@ -37,7 +37,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [SerializeField] private TMP_InputField _apartmentNumber;
     [SerializeField] private string _noSimulationText, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
-    [SerializeField] private FilteredPatientsRoster _filterredRoaster;
+    [SerializeField] public FilteredPatientsRoster _filterredRoaster;
 
 
     private OwnershipTransfer _transfer;
@@ -50,6 +50,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _photonView = GetComponent<PhotonView>();
         PopulateDropdownRoles();
         RoomCrewMenuUI.gameObject.SetActive(false);
+        GameManager.Instance.CrewRoomsList.Add(_photonView);
     }
 
     private void Start()
