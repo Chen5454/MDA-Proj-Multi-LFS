@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,14 +27,16 @@ public class AddBlockMaster : MonoBehaviour
     {
         GameObject go = Instantiate(prefab, sequenceParent);
         BasicBlock bb = go.GetComponent<BasicBlock>();
+        if (bb == null)
+        {
+            Debug.LogError("כל הכבוד נטע!");
+        }
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
         //or group block if not basic? I dont love it TBF
     }
     public void AddInstantiatedBlockToSequence(BasicBlock bb)
     {
-        //GameObject go = Instantiate(prefab, sequenceParent);
-        //BasicBlock bb = go.GetComponent<BasicBlock>();
         bb.gameObject().transform.parent = sequenceParent;
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);

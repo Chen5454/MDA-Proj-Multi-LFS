@@ -219,12 +219,9 @@ namespace PatientCreationSpace
             
             //newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
             //    Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
-            newCreatedPatient.Initialize(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
-                Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
-            newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
-
+            
             treatmentSequenceEditorWindow.SetActive(true);
-
+            Debug.LogError(PatientCreator.newPatient.FullTreatmentSequence.sequenceBlocks.Count + " BLOCK COUNT when loading");
             //load up the treatment sequence:
             foreach (var item in PatientCreator.newPatient.FullTreatmentSequence.sequenceBlocks)
             {
@@ -298,7 +295,10 @@ namespace PatientCreationSpace
                 }
 
             }
-            
+            newCreatedPatient.Initialize(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
+                Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
+            newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
+
             //treatmentSequenceEditorWindow.Init(createdPatient);
             //treatmentSequenceEditorWindow.Init(newCreatedPatient);
             //continue work on setting the patient and filling their Treatment Sequence
@@ -352,7 +352,7 @@ namespace PatientCreationSpace
             TreatmentSequence treatmentSequence = new TreatmentSequence();
             treatmentSequence.Init();
             //WAITING WITH ALL THIS - need to see if groups don't need parsing but will just return the TreatmentGroup 
-
+            Debug.LogError($"{addBlockMaster.basicBlocks.Count} basic blocks before saved!");
             foreach (var item in addBlockMaster.basicBlocks) 
             {
                 Treatment t = item.GetTreatment();
@@ -386,6 +386,7 @@ namespace PatientCreationSpace
                     treatmentSequence.AddToSequence(tg as SequenceBlock);
                 }
             }
+            Debug.LogError($"{treatmentSequence.sequenceBlocks.Count} - block count before attaching to patient"); 
             PatientCreator.newPatient.FullTreatmentSequence = treatmentSequence;
 
             PatientCreator.SaveNewPatient();
