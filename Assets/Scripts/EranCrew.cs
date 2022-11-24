@@ -47,7 +47,7 @@ public class EranCrew : MonoBehaviour
             PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
 
 
-            currentPlayerData.UserRole = (Roles)0;
+            currentPlayerData.UserRole = 0;
             currentPlayerData.UserIndexInCrew = 0;
             currentPlayerData.CrewIndex = 0;
             desiredPlayerName.text.color = Color.white;

@@ -32,8 +32,8 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [field: SerializeField] public Animation PlayerAnimation { get; set; }
     [field: SerializeField] public CarControllerSimple LastCarController { get; set; }
     [field: SerializeField] public VehicleController LastVehicleController { get; set; }
-    [field: SerializeField] public GameObject Vest { get; set; }
-    [field: SerializeField] public MeshFilter VestMeshFilter { get; set; }
+   // [field: SerializeField] public GameObject Vest { get; set; }
+   // [field: SerializeField] public MeshFilter VestMeshFilter { get; set; }
 
     #region MonobehaviourCallbacks
     private void Awake()
@@ -47,12 +47,11 @@ public class PlayerData : MonoBehaviourPunCallbacks
 
         AranRole = AranRoles.None;
 
-        if (TryGetComponent(out PlayerController playerController))
-        {
-            Vest = playerController.Vest;
-            VestMeshFilter = playerController.VestMeshFilter;
-        }
+      
+
+
     }
+
     private void Update()
     {
         //if (IsInstructor)
@@ -389,14 +388,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
     #endregion
 
     #region UserRPC
-    [PunRPC]
-    private void SetUserVestRPC(int roleIndex)
-    {
-        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
 
-        if (!Vest.activeInHierarchy)
-            Vest.SetActive(true);
-    }
 
     #endregion
 }

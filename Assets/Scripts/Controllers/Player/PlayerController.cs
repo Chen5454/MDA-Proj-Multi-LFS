@@ -113,6 +113,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
 
         _anim = GetComponent<PlayerAnimationManager>();
+
+
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
@@ -126,6 +128,9 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
         thisScript = GetComponent<PlayerController>();
     }
+
+
+
     private void Start()
     {
 
@@ -866,9 +871,15 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(_isMiddleSit);
             stream.SendNext(_isLeftBackSit);
             stream.SendNext(_isRightBackSit);
-            stream.SendNext(PlayerData.IsCrewLeader);
-         
-   
+            //stream.SendNext(PlayerData.IsCrewLeader);
+            //stream.SendNext(PlayerData.UserIndexInCrew);
+            //stream.SendNext(PlayerData.CrewIndex);
+
+
+
+
+
+
         }
         else
         {
@@ -879,28 +890,23 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _isMiddleSit = (bool)stream.ReceiveNext();
             _isLeftBackSit = (bool)stream.ReceiveNext();
             _isRightBackSit = (bool)stream.ReceiveNext();
-            PlayerData.IsCrewLeader = (bool)stream.ReceiveNext();
+            //PlayerData.IsCrewLeader = (bool)stream.ReceiveNext();
+            //PlayerData.UserIndexInCrew = (int)stream.ReceiveNext();
+            //PlayerData.CrewIndex = (int)stream.ReceiveNext();
+   
           
         }
 
     }
     #endregion
-
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    [PunRPC]
+    private void SetUserVestRPC(int roleIndex)
     {
-        base.OnPlayerLeftRoom(otherPlayer);
-        if (otherPlayer.NickName == photonView.Owner.NickName)
-        {
-            Debug.Log(photonView.Owner.NickName + "Has Left the room HI CHEN");
-            Debug.Log(otherPlayer.NickName + "Has Left the room HI CHEN2");
+        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+        PlayerData.UserRole = (Roles)roleIndex;
 
-        }
-
-
-
-
-   
+        if (!Vest.activeInHierarchy)
+            Vest.SetActive(true);
     }
     private void OnDestroy()
     {
