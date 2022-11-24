@@ -43,21 +43,6 @@ public class Action : MonoBehaviour
     [Header("Documentaion")]
     protected string TextToLog;
 
-    private void Start()
-    {
-        if (PatientHeadPosPlayerTransform)
-            PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
-        if (PatientChestPosPlayerTransform)
-            PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
-        if (PatientLegPosPlayerTrasform)
-            PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
-
-        if (PatientHeadPosEquipmentTransform)
-            EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
-        if (PatientChestPosEquipmentTransform)
-            EquipmentPositions.Add(PatientChestPosEquipmentTransform);
-    }
-
     public void GetActionData()
     {
         // loops through all players photonViews
@@ -84,12 +69,18 @@ public class Action : MonoBehaviour
                 //CurrentPatientData = CurrentPatient.PatientData;
                 CurrentPatientData = CurrentPatient.NewPatientData;
 
-                PatientChestPosPlayerTransform = CurrentPatient.ChestPosPlayerTransform;
-                PatientChestPosEquipmentTransform = CurrentPatient.ChestPosEquipmentTransform;
-                PatientHeadPosPlayerTransform = CurrentPatient.HeadPosPlayerTransform;
-                PatientHeadPosEquipmentTransform = CurrentPatient.HeadPosEquipmentTransform;
-                PatientLegPosPlayerTrasform = CurrentPatient.LegPosPlayerTrasform;
+                if (CurrentPatient.ChestPosPlayerTransform)
+                    PatientChestPosPlayerTransform = CurrentPatient.ChestPosPlayerTransform;
+                if (CurrentPatient.ChestPosEquipmentTransform)
+                    PatientChestPosEquipmentTransform = CurrentPatient.ChestPosEquipmentTransform;
+                if (CurrentPatient.HeadPosPlayerTransform)
+                    PatientHeadPosPlayerTransform = CurrentPatient.HeadPosPlayerTransform;
+                if (CurrentPatient.HeadPosEquipmentTransform)
+                    PatientHeadPosEquipmentTransform = CurrentPatient.HeadPosEquipmentTransform;
+                if (CurrentPatient.LegPosPlayerTrasform)
+                    PatientLegPosPlayerTrasform = CurrentPatient.LegPosPlayerTrasform;
 
+                AddTransformsToLists();
                 // if found local player no need for loop to continue
                 break;
             }
@@ -129,6 +120,22 @@ public class Action : MonoBehaviour
         //}
     }
 
+    private void AddTransformsToLists()
+    {
+        PlayerTreatingPositions = new List<Transform>();
+        if (PatientHeadPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
+        if (PatientChestPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
+        if (PatientLegPosPlayerTrasform)
+            PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
+
+        EquipmentPositions = new List<Transform>();
+        if (PatientChestPosEquipmentTransform)
+            EquipmentPositions.Add(PatientChestPosEquipmentTransform);
+        if (PatientHeadPosEquipmentTransform)
+            EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
+    }
     public void ShowTextAlert(string title, string content)
     {
         ActionTemplates.Instance.ShowAlertWindow(title, content);
