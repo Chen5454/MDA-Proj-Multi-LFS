@@ -28,7 +28,7 @@ public class PlayerTreatingAnimation : Action
             _playerAnimator = LocalPlayerData.gameObject.transform.GetChild(5).GetComponent<Animator>();
 
             int playerTreatingPos = (int)_playerTreatingPos;
-            LocalPlayerData.transform.SetPositionAndRotation(PlayerTreatingPositions[playerTreatingPos].position, PlayerTreatingPositions[playerTreatingPos].rotation);
+            LocalPlayerData.transform.SetPositionAndRotation(PlayerTreatingPositions[playerTreatingPos].position, new Quaternion(LocalPlayerPhotonView.transform.rotation.x, PlayerTreatingPositions[playerTreatingPos].rotation.y, LocalPlayerPhotonView.transform.rotation.z, LocalPlayerPhotonView.transform.rotation.w));
 
             _playerAnimator.SetBool(_animationName, true);
 
