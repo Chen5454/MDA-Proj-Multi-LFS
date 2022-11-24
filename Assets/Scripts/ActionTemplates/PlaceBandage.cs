@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlaceBandage : Action
 {
+    // need to turn off Action Panel from editor
+
     [SerializeField] private bool _useTourniquetInstead = false;
     private CameraController _camController;
     [SerializeField] private LayerMask _bandageLayer;
@@ -22,7 +24,7 @@ public class PlaceBandage : Action
         GetActionData();
 
         TextToLog = "Placed Bandage on Patient";
-
+        
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
             SwitchRayCastTarget(false);
