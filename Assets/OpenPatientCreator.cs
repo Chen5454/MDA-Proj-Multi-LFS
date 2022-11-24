@@ -10,7 +10,7 @@ public class OpenPatientCreator : MonoBehaviour
 
     [SerializeField]
     Button button;
-    void Start()
+    void Awake()
     {
         if(!button)
         button = GetComponent<Button>();
@@ -26,6 +26,7 @@ public class OpenPatientCreator : MonoBehaviour
 
     private void OnDisable()
     {
+        if(button)
         button.onClick.RemoveAllListeners();
     }
 

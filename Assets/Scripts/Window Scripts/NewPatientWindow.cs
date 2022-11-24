@@ -217,14 +217,16 @@ namespace PatientCreationSpace
                 return;
             }
             
-            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
-                Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
+            //newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
+            //    Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
+            newCreatedPatient.Initialize(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
+                Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
             newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
 
             treatmentSequenceEditorWindow.SetActive(true);
 
             //load up the treatment sequence:
-            foreach (var item in newCreatedPatient.FullTreatmentSequence.sequenceBlocks)
+            foreach (var item in PatientCreator.newPatient.FullTreatmentSequence.sequenceBlocks)
             {
                 switch (item.typeString)
                 {
@@ -443,9 +445,12 @@ namespace PatientCreationSpace
                 //measurementInputFields[i].ForceMeshUpdate(true);
             }
 
+
+
         }
         public void RefreshLoadedPatients()
         {
+            if(patientRoster)
             patientRoster.SetUpNamesAsButtons();
         }
 

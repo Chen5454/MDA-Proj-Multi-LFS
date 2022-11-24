@@ -141,7 +141,7 @@ namespace PatientCreationSpace
             }
             //TreatmentSequence tsTest = DeSerializeTreatmentSequence(toReturn);
 
-            //Debug.Log(tsTest.AllDisplayStrings());
+            Debug.Log(toReturn);
 
             return toReturn;
         }
@@ -153,6 +153,8 @@ namespace PatientCreationSpace
         public static void LoadPatient(string patientFullName)
         {
             newPatient = DeSerializePatient_Full(patientFullName);
+
+            Debug.LogError($"{newPatient.FullTreatmentSequence.sequenceBlocks.Count} sequence blocks in treatment sequence");
             OnLoadPatient?.Invoke();
         }
         /// <summary>
