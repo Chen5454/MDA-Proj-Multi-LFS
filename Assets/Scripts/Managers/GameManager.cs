@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     public Transform[] IncidentPatientSpawns;
     public bool[] IsPatientSpawned;
     //public List<CrewRoomManager> AllCrewRooms;
+    public List<PhotonView> CrewRoomsList = new List<PhotonView>();
+
 
     [Header("Aran")]
     public PhotonView Pikud10View; 

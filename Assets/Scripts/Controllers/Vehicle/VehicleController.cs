@@ -83,6 +83,10 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             GameManager.Instance.AmbulanceCarList.Add(_photonView);
 
         AssginsTextToVehicle();
+
+        var BusCreator = _photonView.CreatorActorNr;
+
+
     }
     private void Update()
     {

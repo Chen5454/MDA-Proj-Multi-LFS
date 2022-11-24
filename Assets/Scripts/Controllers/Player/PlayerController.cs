@@ -113,6 +113,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
 
         _anim = GetComponent<PlayerAnimationManager>();
+
+
         PlayerData = gameObject.AddComponent<PlayerData>();
         _currentCamera = _playerCamera;
         _playerCamera.tag = "MainCamera";
@@ -126,6 +128,9 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
         thisScript = GetComponent<PlayerController>();
     }
+
+
+
     private void Start()
     {
 
@@ -150,6 +155,11 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GetChildRoomPhotonView();
+        }
+
         if (_photonView.IsMine)
         {
             _stateAction.Invoke();
@@ -632,6 +642,86 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
   
     }
 
+
+    public int GetRoomPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.CrewRoomsList.Count; i++)
+        {
+            CrewRoomManager desiredRoom = GameManager.Instance.CrewRoomsList[i].GetComponent<CrewRoomManager>();
+
+            if (PlayerData.CrewIndex == desiredRoom._crewRoomIndex)
+            {
+                int RoomIndex = desiredRoom.GetComponent<PhotonView>().ViewID;
+                Debug.Log(RoomIndex);
+                return RoomIndex;
+            }
+        }
+        Debug.Log("Return nothing - RoomPhotonView");
+        return 0;
+    }
+
+    public int  GetChildRoomPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.CrewRoomsList.Count; i++)
+        {
+            CrewRoomManager desiredRoom = GameManager.Instance.CrewRoomsList[i].GetComponent<CrewRoomManager>();
+
+            if (PlayerData.CrewIndex == desiredRoom._crewRoomIndex)
+            {
+                var childPhtonView = desiredRoom._filterredRoaster._photonView;
+                Debug.Log(childPhtonView.ViewID);
+                int RoomIndex = childPhtonView.ViewID;
+                //Debug.Log(RoomIndex);
+                return RoomIndex;
+            }
+        }
+        Debug.Log("Return nothing - GetChildRoomPhotonView");
+        return 0;
+    }
+
+    [PunRPC]
+    public void FindPlayerOwnerCrewRoom(int roomIndex)
+    {
+        GameObject go = PhotonNetwork.GetPhotonView(roomIndex).gameObject;
+        var goPhotonview = go.GetComponent<PhotonView>().Owner;
+
+
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
+
+            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
+            {
+                go.GetComponent<PhotonView>().TransferOwnership(GetRandomCrewTeam());
+            }
+        }
+
+    }
+
+    public Player GetRandomCrewTeam()
+    {
+        
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerData desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+
+            if (!desiredPlayer.photonView.IsMine)
+            {
+                if (desiredPlayer.CrewIndex == PlayerData.CrewIndex)
+                {
+                    Player PlayerIndex = desiredPlayer.GetComponent<PhotonView>().Owner;
+                    Debug.Log("Switching Owning to diffrent team player");
+                    return PlayerIndex;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        
+        }
+        return null;
+    }
     #endregion
 
     #region Private Methods
@@ -781,7 +871,15 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(_isMiddleSit);
             stream.SendNext(_isLeftBackSit);
             stream.SendNext(_isRightBackSit);
-   
+            //stream.SendNext(PlayerData.IsCrewLeader);
+            //stream.SendNext(PlayerData.UserIndexInCrew);
+            //stream.SendNext(PlayerData.CrewIndex);
+
+
+
+
+
+
         }
         else
         {
@@ -792,13 +890,30 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _isMiddleSit = (bool)stream.ReceiveNext();
             _isLeftBackSit = (bool)stream.ReceiveNext();
             _isRightBackSit = (bool)stream.ReceiveNext();
+            //PlayerData.IsCrewLeader = (bool)stream.ReceiveNext();
+            //PlayerData.UserIndexInCrew = (int)stream.ReceiveNext();
+            //PlayerData.CrewIndex = (int)stream.ReceiveNext();
+   
           
         }
 
     }
     #endregion
+    [PunRPC]
+    private void SetUserVestRPC(int roleIndex)
+    {
+        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+        PlayerData.UserRole = (Roles)roleIndex;
 
+        if (!Vest.activeInHierarchy)
+            Vest.SetActive(true);
+    }
+    private void OnDestroy()
+    {
+        photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetRoomPhotonView());
+        photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetChildRoomPhotonView());
 
+    }
 
 
 }
