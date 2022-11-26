@@ -43,6 +43,23 @@ public class Action : MonoBehaviour
     [Header("Documentaion")]
     protected string TextToLog;
 
+    private void AddTransformsToLists()
+    {
+        PlayerTreatingPositions = new List<Transform>();
+        if (PatientHeadPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
+        if (PatientChestPosPlayerTransform)
+            PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
+        if (PatientLegPosPlayerTrasform)
+            PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
+
+        EquipmentPositions = new List<Transform>();
+        if (PatientChestPosEquipmentTransform)
+            EquipmentPositions.Add(PatientChestPosEquipmentTransform);
+        if (PatientHeadPosEquipmentTransform)
+            EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
+    }
+
     public void GetActionData()
     {
         // loops through all players photonViews
@@ -85,67 +102,15 @@ public class Action : MonoBehaviour
                 break;
             }
         }
-        //// loops through all players photonViews
-        //foreach (PhotonView photonView in ActionsManager.Instance.AllPlayersPhotonViews)
-        //{
-        //    // execute only if this instance if of the local player
-        //    if (photonView.IsMine)
-        //    {
-        //        // Get local photonView
-        //        LocalPlayerPhotonView = photonView;
-        //
-        //        // Get local PlayerData
-        //        LocalPlayerData = photonView.GetComponent<PlayerData>();
-        //        LocalPlayerName = LocalPlayerData.UserName;
-        //        LocalPlayerCrewIndex = LocalPlayerData.CrewIndex;
-        //        CrewColor = LocalPlayerData.CrewColor;
-        //
-        //        // check if local player joined with a Patient
-        //        if (!LocalPlayerData.CurrentPatientNearby.IsPlayerJoined(LocalPlayerData))
-        //            return;
-        //
-        //        // get Patient & PatientData
-        //        CurrentPatient = LocalPlayerData.CurrentPatientNearby;
-        //        CurrentPatientData = CurrentPatient.PatientData;
-        //
-        //        PatientChestPosPlayerTransform = CurrentPatient.ChestPosPlayerTransform;
-        //        PatientChestPosEquipmentTransform = CurrentPatient.ChestPosEquipmentTransform;
-        //        PatientHeadPosPlayerTransform = CurrentPatient.HeadPosPlayerTransform;
-        //        PatientHeadPosEquipmentTransform = CurrentPatient.HeadPosEquipmentTransform;
-        //        PatientLegPosPlayerTrasform = CurrentPatient.LegPosPlayerTrasform;
-        //
-        //        // if found local player no need for loop to continue
-        //        break;
-        //    }
-        //}
-    }
-
-    private void AddTransformsToLists()
-    {
-        PlayerTreatingPositions = new List<Transform>();
-        if (PatientHeadPosPlayerTransform)
-            PlayerTreatingPositions.Add(PatientHeadPosPlayerTransform);
-        if (PatientChestPosPlayerTransform)
-            PlayerTreatingPositions.Add(PatientChestPosPlayerTransform);
-        if (PatientLegPosPlayerTrasform)
-            PlayerTreatingPositions.Add(PatientLegPosPlayerTrasform);
-
-        EquipmentPositions = new List<Transform>();
-        if (PatientChestPosEquipmentTransform)
-            EquipmentPositions.Add(PatientChestPosEquipmentTransform);
-        if (PatientHeadPosEquipmentTransform)
-            EquipmentPositions.Add(PatientHeadPosEquipmentTransform);
     }
     public void ShowTextAlert(string title, string content)
     {
         ActionTemplates.Instance.ShowAlertWindow(title, content);
     }
-
     public void ShowNumAlert(string title, int number)
     {
         ActionTemplates.Instance.ShowAlertWindow(title, number);
     }
-
     public void LogText(string textToLog)
     {
         ActionTemplates.Instance.UpdatePatientLog(LocalPlayerCrewIndex, LocalPlayerName, textToLog);
