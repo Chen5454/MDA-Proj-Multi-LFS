@@ -45,7 +45,7 @@ public class AddBlockMaster : MonoBehaviour
     }
     public void AddInstantiatedBlockToSequence(BasicBlock bb)
     {
-        bb.gameObject().transform.parent = sequenceParent;
+        bb.gameObject().transform.SetParent(sequenceParent);
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
         //or group block if not basic? I dont love it TBF
