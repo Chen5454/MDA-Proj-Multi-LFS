@@ -5,6 +5,8 @@ using UnityEngine;
 using TMPro;
 using PatientCreationSpace;
 
+public enum MedicineApplicationMethod {Po,Iv,IM,IO,SC,SL}
+
 public class MedicineBlock : MonoBehaviour, BasicBlock
 { 
     [SerializeField]
@@ -37,6 +39,20 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     bool _isInteractable;
     AddBlockMaster abm;
+
+    public void SetMedicine(Medicine m)
+    {
+        applicationMethodDropdown.value = m.applicationMethod;
+        for (int i = 0; i < measurementInputFields.Count; i++)
+        {
+            measurementInputFields[i].text = m.measurements.MeasurementValues[i];
+        }
+        minDosageInputField.text = m.minDosage.ToString();
+        maxDosageInputField.text = m.maxDosage.ToString();
+        applicationMethodDropdown.value = m.applicationMethod;
+
+    }
+
     public AddBlockMaster addBlockMaster()
     {
         return abm;
@@ -98,8 +114,10 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         else
             dropdown.AddOptions(databases.medicineDB.GetListOfTreatmentNames());
 
-
         dropdown.RefreshShownValue();
+        List<string> medAppMethods = System.Enum.GetNames(typeof(MedicineApplicationMethod)).ToList();
+        applicationMethodDropdown.ClearOptions();
+        applicationMethodDropdown.AddOptions(medAppMethods);
     }
 
     public void RevealMeasurement()

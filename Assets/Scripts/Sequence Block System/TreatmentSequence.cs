@@ -28,7 +28,7 @@ namespace PatientCreationSpace
         public void AddToSequence(SequenceBlock sequenceBlock)
         {
             sequenceBlocks.Add(sequenceBlock);
-            OnSequenceChange?.Invoke();
+            //OnSequenceChange?.Invoke();
         }
   
         /// <summary>

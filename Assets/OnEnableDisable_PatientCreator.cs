@@ -34,6 +34,7 @@ public class OnEnableDisable_PatientCreator : MonoBehaviour
 
     private void Start()
     {
+        if (UIManager.Instance)
         UIManager.Instance.PatientCreationWindow = gameObject;
         inited = true;
         gameObject.SetActive(false);
