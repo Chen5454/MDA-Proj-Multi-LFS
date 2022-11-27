@@ -60,9 +60,9 @@ public class PlaceBandage : Action
             }
         }
     }
-    private void CloseBagWindow()
-    {
-        if (_bagWindow)
-            _bagWindow.SetActive(false);
-    }
+    //private void CloseBagWindow()
+    //{
+    //    if (_bagWindow)
+    //        _bagWindow.SetActive(false);
+    //}
 }
