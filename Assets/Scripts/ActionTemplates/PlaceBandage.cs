@@ -6,7 +6,7 @@ public class PlaceBandage : Action
 {
     // need to turn off Action Panel from editor
 
-    [SerializeField] private GameObject _bagWindow;
+    //[SerializeField] private GameObject _bagWindow;
     [SerializeField] private bool _useTourniquetInstead = false;
     private CameraController _camController;
     [SerializeField] private LayerMask _bandageLayer;
@@ -36,8 +36,6 @@ public class PlaceBandage : Action
             {
                 LogText(TextToLog);
             }
-
-            CloseBagWindow();
         }
     }
 
