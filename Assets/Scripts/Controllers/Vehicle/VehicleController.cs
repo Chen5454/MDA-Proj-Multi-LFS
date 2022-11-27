@@ -383,6 +383,17 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             stream.SendNext(IsRightBackIn);
             stream.SendNext(IsPatientIn);
             stream.SendNext(IsInMovement);
+
+            foreach (var CarNameTxt in _CarNameTxt)
+            {
+
+                stream.SendNext(CarNameTxt.text);
+
+            }
+            foreach (var CarNumberTxt in _CarNumberTxt)
+            {
+                stream.SendNext(CarNumberTxt.text);
+            }
         }
         else
         {
@@ -395,6 +406,18 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             IsRightBackIn = (bool)stream.ReceiveNext();
             IsPatientIn = (bool)stream.ReceiveNext();
             IsInMovement = (bool)stream.ReceiveNext();
+
+
+            foreach (var CarNameTxt in _CarNameTxt)
+            {
+
+                CarNameTxt.text = (string)stream.ReceiveNext();
+
+            }
+            foreach (var CarNumberTxt in _CarNumberTxt)
+            {
+                CarNumberTxt.text = (string)stream.ReceiveNext();
+            }
         }
     }
 }
