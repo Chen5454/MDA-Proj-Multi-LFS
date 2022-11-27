@@ -11,17 +11,23 @@ public class AddBlockMaster : MonoBehaviour
 
     private void OnEnable()
     {
-        if(basicBlocks == null)
-        basicBlocks = new List<BasicBlock>();
+        if (basicBlocks == null)
+            basicBlocks = new List<BasicBlock>();
+        else
+        {
+            foreach (var item in basicBlocks)
+            {
+                Destroy(item.gameObject());
+            }
+            basicBlocks.Clear();
+        }
+
     }
     private void OnDisable()
     {
         //destory everything!
-        foreach (var item in basicBlocks)
-        {
-            Destroy(item.gameObject());
-        }
-        basicBlocks.Clear();
+        
+        //basicBlocks.Clear();
     }
     public void AddBlockToSequence(GameObject prefab)
     {
@@ -33,6 +39,8 @@ public class AddBlockMaster : MonoBehaviour
         }
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
+
+        Debug.LogError($"{basicBlocks.Count} basic block count RIGHT NOW");
         //or group block if not basic? I dont love it TBF
     }
     public void AddInstantiatedBlockToSequence(BasicBlock bb)
