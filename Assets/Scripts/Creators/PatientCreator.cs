@@ -13,8 +13,8 @@ namespace PatientCreationSpace
     {
 
 #if UNITY_EDITOR
-        public static readonly string streamingAssets_PatientFolderPath = "Assets/StreamingAssets/Patients/";
-        public static readonly string streamingAssets_ARAN_PatientFolderPath = "Assets/StreamingAssets/AranPatients/"; //Maybe there should be folders of AranPatient sets ? TBF
+        public static readonly string streamingAssets_PatientFolderPath = "Assets/StreamingAssets/Patients";
+        public static readonly string streamingAssets_ARAN_PatientFolderPath = "Assets/StreamingAssets/AranPatients"; //Maybe there should be folders of AranPatient sets ? TBF
 #else
         public static readonly string streamingAssets_PatientFolderPath = $"{Application.streamingAssetsPath}/Patients/";
         public static readonly string streamingAssets_ARAN_PatientFolderPath = $"{Application.streamingAssetsPath}/AranPatients/";//Maybe there should be folders of AranPatient sets ? TBF

@@ -54,6 +54,10 @@ public class UIManager : MonoBehaviour
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
 
+    [Header("Errors")]
+
+    public GameObject _tastingForPremisionWorks;
+    public GameObject _tastingForPremisionError;
 
     #endregion
 

@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Linq;
 
 public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 {
@@ -96,6 +98,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     private PlayerController thisScript;
 
+    public GameObject _tastingForPremisionWorks;
+    public GameObject _tastingForPremisionError;
 
     #region Colliders
     [Header("Colliders")]
@@ -110,6 +114,39 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     #region Monobehaviour Callbacks
     private void Awake()
     {
+        _tastingForPremisionWorks = UIManager.Instance._tastingForPremisionWorks;
+        _tastingForPremisionError = UIManager.Instance._tastingForPremisionError;
+
+
+        _tastingForPremisionWorks.SetActive(false);
+        _tastingForPremisionError.SetActive(false);
+        //Testing To Try+Catch the Writing/Reading Folder for Ester
+
+        try
+        {
+            string readFromFilePath = Application.streamingAssetsPath + "/Patients/" + "PremissionTests" + ".txt";
+            if (!File.Exists(readFromFilePath))
+            {
+                File.WriteAllText(readFromFilePath,"I am Writing Something important\n\n");
+            }
+
+            string[] fileLines = File.ReadAllLines(readFromFilePath);
+
+            foreach (var line in fileLines)
+            {
+                Debug.Log("Read from File" + line);
+            }
+            _tastingForPremisionWorks.SetActive(true);
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            Console.WriteLine(e);
+            _tastingForPremisionError.SetActive(true);
+            throw;
+        }
+
+
+
         UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
 
         _anim = GetComponent<PlayerAnimationManager>();
@@ -134,7 +171,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private void Start()
     {
 
-
+        
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -155,10 +192,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GetChildRoomPhotonView();
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    GetChildRoomPhotonView();
+        //}
 
         if (_photonView.IsMine)
         {
@@ -533,7 +570,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     public void CrewLeaderResetIncident()
     {
         _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
-        photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
+       _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
     }
 
@@ -560,8 +597,26 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 Destroy(desiredPatient.gameObject);
             }
         }
-    }
 
+        //foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        //{
+        //    PlayerData currentPlayerData = player.GetComponent<PlayerData>();
+        //    NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+        //    PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
+
+        //    if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
+        //    {
+        //        currentPlayerData.UserRole = 0;
+        //        currentPlayerData.UserIndexInCrew = 0;
+        //        currentPlayerData.CrewIndex = 0;
+        //        desiredPlayerName.text.color = Color.white;
+        //        currentPlayerData.CrewColor = Color.white;
+        //        currentPlayer.Vest.SetActive(false);
+        //    }
+     
+        //}
+
+    }
 
     public int  GetCarPhotonView()
     {
