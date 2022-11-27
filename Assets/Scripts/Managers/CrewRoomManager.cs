@@ -364,9 +364,11 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
             //3) Instantiate correct prefab
 
-            object[] instantiationData = new object[1];
+            object[] instantiationData = new object[2];
             instantiationData[0] = PatientCreationSpace.PatientCreator.newPatient.Name + "_" +
                                    PatientCreationSpace.PatientCreator.newPatient.SureName;
+            instantiationData[1] = _crewRoomIndex;
+
 
             GameObject go = PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
                 GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);

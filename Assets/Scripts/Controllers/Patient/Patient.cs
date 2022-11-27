@@ -26,6 +26,8 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     public NewPatientData NewPatientData;
     public List<ActionSequence> ActionSequences;
     public SmoothSyncMovement SmoothMovement;
+    public int _ownedCrewNumber;
+
     #endregion
 
     public string PatientFullName;
@@ -470,5 +472,8 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         PatientCreator.LoadPatient(PatientFullName);
         InitializePatientData(PatientCreator.newPatient);
         //Debug.Log(PatientFullName);
+
+        _ownedCrewNumber = (int)instantiationData[1];
+        Debug.Log("Room Number is " + _ownedCrewNumber);
     }
 }

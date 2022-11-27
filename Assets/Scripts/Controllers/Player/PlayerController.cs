@@ -570,6 +570,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     public void CrewLeaderResetIncident()
     { 
         _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
+      //  _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
        _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
     }
@@ -618,7 +619,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     }
 
-        public int  GetCarPhotonView()
+    public int GetCarPhotonView()
     {
         for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
@@ -626,7 +627,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
             if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
             {
-                 int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
+                int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
                 Debug.Log(carIndex);
                 return carIndex;
             }
@@ -649,6 +650,23 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         return 0;
     }
 
+    public int GetPatientPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        {
+            Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
+
+            if (PlayerData.CrewIndex == desiredPatient._ownedCrewNumber)
+            {
+                int patientIndex = desiredPatient.GetComponent<PhotonView>().ViewID;
+                Debug.Log(patientIndex);
+                return patientIndex;
+            }
+        }
+
+        Debug.Log("Return nothing");
+        return 0;
+    }
 
     public Player GetCarOwner()
     {
@@ -676,19 +694,33 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
         return null;
     }
+    public Player GetPatientOwner()
+    {
+        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        {
+            Patient desiredPatient = GameManager.Instance.AmbulanceCarList[i].GetComponent<Patient>();
 
+            if (PlayerData.CrewIndex == desiredPatient._ownedCrewNumber)
+            {
+                Player patientIndex = desiredPatient.GetComponent<PhotonView>().Controller;
+                return patientIndex;
+            }
+        }
+
+        return null;
+    }
     [PunRPC]
     public void FindPlayerOwner(int carIndex)
     {
         GameObject go = PhotonNetwork.GetPhotonView(carIndex).gameObject;
-        var goPhotonview = go.GetComponent<PhotonView>().Owner;
+        var goPhotonview = go.GetComponent<PhotonView>().CreatorActorNr;
 
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
             PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
 
-            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
+            if (desiredPlayer.CreatorActorNr == goPhotonview)//enter Car Photon
             {
                 PhotonNetwork.Destroy(go);
             }
