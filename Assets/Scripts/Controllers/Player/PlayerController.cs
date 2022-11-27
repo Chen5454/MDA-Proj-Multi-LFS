@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
         try
         {
-            string readFromFilePath = Application.streamingAssetsPath + "/Patients/" + "PremissionTests" + ".txt";
+            string readFromFilePath = Application.streamingAssetsPath + "/Patients/Premmision/" + "PremissionTests" + ".txt";
             if (!File.Exists(readFromFilePath))
             {
                 File.WriteAllText(readFromFilePath,"I am Writing Something important\n\n");
