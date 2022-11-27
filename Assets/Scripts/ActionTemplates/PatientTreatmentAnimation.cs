@@ -36,7 +36,10 @@ public class PatientTreatmentAnimation : Action
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
             // need fixing
-            _patientAnimator = CurrentPatient.GetComponent<Animator>();
+            if (CurrentPatient.GetComponent<Animator>())
+                _patientAnimator = CurrentPatient.GetComponent<Animator>();
+            else
+                return;
 
             _patientAnimator.SetBool(_animationName, true);
             StartCoroutine(WaitToFinishAnimation());
