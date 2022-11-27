@@ -568,8 +568,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
 
     public void CrewLeaderResetIncident()
-    {
-        //_photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
+    { 
+        _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
        _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
     }
@@ -588,37 +588,37 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             }
         }
 
-        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
-        {
-            Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
-
-            if (desiredPatient.PhotonView.CreatorActorNr == photonView.CreatorActorNr)
-            {
-                Destroy(desiredPatient.gameObject);
-            }
-        }
-
-        //foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        //for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
         //{
-        //    PlayerData currentPlayerData = player.GetComponent<PlayerData>();
-        //    NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
-        //    PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
-
-        //    if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
+        //    PhotonView desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<PhotonView>();
+            
+        //    if (desiredPatient.CreatorActorNr == photonView.CreatorActorNr)
         //    {
-        //        currentPlayerData.UserRole = 0;
-        //        currentPlayerData.UserIndexInCrew = 0;
-        //        currentPlayerData.CrewIndex = 0;
-        //        desiredPlayerName.text.color = Color.white;
-        //        currentPlayerData.CrewColor = Color.white;
-        //        currentPlayer.Vest.SetActive(false);
+        //        Destroy(desiredPatient.gameObject);
         //    }
-     
         //}
+
+        foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        {
+            PlayerData currentPlayerData = player.GetComponent<PlayerData>();
+            NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+            PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
+
+            if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
+            {
+                currentPlayerData.UserRole = 0;
+                currentPlayerData.UserIndexInCrew = 0;
+                currentPlayerData.CrewIndex = 0;
+                desiredPlayerName.text.color = Color.white;
+                currentPlayerData.CrewColor = Color.white;
+                currentPlayer.Vest.SetActive(false);
+            }
+
+        }
 
     }
 
-    public int  GetCarPhotonView()
+        public int  GetCarPhotonView()
     {
         for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
