@@ -11,7 +11,7 @@ public class WorldCanvasInteraction : MonoBehaviour, IPointerEnterHandler, IPoin
 
     [SerializeField] private float _distanceFromPlayer = 2f;
 
-    public void OnPointerEnter(PointerEventData eventData)
+    private void SetPlayerViewAndController()
     {
         if (!_playerView)
         {
@@ -20,11 +20,19 @@ public class WorldCanvasInteraction : MonoBehaviour, IPointerEnterHandler, IPoin
                 if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
                 {
                     _playerView = ActionsManager.Instance.AllPlayersPhotonViews[i];
-                    _playerController = _playerView.GetComponent<PlayerController>();
+
+                    if (!_playerController)
+                        _playerController = _playerView.GetComponent<PlayerController>();
+
                     break;
                 }
             }
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        SetPlayerViewAndController();
 
         if (_playerView.IsMine)
         {
@@ -42,6 +50,8 @@ public class WorldCanvasInteraction : MonoBehaviour, IPointerEnterHandler, IPoin
     }
     public void OnPointerExit(PointerEventData eventData)
     {
+        SetPlayerViewAndController();
+
         if (_playerView.IsMine)
         {
             Debug.Log("My Pointer Exit");
@@ -50,6 +60,16 @@ public class WorldCanvasInteraction : MonoBehaviour, IPointerEnterHandler, IPoin
         else
         {
             Debug.Log("Any Pointer Exit");
+        }
+    }
+    public void OnCloseWindow()
+    {
+        SetPlayerViewAndController();
+
+        if (_playerView.IsMine)
+        {
+            Debug.Log("My Pointer Exit");
+            _playerController.ChangeToUseUIState(false);
         }
     }
 }
