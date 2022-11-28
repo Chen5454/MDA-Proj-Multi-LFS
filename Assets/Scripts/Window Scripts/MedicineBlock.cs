@@ -148,12 +148,13 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
         for (int i = 0; i < measurementInputFields.Count; i++)
         {
-            if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+            if (string.IsNullOrEmpty(measurementInputFields[i].text)) 
             {
                 measurementArray[i] = "";
                 continue;
             }
             measurementArray[i] = measurementInputFields[i].text;
+            Debug.LogWarning($"{(Measurements)i} Value SET!");
         }
         patientMeasurements.SetMeasurementValues(measurementArray);
         return MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
