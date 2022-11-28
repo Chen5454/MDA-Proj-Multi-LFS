@@ -232,6 +232,7 @@ namespace PatientCreationSpace
                         TreatmentGroup tg = item as TreatmentGroup;
                         GameObject groupPrefab = Instantiate(treatmentGroupBlockPrefab);
                         TreatmentGroupBlock tgb = groupPrefab.GetComponent<TreatmentGroupBlock>();
+                        addBlockMaster.AddInstantiatedBlockToSequence(tgb);
 
                         foreach (var sBlock in tg.SequenceBlocks())
                         {
