@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AddBlockMaster : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class AddBlockMaster : MonoBehaviour
     Transform sequenceParent;
 
     public List<BasicBlock> basicBlocks;
+    [SerializeField]
+    ScrollRect scrollRect;
 
     private void OnEnable()
     {
@@ -39,8 +42,6 @@ public class AddBlockMaster : MonoBehaviour
         }
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
-
-        Debug.LogError($"{basicBlocks.Count} basic block count RIGHT NOW");
         //or group block if not basic? I dont love it TBF
     }
     public void AddInstantiatedBlockToSequence(BasicBlock bb)

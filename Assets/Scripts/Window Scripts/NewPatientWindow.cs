@@ -78,7 +78,7 @@ namespace PatientCreationSpace
 
 
        public PhotonView _photonView;
-        public void SetEditOrNew(bool isEdit)
+        public void SetEditOrNew(bool isEdit) 
         {
             editSequenceButton.SetActive(isEdit);
             newSequenceButton.SetActive(!isEdit);
