@@ -295,6 +295,10 @@ namespace PatientCreationSpace
                 }
 
             }
+            if(newCreatedPatient == null)
+            {
+                newCreatedPatient = new NewPatientData();
+            }
             newCreatedPatient.Initialize(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
             newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;

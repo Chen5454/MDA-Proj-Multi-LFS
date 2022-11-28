@@ -53,6 +53,11 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
         for (int i = 0; i < measurementInputFields.Count; i++)
         {
+            if(m.measurements.MeasurementValues[i] == "")
+            {
+                continue;
+            }
+            measurementInputFields[i].transform.parent.gameObject.SetActive(true);
             measurementInputFields[i].text = m.measurements.MeasurementValues[i];
         }
         minDosageInputField.text = m.minDosage.ToString();
