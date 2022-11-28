@@ -42,7 +42,15 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     public void SetMedicine(Medicine m)
     {
-        applicationMethodDropdown.value = m.applicationMethod;
+        for (int i = 0; i < dropdown.options.Count; i++)
+        {
+            if (dropdown.options[i].text.Equals(m.medicineName))
+            {
+                dropdown.value = i;
+                dropdown.RefreshShownValue();
+            }
+        }
+
         for (int i = 0; i < measurementInputFields.Count; i++)
         {
             measurementInputFields[i].text = m.measurements.MeasurementValues[i];
@@ -50,6 +58,7 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         minDosageInputField.text = m.minDosage.ToString();
         maxDosageInputField.text = m.maxDosage.ToString();
         applicationMethodDropdown.value = m.applicationMethod;
+        applicationMethodDropdown.RefreshShownValue();
 
     }
 

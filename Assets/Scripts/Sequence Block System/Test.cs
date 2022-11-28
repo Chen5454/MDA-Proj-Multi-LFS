@@ -14,6 +14,12 @@ namespace PatientCreationSpace
         //Should not also hold the type of measurement checked for? TBD TBF ALON
 
         //TBF test setter?
+
+        public void Init(string newID, string treatmentType, string newTestName)
+        {
+            testName = newTestName;
+            Set(newID, treatmentType);
+        }
         public override void Set(string newID, string treatmentType)
         {
             base.Set(newID, treatmentType);

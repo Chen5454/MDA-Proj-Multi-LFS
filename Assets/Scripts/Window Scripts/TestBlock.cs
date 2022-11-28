@@ -25,8 +25,10 @@ public class TestBlock : MonoBehaviour, BasicBlock
             {
 
                 dropdown.value = i;
+                dropdown.RefreshShownValue();
             }
         }
+
     }
     public AddBlockMaster addBlockMaster()
     {
@@ -45,7 +47,10 @@ public class TestBlock : MonoBehaviour, BasicBlock
 
     public Treatment GetTreatment()
     {
-        return databases.testDB.GetTreatmentByIndex(dropdown.value);
+        //return databases.testDB.GetTreatmentByIndex(dropdown.value);
+        Test t = new Test();
+        t.Init(databases.testDB.GetTreatmentByIndex(dropdown.value).ID(), "Test" ,databases.testDB.GetTreatmentByIndex(dropdown.value).testName);
+        return t;
     }
     public TreatmentGroup GetTreatmentGroup()
     {
