@@ -42,14 +42,23 @@ public class AddBlockMaster : MonoBehaviour
         }
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
-        //or group block if not basic? I dont love it TBF
+        Invoke("ScrollToBottom", .3f);
+
+        
     }
     public void AddInstantiatedBlockToSequence(BasicBlock bb)
     {
         bb.gameObject().transform.SetParent(sequenceParent);
         bb.SetAddBlockMaster(this);
         basicBlocks.Add(bb);
-        //or group block if not basic? I dont love it TBF
+        
+        Invoke("ScrollToBottom", .3f);
+    }
+
+    void ScrollToBottom()
+    {
+        scrollRect.normalizedPosition = new Vector2(0, 0);
+
     }
 
 }
