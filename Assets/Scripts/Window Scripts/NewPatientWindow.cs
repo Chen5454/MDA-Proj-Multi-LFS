@@ -239,9 +239,8 @@ namespace PatientCreationSpace
                             {
 
                                 case "Question":
-                                    
                                     QuestionBlock qb1 = Instantiate(questionBlockPrefab).GetComponent<QuestionBlock>();
-                                    Question q1 = item as Question;
+                                    Question q1 = sBlock as Question;
                                     qb1.SetContent(q1.questionText, q1.answerText);
                                     tgb.myAddBlock.AddInstantiatedBlockToSequence(qb1);
 
@@ -249,7 +248,7 @@ namespace PatientCreationSpace
                                 case "Test":
                                     
                                     TestBlock tb1 = Instantiate(testBlockPrefab).GetComponent<TestBlock>();
-                                    Test t1 = item as Test;
+                                    Test t1 = sBlock as Test;
                                     tb1.SetTest(t1);
                                     tgb.myAddBlock.AddInstantiatedBlockToSequence(tb1);
 
@@ -257,7 +256,7 @@ namespace PatientCreationSpace
                                 case "Medicine":
                                     
                                     MedicineBlock mb1 = Instantiate(medicineBlockPrefab).GetComponent<MedicineBlock>();
-                                    Medicine m1 = item as Medicine;
+                                    Medicine m1 = sBlock as Medicine;
                                     mb1.SetMedicine(m1);
                                     tgb.myAddBlock.AddInstantiatedBlockToSequence(mb1);
                                     break;

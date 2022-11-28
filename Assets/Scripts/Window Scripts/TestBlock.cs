@@ -49,7 +49,7 @@ public class TestBlock : MonoBehaviour, BasicBlock
     {
         //return databases.testDB.GetTreatmentByIndex(dropdown.value);
         Test t = new Test();
-        t.Init(databases.testDB.GetTreatmentByIndex(dropdown.value).ID(), "Test" ,databases.testDB.GetTreatmentByIndex(dropdown.value).testName);
+        t.Init(databases.testDB.GetTreatmentByIndex(dropdown.value).ID(), "Test" ,dropdown.itemText.text);
         return t;
     }
     public TreatmentGroup GetTreatmentGroup()
