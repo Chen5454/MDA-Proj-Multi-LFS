@@ -369,7 +369,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
                                    PatientCreationSpace.PatientCreator.newPatient.SureName;
 
             GameObject go = PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
-                GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
+                GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
             go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
