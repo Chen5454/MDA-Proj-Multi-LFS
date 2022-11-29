@@ -13,7 +13,7 @@ using PatientCreationSpace;
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunPrefabPool
 {
     #region Photon
     [Header("Photon")]
@@ -470,5 +470,16 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         PatientCreator.LoadPatient(PatientFullName);
         InitializePatientData(PatientCreator.newPatient);
         //Debug.Log(PatientFullName);
+    }
+
+    public GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation)
+    {
+        Debug.Log(prefabId);
+        return null;
+    }
+
+    public void Destroy(GameObject gameObject)
+    {
+        //throw new NotImplementedException();
     }
 }
