@@ -364,19 +364,20 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
             //3) Instantiate correct prefab
 
-            object[] instantiationData = new object[1];
+            object[] instantiationData = new object[2];
             instantiationData[0] = PatientCreationSpace.PatientCreator.newPatient.Name + "_" +
                                    PatientCreationSpace.PatientCreator.newPatient.SureName;
 
-            GameObject go = PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
-                GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
+            instantiationData[1] = _crewRoomIndex;
+
+            _photonView.RPC("SpawnPatients_RPC",RpcTarget.MasterClient, apartmentNum, instantiationData);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
-            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
+            // go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
             // Debug.Log(PatientCreationSpace.PatientCreator.newPatient);
-            go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
+            //go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
 
-            go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
+            //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
@@ -386,6 +387,14 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
+
+    [PunRPC]
+    private void SpawnPatients_RPC(int apartmentNum,object[] instantiationData)
+    {
+        PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
+            GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
+    }
+
     public void StartIncident()
     {
         if (!GameManager.Instance.IsAranActive)
@@ -636,22 +645,19 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
        {
            if (_isNatanRequired)
            {
-             var go =  PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation, 0, crewRoom);
-                go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
+             PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.NatanPrefab.name, ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation, 0, crewRoom);
            }
            else
-           {
-               var go =PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation, 0, crewRoom);
-                go.GetComponent<VehicleController>().PhotonView.TransferOwnership(GetCrewLeader());
-
+           { 
+             PhotonNetwork.InstantiateRoomObject(ActionsManager.Instance.AmbulancePrefab.name, ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].position, ActionsManager.Instance.NatanPrefab.transform.rotation, 0, crewRoom);
            }
-
        }
     }
 
     void SpawnVehicle()
     {
-        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer, _crewRoomIndex);
+        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex);
+     
     }
 
     [PunRPC]
