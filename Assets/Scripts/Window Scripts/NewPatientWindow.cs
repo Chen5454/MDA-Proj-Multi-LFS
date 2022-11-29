@@ -164,6 +164,15 @@ namespace PatientCreationSpace
 
             return true;
         }
+        public bool AreAllTreatmentFieldsFilled()
+        {
+            foreach (var item in addBlockMaster.basicBlocks)
+            {
+                if (!item.AllInputsGood())
+                    return false;
+            }
+            return true;
+        }
 
         public void ClearPatientMeasurementFields()//inspector button
         {

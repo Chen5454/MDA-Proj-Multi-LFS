@@ -113,6 +113,11 @@ public class TestBlock : MonoBehaviour, BasicBlock
         return gameObject;
     }
 
+    public bool AllInputsGood()
+    {
+        return true;
+    }
+
     //public override void Save()
     //{
     //    base.Save();

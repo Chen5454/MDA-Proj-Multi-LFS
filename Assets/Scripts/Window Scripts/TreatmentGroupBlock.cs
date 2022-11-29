@@ -82,4 +82,16 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
     {
         return gameObject;
     }
+
+    public bool AllInputsGood()
+    {
+        foreach (var item in myAddBlock.basicBlocks)
+        {
+            if(!item.AllInputsGood())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

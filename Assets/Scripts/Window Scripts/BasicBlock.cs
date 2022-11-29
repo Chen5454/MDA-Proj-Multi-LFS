@@ -13,5 +13,6 @@ public interface BasicBlock
     TreatmentGroup GetTreatmentGroup();
     bool IsInteractable();
     void SetInteractable(bool isInteractable);
-   
+
+    bool AllInputsGood();
 }
