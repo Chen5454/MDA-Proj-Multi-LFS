@@ -5,6 +5,8 @@ using UnityEngine;
 using TMPro;
 using PatientCreationSpace;
 
+public enum MedicineApplicationMethod {Po,Iv,IM,IO,SC,SL}
+
 public class MedicineBlock : MonoBehaviour, BasicBlock
 { 
     [SerializeField]
@@ -37,6 +39,34 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     bool _isInteractable;
     AddBlockMaster abm;
+
+    public void SetMedicine(Medicine m)
+    {
+        for (int i = 0; i < dropdown.options.Count; i++)
+        {
+            if (dropdown.options[i].text.Equals(m.medicineName))
+            {
+                dropdown.value = i;
+                dropdown.RefreshShownValue();
+            }
+        }
+
+        for (int i = 0; i < measurementInputFields.Count; i++)
+        {
+            if(m.measurements.MeasurementValues[i] == "")
+            {
+                continue;
+            }
+            measurementInputFields[i].transform.parent.gameObject.SetActive(true);
+            measurementInputFields[i].text = m.measurements.MeasurementValues[i];
+        }
+        minDosageInputField.text = m.minDosage.ToString();
+        maxDosageInputField.text = m.maxDosage.ToString();
+        applicationMethodDropdown.value = m.applicationMethod;
+        applicationMethodDropdown.RefreshShownValue();
+
+    }
+
     public AddBlockMaster addBlockMaster()
     {
         return abm;
@@ -59,21 +89,29 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
             return;
         }
         RefreshDropdownMedicine();
+
+
     }
     private void Start()
     {
         measurementToReveal.ClearOptions();
         measurementToReveal.AddOptions(System.Enum.GetNames(typeof(Measurements)).ToList());
     }
-    public void OnDisable()
-    {
-        foreach (var item in measurementInputFields)
-        {
-            item.text = "";
-            item.gameObject.SetActive(false);
-        }
-        measurementToReveal.value = 0;
-    }
+    //public void OnDisable()
+    //{
+    //    Invoke(nameof(LateDisable),1);
+    //}
+
+    //private void LateDisable()
+    //{
+    //    foreach (var item in measurementInputFields)
+    //    {
+    //        item.text = "";
+    //        item.gameObject.SetActive(false);
+    //    }
+    //    measurementToReveal.value = 0;
+    //}
+
     public void RefreshDropdownMedicine()
     {
         dropdown.ClearOptions();
@@ -98,8 +136,10 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         else
             dropdown.AddOptions(databases.medicineDB.GetListOfTreatmentNames());
 
-
         dropdown.RefreshShownValue();
+        List<string> medAppMethods = System.Enum.GetNames(typeof(MedicineApplicationMethod)).ToList();
+        applicationMethodDropdown.ClearOptions();
+        applicationMethodDropdown.AddOptions(medAppMethods);
     }
 
     public void RevealMeasurement()
@@ -116,15 +156,16 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
         for (int i = 0; i < measurementInputFields.Count; i++)
         {
-            if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
-            {
-                measurementArray[i] = "";
-                continue;
-            }
+            //if (string.IsNullOrEmpty(measurementInputFields[i].text)) 
+            //{
+            //    measurementArray[i] = "";
+            //    continue;
+            //}
             measurementArray[i] = measurementInputFields[i].text;
+            Debug.LogWarning($"{(Measurements)i} Value SET!");
         }
         patientMeasurements.SetMeasurementValues(measurementArray);
-        return MedicineCreator.CreateMedicine(temp.ID(), temp.medicineName, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
+        return MedicineCreator.CreateMedicine(temp.ID(), dropdown.options[dropdown.value].text, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
     }
 
     public TreatmentGroup GetTreatmentGroup()

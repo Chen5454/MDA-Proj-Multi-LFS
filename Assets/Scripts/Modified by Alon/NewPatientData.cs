@@ -4,6 +4,7 @@ using UnityEngine;
 using PatientCreationSpace;
 
 public enum PatientType { Old, Grown, Kid, }
+public enum PatientGender { זכר, נקבה }
 public enum MonitorSprites { HeartMonitor, ECG }
 
 [System.Serializable]

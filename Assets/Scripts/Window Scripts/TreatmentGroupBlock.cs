@@ -11,10 +11,24 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
     Transform parent;
     //has 3 buttons that can add treatmentblocks to this parent
 
-    [SerializeField]
-    AddBlockMaster myAddBlock;
+    
+    public AddBlockMaster myAddBlock;
 
     AddBlockMaster abm;//parent addblock, the addblockmaster in which THIS is a block
+
+    /// <summary>
+    /// maybe dont neeed
+    /// </summary>
+    /// <param name="tg"></param>
+    public void SetTreatmentGroup(TreatmentGroup tg)
+    {
+
+        //foreach (var item in tg.)
+        //{
+        //    _treatmentGroup.AddTreatment(item.GetTreatment() as SequenceBlock);
+        //}
+    }
+
     public AddBlockMaster addBlockMaster()
     {
         return abm;

@@ -16,6 +16,20 @@ public class TestBlock : MonoBehaviour, BasicBlock
 
     Databases databases => Databases.Instance;
     AddBlockMaster abm;
+
+    public void SetTest(Test test)
+    {
+        for (int i = 0; i < dropdown.options.Count; i++)
+        {
+            if (dropdown.options[i].text.Equals(test.testName))
+            {
+
+                dropdown.value = i;
+                dropdown.RefreshShownValue();
+            }
+        }
+
+    }
     public AddBlockMaster addBlockMaster()
     {
         return abm;
@@ -33,7 +47,10 @@ public class TestBlock : MonoBehaviour, BasicBlock
 
     public Treatment GetTreatment()
     {
-        return databases.testDB.GetTreatmentByIndex(dropdown.value);
+        //return databases.testDB.GetTreatmentByIndex(dropdown.value);
+        Test t = new Test();
+        t.Init(databases.testDB.GetTreatmentByIndex(dropdown.value).ID(), "Test", dropdown.options[dropdown.value].text);
+        return t;
     }
     public TreatmentGroup GetTreatmentGroup()
     {
