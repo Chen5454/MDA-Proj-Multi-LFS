@@ -18,12 +18,15 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private List<GameObject> listRoomEnums;
     [SerializeField] private List<Transform> _destinationHospitals;
     [SerializeField] private GameObject _destinationMarkerPrefab;
+    [SerializeField] private float stoppingDistance;
 
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.positionCount = 0;
+        stoppingDistance = 14f;
+        _agent.stoppingDistance = stoppingDistance;
     }
 
     void Update()
