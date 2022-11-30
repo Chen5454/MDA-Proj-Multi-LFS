@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
 
         UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
+        UIManager.Instance.TeleportBtn.onClick.AddListener(delegate { TelepotrtToCenterBtn(); });
 
         _anim = GetComponent<PlayerAnimationManager>();
 
@@ -568,60 +569,20 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
     }
 
+    public void TelepotrtToCenterBtn()
+    {
+        this.gameObject.transform.position = GameManager.Instance.PlayerTPPos.transform.position;
+    }
 
     public void CrewLeaderResetIncident()
     { 
         _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
        _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
        _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
-
+       UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
     }
 
-
-    [PunRPC]
-    public void CrewLeaderResetIncident_RPC()
-    {
-        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
-        {
-            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
-
-            if (desiredPlayer.IsInVehicle)
-            {
-                desiredPlayer.CurrentVehicleController.GetComponent<VehicleInteraction>().ExitVehicle();
-            }
-        }
-
-        //for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
-        //{
-        //    PhotonView desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<PhotonView>();
-
-        //    if (desiredPatient.CreatorActorNr == photonView.CreatorActorNr)
-        //    {
-        //        Destroy(desiredPatient.gameObject);
-        //    }
-        //}
-
-        foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
-        {
-            PlayerData currentPlayerData = player.GetComponent<PlayerData>();
-            NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
-            PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
-
-            if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
-            {
-                currentPlayerData.UserRole = 0;
-                currentPlayerData.UserIndexInCrew = 0;
-                currentPlayerData.CrewIndex = 0;
-                desiredPlayerName.text.color = Color.white;
-                currentPlayerData.CrewColor = Color.white;
-                currentPlayer.Vest.SetActive(false);
-            }
-
-        }
-
-    }
-
-        public int  GetCarPhotonView()
+    public int  GetCarPhotonView()
     {
         for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
@@ -651,8 +612,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         Debug.Log("Return nothing");
         return 0;
     }
-
-        public int GetPatientPhotonView()
+    public int GetPatientPhotonView()
         {
             for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
             {
@@ -709,27 +669,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
         return null;
     }
-
-    [PunRPC]
-    public void FindPlayerOwner(int objectIndex)
-    {
-        GameObject go = PhotonNetwork.GetPhotonView(objectIndex).gameObject;
-        var goPhotonview = go.GetComponent<PhotonView>().Owner;
-
-
-        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
-        {
-            PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
-
-            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
-            {
-                PhotonNetwork.Destroy(go);
-            }
-        }
-
-  
-    }
-
 
     //public int GetRoomPhotonView()
     //{
@@ -844,23 +783,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         //if (Input.GetMouseButton(1))
         //    return;
     }
-    //private void UseFirstPersonMovement()
-    //{
-    //    float actualSpeed = Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
-    //    _characterController.Move(actualSpeed * _input.x * Time.deltaTime * transform.right + actualSpeed * _input.y * Time.deltaTime * transform.forward);
-    //}
-    //private void UseFirstPersonRotate()
-    //{
-    //    Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"));
-    //
-    //    transform.Rotate(_mouseSensitivity.x * mouseInput.x * Time.deltaTime * Vector3.up);
-    //    _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
-    //}
-    //private void SetFirstPersonCamera(bool value)
-    //{
-    //    _currentCamera.transform.position = value ? _firstPersonCameraTransform.position : _thirdPersonCameraTransform.position;
-    //    _currentCamera.transform.rotation = value ? _firstPersonCameraTransform.rotation : _thirdPersonCameraTransform.rotation;
-    //}
+
     private void FreeMouse(bool value)
     {
         Cursor.visible = value;
@@ -930,6 +853,69 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         PlayerData.LastVehicleController = _currentVehicleController;
     }
+
+    [PunRPC]
+    private void SetUserVestRPC(int roleIndex)
+    {
+        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+        PlayerData.UserRole = (Roles)roleIndex;
+
+        if (!Vest.activeInHierarchy)
+            Vest.SetActive(true);
+    }
+
+
+    [PunRPC]
+    public void CrewLeaderResetIncident_RPC()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (desiredPlayer.IsInVehicle)
+            {
+                desiredPlayer.CurrentVehicleController.GetComponent<VehicleInteraction>().ExitVehicle();
+            }
+        }
+
+        foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        {
+            PlayerData currentPlayerData = player.GetComponent<PlayerData>();
+            NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+            PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
+
+            if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
+            {
+                currentPlayerData.UserRole = 0;
+                currentPlayerData.UserIndexInCrew = 0;
+                currentPlayerData.CrewIndex = 0;
+                desiredPlayerName.text.color = Color.white;
+                currentPlayerData.CrewColor = Color.white;
+                currentPlayer.Vest.SetActive(false);
+            }
+
+        }
+
+    }
+    [PunRPC]
+    public void FindPlayerOwner(int objectIndex)
+    {
+        GameObject go = PhotonNetwork.GetPhotonView(objectIndex).gameObject;
+        var goPhotonview = go.GetComponent<PhotonView>().Owner;
+
+
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
+
+            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
+            {
+                PhotonNetwork.Destroy(go);
+            }
+        }
+
+
+    }
     #endregion
 
     #region Gizmos
@@ -987,16 +973,19 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     }
     #endregion
-    [PunRPC]
-    private void SetUserVestRPC(int roleIndex)
-    {
-        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
-        PlayerData.UserRole = (Roles)roleIndex;
-
-        if (!Vest.activeInHierarchy)
-            Vest.SetActive(true);
-    }
 
 
 
+    //private void OnDestroy()
+    //{
+    //    photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetRoomPhotonView());
+    //    photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetChildRoomPhotonView());
+
+    //}
 }
+
+
+
+
+
+

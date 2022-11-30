@@ -12,7 +12,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     private PhotonView _photonView => GetComponent<PhotonView>();
     private Coroutine _updatePlayerListCoroutine;
     private GameObject _worldMarkCanvas;
-    private List<GameObject> _allWorldMarks;
+   [SerializeField] private List<GameObject> _allWorldMarks;
     private GameObject _dropdownRefua10, _dropdownPinuy10, _dropdownHenyon10;
     private CameraController _camController;
    // private LineRenderer _lineRenderer;
@@ -76,6 +76,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
                 if (hit.collider.tag == "test")
                 {
                     string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
+                    Debug.Log(nameIndx);
                     _photonView.RPC("DestroyWorldMark_RPC",RpcTarget.AllBufferedViaServer, nameIndx);
                 }
             }
@@ -89,6 +90,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         {
             if (mark.GetComponent<WorldMark>().nameID == nameIndex)
             {
+                _allWorldMarks.Remove(mark);
                 Destroy(mark);
                 break;
             }
@@ -338,25 +340,33 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     private void ChangeColorForArea(int markIndex, GameObject worldMark)
     {
         var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
+        var ColorFillArea = worldMark.transform.Find("FillArea").GetComponentInChildren<Renderer>().material;
+
         switch (markIndex)
         {
             case 0:
                 colorArea.color = Color.red;
+                ColorFillArea.color = new Color(1,0,0,0.2f);
                 break;
             case 1:
                 colorArea.color = Color.green;
+                ColorFillArea.color = new Color(0, 1, 0, 0.2f);
                 break;
             case 2:
                 colorArea.color = Color.blue;
+                ColorFillArea.color = new Color(0, 0, 1, 0.2f);
                 break;
             case 3:
                 colorArea.color = Color.white;
+                ColorFillArea.color = new Color(1, 1, 1, 0.2f);
                 break;
             case 4:
                 colorArea.color = Color.black;
+                ColorFillArea.color = new Color(0, 0, 0, 0.2f);
                 break;
             case 5:
                 colorArea.color = Color.yellow;
+                ColorFillArea.color = new Color(1, 1, 0, 0.2f);
                 break;
         }
     }

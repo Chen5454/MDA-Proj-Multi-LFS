@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     public GameObject TeamLeaderMenu;
     public GameObject TeamLeaderNavigationBtn;
     public Button ResetCrewRoom;
+    public Button TeleportBtn;
 
     [Header("Pikud10")]
     public GameObject Pikud10Menu;
