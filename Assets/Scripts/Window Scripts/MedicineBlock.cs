@@ -199,7 +199,10 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         bool toReturn = false;
         foreach (var inputField in measurementInputFields)
         {
-            if (!string.IsNullOrEmpty(inputField.text))
+            if (!inputField.gameObject.activeInHierarchy)
+                continue;
+
+            if (!string.IsNullOrEmpty(inputField.text)) //AT LEAST ONE REAVEALED FIELD IS FILLED! we can make sure all revealed fields are filled, but then add a Remove field button! TBD TBF
                 toReturn = true;
         }
 
