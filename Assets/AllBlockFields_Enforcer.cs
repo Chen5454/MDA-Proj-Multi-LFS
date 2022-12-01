@@ -2,23 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using PatientCreationSpace;
 using UnityEngine;
-using UnityEngine.EventSystems;
+//using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class AllBlockFields_Enforcer : MonoBehaviour, IPointerEnterHandler
+public class AllBlockFields_Enforcer : MonoBehaviour/*, IPointerEnterHandler*/
 {
+    [SerializeField]
+    float checkConditionPerSecond = 1;
     [SerializeField]
     NewPatientWindow newPatientWindow;
     [SerializeField]
     Button enforcedButton;
 
+    
 
 
+    bool doCheck = true;
     bool canInteract;
 
     private void OnEnable()
     {
         CheckCondition();
+        StartCoroutine(nameof(CheckMeCoroutine));
+
     }
     public void CheckCondition()
     {
@@ -26,9 +32,21 @@ public class AllBlockFields_Enforcer : MonoBehaviour, IPointerEnterHandler
         enforcedButton.interactable = canInteract;
     }
 
-
-    public void OnPointerEnter(PointerEventData eventData)
+    IEnumerator CheckMeCoroutine()
     {
-        CheckCondition();
+        while(doCheck)
+        {
+            CheckCondition();
+            yield return new WaitForSeconds(1f/checkConditionPerSecond);
+        }
     }
+    private void OnDisable()
+    {
+        StopCoroutine(nameof(CheckMeCoroutine));
+    }
+
+    //public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    CheckCondition();
+    //}
 }
