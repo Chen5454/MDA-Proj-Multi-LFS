@@ -575,10 +575,16 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     }
 
     public void CrewLeaderResetIncident()
-    { 
-        _photonView.RPC("CrewLeaderResetIncident_RPC",RpcTarget.AllBufferedViaServer);
-       _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
-       _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
+    {
+        if (_photonView.IsMine)
+        {
+            _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
+            _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
+
+        }
+
+  
        UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
     }
 
@@ -878,23 +884,37 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             }
         }
 
-        foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            PlayerData currentPlayerData = player.GetComponent<PlayerData>();
-            NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
-            PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
-
+            PlayerData currentPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+            NameTagDisplay desiredPlayerName = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponentInChildren<NameTagDisplay>();
+            PlayerController currentPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponentInChildren<PlayerController>();
             if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
             {
                 currentPlayerData.UserRole = 0;
-                currentPlayerData.UserIndexInCrew = 0;
                 currentPlayerData.CrewIndex = 0;
                 desiredPlayerName.text.color = Color.white;
                 currentPlayerData.CrewColor = Color.white;
                 currentPlayer.Vest.SetActive(false);
             }
-
         }
+
+        //foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
+        //{
+        //    PlayerData currentPlayerData = player.GetComponent<PlayerData>();
+        //    NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
+        //    PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
+
+        //    if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
+        //    {
+        //        currentPlayerData.UserRole = 0;
+        //        currentPlayerData.CrewIndex = 0;
+        //        desiredPlayerName.text.color = Color.white;
+        //        currentPlayerData.CrewColor = Color.white;
+        //        currentPlayer.Vest.SetActive(false);
+        //    }
+
+        //}
 
     }
     [PunRPC]

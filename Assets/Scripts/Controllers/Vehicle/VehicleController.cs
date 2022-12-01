@@ -66,9 +66,11 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
     }
     private void Start()
     {
+
         _rb.centerOfMass = _centerOfMass.localPosition;
         _rb.isKinematic = true;
-
+        CarEmergencyLightsLeft.enabled = false;
+        CarEmergencyLightsRight.enabled = false;
         RandomNumber = GetRandomInt(100, 999 + 1);
         GameManager.Instance.usedValues.Add(RandomNumber);
 

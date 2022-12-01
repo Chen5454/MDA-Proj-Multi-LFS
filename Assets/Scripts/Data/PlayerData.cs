@@ -16,7 +16,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
 
     [field: SerializeField] public string UserName { get; set; }
     [field: SerializeField] public string CrewName { get; set; }
-    [field: SerializeField] public int UserIndexInCrew { get; set; }
+  //  [field: SerializeField] public int UserIndexInCrew { get; set; }
     [field: SerializeField] public int CrewIndex { get; set; }
     [field: SerializeField] public bool IsCrewLeader { get; set; }
     [field: SerializeField] public bool IsInstructor { get; set; }
