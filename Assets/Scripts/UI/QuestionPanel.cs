@@ -37,26 +37,34 @@ public class QuestionPanel : MonoBehaviour
             //TBF TBD ALON - Here Answers should be loaded if relevant to treatmentsequence -
             //what answeres should be loaded to questions that are either not yet relevant or no longer relevant?
             bankQuestions.Add(go);
-            questionsAndAnswers.Add(go);
+            //questionsAndAnswers.Add(go);
         }
     }
     void AddBankQuestions()
     {
         foreach (var item in bankQuestions)
         {
-            questionsAndAnswers.Add(item);
+            //questionsAndAnswers.Add(item);
             item.SetActive(true);
+            item.transform.SetAsLastSibling();
         }
     }
     void RemoveBankQuestions()
     {
         foreach (var item in bankQuestions)
         {
-            questionsAndAnswers.Remove(item);
+            //questionsAndAnswers.Remove(item);
             item.SetActive(false);
         }
     }
-
+    public void AskQuestion(Question q)
+    {
+        RemoveBankQuestions();
+        GameObject go = Instantiate(questionPrefab, parent);
+        go.GetComponentInChildren<TMPro.TMP_Text>().text = q.questionText;
+        questionsAndAnswers.Add(go);
+        //AddBankQuestions();
+    }
     public void RecieveAnswer(string answerText)
     {
         RemoveBankQuestions();
