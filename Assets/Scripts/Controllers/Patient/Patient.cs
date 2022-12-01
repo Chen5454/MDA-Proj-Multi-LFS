@@ -383,6 +383,14 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     }
 
     [PunRPC]
+    public void PlaceBandageAction_RPC(bool _useTourniquetInstead)
+    {
+         UseTourniquet = _useTourniquetInstead;
+            SetUnusedBandages(true);
+
+    }
+
+    [PunRPC]
     private void RemoveBandageFromUnusedListRPC(int BandageIndex) // need fixing, meshes are just fine
     {
         if (UseTourniquet)

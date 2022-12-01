@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlaceBandage : Action
@@ -24,13 +25,12 @@ public class PlaceBandage : Action
     {
         GetActionData();
 
-        TextToLog = "Placed Bandage on Patient";
-        
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
+            TextToLog = "Placed Bandage on Patient";
+
+            CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", RpcTarget.AllBufferedViaServer, _useTourniquetInstead);
             SwitchRayCastTarget(false);
-            CurrentPatient.UseTourniquet = _useTourniquetInstead;
-            CurrentPatient.SetUnusedBandages(true);
 
             if (_shouldUpdateLog)
             {
