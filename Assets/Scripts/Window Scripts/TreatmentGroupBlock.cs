@@ -85,6 +85,9 @@ public class TreatmentGroupBlock : MonoBehaviour, BasicBlock
 
     public bool AllInputsGood()
     {
+        if (myAddBlock.basicBlocks == null || myAddBlock.basicBlocks.Count == 0)
+            return false;
+
         foreach (var item in myAddBlock.basicBlocks)
         {
             if(!item.AllInputsGood())
