@@ -196,19 +196,18 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     public bool AllInputsGood()
     {
-
+        bool toReturn = false;
         foreach (var inputField in measurementInputFields)
         {
-            if (string.IsNullOrEmpty(inputField.text))
-                return false;
+            if (!string.IsNullOrEmpty(inputField.text))
+                toReturn = true;
         }
-        if(!(
-            float.TryParse(minDosageInputField.text, out float nothing) &&
-            float.TryParse(maxDosageInputField.text, out float nothing1)
-            ))
+
+        if(!float.TryParse(minDosageInputField.text, out float nothing) ||
+            !float.TryParse(maxDosageInputField.text, out float nothing1))
         {
             return false;
         }
-        return true;
+        return toReturn;
     }
 }
