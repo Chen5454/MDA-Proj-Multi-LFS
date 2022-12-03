@@ -8,6 +8,7 @@ using Photon.Pun;
 public class NameTagDisplay : MonoBehaviour
 {
     [SerializeField] private PhotonView playerPhotonView;
+    [SerializeField] private GameObject crown;
     [SerializeField] public TMP_Text text;
 
     private PlayerData playerData;
@@ -33,5 +34,28 @@ public class NameTagDisplay : MonoBehaviour
         //{
         //    gameObject.SetActive(false);
         //}
+    }
+
+    private void Update()
+    {
+        if (playerData)
+        {
+            if (playerData.IsCrewLeader && !crown.activeInHierarchy)
+            {
+                crown.SetActive(true);
+            }
+            else if (!playerData.IsCrewLeader && crown.activeInHierarchy)
+            {
+                crown.SetActive(false);
+            }
+            else
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
     }
 }
