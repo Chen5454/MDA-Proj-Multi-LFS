@@ -75,4 +75,9 @@ public class QuestionBlock : MonoBehaviour, BasicBlock
     {
         return gameObject;
     }
+
+    public bool AllInputsGood()
+    {
+        return (!string.IsNullOrEmpty(questionText.text) && !string.IsNullOrEmpty(replyText.text));
+    }
 }

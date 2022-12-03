@@ -4,6 +4,9 @@ using UnityEngine;
 namespace PatientCreationSpace
 {
 
+    //TBF! This whole script basically only needs the OnDisable section
+    //TO BE DEPRICATED! TBD
+
     public class TreatmentSequenceEditorWindow : BlockCollectionEditor
     {
         //Patient newPatient;

@@ -92,6 +92,9 @@ namespace PatientCreationSpace
             else if (treatment is Test)
             {
                 //MeasuremnetPanel.SetMeasurement((treatment as Test).measurementType); // tests hold no value, they merely tell MeasurementsPanel to refresh 1 measuremnets displayer
+                //UIManager.Instance.StatsPanel.UpdateMeasurement(transform);
+                
+                //BASICALLY, should this happen here? should it not work if it is a wrong step?
             }
 
         }

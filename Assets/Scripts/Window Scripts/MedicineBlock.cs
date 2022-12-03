@@ -156,13 +156,7 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
         for (int i = 0; i < measurementInputFields.Count; i++)
         {
-            //if (string.IsNullOrEmpty(measurementInputFields[i].text)) 
-            //{
-            //    measurementArray[i] = "";
-            //    continue;
-            //}
-            measurementArray[i] = measurementInputFields[i].text;
-            Debug.LogWarning($"{(Measurements)i} Value SET!");
+            measurementArray[i] = measurementInputFields[i].text;   
         }
         patientMeasurements.SetMeasurementValues(measurementArray);
         return MedicineCreator.CreateMedicine(temp.ID(), dropdown.options[dropdown.value].text, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
@@ -198,5 +192,25 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
     GameObject BasicBlock.gameObject()
     {
         return gameObject;
+    }
+
+    public bool AllInputsGood()
+    {
+        bool toReturn = false;
+        foreach (var inputField in measurementInputFields)
+        {
+            if (!inputField.gameObject.activeInHierarchy)
+                continue;
+
+            if (!string.IsNullOrEmpty(inputField.text)) //AT LEAST ONE REAVEALED FIELD IS FILLED! we can make sure all revealed fields are filled, but then add a Remove field button! TBD TBF
+                toReturn = true;
+        }
+
+        if(!float.TryParse(minDosageInputField.text, out float nothing) ||
+            !float.TryParse(maxDosageInputField.text, out float nothing1))
+        {
+            return false;
+        }
+        return toReturn;
     }
 }

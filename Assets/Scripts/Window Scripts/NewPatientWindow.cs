@@ -35,7 +35,7 @@ namespace PatientCreationSpace
         //UnityEngine.UI.Toggle IsALS;
         ToggleButton IsBLS;
 
-        
+
         [SerializeField]
         //UnityEngine.UI.Toggle IsTrauma;
         ToggleButton IsTrauma;
@@ -77,8 +77,8 @@ namespace PatientCreationSpace
         GameObject newSequenceButton;
 
 
-       public PhotonView _photonView;
-        public void SetEditOrNew(bool isEdit) 
+        public PhotonView _photonView;
+        public void SetEditOrNew(bool isEdit)
         {
             editSequenceButton.SetActive(isEdit);
             newSequenceButton.SetActive(!isEdit);
@@ -126,6 +126,54 @@ namespace PatientCreationSpace
             IsIllness.DeSetMe();
             //PatientCreator.ClearLoadedPatient();
         }
+
+        public bool AreAllBasicInfoFieldFilled()
+        {
+            //Basic info nullorempty checks:
+            if (!
+                (string.IsNullOrEmpty(Name.text) || 
+                string.IsNullOrEmpty(EventName.text) ||
+                (string.IsNullOrEmpty(Age.text)|| !float.TryParse(Age.text, out float nothing)) || //age is filled, and a number
+                string.IsNullOrEmpty(Gender.options[Gender.value].text)|| 
+                string.IsNullOrEmpty(Weight.text) || 
+                string.IsNullOrEmpty(Height.text)|| 
+                string.IsNullOrEmpty(Complaint.text)))
+            {
+                Debug.LogError("fields fine");
+                if (((!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected) ||
+                  (!IsTrauma.IsBtnSelected && !IsIllness.IsBtnSelected)))
+                {
+                    Debug.LogError("toggles not");
+
+                    return false;
+                }
+                Debug.LogError("all fine");
+                return true;
+            }
+            //implied else 
+            return false;
+        }
+
+        public bool AreAllInitialMeasurementsFilled()
+        {
+            foreach (var item in measurementInputFields)
+            {
+                if (string.IsNullOrEmpty(item.text))
+                    return false;
+            }
+
+            return true;
+        }
+        public bool AreAllTreatmentFieldsFilled()
+        {
+            foreach (var item in addBlockMaster.basicBlocks)
+            {
+                if (!item.AllInputsGood())
+                    return false;
+            }
+            return true;
+        }
+
         public void ClearPatientMeasurementFields()//inspector button
         {
             foreach (var item in measurementInputFields)
@@ -136,7 +184,7 @@ namespace PatientCreationSpace
 
         public void ClickOnCreateNew()
         {
-            //check are REQUIRED(?) fields TBD
+            //TO BE REMOVED!
 
             //Basic info nullorempty checks:
             if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
@@ -147,6 +195,14 @@ namespace PatientCreationSpace
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
             }
+            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected)
+            {
+                Debug.LogError("no type selected somehow?");
+                return;
+            }
+
+            //TO BE REMOVED!
+
             //Initial Measurements nullorempty checks: in the grabbing bleow
 
             //PatientMeasurements patientMeasurements = new PatientMeasurements();
@@ -161,11 +217,6 @@ namespace PatientCreationSpace
                     return;
                 }
                 measurementArray[i] = measurementInputFields[i].text;
-            }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected)
-            {
-                Debug.LogError("no type selected somehow?");
-                return;
             }
             
             newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
