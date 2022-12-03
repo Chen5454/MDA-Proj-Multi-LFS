@@ -577,15 +577,34 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     public void CrewLeaderResetIncident()
     {
         if (_photonView.IsMine)
-        {
+        { 
             _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer);
             _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
+          //  _photonView.RPC("FindPlayerOwner", GetBedOwner(), GetBedPhotonView());
             _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
         }
 
   
        UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
+    }
+
+
+    public int GetBedPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.AllBeds.Count; i++)
+        {
+            EmergencyBedController desiredBed = GameManager.Instance.AllBeds[i].GetComponent<EmergencyBedController>();
+
+            if (PlayerData.CrewIndex == desiredBed.ParentVehicle._ownedCrewNumber)
+            {
+
+                int bedIndex = desiredBed.GetComponent<PhotonView>().ViewID;
+                return bedIndex;
+            }
+        }
+
+        return 0;
     }
 
     public int  GetCarPhotonView()
@@ -596,6 +615,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
             if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
             {
+
                  int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
                 Debug.Log(carIndex);
                 return carIndex;
@@ -675,7 +695,20 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
         return null;
     }
+    public Player GetBedOwner()
+    {
+        for (int i = 0; i < GameManager.Instance.AllBeds.Count; i++)
+        {
+            EmergencyBedController desiredBed = GameManager.Instance.AllBeds[i].GetComponent<EmergencyBedController>();
 
+            if (PlayerData.CrewIndex == desiredBed.ParentVehicle._ownedCrewNumber)
+            {
+                Player BedIndex = desiredBed.GetComponent<PhotonView>().Owner;
+                return BedIndex;
+            }
+        }
+        return null;
+    }
     //public int GetRoomPhotonView()
     //{
     //    for (int i = 0; i < GameManager.Instance.CrewRoomsList.Count; i++)

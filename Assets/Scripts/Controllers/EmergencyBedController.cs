@@ -60,7 +60,6 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     private PhotonView _photonView;
     public OwnershipTransfer _transfer;
-
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
@@ -68,6 +67,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         PatientMenuParentUI = UIManager.Instance.PatientMenu;
         JoinPatientParentUI = UIManager.Instance.JoinPatientPopUp;
         TagMiunParentUI = UIManager.Instance.TagMiunMenu;
+        GameManager.Instance.AllBeds.Add(this._photonView);
         #endregion
     }
 
@@ -91,7 +91,36 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         PatientReadyToEvac();
+
+        if (ParentVehicle.IsDestroy)
+        {
+            _photonView.RPC("DestroyBedOnReset", RpcTarget.AllBufferedViaServer);
+        }
     }
+
+    [PunRPC]
+    void DestroyBedOnReset()
+    {
+        Destroy(this.gameObject);
+    }
+
+
+    public Player GetPlayerOwner()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (desiredPlayer._photonView.Owner == _photonView.Owner)
+            {
+                Player Player = desiredPlayer.GetComponent<PhotonView>().Owner;
+                Debug.Log("This Owner is : "+ Player.NickName);
+                return Player;
+            }
+        }
+        return null;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
