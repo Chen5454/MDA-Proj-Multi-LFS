@@ -10,15 +10,28 @@ public class NameTagDisplay : MonoBehaviour
     [SerializeField] private PhotonView playerPhotonView;
     [SerializeField] public TMP_Text text;
 
+    private PlayerData playerData;
+    
     private void Start()
     {
+        if (!playerData)
+        {
+            if (playerPhotonView.GetComponent<PlayerData>())
+            {
+                playerData = playerPhotonView.GetComponent<PlayerData>();
+            }
+            else
+            {
+                return;
+            }
+
+            text.text = playerPhotonView.Owner.NickName;
+            playerData.UserName = playerPhotonView.Owner.NickName;
+            playerPhotonView.gameObject.name = playerPhotonView.Owner.NickName;
+        }
         //if (playerPhotonView.IsMine) // if we are the local player we disable the text
         //{
         //    gameObject.SetActive(false);
         //}
-
-        text.text = playerPhotonView.Owner.NickName;
-        playerPhotonView.GetComponent<PlayerData>().UserName = playerPhotonView.Owner.NickName;
-        playerPhotonView.gameObject.name = playerPhotonView.Owner.NickName;
     }
 }

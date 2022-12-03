@@ -17,7 +17,14 @@ public class PlayerMarkColorizer : MonoBehaviour
     {
         if (!_playerData)
         {
-            _playerData = transform.parent.GetComponent<PlayerData>();
+            if (transform.parent.GetComponent<PlayerData>())
+            {
+                _playerData = transform.parent.GetComponent<PlayerData>();
+            }
+            else
+            {
+                return;
+            }
         }
 
         if (_markRenderer.color != _playerData.CrewColor)
