@@ -5979,6 +5979,7 @@ GameObject:
   - component: {fileID: 7058643523234376212}
   - component: {fileID: 1141198437725113134}
   - component: {fileID: 7297074626169850635}
+  - component: {fileID: -533106923446809619}
   - component: {fileID: 3439748675638305761}
   - component: {fileID: 6714779322219799932}
   m_Layer: 0
@@ -6129,6 +6130,7 @@ MonoBehaviour:
   RandomNumber: 0
   RandomName: 
   _ownedCrewNumber: 0
+  IsDestroy: 0
   _CarNameTxt:
   - {fileID: 953513839004769864}
   - {fileID: 8458889227429007017}
@@ -6187,10 +6189,27 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4778638792706805194}
+  - {fileID: -533106923446809619}
   - {fileID: 6714779322219799932}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-533106923446809619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7823762955460175669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &3439748675638305761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6460,8 +6479,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8222993477085012351}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
-  m_LocalPosition: {x: -0.00000029057264, y: 0, z: -0.25}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3640822611665132533}
@@ -6471,7 +6490,7 @@ Transform:
   - {fileID: 4354621714300540252}
   m_Father: {fileID: 1844949061783796070}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6664187009277404177
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6483,8 +6502,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 2, z: 4}
-  m_Center: {x: 0, y: 0, z: -0.5}
+  m_Size: {x: 1.53, y: 1.7, z: 3.119928}
+  m_Center: {x: 0, y: -0.1, z: 0.2}
 --- !u!54 &7870648520448556503
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6591,7 +6610,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8222993477085012351}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35144820bcc25444bb8f0fd767d9423e, type: 3}
   m_Name: 
