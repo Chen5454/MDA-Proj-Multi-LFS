@@ -140,9 +140,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _tastingForPremisionWorks.SetActive(true);
 
         }
-        catch (UnauthorizedAccessException e)
+        catch (Exception e)
         {
             Console.WriteLine(e);
+            Debug.Log(e);
             _tastingForPremisionError.SetActive(true);
             throw;
         }
