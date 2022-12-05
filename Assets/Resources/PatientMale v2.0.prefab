@@ -1406,6 +1406,7 @@ MonoBehaviour:
   AllUsersTreatedThisPatient: []
   TreatingCrews: 
   AllCrewTreatedThisPatient: 
+  patientLayer: {fileID: 5373803541914704871}
   FullyClothedMaterial: {fileID: 2100000, guid: c6f7a8bad586457428a700c5b6b6b82b, type: 2}
   ShirtOnlyMaterial: {fileID: 2100000, guid: b679808b4e664094581537001ef10c58, type: 2}
   PantsOnlyMaterial: {fileID: 2100000, guid: ef4583040eca60c428504c9b48727fe1, type: 2}
@@ -3800,6 +3801,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 25043654d2defb645ac56b1086bbcc21, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 25043654d2defb645ac56b1086bbcc21, type: 3}
+      propertyPath: m_TagString
+      value: Patient
       objectReference: {fileID: 0}
     - target: {fileID: 1092408308860062549, guid: 25043654d2defb645ac56b1086bbcc21, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

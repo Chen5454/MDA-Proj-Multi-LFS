@@ -581,13 +581,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         { 
             _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer);
             _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
-          //  _photonView.RPC("FindPlayerOwner", GetBedOwner(), GetBedPhotonView());
             _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
         }
-
-  
-       UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
+        UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
     }
 
 
@@ -932,24 +929,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 currentPlayer.Vest.SetActive(false);
             }
         }
-
-        //foreach (var player in ActionsManager.Instance.AllPlayersPhotonViews)
-        //{
-        //    PlayerData currentPlayerData = player.GetComponent<PlayerData>();
-        //    NameTagDisplay desiredPlayerName = player.GetComponentInChildren<NameTagDisplay>();
-        //    PlayerController currentPlayer = player.GetComponentInChildren<PlayerController>();
-
-        //    if (currentPlayerData.CrewIndex == PlayerData.CrewIndex)
-        //    {
-        //        currentPlayerData.UserRole = 0;
-        //        currentPlayerData.CrewIndex = 0;
-        //        desiredPlayerName.text.color = Color.white;
-        //        currentPlayerData.CrewColor = Color.white;
-        //        currentPlayer.Vest.SetActive(false);
-        //    }
-
-        //}
-
     }
     [PunRPC]
     public void FindPlayerOwner(int objectIndex)
@@ -992,37 +971,21 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (stream.IsWriting)
         {
-            //  stream.SendNext(transform.position);
             stream.SendNext(_isInVehicle);
             stream.SendNext(_isDriving);
             stream.SendNext(_isPassanger);
             stream.SendNext(_isMiddleSit);
             stream.SendNext(_isLeftBackSit);
             stream.SendNext(_isRightBackSit);
-            //stream.SendNext(PlayerData.IsCrewLeader);
-            //stream.SendNext(PlayerData.UserIndexInCrew);
-            //stream.SendNext(PlayerData.CrewIndex);
-
-
-
-
-
-
         }
         else
         {
-            // transform.position = (Vector3)stream.ReceiveNext();
             _isInVehicle = (bool)stream.ReceiveNext();
             _isDriving = (bool)stream.ReceiveNext();
             _isPassanger = (bool)stream.ReceiveNext();
             _isMiddleSit = (bool)stream.ReceiveNext();
             _isLeftBackSit = (bool)stream.ReceiveNext();
             _isRightBackSit = (bool)stream.ReceiveNext();
-            //PlayerData.IsCrewLeader = (bool)stream.ReceiveNext();
-            //PlayerData.UserIndexInCrew = (int)stream.ReceiveNext();
-            //PlayerData.CrewIndex = (int)stream.ReceiveNext();
-   
-          
         }
 
     }
