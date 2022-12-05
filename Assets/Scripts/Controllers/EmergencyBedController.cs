@@ -136,6 +136,9 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             {
                 _patient = other.gameObject;
                 _patientScript = _patient.GetComponent<Patient>();
+
+               
+
             }
         }
 
@@ -178,9 +181,9 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         if (_patient)
         {
             if (IsPatientOnBed)
-                _patient.transform.GetChild(0).gameObject.layer = (int)LayerMasks.Default;
+                _patient.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int)LayerMasks.Default;
             else
-                _patient.transform.GetChild(0).gameObject.layer = (int)LayerMasks.Interactable;
+                _patient.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int)LayerMasks.Interactable;
         }
 
 
@@ -475,8 +478,16 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
             if (_patientScript)
             {
+                if (IsPatientOnBed)
+                {
+                    DisablePatientInteractions(false);
 
-                DisablePatientInteractions(false);
+                }
+                else
+                {
+                    DisablePatientInteractions(true);
+
+                }
             }
         }
         else if (!shouldBeInCar && shouldBeOut && !shouldFollowPlayer)

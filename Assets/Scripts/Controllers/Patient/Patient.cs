@@ -68,7 +68,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     public List<int> AllCrewTreatedThisPatient;
     #endregion
 
-    private GameObject patientLayer;
+    [SerializeField]private GameObject patientLayer;
     #region Model Related
     [Header("Appearance Material")]
     public Material FullyClothedMaterial;
@@ -87,7 +87,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 
     private void Start()
     {
-        patientLayer = GetComponentInChildren<MakeItAButton>().gameObject;
+      //  patientLayer = GetComponentInChildren<MakeItAButton>().gameObject;
         patientLayer.layer = (int)LayerMasks.Default;
         GameManager.Instance.AllPatients.Add(this);
         MonitorWindow = UIManager.Instance.MonitorParent.transform.GetChild(0).GetChild(0).GetComponent<Image>();
@@ -140,9 +140,10 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 
             }
         }
+
         if (other.CompareTag("EmergencyBed"))
         {
-            patientLayer.layer = (int)LayerMasks.Default;
+            patientLayer.layer = (int)LayerMasks.Interactable;
         }
     }
     #endregion
