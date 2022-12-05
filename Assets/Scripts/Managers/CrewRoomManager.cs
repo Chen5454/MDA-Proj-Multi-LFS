@@ -748,7 +748,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         _filterredRoaster._photonView.TransferOwnership(_photonView.Owner);
     }
     [PunRPC]
-    private void RemoveOverlayUI_RPC()
+    public void RemoveOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(false);
     }

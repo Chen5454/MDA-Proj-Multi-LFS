@@ -10,6 +10,7 @@ namespace PatientCreationSpace
     public class PatientToLoadButton : MonoBehaviour
     {
         [SerializeField] private Button _btn;
+        [SerializeField] private CrewRoomManager crewRoom;
 
         [SerializeField]
         TMP_Text text;
@@ -25,6 +26,11 @@ namespace PatientCreationSpace
             if (!_btn)
             {
                 _btn = GetComponent<Button>();
+            }
+
+            if (!crewRoom)
+            {
+                crewRoom = GetComponentInParent<CrewRoomManager>();
             }
         }
         private void OnDestroy()
@@ -62,6 +68,9 @@ namespace PatientCreationSpace
                 filteredPatientRoster.LoadPatient(fileNameToLoad);
             else if (noPUN_filteredPatientRoster)
                 noPUN_filteredPatientRoster.LoadPatient(fileNameToLoad);
+
+
+            crewRoom.RemoveOverlayUI();
         }
     }
 
