@@ -51,6 +51,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
     public int OwnerCrew, RandomNumber;
     public string RandomName;
     public int _ownedCrewNumber;
+    public bool IsDestroy;
 
     [Header("Vehicle UI")]
     private GameObject _carDashboardUI;
@@ -121,8 +122,13 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
         {
             VehiclePos.GetComponent<VehicleChecker>().IsPosOccupied = false;
         }
+
+        IsDestroy = true;
     }
     #endregion
+
+
+
 
     #region Trigger Colliders
     private void OnTriggerEnter(Collider other)
@@ -385,6 +391,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             stream.SendNext(IsRightBackIn);
             stream.SendNext(IsPatientIn);
             stream.SendNext(IsInMovement);
+            stream.SendNext(IsDestroy);
 
             foreach (var CarNameTxt in _CarNameTxt)
             {
@@ -408,6 +415,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             IsRightBackIn = (bool)stream.ReceiveNext();
             IsPatientIn = (bool)stream.ReceiveNext();
             IsInMovement = (bool)stream.ReceiveNext();
+            IsDestroy = (bool)stream.ReceiveNext();
 
 
             foreach (var CarNameTxt in _CarNameTxt)

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     public GameObject UrgentEvacuationCanvas;
 
     //[Header("Metargel")]
-    //public List<string> metargelUsersList;
+    public List<PhotonView> AllBeds;
 
     private void Awake()
     {

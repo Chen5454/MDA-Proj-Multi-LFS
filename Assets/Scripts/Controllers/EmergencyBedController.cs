@@ -60,7 +60,6 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     private PhotonView _photonView;
     public OwnershipTransfer _transfer;
-
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
@@ -68,6 +67,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         PatientMenuParentUI = UIManager.Instance.PatientMenu;
         JoinPatientParentUI = UIManager.Instance.JoinPatientPopUp;
         TagMiunParentUI = UIManager.Instance.TagMiunMenu;
+        GameManager.Instance.AllBeds.Add(this._photonView);
         #endregion
     }
 
@@ -91,7 +91,36 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         PatientReadyToEvac();
+
+        if (ParentVehicle.IsDestroy)
+        {
+            _photonView.RPC("DestroyBedOnReset", RpcTarget.AllBufferedViaServer);
+        }
     }
+
+    [PunRPC]
+    void DestroyBedOnReset()
+    {
+        Destroy(this.gameObject);
+    }
+
+
+    public Player GetPlayerOwner()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (desiredPlayer._photonView.Owner == _photonView.Owner)
+            {
+                Player Player = desiredPlayer.GetComponent<PhotonView>().Owner;
+                Debug.Log("This Owner is : "+ Player.NickName);
+                return Player;
+            }
+        }
+        return null;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -253,7 +282,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             // bed needs to be [in car], [just outside car] ,[with player]
             _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, true, false, false);
             // gameObject.transform.SetPositionAndRotation(_emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
-            _photonView.RPC("SetPositionAndRotation_RPC", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("SetPositionAndRotation_RPC", RpcTarget.AllBufferedViaServer, _emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
 
             _takeReturnText.text = _takeText;
             _photonView.RPC("SynchBedOFF", RpcTarget.AllBufferedViaServer);
@@ -264,9 +293,9 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
 
     [PunRPC]
-    public void SetPositionAndRotation_RPC()
+    public void SetPositionAndRotation_RPC(Vector3 pos, Quaternion rot)
     {
-        gameObject.transform.SetPositionAndRotation(_emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
+        gameObject.transform.SetPositionAndRotation(pos,rot );
 
     }
 
