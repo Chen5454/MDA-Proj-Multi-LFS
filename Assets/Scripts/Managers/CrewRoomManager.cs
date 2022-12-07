@@ -38,9 +38,9 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [SerializeField] private GameObject _tvScreen;
     [SerializeField] private GameObject _patientMale, _patientFemale, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
     [SerializeField] private Button _startSimulationBtn;
-    [SerializeField] private TextMeshProUGUI _startSimulationTMP;
+    [SerializeField] private TextMeshProUGUI _currentIncidentNameTMP, _startSimulationTMP;
     [SerializeField] private TMP_InputField _apartmentNumber;
-    [SerializeField] private string _noSimulationText, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
+    [SerializeField] private string _currentIncidentName, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
     [SerializeField] public FilteredPatientsRoster _filterredRoaster;
 
@@ -60,6 +60,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     private void Start()
     {
+        _currentIncidentNameTMP.text = _currentIncidentName;
         //GameManager.Instance.AllCrewRooms[_crewRoomIndex - 1] = this;
         //GameManager.Instance.AllCrewRooms.Add(this);
         _crewRoomIndexStatic++;
@@ -435,19 +436,19 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
                 StartRandomIncident();
                 _isRandomIncident = false;
                 _startSimulationBtn.interactable = false;
-                _startSimulationTMP.text = _noSimulationText;
+                _currentIncidentNameTMP.text = _currentIncidentName;
             }
             else
             {
                 StartIncidentInRandomLocation();
                 _startSimulationBtn.interactable = false;
-                _startSimulationTMP.text = _noSimulationText;
+                _currentIncidentNameTMP.text = _currentIncidentName;
             }
         }
         else
         {
             _startSimulationBtn.interactable = false;
-            _startSimulationTMP.text = _noSimulationText;
+            _currentIncidentNameTMP.text = _currentIncidentName;
         }
 
     }
@@ -455,6 +456,13 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public void SetRandomIncident()
     {
         _isRandomIncident = true;
+    }
+
+    [PunRPC]
+    public void SetIncidentName(string incidentName)
+    {
+        _currentIncidentName = incidentName;
+        _currentIncidentNameTMP.text = _currentIncidentName;
     }
 
     //public void ChooseIncidents()

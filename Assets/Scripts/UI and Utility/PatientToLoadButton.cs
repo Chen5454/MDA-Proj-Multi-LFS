@@ -4,9 +4,10 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
+
 namespace PatientCreationSpace
 {
-
     public class PatientToLoadButton : MonoBehaviour
     {
         [SerializeField] private Button _btn;
@@ -40,12 +41,14 @@ namespace PatientCreationSpace
 
         public void Set(string patientName, PatientRoster pr)
         {
+            name = patientName;
             patientRoster = pr;
             text.text = patientName;
             fileNameToLoad = patientName;
         }
         public void Set(string patientName, FilteredPatientsRoster fpr)
         {
+            name = patientName;
             filteredPatientRoster = fpr;
             text.text = patientName;
             fileNameToLoad = patientName;
@@ -53,6 +56,7 @@ namespace PatientCreationSpace
         }
         public void Set(string patientName, NoPUN_FilteredPatientRoster np_fpr)
         {
+            name = patientName;
             noPUN_filteredPatientRoster = np_fpr;
             text.text = patientName;
             fileNameToLoad = patientName;
@@ -69,7 +73,7 @@ namespace PatientCreationSpace
             else if (noPUN_filteredPatientRoster)
                 noPUN_filteredPatientRoster.LoadPatient(fileNameToLoad);
 
-
+            crewRoom.GetComponent<PhotonView>().RPC("SetIncidentName", RpcTarget.All, fileNameToLoad);
             crewRoom.RemoveOverlayUI();
         }
     }
