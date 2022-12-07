@@ -15,6 +15,7 @@ public class TagMiun : MonoBehaviour
     [SerializeField] private Transform _qAParent;
     [SerializeField] private List<GameObject> _qAGroupsList = new List<GameObject>();
 
+    private Patient _patient;
     private List<TagMiunQA> _tagMiunQAsList = new List<TagMiunQA>();
     [SerializeField] private List<string> questions = new List<string>();
     [SerializeField] private List<string> answers = new List<string>();
@@ -50,6 +51,8 @@ public class TagMiun : MonoBehaviour
     // Submit Button Method
     public void SubmitAnswers()
     {
+        _patient = ActionsManager.Instance.LastClickedPatient;
+
         _tagMiunQAsList.Clear();
         foreach (GameObject QAGroup in _qAGroupsList)
         {
@@ -141,5 +144,7 @@ public class TagMiun : MonoBehaviour
             questions.Add(item.Question);
             answers.Add(item.Answer);
         }
+
+        _patient.PhotonView.RPC("AddToTaggedPatientsListRPC", Photon.Pun.RpcTarget.AllBufferedViaServer);
     }
 }

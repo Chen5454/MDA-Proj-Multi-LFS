@@ -58,6 +58,7 @@ public class ActionsManager : MonoBehaviour
     public List<bool> /*AmbulancePosTransforms,*/ VehiclePosOccupiedList;
 
     private Patient _lastClickedPatient;
+    public Patient LastClickedPatient => _lastClickedPatient;
     private NewPatientData _lastClickedPatientData;
 
     #region MonoBehaviour Callbacks

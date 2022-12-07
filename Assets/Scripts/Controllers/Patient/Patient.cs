@@ -232,6 +232,12 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 
     #region PunRPC invoke by Patient
     [PunRPC]
+    public void AddToTaggedPatientsListRPC()
+    {
+        AddToTaggedPatientsList();
+    }
+
+    [PunRPC]
     public void AddUserToTreatingLists(string currentPlayer)
     {
         // recieve crew index as int/ string no need for PatientData
