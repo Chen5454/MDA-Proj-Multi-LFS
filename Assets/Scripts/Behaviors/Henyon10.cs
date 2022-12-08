@@ -185,13 +185,16 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
             if (!natanController.IsBusy)
             {
+                vehicleListRowTr.gameObject.SetActive(true);
                 vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
                 vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
             }
             else
             {
-                vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
-                vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
+                vehicleListRowTr.gameObject.SetActive(false);
+
+                //vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
+                //vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
             }
         }
     }
