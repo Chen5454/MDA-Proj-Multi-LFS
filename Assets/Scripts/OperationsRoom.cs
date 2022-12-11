@@ -131,7 +131,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
             Destroy(_taggedPatientListContent.GetChild(i).gameObject);
         }
         _taggedPatientList.Clear();
-        _taggedPatientList = GameManager.Instance.AllTaggedPatients;
+        _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
 
         for (int i = 0; i < _taggedPatientList.Count; i++)
         {
