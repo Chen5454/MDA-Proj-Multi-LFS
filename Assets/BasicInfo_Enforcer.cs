@@ -10,6 +10,8 @@ public class BasicInfo_Enforcer : MonoBehaviour
     NewPatientWindow newPatientWindow;
     [SerializeField]
     Button enforcedButton;
+    [SerializeField]
+    Button nextBtn;
 
     private void OnEnable()
     {
@@ -21,5 +23,6 @@ public class BasicInfo_Enforcer : MonoBehaviour
     {
         canInteract = newPatientWindow.AreAllBasicInfoFieldFilled();
         enforcedButton.interactable = canInteract;
+        nextBtn.interactable = canInteract;
     }
 }

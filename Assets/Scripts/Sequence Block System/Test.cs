@@ -11,7 +11,7 @@ namespace PatientCreationSpace
         [SerializeField]
         public string testName;
 
-        //Should not also hold the type of measurement checked for? TBD TBF ALON
+        public Measurements Measurement;
 
         //TBF test setter?
 

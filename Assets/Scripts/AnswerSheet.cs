@@ -69,7 +69,7 @@ namespace PatientCreationSpace
             }
             else
             {
-                if (treatment == treatmeantSequence.sequenceBlocks[currentBlockIndex])
+                if (treatment == treatmeantSequence.sequenceBlocks[currentBlockIndex]) //better to make id
                 {
                     ResolveTreatment(treatment);
                     currentBlockIndex++; //Advance to the next Block!
@@ -87,13 +87,14 @@ namespace PatientCreationSpace
             }
             else if (treatment is Medicine)
             {
-                //newPatientData.ApplyMedicine((treatment as Medicine).measurements);
+                data.SetPatientMeasurement((treatment as Medicine).measurements.MeasurementValues);
             }
             else if (treatment is Test)
             {
+                UIManager.Instance.StatsPanel.UpdateMeasurement((treatment as Test).Measurement);
                 //MeasuremnetPanel.SetMeasurement((treatment as Test).measurementType); // tests hold no value, they merely tell MeasurementsPanel to refresh 1 measuremnets displayer
                 //UIManager.Instance.StatsPanel.UpdateMeasurement(transform);
-                
+
                 //BASICALLY, should this happen here? should it not work if it is a wrong step?
             }
 

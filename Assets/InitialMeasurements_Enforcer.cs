@@ -10,6 +10,8 @@ public class InitialMeasurements_Enforcer : MonoBehaviour
     NewPatientWindow newPatientWindow;
     [SerializeField]
     Button enforcedButton;
+    [SerializeField]
+    Button nextBtn;
 
 
 
@@ -23,5 +25,6 @@ public class InitialMeasurements_Enforcer : MonoBehaviour
     {
         canInteract = newPatientWindow.AreAllInitialMeasurementsFilled();
         enforcedButton.interactable = canInteract;
+        nextBtn.interactable = canInteract;
     }
 }

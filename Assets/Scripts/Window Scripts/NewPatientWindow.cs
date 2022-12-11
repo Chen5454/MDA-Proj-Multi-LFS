@@ -133,7 +133,7 @@ namespace PatientCreationSpace
             if (!
                 (string.IsNullOrEmpty(Name.text) || 
                 string.IsNullOrEmpty(EventName.text) ||
-                (string.IsNullOrEmpty(Age.text)|| !float.TryParse(Age.text, out float nothing)) || //age is filled, and a number
+                string.IsNullOrEmpty(Age.text)|| //!float.TryParse(Age.text, out float nothing)) || //age is filled, and a number
                 string.IsNullOrEmpty(Gender.options[Gender.value].text)|| 
                 string.IsNullOrEmpty(Weight.text) || 
                 string.IsNullOrEmpty(Height.text)|| 
