@@ -229,6 +229,13 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         photonView.RPC("ChangeAranStateRPC", RpcTarget.All, isActive);
     }
+    public void SetPopUp(string title, string text)
+    {
+        PopUp popUp = UIManager.Instance.PopUpWindow.GetComponent<PopUp>();
+        popUp.PopUpTitle.text = title;
+        popUp.PopUpText.text = text;
+        popUp.gameObject.SetActive(true);
+    }
 
     [PunRPC]
     public void UpdatePinuyList_RPC()

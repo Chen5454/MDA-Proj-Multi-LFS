@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     public GameObject MapWindow, ContentPanel;
     public GameObject TeamLeaderMenu;
     public GameObject TeamLeaderNavigationBtn;
+    public GameObject PopUpWindow;
     public Button ResetCrewRoom;
     public Button TeleportBtn;
 
