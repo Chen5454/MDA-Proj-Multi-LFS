@@ -232,6 +232,33 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
 
     #region PunRPC invoke by Patient
     [PunRPC]
+    public void TagPatientRPC(int conditionNum)
+    {
+        PatientCondition patientCondition = (PatientCondition)conditionNum;
+        NewPatientData.Status = patientCondition;
+        switch (NewPatientData.Status)
+        {
+            case PatientCondition.Dead:
+                NewPatientData.StatusColor = Color.black;
+                break;
+            case PatientCondition.Critical:
+                NewPatientData.StatusColor = Color.blue;
+                break;
+            case PatientCondition.Urgent:
+                NewPatientData.StatusColor = Color.red;
+                break;
+            case PatientCondition.Nonurgent:
+                NewPatientData.StatusColor = Color.green;
+                break;
+            case PatientCondition.Untagged:
+                NewPatientData.StatusColor = Color.grey;
+                break;
+            default:
+                break;
+        }
+    }
+
+    [PunRPC]
     public void AddToTaggedPatientsListRPC()
     {
         AddToTaggedPatientsList();

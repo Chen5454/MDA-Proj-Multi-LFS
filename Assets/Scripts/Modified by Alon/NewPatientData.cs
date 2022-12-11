@@ -6,6 +6,7 @@ using PatientCreationSpace;
 public enum PatientType { Old, Grown, Kid, }
 public enum PatientGender { זכר, נקבה }
 public enum MonitorSprites { HeartMonitor, ECG }
+public enum PatientCondition { Dead, Critical, Urgent, Nonurgent, Untagged }
 
 [System.Serializable]
 public class NewPatientData
@@ -18,6 +19,8 @@ public class NewPatientData
     public string Gender;
     public string PhoneNumber;
     public string MedicalCompany, AddressLocation, Complaint;
+    public PatientCondition Status;
+    public Color StatusColor;
 
     public DestinationRoom _DestinationRoom;
 
@@ -67,6 +70,8 @@ public class NewPatientData
         isTrauma = trauma;
         FullTreatmentSequence = new TreatmentSequence();
         FullTreatmentSequence.Init();
+        Status = PatientCondition.Untagged;
+        StatusColor = Color.grey;
         //AnswerSheet = new AnswerSheet();
         //AnswerSheet = 
         //AnswerSheet.Set(this);

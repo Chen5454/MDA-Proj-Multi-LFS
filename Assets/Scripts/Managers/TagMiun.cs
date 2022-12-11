@@ -14,22 +14,16 @@ public class TagMiun : MonoBehaviour
 {
     [SerializeField] private Transform _qAParent;
     [SerializeField] private List<GameObject> _qAGroupsList = new List<GameObject>();
+    [SerializeField] private List<string> questions = new List<string>();
+    [SerializeField] private List<string> answers = new List<string>();
 
     private Patient _patient;
     private List<TagMiunQA> _tagMiunQAsList = new List<TagMiunQA>();
-    [SerializeField] private List<string> questions = new List<string>();
-    [SerializeField] private List<string> answers = new List<string>();
 
     // Start is called before the first frame update
     void Start()
     {
         GetAllQAGroups(_qAParent);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     // Filling The List With All QAGroups
@@ -48,11 +42,19 @@ public class TagMiun : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        _patient = ActionsManager.Instance.LastClickedPatient;
+    }
+
+    private void OnDisable()
+    {
+        _patient = null;
+    }
+
     // Submit Button Method
     public void SubmitAnswers()
     {
-        _patient = ActionsManager.Instance.LastClickedPatient;
-
         _tagMiunQAsList.Clear();
         foreach (GameObject QAGroup in _qAGroupsList)
         {
@@ -146,5 +148,10 @@ public class TagMiun : MonoBehaviour
         }
 
         _patient.PhotonView.RPC("AddToTaggedPatientsListRPC", Photon.Pun.RpcTarget.AllBufferedViaServer);
+    }
+
+    public void TagPatient(int conditionNum)
+    {
+        _patient.PhotonView.RPC("TagPatientRPC", Photon.Pun.RpcTarget.AllBufferedViaServer, conditionNum);
     }
 }
