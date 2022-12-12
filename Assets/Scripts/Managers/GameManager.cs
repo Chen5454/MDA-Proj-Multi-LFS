@@ -50,6 +50,11 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     public GameObject TaggedPatientListRow;
     public GameObject UrgentEvacuationCanvas;
 
+    [Header("Refua10")]
+    public GameObject TaggedPatientListRowRefua;
+    public GameObject UrgentEvacuationCanvasRefua;
+
+
     //[Header("Metargel")]
     public List<PhotonView> AllBeds;
 

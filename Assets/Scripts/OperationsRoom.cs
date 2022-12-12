@@ -145,7 +145,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
 
             taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
             taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
-           // taggedPatientListRowTr.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { ReTagPatient(taggedPatient, taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>()); });
+            taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }  
     }
 

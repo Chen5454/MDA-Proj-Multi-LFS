@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance;
     [SerializeField] private Vector3 _leaderMenuOffset;
-    [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen;
+    [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen, _isRefua10MenuOpen;
     public EventSystem EventSystem;
 
     #region Player UI
@@ -56,6 +56,14 @@ public class UIManager : MonoBehaviour
     public Button Pinuy10MenuHandle;
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
+
+    [Header("Refua10")]
+    public GameObject Refua10Menu;
+    public Button Refua10MenuHandle;
+    public Button RefresTaghButtonRefua;
+    public Transform TaggedPatientListContentRefua;
+
+
 
     [Header("Errors")]
 
@@ -260,6 +268,18 @@ public class UIManager : MonoBehaviour
                         {
                             Pinuy10Menu.transform.position += _leaderMenuOffset;
                             _isPinuy10MenuOpen = false;
+                        }
+                        break;
+                    case "Refua10":
+                        if (!_isRefua10MenuOpen && desiredPlayerData.AranRole == AranRoles.Refua10)
+                        {
+                            Refua10Menu.transform.position -= _leaderMenuOffset;
+                            _isRefua10MenuOpen = true;
+                        }
+                        else if (_isRefua10MenuOpen && desiredPlayerData.AranRole == AranRoles.Refua10)
+                        {
+                            Refua10Menu.transform.position += _leaderMenuOffset;
+                            _isRefua10MenuOpen = false;
                         }
                         break;
                     default:
