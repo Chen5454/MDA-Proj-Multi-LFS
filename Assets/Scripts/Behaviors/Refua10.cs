@@ -11,9 +11,12 @@ public class Refua10 : MonoBehaviour
 
     [SerializeField] private List<Patient> _taggedPatientList = new List<Patient>();
     [SerializeField] private GameObject _taggedPatientListRow;
+    [SerializeField] private GameObject Refua10Panel;
     [SerializeField] private Transform _taggedPatientListContent;
-    public Button TopMenuHandle, RefreshButton;
+    public Button TopMenuHandle, RefreshButton,ShowButton,CloseButton;
     private bool _isRefua10MenuOpen;
+    private Coroutine updatePlayerListCoroutine;
+
 
     private void Start()
     {
@@ -25,9 +28,16 @@ public class Refua10 : MonoBehaviour
     {
         UIManager.Instance.TeamLeaderMenu.SetActive(false);
         UIManager.Instance.Refua10Menu.SetActive(true);
+        Refua10Panel = UIManager.Instance.Refua10Window;
+
+        CloseButton = UIManager.Instance.CloseRefuaWindow;
+        ShowButton = UIManager.Instance.ShowRefuaWindow;
+
+        ShowButton.onClick.AddListener(delegate{ShowPatientWindow();});
+        CloseButton.onClick.AddListener(delegate { ClosePatientWindow();});
+
 
         _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
-
 
         _taggedPatientListRow = GameManager.Instance.TaggedPatientListRowRefua;
         _taggedPatientListContent = UIManager.Instance.TaggedPatientListContentRefua;
@@ -40,6 +50,8 @@ public class Refua10 : MonoBehaviour
         RefreshButton = UIManager.Instance.RefresTaghButtonRefua;
         RefreshButton.onClick.RemoveAllListeners();
         RefreshButton.onClick.AddListener(delegate { RefreshPatientList(); });
+
+
     }
 
     public void ReTagPatient(Patient patientToReTag, TextMeshProUGUI patientNameTMP)
@@ -96,5 +108,27 @@ public class Refua10 : MonoBehaviour
 
         TopMenuHandle.onClick.RemoveAllListeners();
         TopMenuHandle.onClick.AddListener(delegate { OpenCloseRefua10Menu(); });
+    }
+
+    void ShowPatientWindow()
+    {
+        Refua10Panel.SetActive(true);
+        updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
+    }
+    void ClosePatientWindow()
+    {
+        Refua10Panel.SetActive(false);
+        StopCoroutine(updatePlayerListCoroutine);
+    }
+
+    IEnumerator HandleDropDownUpdates(float nextUpdate)
+    {
+        while (true)
+        {
+
+            RefreshPatientList();
+
+            yield return new WaitForSeconds(nextUpdate);
+        }
     }
 }

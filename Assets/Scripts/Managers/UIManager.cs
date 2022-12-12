@@ -59,8 +59,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Refua10")]
     public GameObject Refua10Menu;
+    public GameObject Refua10Window;
     public Button Refua10MenuHandle;
-    public Button RefresTaghButtonRefua;
+    public Button RefresTaghButtonRefua,ShowRefuaWindow,CloseRefuaWindow;
     public Transform TaggedPatientListContentRefua;
 
 
