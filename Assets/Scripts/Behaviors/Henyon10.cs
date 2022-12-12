@@ -28,8 +28,11 @@ public class Henyon10 : MonoBehaviour, IPunObservable
     [SerializeField] private GameObject _vehicleListRow;
     [SerializeField] private List<PhotonView> _natanList = new List<PhotonView>(), _ambulanceList = new List<PhotonView>();
 
+    [SerializeField] private PlayerData thisPlayerdata;
+
     void Start()
     {
+        thisPlayerdata = GetComponent<PlayerData>();
         GameManager.Instance.Henyon10View = _photonView;
         Init();
         if (_photonView.IsMine)
@@ -42,30 +45,34 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (this.thisPlayerdata.IsHenyon10 && _photonView.IsMine)
         {
-            if (_isMarking)
+            if (Input.GetMouseButtonDown(0))
             {
-                ChooseAreaPos();
-            }
-        }
-
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
-            // Casts the ray and get the first game object hit
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-
-                if (hit.collider.tag == "test")
+                if (_isMarking)
                 {
-                    string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
-                    Debug.Log(nameIndx);
-                    _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                    ChooseAreaPos();
+                }
+            }
+
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
+                // Casts the ray and get the first game object hit
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+
+                    if (hit.collider.tag == "test")
+                    {
+                        string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
+                        Debug.Log(nameIndx);
+                        _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                    }
                 }
             }
         }
+      
     }
 
 

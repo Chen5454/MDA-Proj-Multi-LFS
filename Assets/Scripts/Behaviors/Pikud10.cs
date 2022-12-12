@@ -34,11 +34,13 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     //private GameObject worldMark;
     private OwnershipTransfer _transfer;
 
+    [SerializeField] private PlayerData thisPlayerdata;
     #region MonobehaviourCallbacks
 
 
     private void Start()
     {
+        thisPlayerdata = GetComponent<PlayerData>();
         _transfer = GetComponent<OwnershipTransfer>();
 
         if (_photonView.IsMine)
@@ -56,31 +58,34 @@ public class Pikud10 : MonoBehaviour,IPunObservable
 
     private void Update()
     {
-
-        if (Input.GetMouseButtonDown(0))
+        if (this.thisPlayerdata.IsPikud10 && _photonView.IsMine)
         {
-            if (_isMarking)
+            if (Input.GetMouseButtonDown(0))
             {
-                //_photonView.RPC("ChooseAreaPos",RpcTarget.AllBufferedViaServer, _currentMarkIndex);
-                ChooseAreaPos(_currentMarkIndex);
-            }
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
-            // Casts the ray and get the first game object hit
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                
-                if (hit.collider.tag == "test")
+                if (_isMarking)
                 {
-                    string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
-                    Debug.Log(nameIndx);
-                    _photonView.RPC("DestroyWorldMark_RPC",RpcTarget.AllBufferedViaServer, nameIndx);
+                    //_photonView.RPC("ChooseAreaPos",RpcTarget.AllBufferedViaServer, _currentMarkIndex);
+                    ChooseAreaPos(_currentMarkIndex);
+                }
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Ray ray = _camController.PlayerCamera.ScreenPointToRay(Input.mousePosition);
+                // Casts the ray and get the first game object hit
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+
+                    if (hit.collider.tag == "test")
+                    {
+                        string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
+                        Debug.Log(nameIndx);
+                        _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                    }
                 }
             }
         }
+ 
     }
 
     [PunRPC]
