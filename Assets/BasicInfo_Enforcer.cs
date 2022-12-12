@@ -24,5 +24,13 @@ public class BasicInfo_Enforcer : MonoBehaviour
         canInteract = newPatientWindow.AreAllBasicInfoFieldFilled();
         enforcedButton.interactable = canInteract;
         nextBtn.interactable = canInteract;
+
+        Color onColor;
+        Color offColor;
+
+        ColorUtility.TryParseHtmlString("#F41B49", out onColor);
+        ColorUtility.TryParseHtmlString("#2A2A2A", out offColor);
+
+        nextBtn.image.color = canInteract ? onColor : offColor;
     }
 }
