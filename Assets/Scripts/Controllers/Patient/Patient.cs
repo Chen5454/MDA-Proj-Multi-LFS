@@ -9,6 +9,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using PatientCreationSpace;
+using TMPro;
 
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
@@ -26,11 +27,12 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     public NewPatientData NewPatientData;
     public List<ActionSequence> ActionSequences;
     public SmoothSyncMovement SmoothMovement;
+    [SerializeField] private string urgent, critical, nonUrgent, dead, unTugged;
     #endregion
 
     public string PatientFullName;
     public int _ownedCrewNumber;
-
+    public string HebrewStatus;
     #region UI
     [Header("UI - by UI Manager")]
     public Image MonitorWindow;
@@ -240,18 +242,23 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         {
             case PatientCondition.Dead:
                 NewPatientData.StatusColor = Color.black;
+                HebrewStatus = dead;
                 break;
             case PatientCondition.Critical:
                 NewPatientData.StatusColor = Color.blue;
+                HebrewStatus = critical;
                 break;
             case PatientCondition.Urgent:
                 NewPatientData.StatusColor = Color.red;
+                HebrewStatus = urgent;
                 break;
             case PatientCondition.Nonurgent:
                 NewPatientData.StatusColor = Color.green;
+                HebrewStatus = nonUrgent;
                 break;
             case PatientCondition.Untagged:
                 NewPatientData.StatusColor = Color.grey;
+                HebrewStatus = unTugged;
                 break;
             default:
                 break;
