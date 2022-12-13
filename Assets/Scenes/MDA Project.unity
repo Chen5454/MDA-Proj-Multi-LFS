@@ -1617,6 +1617,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1403523050}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: RefreshBtn
+      value: 
+      objectReference: {fileID: 4134889592247787965}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: StatsPanel
       value: 
       objectReference: {fileID: 4134889592247787954}
@@ -1817,6 +1821,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6309766607454200108}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: PatientListPrefab
+      value: 
+      objectReference: {fileID: 5088108570382661912, guid: 14ba2f99944d9c44fbd62bafdb597db4, type: 3}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: Pikud10MenuHandle
       value: 
       objectReference: {fileID: 4134889592247787916}
@@ -1824,6 +1832,14 @@ PrefabInstance:
       propertyPath: Pinuy10MenuHandle
       value: 
       objectReference: {fileID: 4134889592247787935}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: RefresCarshButton
+      value: 
+      objectReference: {fileID: 4134889592247787973}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: RefreshPatientBtn
+      value: 
+      objectReference: {fileID: 4134889592247787969}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: Refua10MenuHandle
       value: 
@@ -1873,6 +1889,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4134889592247787944}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: PatientContentPikud10
+      value: 
+      objectReference: {fileID: 4134889592247787968}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: PatientCreationWindow
       value: 
       objectReference: {fileID: 0}
@@ -1888,6 +1908,14 @@ PrefabInstance:
       propertyPath: CurrentActionBarParent
       value: 
       objectReference: {fileID: 4134889592247787957}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: NatanListContentPikud10
+      value: 
+      objectReference: {fileID: 4134889592247787966}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: NatanListContentPinuy10
+      value: 
+      objectReference: {fileID: 4134889592247787971}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: TeamLeaderNavigationBtn
       value: 
@@ -1920,6 +1948,14 @@ PrefabInstance:
       propertyPath: AmbulanceDefibrilationPanel
       value: 
       objectReference: {fileID: 4134889592247787946}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: AmbulanceListContentPikud10
+      value: 
+      objectReference: {fileID: 4134889592247787967}
+    - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
+      propertyPath: AmbulanceListContentPinuy10
+      value: 
+      objectReference: {fileID: 4134889592247787972}
     - target: {fileID: 5025649232623801632, guid: 186276355ffef6746a0eb1d9ae46a4f0, type: 3}
       propertyPath: TaggedPatientListContentRefua
       value: 
@@ -11861,10 +11897,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 638728650836235419, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1016382340343210002, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 1018276567069871796, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1093819119997103570, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_Name
       value: Refua10MenuBtn Image
@@ -11884,6 +11928,18 @@ PrefabInstance:
     - target: {fileID: 1599719158808009146, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1622447529803026291, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2212166555511445419, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338853995303126563, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: Pikud10VehicleLists Panel
       objectReference: {fileID: 0}
     - target: {fileID: 2399976835450785835, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
@@ -11953,6 +12009,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 3740522621190464812, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3839113233210924138, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -199
+      objectReference: {fileID: 0}
+    - target: {fileID: 3967115792694201176, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4134889592247787902, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -11977,6 +12045,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5285318572979396782, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5394115924545907634, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -11997,6 +12069,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 851170986}
+    - target: {fileID: 5402109691082305316, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5510852036099038314, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701283688731563334, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5707200074349890419, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -12008,6 +12092,14 @@ PrefabInstance:
     - target: {fileID: 6217401187643460810, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_RootOrder
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6519704121403530242, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_Name
+      value: Pikud10CarsPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6519704121403530242, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7052076968487710763, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -12221,6 +12313,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1011662884}
+    - target: {fileID: 8500245031457995506, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500245031457995506, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4134889592247787970}
+    - target: {fileID: 8500245031457995506, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500245031457995506, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500245031457995506, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8552287036785433978, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
       propertyPath: m_Name
       value: Refua10Menu Btn
@@ -12780,6 +12892,88 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1401670615340175799, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
   m_PrefabInstance: {fileID: 4134889592247787895}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4134889592247787965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5295491060361295903, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &4134889592247787966 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1622447529803026291, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4134889592247787967 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3740522621190464812, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4134889592247787968 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8844125252311781127, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4134889592247787969 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5131048324362796142, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4134889592247787970 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4521958331850889498, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4134889592247787971 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3967115792694201176, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &4134889592247787972 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5701283688731563334, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4134889592247787973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7009707756523827861, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4134889592247787974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5285318572979396782, guid: 6889ee60049b96548ac5c63995ea654a, type: 3}
+  m_PrefabInstance: {fileID: 4134889592247787895}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4134889592247787975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134889592247787974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f468d6cadb7579d49ad620d84a0e8bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransparentOnDrag: 1
+  SetToTop: 1
 --- !u!4 &4187218042992442401
 Transform:
   m_ObjectHideFlags: 0

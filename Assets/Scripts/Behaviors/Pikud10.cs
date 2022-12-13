@@ -30,6 +30,18 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     public Button TopMenuHandle, AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button[] AllAreaMarkings = new Button[6];
 
+
+    [Header(" Patient List")]
+    [SerializeField] private List<Patient> _taggedPatientList = new List<Patient>();
+    [SerializeField] private GameObject _taggedPatientListRow;
+    [SerializeField] private Transform _taggedPatientListContent;
+
+    public Button RefreshBtn;
+    public Button RefreshPatientBtn;
+    [SerializeField] private Transform _ambulanceListContent, _natanListContent;
+    [SerializeField] private GameObject _vehicleListRow;
+    [SerializeField] private List<PhotonView> _natanList = new List<PhotonView>(), _ambulanceList = new List<PhotonView>();
+
     private GameObject worldMark;
     //private GameObject worldMark;
     private OwnershipTransfer _transfer;
@@ -180,23 +192,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     #endregion
 
     #region Private Methods
-    //private void InitializePikud10()
-    //{
-    //    _photonView.RPC("InitializePikud10RPC", RpcTarget.AllViaServer);
-    //}
-    //private void SetLineTargetPos()
-    //{
-    //    _lineRenderer.SetPosition(0, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
-    //    _lineRenderer.SetPosition(1,
-    //        new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-    //    _lineRenderer.SetPosition(2,
-    //        new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y + _areaOffset));
-    //    _lineRenderer.SetPosition(3,
-    //        new Vector3(_targetPos.x + _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
-    //    _lineRenderer.SetPosition(4,
-    //        new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y - _areaOffset));
-    //    _lineRenderer.SetPosition(5, new Vector3(_targetPos.x - _areaOffset, _targetHeight, _targetPos.y));
-    //}
+   
     private void ChooseAreaPos(int markIndex)
     {
         SetMarkRPC(markIndex);
@@ -288,6 +284,24 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         AllAreaMarkings[5].onClick.AddListener(delegate { OnClickMarker(5); });
 
 
+        _ambulanceListContent = UIManager.Instance.AmbulanceListContentPikud10;
+        _natanListContent = UIManager.Instance.NatanListContentPikud10;
+        _vehicleListRow = UIManager.Instance.CarPrefab;
+
+
+        _taggedPatientListRow = UIManager.Instance.PatientListPrefab;
+        _taggedPatientListContent = UIManager.Instance.PatientContentPikud10;
+
+
+        RefreshBtn = UIManager.Instance.RefreshBtn;
+        RefreshBtn.onClick.RemoveAllListeners();
+        RefreshBtn.onClick.AddListener(delegate { RefreshVehicleLists(); });
+
+        RefreshPatientBtn = UIManager.Instance.RefreshPatientBtn;
+        RefreshPatientBtn.onClick.RemoveAllListeners();
+        RefreshPatientBtn.onClick.AddListener(delegate { RefreshPatientLists(); });
+
+
         AssignRefua10.onClick.RemoveAllListeners();
         AssignRefua10.onClick.AddListener(delegate { OnClickRefua(); });
 
@@ -373,6 +387,125 @@ public class Pikud10 : MonoBehaviour,IPunObservable
                 colorArea.color = Color.yellow;
                 ColorFillArea.color = new Color(1, 1, 0, 0.2f);
                 break;
+        }
+    }
+
+
+
+
+    public void RefreshVehicleLists()
+    {
+        _photonView.RPC("UpdateVehicleListsPikud10RPC", RpcTarget.AllViaServer);
+    }
+
+
+    [PunRPC]
+    private void UpdateVehicleListsPikud10RPC()
+    {
+        _ambulanceList.Clear();
+        _natanList.Clear();
+
+
+        for (int i = 0; i < _ambulanceListContent.childCount; i++)
+        {
+            Destroy(_ambulanceListContent.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < _natanListContent.childCount; i++)
+        {
+            Destroy(_natanListContent.GetChild(i).gameObject);
+        }
+
+        _ambulanceList.AddRange(GameManager.Instance.AmbulanceCarList);
+        _natanList.AddRange(GameManager.Instance.NatanCarList);
+
+        for (int i = 0; i < _ambulanceList.Count; i++)
+        {
+            GameObject vehicleListRow = Instantiate(_vehicleListRow, _ambulanceListContent);
+            Transform vehicleListRowTr = vehicleListRow.transform;
+            PhotonView ambulance = _ambulanceList[i];
+            VehicleController ambulanceController = ambulance.GetComponent<VehicleController>();
+
+            string name = ambulanceController.RandomName;
+            int num = ambulanceController.RandomNumber;
+
+            vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {num}";
+
+            if (!ambulanceController.IsBusy)
+            {
+                vehicleListRowTr.gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
+            }
+            else
+            {
+                // vehicleListRowTr.gameObject.SetActive(false);
+
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
+            }
+        }
+
+
+
+        for (int i = 0; i < _natanList.Count; i++)
+        {
+            GameObject vehicleListRow = Instantiate(_vehicleListRow, _natanListContent);
+            Transform vehicleListRowTr = vehicleListRow.transform;
+            PhotonView natan = _natanList[i];
+            VehicleController natanController = natan.GetComponent<VehicleController>();
+
+            string name = natanController.RandomName;
+            int num = natanController.RandomNumber;
+
+            vehicleListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {num}";
+
+            if (!natanController.IsBusy)
+            {
+                vehicleListRowTr.gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(false);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(true);
+            }
+            else
+            {
+                //vehicleListRowTr.gameObject.SetActive(false);
+
+                vehicleListRowTr.GetChild(1).gameObject.SetActive(true);
+                vehicleListRowTr.GetChild(2).gameObject.SetActive(false);
+            }
+        }
+    }
+
+
+
+    public void RefreshPatientLists()
+    {
+        _photonView.RPC("UpdatePatientListPikud10RPC", RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    private void UpdatePatientListPikud10RPC()
+    {
+        for (int i = 0; i < _taggedPatientListContent.childCount; i++)
+        {
+            Destroy(_taggedPatientListContent.GetChild(i).gameObject);
+        }
+        _taggedPatientList.Clear();
+        _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
+
+        for (int i = 0; i < _taggedPatientList.Count; i++)
+        {
+            GameObject taggedPatientListRow = Instantiate(_taggedPatientListRow, _taggedPatientListContent);
+            Transform taggedPatientListRowTr = taggedPatientListRow.transform;
+            Patient taggedPatient = _taggedPatientList[i];
+
+            string name = taggedPatient.NewPatientData.Name;
+            string sureName = taggedPatient.NewPatientData.SureName;
+            //string patientCondition = GameManager.Instance.AllTaggedPatients[i].NewPatientData.Co
+
+            taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
+            taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
+            taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }
     }
 

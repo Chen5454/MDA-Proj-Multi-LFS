@@ -14,7 +14,7 @@ using TMPro;
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunObservable
 {
     #region Photon
     [Header("Photon")]
@@ -27,6 +27,8 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     public NewPatientData NewPatientData;
     public List<ActionSequence> ActionSequences;
     public SmoothSyncMovement SmoothMovement;
+    public EmergencyBedController myBed;
+    public bool isEvac;
     [SerializeField] private string urgent, critical, nonUrgent, dead, unTugged;
     #endregion
 
@@ -97,6 +99,22 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         UIManager.Instance.PatientInfoParent = GameManager.Instance.IsAranActive ? UIManager.Instance.TagMiunMenu : UIManager.Instance.PatientMenu;
     }
 
+    private void Update()
+    {
+        if (myBed!=null)
+        {
+            if (myBed.IsPatientOnBed && myBed.insideCar)
+            {
+                isEvac = true;
+            }
+            else
+            {
+                isEvac = false;
+            }
+        }
+    }
+
+
     private void OnDestroy()
     {
         GameManager.Instance.AllPatients.Remove(this);
@@ -109,6 +127,15 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
     #region Collision & Triggers
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("EmergencyBed"))
+        {
+            patientLayer.layer = (int)LayerMasks.Interactable;
+
+
+            myBed = other.gameObject.GetComponent<EmergencyBedController>();
+            Debug.Log("Bed Trigger Triggered!");
+        }
+
         if (!other.TryGetComponent(out PlayerData possiblePlayer))
         {
             return;
@@ -120,11 +147,9 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
             patientLayer.layer = (int)LayerMasks.Interactable;
 
         }
-        if (other.CompareTag("EmergencyBed"))
-        {
-            patientLayer.layer = (int)LayerMasks.Interactable;
-        }
+    
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -146,6 +171,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         if (other.CompareTag("EmergencyBed"))
         {
             patientLayer.layer = (int)LayerMasks.Interactable;
+            myBed = null;
         }
     }
     #endregion
@@ -523,5 +549,18 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback
         _ownedCrewNumber = (int)instantiationData[1];
         Debug.Log("Room Number is " + _ownedCrewNumber);
         //Debug.Log(PatientFullName);
+    }
+
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isEvac);
+        }
+        else
+        {
+            isEvac = (bool)stream.ReceiveNext();
+        }
     }
 }

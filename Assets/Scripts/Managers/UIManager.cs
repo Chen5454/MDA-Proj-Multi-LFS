@@ -36,12 +36,17 @@ public class UIManager : MonoBehaviour
 
     [Header("Pikud10")]
     public GameObject Pikud10Menu;
+    public GameObject PatientListPrefab;
     public GameObject DropdownRefua10, DropdownPinuy10, DropdownHenyon10;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button Pikud10MenuHandle;
+    public Button RefreshBtn,RefreshPatientBtn;
     public Button AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button MarkUrgent, MarkUnUrgent, MarkVehicles, MarkGeneral, MarkDeceased, MarkBomb;
     public GameObject MarkerPrefab;
+    public Transform AmbulanceListContentPikud10, NatanListContentPikud10;
+    public Transform PatientContentPikud10;
+
 
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
@@ -56,6 +61,10 @@ public class UIManager : MonoBehaviour
     public Button Pinuy10MenuHandle;
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
+    public Button RefresCarshButton;
+    public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
+
+
 
     [Header("Refua10")]
     public GameObject Refua10Menu;
