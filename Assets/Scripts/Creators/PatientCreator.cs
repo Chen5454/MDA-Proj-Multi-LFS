@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 
 namespace PatientCreationSpace
@@ -71,7 +72,11 @@ namespace PatientCreationSpace
             string patientJSON = JsonUtility.ToJson(newPatient);
             string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
-            NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
+            string patientFullName = newPatient.Name + "_" + newPatient.SureName;
+            
+            RequestTest.Instance.LogPlayer(patientFullName, patientJSON,treatmentSequenceJSON);
+
+          //  NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
 
 
             return true; //successful save!
@@ -180,8 +185,9 @@ namespace PatientCreationSpace
         /// <param name="patientFullName"></param>
         /// <returns></returns>
         static NewPatientData DeSerializePatient_Simple(string patientFullName)
-        {
+        { 
             string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+          // string json = RequestTest.Instance.GetRows(patientFullName);
             NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
             return newPatientData;
         }
@@ -308,6 +314,7 @@ namespace PatientCreationSpace
                 return null;
             }
             var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+           // var collection = RequestTest.Instance.GetRows();
             toFilter = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
             for (int i = 0; i < toFilter.Count; i++)
             {
