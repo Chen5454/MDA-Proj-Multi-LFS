@@ -30,6 +30,12 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     [SerializeField] private GameObject _taggedPatientListRow;
     [SerializeField] private Transform _taggedPatientListContent;
 
+    [Header("Participents List")]
+    [SerializeField] private List<PhotonView> _participentsList;
+    [SerializeField] private Transform _participentsListContent;
+    [SerializeField] private GameObject _participentsListRow;
+
+
     #region MonobehaviourCallbacks
     private void Start()
     {
@@ -77,6 +83,10 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         }
         return Index;
     }
+
+
+
+
     public void ShowMokdanMenu()
     {
         _transfer.TvOwner();
@@ -123,6 +133,28 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         MokdnMenuUI.SetActive(false);
     }
 
+
+    public void UpdateParticipentsList()
+    {
+        for (int i = 0; i < _participentsListContent.childCount; i++)
+        {
+            Destroy(_participentsListContent.GetChild(i).gameObject);
+        }
+        _participentsList.Clear();
+        _participentsList.AddRange(ActionsManager.Instance.AllPlayersPhotonViews);
+        for (int i = 0; i < _participentsList.Count; i++)
+        {
+            GameObject participentPlayerListRow = Instantiate(_participentsListRow, _participentsListContent);
+            Transform participentsListRowTr = participentPlayerListRow.transform;
+            PhotonView playerData = _participentsList[i];
+            var playerName = playerData.GetComponent<PlayerData>();
+            string NickName = playerName.UserName;
+
+            participentsListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{NickName}";
+            participentsListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = playerName.UserRole.ToString();
+        }
+    }
+
     [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
@@ -145,7 +177,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
 
             taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
             taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
-           // taggedPatientListRowTr.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { ReTagPatient(taggedPatient, taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>()); });
+            taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }  
     }
 

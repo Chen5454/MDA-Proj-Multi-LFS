@@ -58,8 +58,6 @@ public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
 
     public void SetUpNamesAsButtons() //called in inspector by the same buttons which perform the ALS/BLS Filtering
     {
-       
-
         _photonView.RPC("SetUpNamesAsButtons_RPC", RpcTarget.AllBufferedViaServer, isShowingALS, isShowingTrauma);
     }
 
@@ -77,6 +75,7 @@ public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
         //names = PatientCreator.GetExistingPatientNames(isShowingALS);
         //names = PatientCreator.GetExistingPatientNames(x => x.isALS == isShowingALS);
         names = PatientCreator.GetExistingPatientNames(x => (x.isALS == isShowingALS && x.isTrauma == isShowingTrauma));
+        //names = RequestTest.Instance.GetRows();
         Debug.Log(names.Count);
 
         if (names == null || names.Count == 0)

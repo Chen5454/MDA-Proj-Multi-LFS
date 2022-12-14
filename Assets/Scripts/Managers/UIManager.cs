@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance;
     [SerializeField] private Vector3 _leaderMenuOffset;
-    [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen;
+    [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen, _isRefua10MenuOpen;
     public EventSystem EventSystem;
 
     #region Player UI
@@ -36,12 +36,17 @@ public class UIManager : MonoBehaviour
 
     [Header("Pikud10")]
     public GameObject Pikud10Menu;
+    public GameObject PatientListPrefab;
     public GameObject DropdownRefua10, DropdownPinuy10, DropdownHenyon10;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button Pikud10MenuHandle;
+    public Button RefreshBtn,RefreshPatientBtn;
     public Button AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button MarkUrgent, MarkUnUrgent, MarkVehicles, MarkGeneral, MarkDeceased, MarkBomb;
     public GameObject MarkerPrefab;
+    public Transform AmbulanceListContentPikud10, NatanListContentPikud10;
+    public Transform PatientContentPikud10;
+
 
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
@@ -56,6 +61,19 @@ public class UIManager : MonoBehaviour
     public Button Pinuy10MenuHandle;
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
+    public Button RefresCarshButton;
+    public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
+
+
+
+    [Header("Refua10")]
+    public GameObject Refua10Menu;
+    public GameObject Refua10Window;
+    public Button Refua10MenuHandle;
+    public Button RefresTaghButtonRefua,ShowRefuaWindow,CloseRefuaWindow;
+    public Transform TaggedPatientListContentRefua;
+
+
 
     [Header("Errors")]
 
@@ -260,6 +278,18 @@ public class UIManager : MonoBehaviour
                         {
                             Pinuy10Menu.transform.position += _leaderMenuOffset;
                             _isPinuy10MenuOpen = false;
+                        }
+                        break;
+                    case "Refua10":
+                        if (!_isRefua10MenuOpen && desiredPlayerData.AranRole == AranRoles.Refua10)
+                        {
+                            Refua10Menu.transform.position -= _leaderMenuOffset;
+                            _isRefua10MenuOpen = true;
+                        }
+                        else if (_isRefua10MenuOpen && desiredPlayerData.AranRole == AranRoles.Refua10)
+                        {
+                            Refua10Menu.transform.position += _leaderMenuOffset;
+                            _isRefua10MenuOpen = false;
                         }
                         break;
                     default:
