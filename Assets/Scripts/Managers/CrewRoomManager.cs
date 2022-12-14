@@ -22,7 +22,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     public static int _crewRoomIndexStatic;
     public int _playersMaxCount = 4;
 
-    public Canvas RoomCrewMenuUI;
+    public Canvas RoomCrewMenuUI, AranCrewMenuUI;
     public List<TextMeshProUGUI> listOfUiNamesTMP;
     public List<TMP_Dropdown> CrewMemberRoleDropDownList;
     public TMP_Dropdown CrewLeaderDropDown;
@@ -36,7 +36,7 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
     [SerializeField] private GameObject _tvScreen;
-    [SerializeField] private GameObject _patientMale, _patientFemale, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
+    [SerializeField] private GameObject  _patientMale, _patientFemale, _chooseIncidentParent, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
     [SerializeField] private Button _startSimulationBtn;
     [SerializeField] private TextMeshProUGUI _currentIncidentNameTMP, _startSimulationTMP;
     [SerializeField] private TMP_InputField _apartmentNumber;
@@ -258,7 +258,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
         // RoomCrewMenuUI.gameObject.SetActive(true);
         //RefreshCrewUITexts();
     }
-
     public void HideCrewRoomMenu()
     {
         _photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
@@ -270,7 +269,6 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     {
         _photonView.RPC("AlertStartAllRPC", RpcTarget.All, title, content);
     }
-
     private void StartRandomIncident()
     {
         List<int> unavailableList = new List<int>();
@@ -479,11 +477,23 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     //}
     public void SetStartIncidentBtn()
     {
-        _overlay.SetActive(false);
-        _startSimulationBtn.interactable = true;
-        _startSimulationTMP.text = _startSimulationText;
+        if (GameManager.Instance.IsAranActive)
+        {
+            _overlay.SetActive(false);
+            _startSimulationBtn.interactable = true;
+            _startSimulationTMP.text = _startAranSimulationText;
 
-        _chooseSimulationPanel.SetActive(false);
+            _chooseSimulationPanel.SetActive(false);
+        }
+        else
+        {
+            _overlay.SetActive(false);
+            _startSimulationBtn.interactable = true;
+            _startSimulationTMP.text = _startSimulationText;
+
+            _chooseSimulationPanel.SetActive(false);
+        }
+        
     }
 
     public void ChangeVehicleRequired(bool changeVehicle)
@@ -538,23 +548,21 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
 
     public void ShowOverlayUI()
     {
-
-        _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+        if (!GameManager.Instance.IsAranActive)
+            _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void RemoveOverlayUI()
     {
-        _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
-
+        if (!GameManager.Instance.IsAranActive)
+            _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void ShowSimulationPanelUI()
     {
         _photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
-
     }
     public void RemoveShowSimulationPanelUI()
     {
         _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
-
     }
     public void ActivateAranBehaviour(bool isAranActive)
     {
@@ -691,7 +699,21 @@ public class CrewRoomManager : MonoBehaviour,IPunObservable
     [PunRPC]
     void ShowCrewUI_RPC()
     {
-        RoomCrewMenuUI.gameObject.SetActive(true);
+        if (GameManager.Instance.IsAranActive)
+        {
+            AranCrewMenuUI.gameObject.SetActive(true);
+            _chooseIncidentParent.SetActive(false);
+        }
+        else
+        {
+            RoomCrewMenuUI.gameObject.SetActive(true);
+
+            if (!_chooseIncidentParent.activeInHierarchy)
+            {
+                _chooseIncidentParent.SetActive(true);
+            }
+        }
+        
         _tvScreen.layer = (int)LayerMasks.Default;
         isUsed = true;
 
