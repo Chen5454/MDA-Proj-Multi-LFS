@@ -24,15 +24,39 @@ public class QuestionPanel : MonoBehaviour
     public void SetMe(NewPatientData newPatientData)
     {
         if (questionsAndAnswers == null)
+        {
             questionsAndAnswers = new List<GameObject>();
-         if (bankQuestions == null)
+        }
+        else
+        {
+            foreach (GameObject questionAndAnswer in questionsAndAnswers)
+            {
+                Destroy(questionAndAnswer);
+            }
+
+            questionsAndAnswers.Clear();
+        }
+            
+        if (bankQuestions == null)
+        {
             bankQuestions = new List<GameObject>();
+        }
+        else
+        {
+            foreach (GameObject question in bankQuestions)
+            {
+                Destroy(question);
+            }
+
+            bankQuestions.Clear();
+        }
 
         questionsBank = newPatientData.FullTreatmentSequence.GetQuestions();
         foreach (var q in questionsBank)
         {
             GameObject go = Instantiate(questionPrefab, parent);
             go.GetComponentInChildren<TMPro.TMP_Text>().text = q.questionText;
+            go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => AskQuestion(q));
             go.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => newPatientData.AnswerSheet.AttemptTreatment(q));
             //TBF TBD ALON - Here Answers should be loaded if relevant to treatmentsequence -
             //what answeres should be loaded to questions that are either not yet relevant or no longer relevant?
@@ -51,7 +75,7 @@ public class QuestionPanel : MonoBehaviour
     }
     void RemoveBankQuestions()
     {
-        foreach (var item in bankQuestions)
+        foreach (GameObject item in bankQuestions)
         {
             //questionsAndAnswers.Remove(item);
             item.SetActive(false);
@@ -60,7 +84,7 @@ public class QuestionPanel : MonoBehaviour
     public void AskQuestion(Question q)
     {
         RemoveBankQuestions();
-        GameObject go = Instantiate(questionPrefab, parent);
+        GameObject go = Instantiate(answerPrefab, parent);
         go.GetComponentInChildren<TMPro.TMP_Text>().text = q.questionText;
         questionsAndAnswers.Add(go);
         //AddBankQuestions();

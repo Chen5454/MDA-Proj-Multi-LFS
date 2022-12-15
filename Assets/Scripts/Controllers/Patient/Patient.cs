@@ -14,7 +14,8 @@ using TMPro;
 public enum Clothing { FullyClothed, ShirtOnly, PantsOnly, UnderwearOnly }
 public enum Props { Venflon, BloodPressureSleeve, Ambu, HeadVice, OxygenMask, Tube, NeckBrace, ThroatTube, Asherman, ECG }
 
-public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunObservable
+[RequireComponent(typeof(AnswerSheet))]
+public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservable
 {
     #region Photon
     [Header("Photon")]
@@ -35,6 +36,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunObservabl
     public string PatientFullName;
     public int _ownedCrewNumber;
     public string HebrewStatus;
+
     #region UI
     [Header("UI - by UI Manager")]
     public Image MonitorWindow;
@@ -247,6 +249,13 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunObservabl
     {
         //NewPatientData = new NewPatientData(newPatientDataFromSO);
         NewPatientData = newPatientDataFromSave;
+        NewPatientData.AnswerSheet = GetComponent<AnswerSheet>();
+
+        if (!NewPatientData.AnswerSheet)
+        {
+            NewPatientData.AnswerSheet = gameObject.AddComponent<AnswerSheet>();
+            NewPatientData.AnswerSheet.Set(NewPatientData);
+        }
     }
 
     public void AddToTaggedPatientsList()
@@ -352,8 +361,19 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback,IPunObservabl
         UIManager.Instance.Id.text = NewPatientData.Id.ToString();
         UIManager.Instance.PhoneNumber.text = NewPatientData.PhoneNumber.ToString();
 
-        UIManager.Instance.StatsPanel.SetMe(NewPatientData);
-        UIManager.Instance.QuestionPanel.SetMe(NewPatientData);
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+            {
+                PlayerData playerData = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+
+                if (!playerData.IsJoinedNearbyPatient)
+                {
+                    UIManager.Instance.StatsPanel.SetMe(NewPatientData);
+                    UIManager.Instance.QuestionPanel.SetMe(NewPatientData);
+                }
+            }
+        }
     }
 
     [PunRPC]

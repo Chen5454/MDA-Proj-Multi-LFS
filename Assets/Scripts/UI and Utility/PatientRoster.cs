@@ -82,14 +82,14 @@ namespace PatientCreationSpace
         /// Loads patient into the PatientCreator - to edit or use as base for a new patient
         /// </summary>
         /// <param name="patientFullName"></param>
-        public void LoadPatient(string patientFullName)
+        public NewPatientData LoadPatient(string patientFullName)
         {
             if (string.IsNullOrEmpty(patientFullName))
             {
                 Debug.LogError("no file name");
-                return;
+                return null;
             }
-            PatientCreator.LoadPatient(patientFullName); 
+            return PatientCreator.LoadPatient(patientFullName); 
         }
 
 

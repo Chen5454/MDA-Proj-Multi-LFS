@@ -155,7 +155,7 @@ namespace PatientCreationSpace
         /// path - enter only patient name, with {Name_SureName} WITHOUT .txt
         /// </summary>
         /// <param name="patientFullName"></param>
-        public static void LoadPatient(string patientFullName)
+        public static NewPatientData LoadPatient(string patientFullName)
         {
             //newPatient = DeSerializePatient_Full(patientFullName);
 
@@ -163,6 +163,7 @@ namespace PatientCreationSpace
 
             Debug.LogError($"{newPatient.FullTreatmentSequence.sequenceBlocks.Count} sequence blocks in treatment sequence");
             OnLoadPatient?.Invoke();
+            return newPatient;
         }
         /// <summary>
         /// With FullTreatmentSequence and all
