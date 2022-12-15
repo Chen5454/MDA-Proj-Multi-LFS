@@ -7,16 +7,18 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using System.IO;
+using PatientCreationSpace;
 
 public class RequestTest : MonoBehaviour
 {
     static string spreadsheetID = "19otEzZVGU13MVzLzueVyNuFukGN9dOW0X1DZeCcYIdY";
     static string path = "/StreamingAssets/credentials.json";
     static SheetsService sheetsService;
-    string range = "PatientSheet!A:C";
+    string _writeRange = "A1:C1";
+    string _readRange = "PatientSheet!A1:C";
     public static RequestTest Instance;
 
-
+    private int patientCount;
 
     List<string> strings; //all A1:A35 first lines in the 
 
@@ -24,7 +26,7 @@ public class RequestTest : MonoBehaviour
     int rowsPerIterration = 10;
     void Start()
     {
-        Debug.LogError("Google Sheets Master performs start - it's not really an error");
+      //  Debug.LogError("Google Sheets Master performs start - it's not really an error");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -34,7 +36,7 @@ public class RequestTest : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         SetUpCredentials();
-        Invoke("PrintCell",2);
+        //Invoke("GetRows",2);
        // GetRows("nehC");
         //Invoke("LogPlayerTersting", 2);
         //LogPlayer(); // not sure we should
@@ -48,11 +50,22 @@ public class RequestTest : MonoBehaviour
         ServiceAccountCredential serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(creds);
 
         sheetsService = new SheetsService(new BaseClientService.Initializer() { HttpClientInitializer = serviceAccountCredential });
+
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
+        var response = request.Execute();
+        var values = response.Values;
+
+        patientCount = values.Count;
+
+        SetWriteRange((patientCount+1).ToString());
+
+
+
     }
 
     public void PrintCell() //just prints us the first(A1) that inside the cell
     {
-        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, range);
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
         var response = request.Execute();
         var values = response.Values;
@@ -71,9 +84,48 @@ public class RequestTest : MonoBehaviour
             Debug.Log("No data");
         }
     }
-    public List<string> GetRows(string PatientName)
+    //public List<string> GetRows(string PatientName)
+    //{
+    //    var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
+
+    //    var response = request.Execute(); //could not async?
+    //    var values = response.Values;
+
+    //    if (values != null && values.Count >= 0)
+    //    {
+    //        //return (List<string>)values;
+    //        List<string> rowsFirstCells = new List<string>();
+    //        foreach (var row in values)
+    //        {
+    //            if (PatientName == row[0].ToString())
+    //            {
+    //                rowsFirstCells.Add((string)row[0]);
+    //                Debug.Log(rowsFirstCells[0]);
+    //            }
+    //            else
+    //            {
+    //                Debug.Log("There is no patient name");
+
+    //            }
+    //        }
+    //        return rowsFirstCells;
+    //    }
+
+    //    else
+    //    {
+    //        Debug.Log("There is no patient name");
+    //        return null;
+
+    //    }
+    //}
+    /// <summary>
+    /// returns a full NewPatientData (with treatmentsequence) from sheets, by the patients name (it can also be incident ID - depends on what data is put into the first row in the sheet)
+    /// </summary>
+    /// <param name="PatientName"></param>
+    /// <returns></returns>
+    public NewPatientData GetFullPatientDataByName(string PatientName)
     {
-        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, range);
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
         var response = request.Execute(); //could not async?
         var values = response.Values;
@@ -81,21 +133,16 @@ public class RequestTest : MonoBehaviour
         if (values != null && values.Count >= 0)
         {
             //return (List<string>)values;
-            List<string> rowsFirstCells = new List<string>();
+            NewPatientData toReturn = null;
             foreach (var row in values)
             {
                 if (PatientName == row[0].ToString())
                 {
-                    rowsFirstCells.Add((string)row[0]);
-                    Debug.Log(rowsFirstCells[0]);
-                }
-                else
-                {
-                    Debug.Log("There is no patient name");
-
+                    toReturn = DeSerializePatient_Full(row[1] as string, row[2] as string);
+                    break;
                 }
             }
-            return rowsFirstCells;
+            return toReturn;
         }
 
         else
@@ -105,10 +152,13 @@ public class RequestTest : MonoBehaviour
 
         }
     }
-
-    public string GetRow(string PatientName)
+    /// <summary>
+    /// DONT USE FOR ANY REASON OTHER THAN FILTERING!
+    /// </summary>
+    /// <returns></returns>
+    public List<NewPatientData> GetAllPatients_Simple()
     {
-        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, range);
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
         var response = request.Execute(); //could not async?
         var values = response.Values;
@@ -116,34 +166,23 @@ public class RequestTest : MonoBehaviour
         if (values != null && values.Count >= 0)
         {
             //return (List<string>)values;
-            string rowsFirstCells="";
+            List<NewPatientData> simplePatientsData = new List<NewPatientData>();
             foreach (var row in values)
             {
-                if (PatientName == row[0].ToString())
-                {
-                    rowsFirstCells = row[0].ToString();
-                    Debug.Log(rowsFirstCells[0]);
-                }
-                else
-                {
-                    Debug.Log("There is no patient name");
-
-                }
+                simplePatientsData.Add(DeSerializePatient_Simple(row[1] as string));
             }
-            return rowsFirstCells;
+            return simplePatientsData;
         }
 
-        else
-        {
-            Debug.Log("There is no patient name");
-            return null;
-
-        }
+        return null;
     }
-
-    public List<string> GetRows()
+    /// <summary>
+    /// returns all row[0] - which is name now, but can and should be ID
+    /// </summary>
+    /// <returns></returns>
+    public List<string> GetAllFirstsInRow()
     {
-        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, range);
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
         var response = request.Execute(); //could not async?
         var values = response.Values;
@@ -156,17 +195,14 @@ public class RequestTest : MonoBehaviour
             {
               
                     rowsFirstCells.Add((string)row[0]);
-                    Debug.Log(rowsFirstCells[0]);
+                    Debug.Log((string)row[0]);
             }
             return rowsFirstCells;
         }
-
-        else
-        {
-            Debug.Log("There is no patient name");
+       
+            Debug.Log("There is no patient by that name");
             return null;
 
-        }
     }
 
     public void LogPlayer(string patientName,string patientJson, string treatmentJson)
@@ -177,14 +213,21 @@ public class RequestTest : MonoBehaviour
 
 
         valueRange.Values = new List<IList<object>> { objectList };// // List<System.object> Objects to save in order of coloumns
-        var updateRequest = sheetsService.Spreadsheets.Values.Append(valueRange, spreadsheetID, range);
-        //updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
-        updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+        var updateRequest = sheetsService.Spreadsheets.Values.Update(valueRange, spreadsheetID, _writeRange);
+        updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+        //updateRequest.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
 
         // var updateResponse = updateRequest.ExecuteAsync();
         var updateResponse = updateRequest.Execute();
         Debug.Log(updateResponse);
-   
+        patientCount++;
+
+    }
+
+
+    void SetWriteRange(string number)
+    {
+        _writeRange = $"A{number}:C{number}";
     }
 
 
@@ -193,6 +236,97 @@ public class RequestTest : MonoBehaviour
         LogPlayer("a", "b", "c");
     }
 
+
+    static NewPatientData DeSerializePatient_Full(string json, string ts_json)
+    {
+        //  string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+        NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+
+        // string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
+        TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
+
+
+        newPatientData.FullTreatmentSequence = ts;
+        return newPatientData;
+    }
+
+    static TreatmentSequence DeSerializeTreatmentSequence(string serializedTreatmentSequence)
+    {
+        TreatmentSequence toReturn = new TreatmentSequence();
+        toReturn.Init();
+        TreatmentGroup tempGroup = null;
+
+        string[] lines = serializedTreatmentSequence.Split('\n');
+        foreach (var line in lines)
+        {
+            string[] fields = line.Split('_');
+            List<string> data = fields.ToList();
+            data.Remove(fields[0]);
+            string datastring = string.Concat(data);
+            if (tempGroup != null)
+            {
+                switch (fields[0])
+                {
+                    case "Question":
+                        Question q = JsonUtility.FromJson<Question>(datastring);
+                        tempGroup.AddTreatment(q);
+                        break;
+                    case "Test":
+                        Test t = JsonUtility.FromJson<Test>(datastring);
+                        tempGroup.AddTreatment(t);
+                        break;
+                    case "Medicine":
+                        Medicine m = JsonUtility.FromJson<Medicine>(datastring);
+                        tempGroup.AddTreatment(m);
+                        break;
+
+                    case "End":
+                        tempGroup = null;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+
+                switch (fields[0])
+                {
+                    case "Question":
+                        Question q = JsonUtility.FromJson<Question>(datastring);
+                        toReturn.AddToSequence(q);
+                        break;
+                    case "Test":
+                        Test t = JsonUtility.FromJson<Test>(datastring);
+                        toReturn.AddToSequence(t);
+                        break;
+                    case "Medicine":
+                        Medicine m = JsonUtility.FromJson<Medicine>(datastring);
+                        toReturn.AddToSequence(m);
+                        break;
+                    case "Start":
+                        tempGroup = new TreatmentGroup();
+                        tempGroup.Init();
+                        toReturn.AddToSequence(tempGroup);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+        return toReturn;
+    }
+
+
+    static NewPatientData DeSerializePatient_Simple(string json)
+    {
+        //string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+        // string json = RequestTest.Instance.GetRows(patientFullName);
+        NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+        return newPatientData;
+    }
     /// <summary>
     /// UN COMMENT BELOW!
     /// </summary>
