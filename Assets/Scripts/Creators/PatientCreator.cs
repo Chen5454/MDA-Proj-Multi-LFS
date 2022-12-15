@@ -157,7 +157,9 @@ namespace PatientCreationSpace
         /// <param name="patientFullName"></param>
         public static void LoadPatient(string patientFullName)
         {
-            newPatient = DeSerializePatient_Full(patientFullName);
+            //newPatient = DeSerializePatient_Full(patientFullName);
+
+            newPatient = RequestTest.Instance.GetFullPatientDataByName(patientFullName);
 
             Debug.LogError($"{newPatient.FullTreatmentSequence.sequenceBlocks.Count} sequence blocks in treatment sequence");
             OnLoadPatient?.Invoke();
@@ -277,6 +279,8 @@ namespace PatientCreationSpace
         public static List<string> GetExistingPatientNames()
         {
             List<string> toReturn = new List<string>();
+            
+            //RequestTest.Instance.GetRow
 
             if (!Directory.Exists(streamingAssets_PatientFolderPath))
             {

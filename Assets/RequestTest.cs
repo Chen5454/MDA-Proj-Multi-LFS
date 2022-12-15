@@ -7,6 +7,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using System.IO;
+using PatientCreationSpace;
 
 public class RequestTest : MonoBehaviour
 {
@@ -117,8 +118,12 @@ public class RequestTest : MonoBehaviour
 
     //    }
     //}
-
-    public string GetRow(string PatientName)
+    /// <summary>
+    /// returns a full NewPatientData (with treatmentsequence) from sheets, by the patients name (it can also be incident ID - depends on what data is put into the first row in the sheet)
+    /// </summary>
+    /// <param name="PatientName"></param>
+    /// <returns></returns>
+    public NewPatientData GetFullPatientDataByName(string PatientName)
     {
         var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
@@ -128,21 +133,16 @@ public class RequestTest : MonoBehaviour
         if (values != null && values.Count >= 0)
         {
             //return (List<string>)values;
-            string rowsFirstCells="";
+            NewPatientData toReturn = null;
             foreach (var row in values)
             {
                 if (PatientName == row[0].ToString())
                 {
-                    rowsFirstCells = row[0].ToString();
-                    Debug.Log(rowsFirstCells[0]);
-                }
-                else
-                {
-                    Debug.Log("There is no patient name");
-
+                    toReturn = DeSerializePatient_Full(row[1] as string, row[2] as string);
+                    break;
                 }
             }
-            return rowsFirstCells;
+            return toReturn;
         }
 
         else
@@ -210,6 +210,89 @@ public class RequestTest : MonoBehaviour
     void LogPlayerTersting()
     {
         LogPlayer("a", "b", "c");
+    }
+
+
+    static NewPatientData DeSerializePatient_Full(string json, string ts_json)
+    {
+        //  string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+        NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+
+        // string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
+        TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
+
+
+        newPatientData.FullTreatmentSequence = ts;
+        return newPatientData;
+    }
+
+    static TreatmentSequence DeSerializeTreatmentSequence(string serializedTreatmentSequence)
+    {
+        TreatmentSequence toReturn = new TreatmentSequence();
+        toReturn.Init();
+        TreatmentGroup tempGroup = null;
+
+        string[] lines = serializedTreatmentSequence.Split('\n');
+        foreach (var line in lines)
+        {
+            string[] fields = line.Split('_');
+            List<string> data = fields.ToList();
+            data.Remove(fields[0]);
+            string datastring = string.Concat(data);
+            if (tempGroup != null)
+            {
+                switch (fields[0])
+                {
+                    case "Question":
+                        Question q = JsonUtility.FromJson<Question>(datastring);
+                        tempGroup.AddTreatment(q);
+                        break;
+                    case "Test":
+                        Test t = JsonUtility.FromJson<Test>(datastring);
+                        tempGroup.AddTreatment(t);
+                        break;
+                    case "Medicine":
+                        Medicine m = JsonUtility.FromJson<Medicine>(datastring);
+                        tempGroup.AddTreatment(m);
+                        break;
+
+                    case "End":
+                        tempGroup = null;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+
+                switch (fields[0])
+                {
+                    case "Question":
+                        Question q = JsonUtility.FromJson<Question>(datastring);
+                        toReturn.AddToSequence(q);
+                        break;
+                    case "Test":
+                        Test t = JsonUtility.FromJson<Test>(datastring);
+                        toReturn.AddToSequence(t);
+                        break;
+                    case "Medicine":
+                        Medicine m = JsonUtility.FromJson<Medicine>(datastring);
+                        toReturn.AddToSequence(m);
+                        break;
+                    case "Start":
+                        tempGroup = new TreatmentGroup();
+                        tempGroup.Init();
+                        toReturn.AddToSequence(tempGroup);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+        return toReturn;
     }
 
     /// <summary>
