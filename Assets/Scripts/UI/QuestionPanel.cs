@@ -6,11 +6,13 @@ using PatientCreationSpace;
 public class QuestionPanel : MonoBehaviour
 {
     [SerializeField]
-    GameObject questionPrefab;
+    GameObject questionPrefab, triggeredQuestionPrefab;
     [SerializeField]
     GameObject answerPrefab;
     [SerializeField]
     Transform parent;
+    [SerializeField]
+    UnityEngine.UI.ScrollRect scrollRect;
 
     /// <summary>
     /// Questions available for player choosing
@@ -84,7 +86,7 @@ public class QuestionPanel : MonoBehaviour
     public void AskQuestion(Question q)
     {
         RemoveBankQuestions();
-        GameObject go = Instantiate(answerPrefab, parent);
+        GameObject go = Instantiate(triggeredQuestionPrefab, parent);
         go.GetComponentInChildren<TMPro.TMP_Text>().text = q.questionText;
         questionsAndAnswers.Add(go);
         //AddBankQuestions();
@@ -97,5 +99,10 @@ public class QuestionPanel : MonoBehaviour
 
         questionsAndAnswers.Add(go);
         AddBankQuestions();
+        Invoke(nameof(ScrollAfterAsking), 0.3f);
+    }
+    public void ScrollAfterAsking()
+    {
+        scrollRect.normalizedPosition = new Vector2(0, 0);
     }
 }
