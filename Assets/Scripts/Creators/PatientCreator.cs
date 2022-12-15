@@ -184,6 +184,19 @@ namespace PatientCreationSpace
         /// </summary>
         /// <param name="patientFullName"></param>
         /// <returns></returns>
+        /// 
+        static NewPatientData DeSerializePatient_Full(string json,string ts_json)
+        {
+          //  string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+            NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+
+           // string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
+            TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
+
+
+            newPatientData.FullTreatmentSequence = ts;
+            return newPatientData;
+        }
         static NewPatientData DeSerializePatient_Simple(string patientFullName)
         { 
             string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
