@@ -276,27 +276,28 @@ namespace PatientCreationSpace
             return toReturn;
         }
 
-        public static List<string> GetExistingPatientNames()
-        {
-            List<string> toReturn = new List<string>();
-            
-            //RequestTest.Instance.GetRow
+        //public static List<string> GetExistingPatientNames()
+        //{
+        //    List<string> toReturn = new List<string>();
 
-            if (!Directory.Exists(streamingAssets_PatientFolderPath))
-            {
-                Debug.LogError("Patient folder not found!");
-                return null;
-            }
-            var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
-            toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
-            for (int i = 0; i < toReturn.Count; i++)
-            {
-                toReturn[i] = Path.GetFileName(toReturn[i]);
-                toReturn[i] = toReturn[i].Substring(0, toReturn[i].Length - 4); //removes ".txt"
-            }
+        //    //RequestTest.Instance.GetRow
 
-            return toReturn;
-        }
+
+        //    if (!Directory.Exists(streamingAssets_PatientFolderPath))
+        //    {
+        //        Debug.LogError("Patient folder not found!");
+        //        return null;
+        //    }
+        //    var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
+        //    toReturn = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
+        //    for (int i = 0; i < toReturn.Count; i++)
+        //    {
+        //        toReturn[i] = Path.GetFileName(toReturn[i]);
+        //        toReturn[i] = toReturn[i].Substring(0, toReturn[i].Length - 4); //removes ".txt"
+        //    }
+
+        //    return toReturn;
+        //}
         public static List<string> GetExistingPatientNames(bool isAls)
         {
             List<string> toFilter = new List<string>();
@@ -322,24 +323,15 @@ namespace PatientCreationSpace
         }
         public static List<string> GetExistingPatientNames(System.Func<NewPatientData, bool> pred)
         {
-            List<string> toFilter = new List<string>();
+            List<NewPatientData> toFilter = new List<NewPatientData>();
             List<string> toReturn = new List<string>();
 
-            if (!Directory.Exists(streamingAssets_PatientFolderPath))
+
+            toFilter = RequestTest.Instance.GetAllPatients_Simple();
+            foreach(var temp in toFilter)
             {
-                Debug.LogError("Patient folder not found!");
-                return null;
-            }
-            var collection = Directory.GetFiles(streamingAssets_PatientFolderPath, "*.txt");
-           // var collection = RequestTest.Instance.GetRows();
-            toFilter = collection.Where(x => !x.Contains("treatmentSequence")).ToList();
-            for (int i = 0; i < toFilter.Count; i++)
-            {
-                string s = Path.GetFileName(toFilter[i]);
-                s = s.Substring(0, s.Length - 4); //removes ".txt"
-                NewPatientData temp = DeSerializePatient_Simple(s);
                 if (pred(temp)) 
-                    toReturn.Add(s); //removes ".txt"
+                    toReturn.Add($"{temp.Name}_{temp.SureName}"); //TBF IMMEDIATELY!
             }
 
             return toReturn;

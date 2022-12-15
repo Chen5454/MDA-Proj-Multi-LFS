@@ -395,13 +395,13 @@ namespace PatientCreationSpace
         //    //continue work on setting the patient and filling their Treatment Sequence
         //}
 
-        [PunRPC]
-        public void CallPatientCreator(string patientJson, string treatmentSequenceJson,string name,string sureName)
-        {
-            PatientCreator.CreateSaveFiles(patientJson, treatmentSequenceJson,name,sureName);
-        }
+        //[PunRPC]
+        //public void CallPatientCreator(string patientJson, string treatmentSequenceJson,string name,string sureName)
+        //{
+        //    PatientCreator.CreateSaveFiles(patientJson, treatmentSequenceJson,name,sureName);
+        //}
 
-        public void SavePatient()
+        public void SavePatient() //CALLED BY INSPECTOR! THIS STARTS SAVING
         {
             //PatientCreator.SaveCurrentPatient();
             TreatmentSequence treatmentSequence = new TreatmentSequence();
@@ -415,18 +415,7 @@ namespace PatientCreationSpace
                 {
                     //Treatment confirmed!
                     treatmentSequence.AddToSequence(t as SequenceBlock);
-                    //if(t is Question)
-                    //{
-
-                    //}
-                    //else if(t is Test)
-                    //{
-
-                    //}
-                    //else if (t is Medicine)
-                    //{
-
-                    //}
+                 
                 }
                 else
                 {

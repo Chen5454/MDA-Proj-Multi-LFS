@@ -36,7 +36,7 @@ public class RequestTest : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         SetUpCredentials();
-        Invoke("GetRows",2);
+        //Invoke("GetRows",2);
        // GetRows("nehC");
         //Invoke("LogPlayerTersting", 2);
         //LogPlayer(); // not sure we should
@@ -152,8 +152,35 @@ public class RequestTest : MonoBehaviour
 
         }
     }
+    /// <summary>
+    /// DONT USE FOR ANY REASON OTHER THAN FILTERING!
+    /// </summary>
+    /// <returns></returns>
+    public List<NewPatientData> GetAllPatients_Simple()
+    {
+        var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
-    public List<string> GetRows()
+        var response = request.Execute(); //could not async?
+        var values = response.Values;
+
+        if (values != null && values.Count >= 0)
+        {
+            //return (List<string>)values;
+            List<NewPatientData> simplePatientsData = new List<NewPatientData>();
+            foreach (var row in values)
+            {
+                simplePatientsData.Add(DeSerializePatient_Simple(row[1] as string));
+            }
+            return simplePatientsData;
+        }
+
+        return null;
+    }
+    /// <summary>
+    /// returns all row[0] - which is name now, but can and should be ID
+    /// </summary>
+    /// <returns></returns>
+    public List<string> GetAllFirstsInRow()
     {
         var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
@@ -168,17 +195,14 @@ public class RequestTest : MonoBehaviour
             {
               
                     rowsFirstCells.Add((string)row[0]);
-                    Debug.Log(rowsFirstCells[0]);
+                    Debug.Log((string)row[0]);
             }
             return rowsFirstCells;
         }
-
-        else
-        {
-            Debug.Log("There is no patient name");
+       
+            Debug.Log("There is no patient by that name");
             return null;
 
-        }
     }
 
     public void LogPlayer(string patientName,string patientJson, string treatmentJson)
@@ -295,6 +319,14 @@ public class RequestTest : MonoBehaviour
         return toReturn;
     }
 
+
+    static NewPatientData DeSerializePatient_Simple(string json)
+    {
+        //string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+        // string json = RequestTest.Instance.GetRows(patientFullName);
+        NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
+        return newPatientData;
+    }
     /// <summary>
     /// UN COMMENT BELOW!
     /// </summary>

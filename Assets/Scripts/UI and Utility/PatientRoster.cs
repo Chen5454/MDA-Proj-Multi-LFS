@@ -24,7 +24,10 @@ namespace PatientCreationSpace
             if (patientButtons == null)
                 patientButtons = new List<PatientToLoadButton>();
 
-            names = PatientCreator.GetExistingPatientNames();
+            //names = PatientCreator.GetExistingPatientNames();
+            names = RequestTest.Instance.GetAllFirstsInRow();
+
+
             if(names == null || names.Count ==0)
             {
                 Debug.Log("No files to load");
