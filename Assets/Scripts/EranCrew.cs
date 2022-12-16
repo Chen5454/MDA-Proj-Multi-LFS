@@ -113,7 +113,9 @@ public class EranCrew : MonoBehaviour
         // should be replaced later with the Create Aran UI and behaviours
         PhotonNetwork.Instantiate(_aranPrefabs[0].name, new Vector3(-130f, 0f, 210f), Quaternion.identity);
         GameManager.Instance.ChangeAranState(true);
-        GameManager.Instance.SetPopUp(_startAranTitle, _startAranText);
+
+        GameManager.Instance.photonView.RPC("SetPopUp",RpcTarget.All, _startAranTitle, _startAranText);
+        //GameManager.Instance.SetPopUp(_startAranTitle, _startAranText);
 
 
     }
