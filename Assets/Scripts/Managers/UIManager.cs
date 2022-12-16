@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject MarkerPrefab;
     public Transform AmbulanceListContentPikud10, NatanListContentPikud10;
     public Transform PatientContentPikud10;
+    public Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
 
 
     [Header("Henyon10")]
