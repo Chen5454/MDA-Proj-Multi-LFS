@@ -7,21 +7,24 @@ using Photon.Pun;
 using TMPro;
 using VivoxUnity;
 
-public class Pikud10 : MonoBehaviour,IPunObservable
+public class Pikud10 : MonoBehaviour, IPunObservable
 {
     private PhotonView _photonView => GetComponent<PhotonView>();
     private Coroutine _updatePlayerListCoroutine;
     private GameObject _worldMarkCanvas;
-   [SerializeField] private List<GameObject> _allWorldMarks;
+    [SerializeField] private List<GameObject> _allWorldMarks;
     private GameObject _dropdownRefua10, _dropdownPinuy10, _dropdownHenyon10;
+
     private CameraController _camController;
-   // private LineRenderer _lineRenderer;
+
+    // private LineRenderer _lineRenderer;
     private LayerMask _groundLayer;
     private Vector2 _targetPos;
     private int _currentMarkIndex;
     private bool _isPikud10MenuOpen;
     private bool _isMarking = false;
- 
+    List<Patient> filteredPatients = new List<Patient>();
+
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
     [Header("Pikod10 UI")] public GameObject Pikud10Menu;
@@ -31,8 +34,9 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     public Button[] AllAreaMarkings = new Button[6];
 
 
-    [Header(" Patient List")]
-    [SerializeField] private List<Patient> _taggedPatientList = new List<Patient>();
+    [Header(" Patient List")] [SerializeField]
+    private List<Patient> _taggedPatientList = new List<Patient>();
+
     [SerializeField] private GameObject _taggedPatientListRow;
     [SerializeField] private Transform _taggedPatientListContent;
 
@@ -40,13 +44,21 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     public Button RefreshPatientBtn;
     [SerializeField] private Transform _ambulanceListContent, _natanListContent;
     [SerializeField] private GameObject _vehicleListRow;
-    [SerializeField] private List<PhotonView> _natanList = new List<PhotonView>(), _ambulanceList = new List<PhotonView>();
+
+    [SerializeField]
+    private List<PhotonView> _natanList = new List<PhotonView>(), _ambulanceList = new List<PhotonView>();
+
+    private Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
+
 
     private GameObject worldMark;
+
     //private GameObject worldMark;
     private OwnershipTransfer _transfer;
 
     [SerializeField] private PlayerData thisPlayerdata;
+    [SerializeField] List<Patient> filteredPatientList = new List<Patient>();
+
     #region MonobehaviourCallbacks
 
 
@@ -97,7 +109,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
                 }
             }
         }
- 
+
     }
 
     [PunRPC]
@@ -119,54 +131,66 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         UIManager.Instance.TeamLeaderMenu.SetActive(true);
         UIManager.Instance.Pikud10Menu.SetActive(false);
     }
+
     #endregion
 
     #region Getters
+
     public int GetRefuaIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
         }
+
         return Index;
     }
+
     public int GetPinoyeIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
         }
+
         return Index;
     }
+
     public int GetHenyonIndex()
     {
         int Index = 0;
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
-            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text == ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
             {
                 Index = i;
                 break;
             }
         }
+
         return Index;
     }
+
     #endregion
 
     #region Coroutines
+
     IEnumerator HandleDropDownUpdates(float nextUpdate)
     {
         while (true)
@@ -189,22 +213,26 @@ public class Pikud10 : MonoBehaviour,IPunObservable
             yield return new WaitForSeconds(nextUpdate);
         }
     }
+
     #endregion
 
     #region Private Methods
-   
+
     private void ChooseAreaPos(int markIndex)
     {
         SetMarkRPC(markIndex);
     }
-        private void CameraTransmition()
+
+    private void CameraTransmition()
     {
         //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
         _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
     }
+
     #endregion
 
     #region Public Methods
+
     public void OpenClosePikud10Menu()
     {
         if (!_isPikud10MenuOpen)
@@ -223,23 +251,28 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         TopMenuHandle.onClick.RemoveAllListeners();
         TopMenuHandle.onClick.AddListener(delegate { OpenClosePikud10Menu(); });
     }
+
     public void OnClickRefua()
     {
         _photonView.RPC("GiveRefuaRole", RpcTarget.AllBufferedViaServer, GetRefuaIndex());
     }
+
     public void OnClickPinoye()
     {
         _photonView.RPC("GivePinoyeRole", RpcTarget.AllBufferedViaServer, GetPinoyeIndex());
     }
+
     public void OnClickHenyon()
     {
         _photonView.RPC("GiveHenyonRole", RpcTarget.AllBufferedViaServer, GetHenyonIndex());
     }
+
     public void CreateMarkedArea(int markIndex)
     {
         _isMarking = true;
         _currentMarkIndex = markIndex;
     }
+
     public void OnClickMarker(int markIndex) // markerIndex is responsible for choosing the targeted btn
     {
         CreateMarkedArea(markIndex);
@@ -312,12 +345,18 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         AssignHenyon10.onClick.AddListener(delegate { OnClickHenyon(); });
 
         gameObject.AddComponent<LineRenderer>();
-       // _lineRenderer = GetComponent<LineRenderer>();
-       // _lineRenderer.positionCount = 6;
-       // _lineRenderer.widthMultiplier = 0.1f;
+        // _lineRenderer = GetComponent<LineRenderer>();
+        // _lineRenderer.positionCount = 6;
+        // _lineRenderer.widthMultiplier = 0.1f;
         //_lineRenderer.material = GameManager.Instance.LineMaterial;
         _groundLayer = LayerMask.GetMask("Ground");
         _groundLayer += LayerMask.GetMask("Road");
+
+
+        CriticalTGL = UIManager.Instance.CriticalTGL;
+        UrgentTGL = UIManager.Instance.UrgentTGL;
+        NonUrgentTGL = UIManager.Instance.NonUrgentTGL;
+        DeadTGL = UIManager.Instance.DeadTGL;
 
         GameManager.Instance.Pikud10View = _photonView;
     }
@@ -331,7 +370,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
             string IndexRandom = Random.value.ToString();
-            _photonView.RPC("SettingPrefabPos_RPC",RpcTarget.AllBufferedViaServer,markIndex, _targetPos, IndexRandom);
+            _photonView.RPC("SettingPrefabPos_RPC", RpcTarget.AllBufferedViaServer, markIndex, _targetPos, IndexRandom);
         }
 
         _isMarking = false;
@@ -340,11 +379,13 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     [PunRPC]
     private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos, string IndexRandom)
     {
-        
-        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity);
+
+        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y),
+            Quaternion.identity);
         ChangeColorForArea(markIndex, instantiateWorldMark);
-            instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
-            instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
+        instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
+            instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
+        instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
         _allWorldMarks.Add(instantiateWorldMark);
     }
 
@@ -365,7 +406,7 @@ public class Pikud10 : MonoBehaviour,IPunObservable
         {
             case 0:
                 colorArea.color = Color.red;
-                ColorFillArea.color = new Color(1,0,0,0.2f);
+                ColorFillArea.color = new Color(1, 0, 0, 0.2f);
                 break;
             case 1:
                 colorArea.color = Color.green;
@@ -486,29 +527,59 @@ public class Pikud10 : MonoBehaviour,IPunObservable
     [PunRPC]
     private void UpdatePatientListPikud10RPC()
     {
+        // Clear the current list of patients
         for (int i = 0; i < _taggedPatientListContent.childCount; i++)
         {
             Destroy(_taggedPatientListContent.GetChild(i).gameObject);
         }
+
         _taggedPatientList.Clear();
         _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
 
+        // Create a list to store the filtered patients
+        List<Patient> filteredPatientList = new List<Patient>();
+
+        // Iterate over the list of tagged patients
         for (int i = 0; i < _taggedPatientList.Count; i++)
         {
+            Patient taggedPatient = _taggedPatientList[i];
+
+            // Check the state of each toggle
+            if (CriticalTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Critical)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (UrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Urgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (NonUrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Nonurgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (DeadTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Dead)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+        }
+
+        // Iterate over the filtered list of patients
+        for (int i = 0; i < filteredPatientList.Count; i++)
+        {
+            Patient taggedPatient = filteredPatientList[i];
+
             GameObject taggedPatientListRow = Instantiate(_taggedPatientListRow, _taggedPatientListContent);
             Transform taggedPatientListRowTr = taggedPatientListRow.transform;
-            Patient taggedPatient = _taggedPatientList[i];
 
             string name = taggedPatient.NewPatientData.Name;
             string sureName = taggedPatient.NewPatientData.SureName;
-            //string patientCondition = GameManager.Instance.AllTaggedPatients[i].NewPatientData.Co
 
             taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
             taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
             taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }
     }
-
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
