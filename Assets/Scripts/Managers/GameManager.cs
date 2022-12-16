@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 enum LayerMasks { Default, TransperentFX, IgnoreRaycast, Ground, Water, UI, Map, Interactable}
 
-public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
+public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObservable
 {
     public static GameManager Instance;
     
@@ -234,6 +234,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         photonView.RPC("ChangeAranStateRPC", RpcTarget.All, isActive);
     }
+    [PunRPC]
     public void SetPopUp(string title, string text)
     {
         PopUp popUp = UIManager.Instance.PopUpWindow.GetComponent<PopUp>();
@@ -241,6 +242,9 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         popUp.PopUpText.text = text;
         popUp.gameObject.SetActive(true);
     }
+
+
+
 
     [PunRPC]
     public void UpdatePinuyList_RPC()
@@ -312,5 +316,23 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks
         }
 
         return null;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
+        if (stream.IsWriting)
+        {
+            stream.SendNext(IsAranActive);
+       
+        }
+        else
+        {
+            IsAranActive = (bool)stream.ReceiveNext();
+   
+        }
+
+
+
     }
 }

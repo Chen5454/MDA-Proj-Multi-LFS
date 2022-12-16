@@ -180,30 +180,34 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [PunRPC]
     public void GivesLeaderButton(int leaderIndex)
     {
-        foreach (PhotonView player in _playersInRoomList)
+        if (!GameManager.Instance.IsAranActive)
         {
-            if (player.IsMine)
+            foreach (PhotonView player in _playersInRoomList)
             {
-                UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
-
-            }
-        }
-
-
-
-        for (int i = 0; i < _playersInRoomList.Count; i++)
-        {
-            PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
-            leaderToBe.IsCrewLeader = true;
-            if (leaderToBe.IsCrewLeader)
-            {
-                if (leaderToBe.photonView.IsMine)
+                if (player.IsMine)
                 {
-                    UIManager.Instance.ResetCrewRoom.gameObject.SetActive(true);
+                    UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
 
                 }
             }
+
+
+
+            for (int i = 0; i < _playersInRoomList.Count; i++)
+            {
+                PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
+                leaderToBe.IsCrewLeader = true;
+                if (leaderToBe.IsCrewLeader)
+                {
+                    if (leaderToBe.photonView.IsMine)
+                    {
+                        UIManager.Instance.ResetCrewRoom.gameObject.SetActive(true);
+
+                    }
+                }
+            }
         }
+ 
 
     }
 
