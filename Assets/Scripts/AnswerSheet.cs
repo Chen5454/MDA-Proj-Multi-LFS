@@ -66,6 +66,10 @@ namespace PatientCreationSpace
                         currentBlockIndex++; //Advance to the next Block!
                     }
                 }
+                else
+                {
+                    ResolveBadTreatment(treatment);
+                }
             }
             else
             {
@@ -73,6 +77,10 @@ namespace PatientCreationSpace
                 {
                     ResolveTreatment(treatment);
                     currentBlockIndex++; //Advance to the next Block!
+                }
+                else
+                {
+                    ResolveBadTreatment(treatment);
                 }
             }
         }
@@ -97,8 +105,28 @@ namespace PatientCreationSpace
 
                 //BASICALLY, should this happen here? should it not work if it is a wrong step?
             }
+        }
+        void ResolveBadTreatment(Treatment treatment)
+        {
+            //treatment.Result();
+            //basically another if-switch on treatment to handle per-type
 
+            if (treatment is Question)
+            {
+                UIManager.Instance.QuestionPanel.RecieveAnswer("...");
+            }
+            else if (treatment is Medicine)
+            {
+                Debug.LogError("Bad Medicine Given");
+            }
+            else if (treatment is Test)
+            {
+                UIManager.Instance.StatsPanel.UpdateMeasurement((treatment as Test).Measurement);
+                //MeasuremnetPanel.SetMeasurement((treatment as Test).measurementType); // tests hold no value, they merely tell MeasurementsPanel to refresh 1 measuremnets displayer
+                //UIManager.Instance.StatsPanel.UpdateMeasurement(transform);
+
+                //BASICALLY, should this happen here? should it not work if it is a wrong step?
+            }
         }
     }
-
 }

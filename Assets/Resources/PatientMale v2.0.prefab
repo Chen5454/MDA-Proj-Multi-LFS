@@ -1301,8 +1301,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 2.5, z: 0.5}
-  m_Center: {x: 0, y: 0.875, z: 0.25}
+  m_Size: {x: 2.5, y: 2.5, z: 1}
+  m_Center: {x: 0, y: 0.875, z: 0.1}
 --- !u!114 &5550523932109703413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,6 +1360,7 @@ MonoBehaviour:
   ActionSequences:
   - {fileID: 11400000, guid: 6e09851af676bfe438a19787ecd1cd30, type: 2}
   SmoothMovement: {fileID: 1727971846354817474}
+  myBed: {fileID: 0}
   isEvac: 0
   urgent: "\u05D3\u05D7\u05D5\u05E3"
   critical: "\u05D0\u05E0\u05D5\u05E9"
@@ -1422,7 +1423,6 @@ MonoBehaviour:
   PantsOnlyMaterial: {fileID: 2100000, guid: ef4583040eca60c428504c9b48727fe1, type: 2}
   UnderwearOnlyMaterial: {fileID: 2100000, guid: b8d9b2b3092ab614b95207d1019f89d4, type: 2}
   PatientRenderer: {fileID: 394703917027671811}
-  myBed: {fileID: 0}
 --- !u!114 &2801488433122248011
 MonoBehaviour:
   m_ObjectHideFlags: 0

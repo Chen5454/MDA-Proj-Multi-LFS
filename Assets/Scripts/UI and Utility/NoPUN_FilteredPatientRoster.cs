@@ -120,16 +120,16 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
     /// Loads patient into the PatientCreator - to edit or use as base for a new patient
     /// </summary>
     /// <param name="patientFullName"></param>
-    public void LoadPatient(string patientFullName)
+    public NewPatientData LoadPatient(string patientFullName)
     {
         if (string.IsNullOrEmpty(patientFullName))
         {
             Debug.LogError("no file name");
-            return;
+            return null;
         }
         newPatientWindow.gameObject.SetActive(true);
-        PatientCreator.LoadPatient(patientFullName);
         windowToClose.gameObject.SetActive(false);
+        return PatientCreator.LoadPatient(patientFullName);
         //newPatientWindow.LoadPatient(patientFullName); //same but more useless
         //newPatientWindow.DisplayPatient(); // this happens OnPatientLoad already!
         //LOAD THIS INTO THE DATA FIELDS IN UI
