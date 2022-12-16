@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class CheckMeasurement : Action
 {
-    [SerializeField] private bool _showAlert = false;
+    [SerializeField] private bool _showAlert = false, _writeMeasurements = false;
     
     [Header("Component's Data")]
     [SerializeField] private Measurements _measurement;
     [SerializeField] private string _measurementName, _measurementNameForAlert;
+    [SerializeField] private TextMeshProUGUI _textInput;
 
 
     private int _currentMeasurement;
@@ -26,6 +28,11 @@ public class CheckMeasurement : Action
             _currentMeasurement = int.Parse(CurrentPatientData.GetMeasurement(measurementNum));
 
             TextToLog = $"Checked Patient's {_measurementName}, it is {_currentMeasurement}";
+
+            if (_writeMeasurements)
+            {
+                _textInput.text = _currentMeasurement.ToString();
+            }
 
             if (_showAlert)
             {
