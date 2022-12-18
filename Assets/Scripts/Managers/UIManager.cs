@@ -64,6 +64,7 @@ public class UIManager : MonoBehaviour
     public Button RefresTaghButton;
     public Button RefresCarshButton;
     public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
+    public Toggle CriticalTGLPinuy, UrgentTGLPinuy, NonUrgentTGLPinuy, DeadTGLPinuy;
 
 
 
@@ -73,6 +74,7 @@ public class UIManager : MonoBehaviour
     public Button Refua10MenuHandle;
     public Button RefresTaghButtonRefua,ShowRefuaWindow,CloseRefuaWindow;
     public Transform TaggedPatientListContentRefua;
+    public Toggle CriticalTGLRefua, UrgentTGLRefua, NonUrgentTGLRefua, DeadTGLRefua;
 
 
 

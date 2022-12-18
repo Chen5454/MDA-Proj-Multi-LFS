@@ -18,6 +18,7 @@ public class Pinuy10 : MonoBehaviour
     [SerializeField] private GameObject _vehicleListRow;
     private Patient _currentTaggedPatient;
     private bool _isPinuy10MenuOpen;
+    private Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
 
     public Button TopMenuHandle, RefreshButton,RefreshCarBtn;
     public GameObject Pinuy10Menu;
@@ -54,7 +55,10 @@ public class Pinuy10 : MonoBehaviour
         TopMenuHandle.onClick.RemoveAllListeners();
         TopMenuHandle.onClick.AddListener(delegate { OpenClosePinuy10Menu(); });
 
-
+        CriticalTGL = UIManager.Instance.CriticalTGLPinuy;
+        UrgentTGL = UIManager.Instance.UrgentTGLPinuy;
+        NonUrgentTGL = UIManager.Instance.NonUrgentTGLPinuy;
+        DeadTGL = UIManager.Instance.DeadTGLPinuy;
 
 
         _ambulanceListContent = UIManager.Instance.AmbulanceListContentPinuy10;
@@ -177,6 +181,7 @@ public class Pinuy10 : MonoBehaviour
     [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
+        // Clear the current list of patients
         for (int i = 0; i < _taggedPatientListContent.childCount; i++)
         {
             Destroy(_taggedPatientListContent.GetChild(i).gameObject);
@@ -185,30 +190,50 @@ public class Pinuy10 : MonoBehaviour
         _taggedPatientList.Clear();
         _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
 
+        // Create a list to store the filtered patients
+        List<Patient> filteredPatientList = new List<Patient>();
+
+        // Iterate over the list of tagged patients
         for (int i = 0; i < _taggedPatientList.Count; i++)
         {
+            Patient taggedPatient = _taggedPatientList[i];
+
+            // Check the state of each toggle
+            if (CriticalTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Critical)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (UrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Urgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (NonUrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Nonurgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (DeadTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Dead)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+        }
+
+        // Iterate over the filtered list of patients
+        for (int i = 0; i < filteredPatientList.Count; i++)
+        {
+            Patient taggedPatient = filteredPatientList[i];
+
             GameObject taggedPatientListRow = Instantiate(_taggedPatientListRow, _taggedPatientListContent);
             Transform taggedPatientListRowTr = taggedPatientListRow.transform;
-            Patient taggedPatient = _taggedPatientList[i];
 
             string name = taggedPatient.NewPatientData.Name;
             string sureName = taggedPatient.NewPatientData.SureName;
-            //string patientCondition = GameManager.Instance.AllTaggedPatients[i].NewPatientData.Co
-            if (!taggedPatient.isEvac)
-            {
-                taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
-                taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
-                taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
-            }
-            else
-            {
-                taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().gameObject.SetActive(false);
-                taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().gameObject.SetActive(false);
-                taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
 
-            }
-
-            //  taggedPatientListRowTr.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { UrgentEvacuation(taggedPatient); });
+            taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
+            taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
+            taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }
+
+        //  taggedPatientListRowTr.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { UrgentEvacuation(taggedPatient); });
+    
     }
 }

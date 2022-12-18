@@ -16,6 +16,7 @@ public class Refua10 : MonoBehaviour
     public Button TopMenuHandle, RefreshButton,ShowButton,CloseButton;
     private bool _isRefua10MenuOpen;
     private Coroutine updatePlayerListCoroutine;
+    private Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
 
 
     private void Start()
@@ -51,7 +52,10 @@ public class Refua10 : MonoBehaviour
         RefreshButton.onClick.RemoveAllListeners();
         RefreshButton.onClick.AddListener(delegate { RefreshPatientList(); });
 
-
+        CriticalTGL = UIManager.Instance.CriticalTGLRefua;
+        UrgentTGL = UIManager.Instance.UrgentTGLRefua;
+        NonUrgentTGL = UIManager.Instance.NonUrgentTGLRefua;
+        DeadTGL = UIManager.Instance.DeadTGLRefua;
     }
 
     public void ReTagPatient(Patient patientToReTag, TextMeshProUGUI patientNameTMP)
@@ -69,31 +73,63 @@ public class Refua10 : MonoBehaviour
     [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
+        // Clear the current list of patients
         for (int i = 0; i < _taggedPatientListContent.childCount; i++)
         {
             Destroy(_taggedPatientListContent.GetChild(i).gameObject);
         }
+
         _taggedPatientList.Clear();
         _taggedPatientList.AddRange(GameManager.Instance.AllTaggedPatients);
-        
+
+        // Create a list to store the filtered patients
+        List<Patient> filteredPatientList = new List<Patient>();
+
+        // Iterate over the list of tagged patients
         for (int i = 0; i < _taggedPatientList.Count; i++)
         {
+            Patient taggedPatient = _taggedPatientList[i];
+
+            // Check the state of each toggle
+            if (CriticalTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Critical)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (UrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Urgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (NonUrgentTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Nonurgent)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+            else if (DeadTGL.isOn && taggedPatient.NewPatientData.Status == PatientCondition.Dead)
+            {
+                filteredPatientList.Add(taggedPatient);
+            }
+        }
+
+        // Iterate over the filtered list of patients
+        for (int i = 0; i < filteredPatientList.Count; i++)
+        {
+            Patient taggedPatient = filteredPatientList[i];
+
             GameObject taggedPatientListRow = Instantiate(_taggedPatientListRow, _taggedPatientListContent);
             Transform taggedPatientListRowTr = taggedPatientListRow.transform;
-            Patient taggedPatient = _taggedPatientList[i];
 
             string name = taggedPatient.NewPatientData.Name;
             string sureName = taggedPatient.NewPatientData.SureName;
-            //string patientCondition = GameManager.Instance.AllTaggedPatients[i].NewPatientData.Co
 
             taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{name} {sureName}";
             taggedPatientListRowTr.GetChild(1).GetComponent<TextMeshProUGUI>().text = taggedPatient.HebrewStatus;
             taggedPatientListRowTr.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { ReTagPatient(taggedPatient, taggedPatientListRowTr.GetChild(0).GetComponent<TextMeshProUGUI>()); });
+
         }
+
     }
 
 
-    public void OpenCloseRefua10Menu()
+public void OpenCloseRefua10Menu()
     {
         if (!_isRefua10MenuOpen)
         {
