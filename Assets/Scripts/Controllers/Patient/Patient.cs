@@ -352,7 +352,17 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     {
         UIManager.Instance.SureName.text = NewPatientData.Name;
         UIManager.Instance.LastName.text = NewPatientData.SureName;
-        UIManager.Instance.Gender.text = NewPatientData.Gender;
+        switch (NewPatientData.Gender)
+        {
+            case PatientGender.Male:
+                UIManager.Instance.Gender.text = "???";
+                break;
+            case PatientGender.Female:
+                UIManager.Instance.Gender.text = "????";
+                break;
+            default:
+                break;
+        }
         UIManager.Instance.Adress.text = NewPatientData.AddressLocation;
         UIManager.Instance.InsuranceCompany.text = NewPatientData.MedicalCompany;
         UIManager.Instance.Complaint.text = NewPatientData.Complaint;

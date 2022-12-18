@@ -4213,6 +4213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443a36075c2568d40afcf27b242238f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PatientType: {fileID: 6484387910677437427}
   Name: {fileID: 2860667055081670291}
   EventName: {fileID: 2860667056175313778}
   Age: {fileID: 2860667055031763574}
@@ -7275,7 +7276,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.1
+  m_fontSize: 23.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12212,7 +12213,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\u05E6\u05E2\u05D9\u05E8"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12239,7 +12240,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 37.85
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -14929,7 +14930,7 @@ GameObject:
   - component: {fileID: 6484387910677437424}
   - component: {fileID: 6484387910677437427}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: PatientType Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15042,9 +15043,15 @@ MonoBehaviour:
   m_Placeholder: {fileID: 0}
   m_ItemText: {fileID: 6484387909507024339}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 1
   m_Options:
-    m_Options: []
+    m_Options:
+    - m_Text: "\u05DE\u05D1\u05D5\u05D2\u05E8"
+      m_Image: {fileID: 0}
+    - m_Text: "\u05E6\u05E2\u05D9\u05E8"
+      m_Image: {fileID: 0}
+    - m_Text: "\u05D9\u05DC\u05D3"
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
