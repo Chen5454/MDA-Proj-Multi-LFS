@@ -49,6 +49,14 @@ MonoBehaviour:
   CurrentIncidentsTransforms: []
   AllPatients: []
   AllTaggedPatients: []
+  PlayerTPPos: {fileID: 0}
+  KidPatient: {fileID: 4378060259307120846, guid: 5bd721650fb37e24084d863d737c0672, type: 3}
+  MalePatients:
+  - {fileID: 8640960805115279115, guid: 73bda1128256d4f4aa90f1684542c9f2, type: 3}
+  - {fileID: 4623349035642082019, guid: f0aef93a55ec3c94a8ad3a1cc665545c, type: 3}
+  FemalePatients:
+  - {fileID: 7981707473263357834, guid: 1a31259976d25c54ab55dbf1a79c6c12, type: 3}
+  - {fileID: 2259570999882467684, guid: b3cbf3d08e74f6948be045062618b226, type: 3}
   IncidentPatientSpawns:
   - {fileID: 0}
   - {fileID: 0}
@@ -56,6 +64,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   IsPatientSpawned: 0000000000
+  CrewRoomsList: []
   Pikud10View: {fileID: 0}
   Redua10View: {fileID: 0}
   Pinuy10View: {fileID: 0}
@@ -78,6 +87,9 @@ MonoBehaviour:
   Pikud10TextureRenderer: {fileID: 8400000, guid: f8e23915d20e4a54da73f0db356cbea8, type: 2}
   TaggedPatientListRow: {fileID: 5088108570382661912, guid: 14ba2f99944d9c44fbd62bafdb597db4, type: 3}
   UrgentEvacuationCanvas: {fileID: 2331357891863953160, guid: 227436ef8d1cd6141b3de0e1189d96aa, type: 3}
+  TaggedPatientListRowRefua: {fileID: 5088108570382661912, guid: 14ba2f99944d9c44fbd62bafdb597db4, type: 3}
+  UrgentEvacuationCanvasRefua: {fileID: 2331357891863953160, guid: 227436ef8d1cd6141b3de0e1189d96aa, type: 3}
+  AllBeds: []
 --- !u!114 &5750352305619051129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,7 +121,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 5369888981188807863}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
