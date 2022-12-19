@@ -4,7 +4,7 @@ using UnityEngine;
 using PatientCreationSpace;
 
 public enum PatientType { Old, Grown, Kid, }
-public enum PatientGender { זכר, נקבה }
+public enum PatientGender { Male, Female }
 public enum MonitorSprites { HeartMonitor, ECG }
 public enum PatientCondition { Dead, Critical, Urgent, Nonurgent, Untagged }
 
@@ -16,7 +16,7 @@ public class NewPatientData
     public string Name;
     public string SureName;
     public int Id, Age; //these two need to strings, in my opinion TBF alon 12/10/22
-    public string Gender;
+    public PatientGender Gender;
     public string PhoneNumber;
     public string MedicalCompany, AddressLocation, Complaint;
     public PatientCondition Status;
@@ -50,13 +50,14 @@ public class NewPatientData
 
     public NewPatientData() { }
 
-    public void Initialize(string name, string sureName, int id, int age, string gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
+    public void Initialize(int patientType, string name, string sureName, int id, int age, int gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
     {
+        PatientType = (PatientType)patientType;
         Name = name;
         SureName = sureName;
         Id = id;
         Age = age;
-        Gender = gender;
+        Gender = (PatientGender)gender;
         PhoneNumber = phoneNum;
         MedicalCompany = medicalCompany;
         //AddressLocation = adress;

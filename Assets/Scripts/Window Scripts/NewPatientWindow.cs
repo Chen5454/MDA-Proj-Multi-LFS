@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Analytics;
+
 namespace PatientCreationSpace
 {
 
@@ -12,6 +14,8 @@ namespace PatientCreationSpace
         public static NewPatientWindow Instance;
 
         [Header("Bsaic Info Input Fields")]
+        [SerializeField]
+        TMP_Dropdown PatientType;
         [SerializeField]
         TMP_InputField Name;
         [SerializeField]
@@ -166,6 +170,9 @@ namespace PatientCreationSpace
         }
         public bool AreAllTreatmentFieldsFilled()
         {
+            if (addBlockMaster.basicBlocks.Count == 0)
+                return false;
+
             foreach (var item in addBlockMaster.basicBlocks)
             {
                 if (!item.AllInputsGood())
@@ -219,7 +226,7 @@ namespace PatientCreationSpace
                 measurementArray[i] = measurementInputFields[i].text;
             }
             
-            newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
+            newCreatedPatient = PatientCreator.CreateNewPatient(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ Gender.value, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
@@ -350,7 +357,7 @@ namespace PatientCreationSpace
             {
                 newCreatedPatient = new NewPatientData();
             }
-            newCreatedPatient.Initialize(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
+            newCreatedPatient.Initialize(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ Gender.value, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
             newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
 
@@ -454,21 +461,8 @@ namespace PatientCreationSpace
             EventName.text = patient.SureName;
             Age.text = patient.Age.ToString();
             int option = -1;
-            if(patient.Gender.Equals("זכר"))
-            {
-                option = (int)PatientGender.זכר;
-            }
-                else if(patient.Gender.Equals("נקבה"))
-            {
-                option = (int)PatientGender.נקבה;
-
-            }
-            else
-            {
-                Debug.LogError("No binary options sadly are not available :(");
-                return;
-            }
-            Gender.value = option;
+            Gender.value = (int)patient.Gender;
+            Gender.RefreshShownValue();
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
             //AddressLocation.text = patient.AddressLocation;
