@@ -15,7 +15,7 @@ public class CheckMeasurement : Action
     [SerializeField] private TextMeshProUGUI _textInput;
 
 
-    private int _currentMeasurement;
+    private string _currentMeasurement;
 
     public void CheckMeasurementAction()
     {
@@ -25,7 +25,7 @@ public class CheckMeasurement : Action
         {
             int measurementNum = (int)_measurement;
             //_currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
-            _currentMeasurement = int.Parse(CurrentPatientData.GetMeasurement(measurementNum));
+            _currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
 
             TextToLog = $"Checked Patient's {_measurementName}, it is {_currentMeasurement}";
 
@@ -36,7 +36,7 @@ public class CheckMeasurement : Action
 
             if (_showAlert)
             {
-                ShowNumAlert(_measurementNameForAlert, _currentMeasurement);
+                ShowTextAlert(_measurementNameForAlert, _currentMeasurement);
             }
 
             if (_shouldUpdateLog)

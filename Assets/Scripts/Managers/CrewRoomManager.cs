@@ -366,34 +366,34 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
-    //private void StartSpecificIncident()
-    //{
-    //    int apartmentNum = int.Parse(_apartmentNumber.text);
-    //    List<int> unavailableList = new List<int>();
+    private void StartSpecificIncident()
+    {
+        int apartmentNum = int.Parse(_apartmentNumber.text);
+        List<int> unavailableList = new List<int>();
 
-    //    for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
-    //    {
-    //        if (GameManager.Instance.IsPatientSpawned[i])
-    //            unavailableList.Add(i);
-    //    }
+        for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
+        {
+            if (GameManager.Instance.IsPatientSpawned[i])
+                unavailableList.Add(i);
+        }
 
-    //    if (unavailableList.Count >= 5)
-    //    {
-    //        AlertStartAll(_errorTitle, _errorFullString);
-    //    }
-    //    else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
-    //    {
-    //        AlertStartAll(_errorTitle, _errorAptBusy);
-    //    }
-    //    else
-    //    {
-    //        PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-
-    //        _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
-
-    //        AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
-    //    }
-    //}
+        if (unavailableList.Count >= 5)
+        {
+            AlertStartAll(_errorTitle, _errorFullString);
+        }
+        else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
+        {
+            AlertStartAll(_errorTitle, _errorAptBusy);
+        }
+        else
+        {
+            //PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawn[apartmentNum /-/ 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
+            //
+            //_photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
+            //
+            //AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
+        }
+    }
     private void StartIncidentInRandomLocation()
     {
         List<int> unavailableList = new List<int>();
@@ -442,7 +442,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             instantiationData[1] = _crewRoomIndex;
 
-            _photonView.RPC("SpawnPatients_RPC", RpcTarget.MasterClient, apartmentNum, instantiationData);
+            _photonView.RPC("SpawnPatients_RPC", RpcTarget.MasterClient, apartmentNum, instantiationData, (int)PatientCreationSpace.PatientCreator.newPatient.Gender, (int)PatientCreationSpace.PatientCreator.newPatient.PatientType);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
             // go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
@@ -460,12 +460,49 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         }
     }
 
-    //[PunRPC]
-    //private void SpawnPatients_RPC(int apartmentNum, object[] instantiationData)
-    //{
-    //    PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
-    //        GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
-    //}
+    [PunRPC]
+    private void SpawnPatients_RPC(int apartmentNum, object[] instantiationData, int patientGender, int patientType)
+    {
+        string prefabToInstantiate = name;
+        PatientGender enumPatientGender = (PatientGender)patientGender;
+        PatientType enumPatientType = (PatientType)patientType;
+        if (enumPatientGender == PatientGender.Male)
+        {
+            switch (enumPatientType)
+            {
+                case PatientType.Old:
+                    prefabToInstantiate = GameManager.Instance.MalePatients[0].name;
+                    break;
+                case PatientType.Grown:
+                    prefabToInstantiate = GameManager.Instance.MalePatients[1].name;
+                    break;
+                case PatientType.Kid:
+                    prefabToInstantiate = GameManager.Instance.KidPatient.name;
+                    break;
+                default:
+                    Debug.Log("This model don't exist, try another.");
+                    break;
+            }
+        }
+        else
+        {
+            switch (enumPatientType)
+            {
+                case PatientType.Old:
+                    prefabToInstantiate = GameManager.Instance.FemalePatients[0].name;
+                    break;
+                case PatientType.Grown:
+                    prefabToInstantiate = GameManager.Instance.FemalePatients[1].name;
+                    break;
+                default:
+                    Debug.Log("This model don't exist, try another.");
+                    break;
+            }
+        }
+
+        PhotonNetwork.InstantiateRoomObject(prefabToInstantiate, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position,
+            GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation, 0, instantiationData);
+    }
 
     public void StartIncident()
     {

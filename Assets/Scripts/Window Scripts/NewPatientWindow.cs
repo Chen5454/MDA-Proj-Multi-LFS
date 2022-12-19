@@ -170,6 +170,9 @@ namespace PatientCreationSpace
         }
         public bool AreAllTreatmentFieldsFilled()
         {
+            if (addBlockMaster.basicBlocks.Count == 0)
+                return false;
+
             foreach (var item in addBlockMaster.basicBlocks)
             {
                 if (!item.AllInputsGood())
