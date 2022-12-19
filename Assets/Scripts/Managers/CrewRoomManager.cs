@@ -366,34 +366,34 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
-    private void StartSpecificIncident()
-    {
-        int apartmentNum = int.Parse(_apartmentNumber.text);
-        List<int> unavailableList = new List<int>();
-
-        for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
-        {
-            if (GameManager.Instance.IsPatientSpawned[i])
-                unavailableList.Add(i);
-        }
-
-        if (unavailableList.Count >= 5)
-        {
-            AlertStartAll(_errorTitle, _errorFullString);
-        }
-        else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
-        {
-            AlertStartAll(_errorTitle, _errorAptBusy);
-        }
-        else
-        {
-            //PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawn[apartmentNum /-/ 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-            //
-            //_photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
-            //
-            //AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
-        }
-    }
+    //private void StartSpecificIncident()
+    //{
+    //    int apartmentNum = int.Parse(_apartmentNumber.text);
+    //    List<int> unavailableList = new List<int>();
+    //
+    //    for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
+    //    {
+    //        if (GameManager.Instance.IsPatientSpawned[i])
+    //            unavailableList.Add(i);
+    //    }
+    //
+    //    if (unavailableList.Count >= 5)
+    //    {
+    //        AlertStartAll(_errorTitle, _errorFullString);
+    //    }
+    //    else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
+    //    {
+    //        AlertStartAll(_errorTitle, _errorAptBusy);
+    //    }
+    //    else
+    //    {
+    //        //PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawn//[apartmentNum /-/ 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
+    //        //
+    //        //_photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
+    //        //
+    //        //AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
+    //    }
+    //}
     private void StartIncidentInRandomLocation()
     {
         List<int> unavailableList = new List<int>();
