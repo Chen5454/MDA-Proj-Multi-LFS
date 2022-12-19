@@ -48,9 +48,9 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
 
     #region GameObjects
     [Header("Props")]
-    public List<GameObject> KidPropList;
+    //public List<GameObject> KidPropList;
     public List<GameObject> PropList;
-    public List<GameObject> OldPropList;
+    //public List<GameObject> OldPropList;
     public Collider PatientModelCollider;
 
     [Header("Bandages")]
@@ -352,7 +352,17 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     {
         UIManager.Instance.SureName.text = NewPatientData.Name;
         UIManager.Instance.LastName.text = NewPatientData.SureName;
-        UIManager.Instance.Gender.text = NewPatientData.Gender;
+        switch (NewPatientData.Gender)
+        {
+            case PatientGender.Male:
+                UIManager.Instance.Gender.text = "???";
+                break;
+            case PatientGender.Female:
+                UIManager.Instance.Gender.text = "????";
+                break;
+            default:
+                break;
+        }
         UIManager.Instance.Adress.text = NewPatientData.AddressLocation;
         UIManager.Instance.InsuranceCompany.text = NewPatientData.MedicalCompany;
         UIManager.Instance.Complaint.text = NewPatientData.Complaint;
@@ -534,20 +544,20 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     [PunRPC]
     private void RevealPropOnPatientRPC(int propIndex)
     {
-        switch (NewPatientData.PatientType)
-        {
-            case PatientType.Old:
-                OldPropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Grown:
-                PropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Kid:
-                KidPropList[propIndex].SetActive(true);
-                break;
-            default:
-                break;
-        }
+        //switch (NewPatientData.PatientType)
+        //{
+        //    case PatientType.Old:
+        //        OldPropList[propIndex].SetActive(true);
+        //        break;
+        //    case PatientType.Grown:
+        //        PropList[propIndex].SetActive(true);
+        //        break;
+        //    case PatientType.Kid:
+        //        KidPropList[propIndex].SetActive(true);
+        //        break;
+        //    default:
+        //        break;
+        //}
         PropList[propIndex].SetActive(true);
     }
 
