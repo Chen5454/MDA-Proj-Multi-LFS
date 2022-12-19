@@ -48,9 +48,9 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
 
     #region GameObjects
     [Header("Props")]
-    public List<GameObject> KidPropList;
+    //public List<GameObject> KidPropList;
     public List<GameObject> PropList;
-    public List<GameObject> OldPropList;
+    //public List<GameObject> OldPropList;
     public Collider PatientModelCollider;
 
     [Header("Bandages")]
@@ -544,20 +544,20 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     [PunRPC]
     private void RevealPropOnPatientRPC(int propIndex)
     {
-        switch (NewPatientData.PatientType)
-        {
-            case PatientType.Old:
-                OldPropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Grown:
-                PropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Kid:
-                KidPropList[propIndex].SetActive(true);
-                break;
-            default:
-                break;
-        }
+        //switch (NewPatientData.PatientType)
+        //{
+        //    case PatientType.Old:
+        //        OldPropList[propIndex].SetActive(true);
+        //        break;
+        //    case PatientType.Grown:
+        //        PropList[propIndex].SetActive(true);
+        //        break;
+        //    case PatientType.Kid:
+        //        KidPropList[propIndex].SetActive(true);
+        //        break;
+        //    default:
+        //        break;
+        //}
         PropList[propIndex].SetActive(true);
     }
 
