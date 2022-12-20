@@ -78,10 +78,10 @@ public class UIManager : MonoBehaviour
 
 
 
-    [Header("Errors")]
+    //[Header("Errors")]
 
-    public GameObject _tastingForPremisionWorks;
-    public GameObject _tastingForPremisionError;
+    //public GameObject _tastingForPremisionWorks;
+    //public GameObject _tastingForPremisionError;
 
     #endregion
 

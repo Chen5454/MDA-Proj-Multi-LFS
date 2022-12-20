@@ -115,38 +115,38 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     #region Monobehaviour Callbacks
     private void Awake()
     {
-        _tastingForPremisionWorks = UIManager.Instance._tastingForPremisionWorks;
-        _tastingForPremisionError = UIManager.Instance._tastingForPremisionError;
+        //_tastingForPremisionWorks = UIManager.Instance._tastingForPremisionWorks;
+        //_tastingForPremisionError = UIManager.Instance._tastingForPremisionError;
 
 
-        _tastingForPremisionWorks.SetActive(false);
-        _tastingForPremisionError.SetActive(false);
+        //_tastingForPremisionWorks.SetActive(false);
+        //_tastingForPremisionError.SetActive(false);
         //Testing To Try+Catch the Writing/Reading Folder for Ester
-        Directory.CreateDirectory(Application.streamingAssetsPath + "/Patients/Premmision/");
-        try
-        {
-            string readFromFilePath = Application.streamingAssetsPath + "/Patients/Premmision/" + "PremissionTests" + ".txt";
-            if (!File.Exists(readFromFilePath))
-            {
-                File.WriteAllText(readFromFilePath,"I am Writing Something important\n\n");
-            }
+        //Directory.CreateDirectory(Application.streamingAssetsPath + "/Patients/Premmision/");
+        //try
+        //{
+        //    string readFromFilePath = Application.streamingAssetsPath + "/Patients/Premmision/" + "PremissionTests" + ".txt";
+        //    if (!File.Exists(readFromFilePath))
+        //    {
+        //        File.WriteAllText(readFromFilePath,"I am Writing Something important\n\n");
+        //    }
 
-            string[] fileLines = File.ReadAllLines(readFromFilePath);
+        //    string[] fileLines = File.ReadAllLines(readFromFilePath);
 
-            foreach (var line in fileLines)
-            {
-                Debug.Log("Read from File" + line);
-            }
-            _tastingForPremisionWorks.SetActive(true);
+        //    foreach (var line in fileLines)
+        //    {
+        //        Debug.Log("Read from File" + line);
+        //    }
+        //    _tastingForPremisionWorks.SetActive(true);
 
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            Debug.Log(e);
-            _tastingForPremisionError.SetActive(true);
-            throw;
-        }
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e);
+        //    Debug.Log(e);
+        //    _tastingForPremisionError.SetActive(true);
+        //    throw;
+        //}
 
 
 
@@ -435,7 +435,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            Debug.Log("Current State: FlyingIdle");
+            //Debug.Log("Current State: FlyingIdle");
 
             GetInputAxis();
 
@@ -472,7 +472,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            Debug.Log("Current State: FlyingMoving");
+          //  Debug.Log("Current State: FlyingMoving");
 
             GetInputAxis();
 
@@ -505,7 +505,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            Debug.Log("Current State: Driving");
+         //   Debug.Log("Current State: Driving");
             _anim.IsSittedAnimation();
 
             if (!_isInVehicle)

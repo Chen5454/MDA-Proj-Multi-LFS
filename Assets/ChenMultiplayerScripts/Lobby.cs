@@ -16,6 +16,9 @@ public class Lobby : MonoBehaviourPunCallbacks
     public TMP_InputField usernameInput;
     public TMP_InputField passwordInput;
 
+    [SerializeField]private int playerCount;
+    public TMP_Text FailedToConnect;
+
     private bool isConnecting;
     private byte maxPlayersPerRoom = 50;
 
@@ -49,9 +52,10 @@ public class Lobby : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        playerCount = PhotonNetwork.PlayerList.Length;
         if (!_maleAvatar.IsBtnSelected && !_femaleAvatar.IsBtnSelected)
         {
-            Debug.Log("No Avatar Selected");
+            //Debug.Log("No Avatar Selected");
             return;
         }
         else if (!_isAvatarPicked)
@@ -87,7 +91,18 @@ public class Lobby : MonoBehaviourPunCallbacks
         if (usernameInput.text.Length >= 1 && ConnectAsInstructor.isOn)
         {
 
-            if (VerifyLogin(usernameInput.text, passwordInput.text, filepath))
+            //if (VerifyLogin(usernameInput.text, passwordInput.text, filepath))
+            //{
+            //    PhotonNetwork.NickName = usernameInput.text;
+            //    PlayerPrefs.SetString("username", usernameInput.text);
+            //    buttonText.text = _connectingText;
+            //    isConnecting = PhotonNetwork.ConnectUsingSettings();
+            //    Debug.Log("Login Into Vivox now....");
+            //    WrongInput.SetActive(false);
+            //    LoginUser();
+            //}
+
+            if (VerifyLoginFromDrive(usernameInput.text, passwordInput.text))
             {
                 PhotonNetwork.NickName = usernameInput.text;
                 PlayerPrefs.SetString("username", usernameInput.text);
@@ -145,7 +160,12 @@ public class Lobby : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         // if we failed to join a random room, maybe none exists or they are all full so we create a new room.
+        if (playerCount>1)
+        {
+            FailedToConnect.gameObject.SetActive(true);
+        }
         Debug.Log("Joining Room Failed. we are creating a new room......");
+        Debug.Log("The error is : "+returnCode+ " "+ message);
         CreateRoom();
 
         //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
@@ -189,6 +209,20 @@ public class Lobby : MonoBehaviourPunCallbacks
     #endregion
 
     #region Authentication system
+
+    public static bool VerifyLoginFromDrive(string username, string password)
+    {
+     
+        if (CredentialsToDrive.Instance.CheckLogin(username,password))
+        {
+            return true;
+        }
+        //Debug.Log(CredentialsToDrive.Instance.GetFullPatientDataByName(username));
+        //Debug.Log(CredentialsToDrive.Instance.GetAllPassword().Equals(password));
+        return false;
+    }
+
+
 
     public static bool VerifyLogin(string username, string password, string filepath)
     {
