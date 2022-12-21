@@ -76,8 +76,6 @@ public class CredentialsToDrive : MonoBehaviour
 
    public bool CheckLogin(string inputUsername, string inputPassword)
     {
-        // Replace YOUR_SPREADSHEET_ID and YOUR_RANGE with the appropriate values
-    
         // Retrieve the data from the specified range in the sheet
         ValueRange response = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange).Execute();
         var values = response.Values;
