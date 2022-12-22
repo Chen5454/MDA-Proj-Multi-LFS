@@ -60,6 +60,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     private void Start()
     {
+        _tvScreen.layer = (int)LayerMasks.Default;
         _currentIncidentNameTMP.text = _currentIncidentName;
         //GameManager.Instance.AllCrewRooms[_crewRoomIndex - 1] = this;
         //GameManager.Instance.AllCrewRooms.Add(this);
@@ -590,6 +591,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     // --------------------
     private void OnTriggerEnter(Collider other)
     {
+      _tvScreen.layer=(int)LayerMasks.Interactable;
         PhotonView playerView = other.GetComponentInParent<PhotonView>();
 
         if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
@@ -614,6 +616,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     private void OnTriggerExit(Collider other)
     {
+        _tvScreen.layer = (int)LayerMasks.Default;
         PhotonView playerView = other.GetComponentInParent<PhotonView>();
 
         if (other.CompareTag("PlayerCollider") && _playersInRoomList.Contains(playerView))

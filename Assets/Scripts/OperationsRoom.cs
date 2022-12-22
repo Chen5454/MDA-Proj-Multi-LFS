@@ -12,6 +12,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     private PhotonView _photonView;
     private OwnershipTransfer _transfer;
     [SerializeField] private bool isUsed;
+    [SerializeField] private GameObject _tvScreen;
 
     [Header("General")]
     public GameObject MokdnMenuUI;
@@ -41,6 +42,8 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     {
         _transfer = GetComponent<OwnershipTransfer>();
         _photonView = GetComponent<PhotonView>();
+        _tvScreen.layer = (int)LayerMasks.Default;
+
     }
     private void Update()
     {
@@ -133,6 +136,18 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         MokdnMenuUI.SetActive(false);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        _tvScreen.layer = (int)LayerMasks.Interactable;
+    
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        _tvScreen.layer = (int) LayerMasks.Default;
+    }
 
     public void UpdateParticipentsList()
     {

@@ -869,6 +869,11 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         PlayerData.UserRole = 0;
         PlayerData.IsCrewLeader = false;
         Vest.SetActive(false);
+
+        if (UIManager.Instance.PatientInfoParent.activeInHierarchy)
+        {
+            UIManager.Instance.PatientInfoParent.SetActive(false);
+        }
     }
 
     [PunRPC]

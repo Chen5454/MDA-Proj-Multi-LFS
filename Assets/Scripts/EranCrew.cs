@@ -11,12 +11,14 @@ public enum AranType { PlaineCrash}
 public class EranCrew : MonoBehaviour
 {
     [SerializeField] private string _startAranTitle, _startAranText;
+    [SerializeField] private GameObject _tvScreen;
+    
 
     private PhotonView _photonView;
     private OwnershipTransfer _transfer;
     private Coroutine updatePlayerListCoroutine;
 
-
+    
     #region Metargel Variables
     [Header("Metargel")]
     public GameObject MetargelEranMenuUI;
@@ -35,6 +37,8 @@ public class EranCrew : MonoBehaviour
     {
         _transfer = GetComponent<OwnershipTransfer>();
         _photonView = GetComponent<PhotonView>();
+        _tvScreen.layer = (int)LayerMasks.Default;
+
     }
 
 
@@ -240,6 +244,19 @@ public class EranCrew : MonoBehaviour
             GameManager.Instance.NatanCarList.Remove(natanCar);
             Destroy(natanCar.gameObject);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        _tvScreen.layer = (int)LayerMasks.Interactable;
+
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        _tvScreen.layer = (int)LayerMasks.Default;
     }
     #endregion
 }

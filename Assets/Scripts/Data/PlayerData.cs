@@ -377,13 +377,35 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SpectatePikudCamera_RPC()
     {
-        Pikud10 pikud10 = GameManager.Instance.Pikud10View.GetComponent<Pikud10>();
-        GameManager.Instance.Pikud10View = PhotonView;
-        if (pikud10 != null)
+
+        if (GameManager.Instance.Pikud10View != null)
         {
-            pikud10.Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
-            pikud10.Pikud10Camera.gameObject.SetActive(true);
+            Pikud10 pikud10 = GameManager.Instance.Pikud10View.GetComponent<Pikud10>();
+            GameManager.Instance.Pikud10View = PhotonView;
+
+            if (pikud10 != null)
+            {
+                if (GameManager.Instance.Pikud10TextureRenderer != null)
+                {
+                    pikud10.Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
+                    pikud10.Pikud10Camera.gameObject.SetActive(true);
+                }
+                else
+                {
+                    Debug.LogError("GameManager.Instance.Pikud10TextureRenderer is null, cannot set target texture");
+                }
+
+            }
+            else
+            {
+                Debug.LogError("Pikud10 component not found on GameManager.Instance.Pikud10View");
+            }
         }
+        else
+        {
+            Debug.LogError("GameManager.Instance.Pikud10View is null, cannot get Pikud10 component");
+        }
+   
     }
     #endregion
 
