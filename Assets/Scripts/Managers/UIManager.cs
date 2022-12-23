@@ -40,7 +40,8 @@ public class UIManager : MonoBehaviour
     public GameObject DropdownRefua10, DropdownPinuy10, DropdownHenyon10;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button Pikud10MenuHandle;
-    public Button RefreshBtn,RefreshPatientBtn;
+    public GameObject Pikud10Window;
+    public Button RefreshBtn,RefreshPatientBtn, ShowPikudWindow, ClosePikudWindow;
     public Button AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button MarkUrgent, MarkUnUrgent, MarkVehicles, MarkGeneral, MarkDeceased, MarkBomb;
     public GameObject MarkerPrefab;
@@ -52,17 +53,20 @@ public class UIManager : MonoBehaviour
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
     public Button Henyon10MenuHandle;
-    public Button Henyon10CarsMenu,RefreshButton;
+    public GameObject Henyon10Window;
+    public Button Henyon10CarsMenu,RefreshButton, ShowHenyonWindow, CloseHenyonWindow;
     public GameObject CarPrefab;
     public Transform AmbulanceListContent, NatanListContent;
     public Button MarkVehiclesHenyon;
 
     [Header("Pinuy10")]
     public GameObject Pinuy10Menu;
+    public GameObject Pinuy10Window;
     public Button Pinuy10MenuHandle;
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
     public Button RefresCarshButton;
+    public Button ShowPinuyWindow,ClosePinuyWindow;
     public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
     public Toggle CriticalTGLPinuy, UrgentTGLPinuy, NonUrgentTGLPinuy, DeadTGLPinuy;
 

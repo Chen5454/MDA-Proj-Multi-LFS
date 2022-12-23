@@ -14,6 +14,9 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     private GameObject _worldMarkCanvas;
     [SerializeField] private List<GameObject> _allWorldMarks;
     private GameObject _dropdownRefua10, _dropdownPinuy10, _dropdownHenyon10;
+    [SerializeField] private GameObject Pikud10Panel;
+    private Coroutine updatePlayerListCoroutine;
+
 
     private CameraController _camController;
 
@@ -27,10 +30,12 @@ public class Pikud10 : MonoBehaviour, IPunObservable
 
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
-    [Header("Pikod10 UI")] public GameObject Pikud10Menu;
+    [Header("Pikod10 UI")]
+    public GameObject Pikud10Menu;
     public Camera Pikud10Camera;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button TopMenuHandle, AssignRefua10, AssignPinuy10, AssignHenyon10;
+    public Button ShowButton,CloseButton;
     public Button[] AllAreaMarkings = new Button[6];
 
 
@@ -359,6 +364,14 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         DeadTGL = UIManager.Instance.DeadTGL;
 
         GameManager.Instance.Pikud10View = _photonView;
+
+        Pikud10Panel = UIManager.Instance.Pikud10Window;
+
+        CloseButton = UIManager.Instance.ClosePikudWindow;
+        ShowButton = UIManager.Instance.ShowPikudWindow;
+
+        ShowButton.onClick.AddListener(delegate { ShowParentWindow(); });
+        CloseButton.onClick.AddListener(delegate { CloseParentWindow(); });
     }
 
     private void SetMarkRPC(int markIndex)
@@ -579,7 +592,29 @@ public class Pikud10 : MonoBehaviour, IPunObservable
             taggedPatientListRowTr.GetChild(2).GetComponent<Button>().gameObject.SetActive(false);
         }
     }
-    
+    void ShowParentWindow()
+    {
+        Pikud10Panel.SetActive(true);
+        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+    }
+    void CloseParentWindow()
+    {
+        Pikud10Panel.SetActive(false);
+        StopCoroutine(updatePlayerListCoroutine);
+    }
+
+    IEnumerator HandleRefreshUpdates(float nextUpdate)
+    {
+        while (true)
+        {
+            RefreshVehicleLists();
+            RefreshPatientLists();
+
+            yield return new WaitForSeconds(nextUpdate);
+        }
+    }
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

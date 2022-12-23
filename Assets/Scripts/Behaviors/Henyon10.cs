@@ -10,7 +10,7 @@ public class Henyon10 : MonoBehaviour, IPunObservable
     private PhotonView _photonView => GetComponent<PhotonView>();
 
     private bool _isHenyon10MenuOpen;
-    public Button TopMenuHandle,ShowCarsMenu,RefreshButton;
+    public Button TopMenuHandle,ShowCarsMenu,RefreshButton, ShowButton, CloseButton;
     public GameObject Henyon10Menu;
     private bool _isMarking = false;
     private int _currentMarkIndex;
@@ -20,6 +20,8 @@ public class Henyon10 : MonoBehaviour, IPunObservable
     private Vector2 _targetPos;
     private GameObject worldMark;
     [SerializeField] private List<GameObject> _allWorldMarks;
+    private Coroutine updatePlayerListCoroutine;
+    [SerializeField] private GameObject Henyon10Panel;
 
     [SerializeField] private float _areaOffset = 14.0f, _targetHeight = 0.1f, _worldMarkHeight = 2.5f;
 
@@ -125,6 +127,14 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
         _groundLayer = LayerMask.GetMask("Ground");
         _groundLayer += LayerMask.GetMask("Road");
+
+        Henyon10Panel = UIManager.Instance.Henyon10Window;
+
+        CloseButton = UIManager.Instance.CloseHenyonWindow;
+        ShowButton = UIManager.Instance.ShowHenyonWindow;
+
+        ShowButton.onClick.AddListener(delegate { ShowParentWindow(); });
+        CloseButton.onClick.AddListener(delegate { CloseParentWindow(); });
     }
 
 
@@ -278,6 +288,26 @@ public class Henyon10 : MonoBehaviour, IPunObservable
         else
         {
             _isMarking = (bool)stream.ReceiveNext();
+        }
+    }
+    void ShowParentWindow()
+    {
+        Henyon10Panel.SetActive(true);
+        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+    }
+    void CloseParentWindow()
+    {
+        Henyon10Panel.SetActive(false);
+        StopCoroutine(updatePlayerListCoroutine);
+    }
+    IEnumerator HandleRefreshUpdates(float nextUpdate)
+    {
+        while (true)
+        {
+
+            RefreshVehicleLists();
+
+            yield return new WaitForSeconds(nextUpdate);
         }
     }
 }

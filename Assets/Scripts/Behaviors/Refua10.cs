@@ -149,7 +149,7 @@ public void OpenCloseRefua10Menu()
     void ShowPatientWindow()
     {
         Refua10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
+        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
     }
     void ClosePatientWindow()
     {
@@ -157,7 +157,7 @@ public void OpenCloseRefua10Menu()
         StopCoroutine(updatePlayerListCoroutine);
     }
 
-    IEnumerator HandleDropDownUpdates(float nextUpdate)
+    IEnumerator HandleRefreshUpdates(float nextUpdate)
     {
         while (true)
         {
