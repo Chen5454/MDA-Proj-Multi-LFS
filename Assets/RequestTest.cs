@@ -43,10 +43,10 @@ public class RequestTest : MonoBehaviour
     }
     void SetUpCredentials() //this must also be done async  
     {
-        string fullPath = Application.dataPath + path;
+        //string fullPath = Application.dataPath + path;
 
-        Stream creds = File.Open(fullPath, FileMode.Open);
-
+        //Stream creds = File.Open(fullPath, FileMode.Open);
+        Stream creds = CredentialsToDrive.GenerateStreamFromString(CredentialsToDrive.credentialsJsonString);
         ServiceAccountCredential serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(creds);
 
         sheetsService = new SheetsService(new BaseClientService.Initializer() { HttpClientInitializer = serviceAccountCredential });
@@ -160,7 +160,12 @@ public class RequestTest : MonoBehaviour
     {
         var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
 
+        if (request == null)
+            Debug.LogError("Request for drive is null!");
         var response = request.Execute(); //could not async?
+
+        if (response == null)
+            Debug.LogError("Response for drive is null!");
         var values = response.Values;
 
         if (values != null && values.Count >= 0)
