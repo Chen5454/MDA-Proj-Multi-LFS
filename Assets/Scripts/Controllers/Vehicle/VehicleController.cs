@@ -79,7 +79,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
         GameManager.Instance.usedNamesValues.Add(RandomName);
 
 
-
+      //  Physics.IgnoreLayerCollision(0,18);
         if (IsNatan)
             GameManager.Instance.NatanCarList.Add(_photonView);
         else

@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private PlayerController thisScript;
 
     public GameObject _tastingForPremisionWorks;
+    public bool IsReset;
     public GameObject _tastingForPremisionError;
     [SerializeField] private NameTagDisplay playerNameTag;
     #region Colliders
@@ -567,6 +568,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
         }
         UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
+        IsReset = true;
     }
 
 
@@ -869,7 +871,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         PlayerData.UserRole = 0;
         PlayerData.IsCrewLeader = false;
         Vest.SetActive(false);
-
+        IsReset = false;
         if (UIManager.Instance.PatientInfoParent.activeInHierarchy)
         {
             UIManager.Instance.PatientInfoParent.SetActive(false);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
@@ -20,13 +21,32 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private GameObject _destinationMarkerPrefab;
     [SerializeField] private float stoppingDistance;
 
+    private GameObject[] _roomsGOTag;
+    private Transform[] _hospitalDestTag;
+
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _lineRenderer = GetComponent<LineRenderer>();
+
+        _roomsGOTag = GameObject.FindGameObjectsWithTag("EvacRoom");
+        _hospitalDestTag = GameObject.FindGameObjectsWithTag("HospitalDest").Select(gameObject=>gameObject.transform).ToArray();
+        _destinationMarkerPrefab = GameObject.FindGameObjectWithTag("EvacGoal");
+
         _lineRenderer.positionCount = 0;
         stoppingDistance = 14f;
         _agent.stoppingDistance = stoppingDistance;
+
+
+        listRoomEnums = new List<GameObject>();
+        _destinationHospitals = new List<Transform>();
+        listRoomEnums.AddRange(_roomsGOTag);
+        _destinationHospitals.AddRange(_hospitalDestTag);
+
+        UIManager.Instance.NavigationBtn.onClick.AddListener(delegate { StartIncidentGPSNav();});
+        UIManager.Instance.EvacBtn.onClick.AddListener(delegate { StartEvacuationGPSNavButton();});
+        //_agent.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        //_lineRenderer.gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     void Update()
@@ -48,20 +68,29 @@ public class NavigationManager : MonoBehaviour
         {
             if (_playerController.CurrentVehicleController)
             {
-                transform.position = _playerController.CurrentVehicleController.transform.position;
+                //transform.position = _playerController.CurrentVehicleController.transform.position;
+                _agent.transform.position = _playerController.CurrentVehicleController.transform.position;
+                _agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
+
+
             }
-            else
-            {
-                transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
-            }
+            //else
+            //{
+            //    transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
+            //}
+
         }
 
-        //if(_lineRenderer.enabled)
-        //     _playerController.CurrentCarController.isBusy = true;
-        //else
-        //    _playerController.CurrentCarController.isBusy = false;
-
-
+        if (_agent.hasPath && !_agent.isStopped)
+        {
+            _lineRenderer.positionCount = 0;
+        }
+        else
+        {
+            _lineRenderer.positionCount = 2;
+            _lineRenderer.SetPosition(0, transform.position);
+            _lineRenderer.SetPosition(1, _agent.destination);
+        }
         StopGPSNav();
     }
 
@@ -74,25 +103,6 @@ public class NavigationManager : MonoBehaviour
 
     public void StartEvacuationGPSNav() // this
     {
-        //Debug.Log(UIManager.Instance._dropDown.value); // Gives me the Enum value
-
-        //int enumRoom = UIManager.Instance._dropDown.value;
-
-        //for (int i = 0; i < listRoomEnums.Count; i++)
-        //{
-        //    if (i == enumRoom)
-        //    {
-        //        _destinationMarkerPrefab.SetActive(true);
-        //        _destinationMarkerPrefab.transform.position = listRoomEnums[i].transform.position + new Vector3(0f, 4f, 0f);
-        //        _agent.SetDestination(listRoomEnums[i].transform.position);
-        //        _agent.isStopped = true;
-        //        _reachedDestination = false;
-
-        //        _photonView.RPC("ShowEvacNavRPC", RpcTarget.Others, _playerData.CrewIndex, i);
-        //    }
-        //}
-
-    
         Transform closestTarget = null;
         float closestTargetDistance = float.MaxValue;
         NavMeshPath Path = new NavMeshPath();
@@ -155,13 +165,6 @@ public class NavigationManager : MonoBehaviour
 
                 return;
             }
-            //_destinationMarkerPrefab.transform.position =
-            //    GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
-            //_agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
-            //_agent.isStopped = true;
-            //_reachedDestination = false;
-            //
-            //_photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
         }
         else
         {

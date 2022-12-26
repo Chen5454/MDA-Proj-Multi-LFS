@@ -113,6 +113,7 @@ public class UIManager : MonoBehaviour
     public TMP_Dropdown _dropDown;
 
     public GameObject EvacPatientPopUp;
+    public Button EvacBtn,NavigationBtn;
     #endregion
 
     #region Vehicle UI
