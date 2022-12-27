@@ -5135,6 +5135,7 @@ GameObject:
   - component: {fileID: 4519949786153602571}
   - component: {fileID: 8273788311259777178}
   - component: {fileID: 6868480437640397161}
+  - component: {fileID: 3915607620860341496}
   m_Layer: 6
   m_Name: Navigation
   m_TagString: Untagged
@@ -5288,11 +5289,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99291835fed7db444ad0af0faff519b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _photonView: {fileID: 172696219136593039}
+  _photonView: {fileID: 3915607620860341496}
   listRoomEnums: []
   _destinationHospitals: []
   _destinationMarkerPrefab: {fileID: 0}
   stoppingDistance: 0
+--- !u!114 &3915607620860341496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7324571757483741307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7346223816167115363
 GameObject:
   m_ObjectHideFlags: 0
@@ -7919,13 +7942,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
---- !u!4 &4305044805366959902 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
-  m_PrefabInstance: {fileID: 4338142976593406197}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3527804895022912932 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
+  m_PrefabInstance: {fileID: 4338142976593406197}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4305044805366959902 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33c2b911b4d9e3f4e8ae07ed1dab7f53, type: 3}
   m_PrefabInstance: {fileID: 4338142976593406197}
   m_PrefabAsset: {fileID: 0}

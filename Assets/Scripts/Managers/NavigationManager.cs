@@ -51,47 +51,50 @@ public class NavigationManager : MonoBehaviour
 
     void Update()
     {
-        if (!_playerPhotonView)
-        {
-            for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+       
+            if (!_playerPhotonView)
             {
-                if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine )
+                for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
                 {
-                    _playerPhotonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
-                    _playerController = _playerPhotonView.GetComponent<PlayerController>();
-                    _playerData = _playerPhotonView.GetComponent<PlayerData>();
-                    break;
+                    if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
+                    {
+                        _playerPhotonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
+                        _playerController = _playerPhotonView.GetComponent<PlayerController>();
+                        _playerData = _playerPhotonView.GetComponent<PlayerData>();
+                        break;
+                    }
                 }
-            }
-        }
-        else
-        {
-            if (_playerController.CurrentVehicleController)
-            {
-                transform.position = _playerController.CurrentVehicleController.transform.position;
-                //_agent.transform.position = _playerController.CurrentVehicleController.transform.position;
-                //_agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
-
-
             }
             else
             {
-                transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
+                if (_playerController.CurrentVehicleController)
+                {
+                    transform.position = _playerController.CurrentVehicleController.transform.position;
+                    //_agent.transform.position = _playerController.CurrentVehicleController.transform.position;
+                    //_agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
+
+
+                }
+                else
+                {
+                    transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
+                }
+
             }
 
-        }
-
-        if (_agent.hasPath && !_agent.isStopped)
-        {
-            _lineRenderer.positionCount = 0;
-        }
-        else
-        {
-            _lineRenderer.positionCount = 2;
-            _lineRenderer.SetPosition(0, transform.position);
-            _lineRenderer.SetPosition(1, _agent.destination);
-        }
-        StopGPSNav();
+            if (_agent.hasPath && !_agent.isStopped)
+            {
+                _lineRenderer.positionCount = 0;
+            }
+            else
+            {
+                _lineRenderer.positionCount = 2;
+                _lineRenderer.SetPosition(0, transform.position);
+                _lineRenderer.SetPosition(1, _agent.destination);
+            }
+            StopGPSNav();
+        
+    
     }
 
     public void StartEvacuationGPSNavButton()
@@ -131,7 +134,7 @@ public class NavigationManager : MonoBehaviour
 
         if (closestTarget != null)
         {
-         _destinationMarkerPrefab.SetActive(true);
+         //_destinationMarkerPrefab.SetActive(true);
          _destinationMarkerPrefab.transform.position = closestTarget.transform.position + new Vector3(0f, 4f, 0f);
          _agent.isStopped = true;
          _reachedDestination = false;
@@ -145,45 +148,50 @@ public class NavigationManager : MonoBehaviour
     // need fixing - navigation always will go to last incident currently playing
     public void StartIncidentGPSNav()
     {
-        if (_playerController.IsDriving)
-        {
-            int _incidentsCount = 0;
-            _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
-
-            try
+      
+            if (_playerController.IsDriving)
             {
-                _destinationMarkerPrefab.transform.position =
-                GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
-                _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
-                _agent.isStopped = true;
-                _reachedDestination = false;
+                int _incidentsCount = 0;
+                _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
-                _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+                try
+                {
+                    _destinationMarkerPrefab.transform.position =
+                        GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
+                    _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
+                    _agent.isStopped = true;
+                    _reachedDestination = false;
+                    _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
+                    _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
+
+                    return;
+                }
             }
-            catch (System.ArgumentOutOfRangeException)
+            else
             {
-
-                return;
+                Debug.Log("Only the driver can set to navigation.");
             }
-        }
-        else
-        {
-            Debug.Log("Only the driver can set to navigation.");
-        }
+        
+   
     }
 
     public void StopGPSNav()
     {
-        if (Vector3.Distance(_agent.destination, transform.position) <= _agent.stoppingDistance)
-        {
-            _destinationMarkerPrefab.SetActive(false);
-            _reachedDestination = true;
+       
+            if (Vector3.Distance(_agent.destination, transform.position) <= _agent.stoppingDistance)
+            {
+                //_destinationMarkerPrefab.SetActive(false);
+                _reachedDestination = true;
 
-        }
-        else if (_agent.hasPath)
-        {
-            DrawPath();
-        }
+            }
+            else if (_agent.hasPath)
+            {
+                DrawPath();
+            }
+        
     }
 
     private void DrawPath()
@@ -231,11 +239,16 @@ public class NavigationManager : MonoBehaviour
     {
         if (_playerData.CrewIndex == crewIndex)
         {
-            _destinationMarkerPrefab.SetActive(true);
+          //  _destinationMarkerPrefab.SetActive(true);
             _destinationMarkerPrefab.transform.position = target + new Vector3(0f, 4f, 0f);
             _agent.SetDestination(target);
             _agent.isStopped = true;
             _reachedDestination = false;
         }
+    }
+    [PunRPC]
+    void EnableLineRenderer()
+    {
+        _lineRenderer.enabled = true;
     }
 }

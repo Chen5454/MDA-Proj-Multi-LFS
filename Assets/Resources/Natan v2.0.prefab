@@ -1816,6 +1816,7 @@ GameObject:
   - component: {fileID: 8563951697055228497}
   - component: {fileID: 6290468638284060854}
   - component: {fileID: 6046141040922170168}
+  - component: {fileID: 6549300742097016997}
   m_Layer: 6
   m_Name: Navigation
   m_TagString: Untagged
@@ -1969,11 +1970,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99291835fed7db444ad0af0faff519b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _photonView: {fileID: 7297074626169850635}
+  _photonView: {fileID: 6549300742097016997}
   listRoomEnums: []
   _destinationHospitals: []
   _destinationMarkerPrefab: {fileID: 0}
   stoppingDistance: 0
+--- !u!114 &6549300742097016997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773522913475595056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1785278063067840554
 GameObject:
   m_ObjectHideFlags: 0
@@ -7553,14 +7576,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
---- !u!4 &4267771051446777979 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
-  m_PrefabInstance: {fileID: 4373156134607085456}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3490847732600300225 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
+  m_PrefabInstance: {fileID: 4373156134607085456}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4267771051446777979 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5963cde8782213046989d72fc4e3781e, type: 3}
   m_PrefabInstance: {fileID: 4373156134607085456}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6337149940534490227
