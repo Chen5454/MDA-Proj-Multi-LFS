@@ -68,16 +68,16 @@ public class NavigationManager : MonoBehaviour
         {
             if (_playerController.CurrentVehicleController)
             {
-                //transform.position = _playerController.CurrentVehicleController.transform.position;
-                _agent.transform.position = _playerController.CurrentVehicleController.transform.position;
-                _agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
+                transform.position = _playerController.CurrentVehicleController.transform.position;
+                //_agent.transform.position = _playerController.CurrentVehicleController.transform.position;
+                //_agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
 
 
             }
-            //else
-            //{
-            //    transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
-            //}
+            else
+            {
+                transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
+            }
 
         }
 
