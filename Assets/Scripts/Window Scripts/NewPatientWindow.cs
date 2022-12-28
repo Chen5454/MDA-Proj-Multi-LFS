@@ -145,9 +145,10 @@ namespace PatientCreationSpace
             {
                 Debug.LogError("fields fine");
                 if (((!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected) ||
-                  (!IsTrauma.IsBtnSelected && !IsIllness.IsBtnSelected)))
+                  (!IsTrauma.IsBtnSelected && !IsIllness.IsBtnSelected) ||
+                  (!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected)))
                 {
-                    Debug.LogError("toggles not");
+                    Debug.LogError("toggles not fine");
 
                     return false;
                 }
