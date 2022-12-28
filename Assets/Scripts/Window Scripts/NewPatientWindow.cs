@@ -39,6 +39,8 @@ namespace PatientCreationSpace
         //UnityEngine.UI.Toggle IsALS;
         ToggleButton IsBLS;
 
+        [SerializeField] private ToggleButton _isMale, _isFemale;
+
 
         [SerializeField]
         //UnityEngine.UI.Toggle IsTrauma;
@@ -138,7 +140,6 @@ namespace PatientCreationSpace
                 (string.IsNullOrEmpty(Name.text) || 
                 string.IsNullOrEmpty(EventName.text) ||
                 string.IsNullOrEmpty(Age.text)|| //!float.TryParse(Age.text, out float nothing)) || //age is filled, and a number
-                string.IsNullOrEmpty(Gender.options[Gender.value].text)|| 
                 string.IsNullOrEmpty(Weight.text) || 
                 string.IsNullOrEmpty(Height.text)|| 
                 string.IsNullOrEmpty(Complaint.text)))
@@ -146,7 +147,7 @@ namespace PatientCreationSpace
                 Debug.LogError("fields fine");
                 if (((!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected) ||
                   (!IsTrauma.IsBtnSelected && !IsIllness.IsBtnSelected) ||
-                  (!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected)))
+                  (!_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)))
                 {
                     Debug.LogError("toggles not fine");
 
@@ -195,15 +196,14 @@ namespace PatientCreationSpace
             //TO BE REMOVED!
 
             //Basic info nullorempty checks:
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
-                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
-                 || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
-                  ||  string.IsNullOrEmpty(Complaint.text))
+            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) 
+                || string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Weight.text)
+                || string.IsNullOrEmpty(Height.text) ||  string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
             }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected)
+            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
             {
                 Debug.LogError("no type selected somehow?");
                 return;
@@ -227,7 +227,7 @@ namespace PatientCreationSpace
                 measurementArray[i] = measurementInputFields[i].text;
             }
             
-            newCreatedPatient = PatientCreator.CreateNewPatient(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ Gender.value, Weight.text, //TBF
+            newCreatedPatient = PatientCreator.CreateNewPatient(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ _isMale.IsBtnSelected, _isFemale.IsBtnSelected, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
 
@@ -247,10 +247,9 @@ namespace PatientCreationSpace
             }
             
             //Basic info nullorempty checks:
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) ||
-                string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Gender.options[Gender.value].text)
-                 || string.IsNullOrEmpty(Weight.text) || string.IsNullOrEmpty(Height.text)
-                  ||  string.IsNullOrEmpty(Complaint.text))
+            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text)
+                ||string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Weight.text)
+                || string.IsNullOrEmpty(Height.text) ||  string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
@@ -270,7 +269,7 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected)
+            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
             {
                 Debug.LogError("no type selected somehow?");
                 return;
@@ -358,7 +357,7 @@ namespace PatientCreationSpace
             {
                 newCreatedPatient = new NewPatientData();
             }
-            newCreatedPatient.Initialize(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ Gender.value, Weight.text, //TBF
+            newCreatedPatient.Initialize(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ _isMale.IsBtnSelected, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
             newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
 
@@ -462,17 +461,18 @@ namespace PatientCreationSpace
             EventName.text = patient.SureName;
             Age.text = patient.Age.ToString();
             int option = -1;
-            Gender.value = (int)patient.Gender;
-            Gender.RefreshShownValue();
+
+            if (patient.Gender == PatientGender.Male)
+                _isMale.ClickMe();
+            else
+                _isFemale.ClickMe();
+
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
             //AddressLocation.text = patient.AddressLocation;
             Complaint.text = patient.Complaint;
 
-            if (patient.isALS)
-                IsALS.ClickMe();
-            else
-                IsBLS.ClickMe();
+            
 
             if (patient.isTrauma)
                 IsTrauma.ClickMe();

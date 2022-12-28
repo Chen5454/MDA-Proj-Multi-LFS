@@ -50,14 +50,17 @@ public class NewPatientData
 
     public NewPatientData() { }
 
-    public void Initialize(int patientType, string name, string sureName, int id, int age, int gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
+    public void Initialize(int patientType, string name, string sureName, int id, int age, bool gender, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
     {
         PatientType = (PatientType)patientType;
         Name = name;
         SureName = sureName;
         Id = id;
         Age = age;
-        Gender = (PatientGender)gender;
+        if (gender)
+            Gender = PatientGender.Male;
+        else
+            Gender = PatientGender.Female;
         PhoneNumber = phoneNum;
         MedicalCompany = medicalCompany;
         //AddressLocation = adress;
