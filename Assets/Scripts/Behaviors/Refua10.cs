@@ -67,10 +67,10 @@ public class Refua10 : MonoBehaviour
 
     public void RefreshPatientList()
     {
-        _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        // _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        UpdateTaggedPatientListRPC();
     }
 
-    [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
         // Clear the current list of patients

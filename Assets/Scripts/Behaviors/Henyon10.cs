@@ -98,7 +98,8 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
     public void RefreshVehicleLists()
     {
-        _photonView.RPC("UpdateVehicleListsRPC", RpcTarget.AllViaServer);
+        //_photonView.RPC("UpdateVehicleListsRPC", RpcTarget.AllViaServer);
+        UpdateVehicleListsRPC();
     }
 
 
@@ -139,7 +140,6 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
 
 
-    [PunRPC]
     private void UpdateVehicleListsRPC()
     {
         _ambulanceList.Clear();
