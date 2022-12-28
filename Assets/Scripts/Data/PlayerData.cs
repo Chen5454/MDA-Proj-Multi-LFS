@@ -6,7 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using Photon.Pun;
 
-public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor }
+public enum Roles { None, CFR, Medic, SeniorMedic, Paramedic, Doctor }
 public enum AranRoles { None, HeadMokdan, Mokdan, Pikud10, Refua10, Henyon10, Pinuy10 }
 
 public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
@@ -25,6 +25,7 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     [field: SerializeField] public bool IsRefua10 { get; set; }
     [field: SerializeField] public bool IsPinuy10 { get; set; }
     [field: SerializeField] public bool IsHenyon10 { get; set; }
+    [field: SerializeField] public bool IsDataInitialized { get; set; }
     [field: SerializeField] public Roles UserRole { get; set; }
     [field: SerializeField] public AranRoles AranRole { get; set; }
     [field: SerializeField] public Color CrewColor { get; set; }
@@ -51,22 +52,6 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
 
     }
 
-    private void Update()
-    {
-        //if (IsInstructor)
-        //{
-        //    gameObject.AddComponent<Instructor>();
-        //    ActionsManager.Instance.AllPlayerData.Add(this);
-        //}
-        //else if (TryGetComponent(out Instructor instructor))
-        //{
-        //    if (instructor)
-        //    {
-        //        ActionsManager.Instance.AllPlayerData.Remove(this);
-        //        Destroy(instructor);
-        //    }
-        //}
-    }
     private void OnDestroy()
     {
 
@@ -438,6 +423,10 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(IsPinuy10);
             stream.SendNext(IsHenyon10);
             stream.SendNext(CrewIndex);
+            stream.SendNext(IsDataInitialized);
+            stream.SendNext(CrewColor.r);
+            stream.SendNext(CrewColor.g);
+            stream.SendNext(CrewColor.b);
         }
         else
         {
@@ -449,7 +438,13 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             IsPinuy10 = (bool)stream.ReceiveNext();
             IsHenyon10 = (bool)stream.ReceiveNext();
             CrewIndex = (int)stream.ReceiveNext();
-           
+            IsDataInitialized = (bool)stream.ReceiveNext();
+
+            var color = CrewColor;
+            color.r = (float)stream.ReceiveNext();
+            color.g = (float)stream.ReceiveNext();
+            color.b = (float)stream.ReceiveNext();
+            CrewColor = color;
         }
     }
     #endregion

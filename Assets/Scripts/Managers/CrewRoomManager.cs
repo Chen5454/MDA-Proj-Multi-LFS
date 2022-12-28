@@ -106,6 +106,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
                 desiredPlayerName.text.color = new Color(r, b, g);
                 currentPlayerData.CrewColor = new Color(r, b, g);
+
+                if (!currentPlayerData.IsDataInitialized)
+                {
+                    desiredPlayerName.text.color =Color.white;
+                    currentPlayerData.CrewColor = Color.white;
+                }
             }
 
 
@@ -171,6 +177,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void CreateCrewSubmit()
     {
         _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
+
         _photonView.RPC("GivesLeaderButton", RpcTarget.AllBufferedViaServer, GetCrewLeaderIndex());
         //  var color = Random.ColorHSV();
         //_photonView.RPC("ChangeCrewColors", RpcTarget.AllBufferedViaServer, new Vector3(color.r, color.g, color.b));
@@ -736,11 +743,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         {
 
             PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
-            desiredPlayerData.CrewIndex = crewIndex;
-            // desiredPlayerData.CrewIndex = indexInCrewCounter;
-            desiredPlayerData.UserRole = (Roles)roleIndex[i];
-            desiredPlayerData.PhotonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, desiredPlayerData.UserRole);
-            //indexInCrewCounter++;
+            var desiredPlayerController = desiredPlayerData.GetComponent<PlayerController>();
+            if (!desiredPlayerData.IsDataInitialized || desiredPlayerData.UserRole == Roles.None)
+            {
+                desiredPlayerData.CrewIndex = crewIndex;
+                // desiredPlayerData.CrewIndex = indexInCrewCounter;
+                desiredPlayerData.UserRole = (Roles)roleIndex[i];
+                desiredPlayerController.SetUserVestRPC1((int)desiredPlayerData.UserRole);
+                //esiredPlayerData.PhotonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, desiredPlayerData.UserRole);
+                //indexInCrewCounter++;
+            }
+
         }
         foreach (PhotonView player in _playersInRoomList)
         {
