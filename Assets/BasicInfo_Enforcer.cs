@@ -33,4 +33,17 @@ public class BasicInfo_Enforcer : MonoBehaviour
 
         nextBtn.image.color = canInteract ? onColor : offColor;
     }
+
+    IEnumerator CheckMeCoroutine()
+    {
+        while (true)
+        {
+            CheckCondition();
+            yield return new WaitForSeconds(1f / 1);
+        }
+    }
+    private void OnDisable()
+    {
+        StopCoroutine(nameof(CheckMeCoroutine));
+    }
 }
