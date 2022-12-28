@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
     public Transform AmbulanceListContentPikud10, NatanListContentPikud10;
     public Transform PatientContentPikud10;
     public Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
-
+    public GameObject Pikud10Parent;
 
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
@@ -58,6 +58,8 @@ public class UIManager : MonoBehaviour
     public GameObject CarPrefab;
     public Transform AmbulanceListContent, NatanListContent;
     public Button MarkVehiclesHenyon;
+    public GameObject HenyonParent;
+
 
     [Header("Pinuy10")]
     public GameObject Pinuy10Menu;
@@ -69,6 +71,7 @@ public class UIManager : MonoBehaviour
     public Button ShowPinuyWindow,ClosePinuyWindow;
     public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
     public Toggle CriticalTGLPinuy, UrgentTGLPinuy, NonUrgentTGLPinuy, DeadTGLPinuy;
+    public GameObject Pinuy10Parent;
 
 
 
@@ -79,6 +82,10 @@ public class UIManager : MonoBehaviour
     public Button RefresTaghButtonRefua,ShowRefuaWindow,CloseRefuaWindow;
     public Transform TaggedPatientListContentRefua;
     public Toggle CriticalTGLRefua, UrgentTGLRefua, NonUrgentTGLRefua, DeadTGLRefua;
+    public GameObject RefuaParent;
+
+    [Header("Other")]
+    public GameObject TeamLeaderParent;
 
 
 

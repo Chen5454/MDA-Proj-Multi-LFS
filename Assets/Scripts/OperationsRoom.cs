@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -106,7 +107,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     }
     public void GivePikudRoleClick()
     {
-        _photonView.RPC("GivePikudRole", RpcTarget.AllBufferedViaServer, GetPikud10Index());
+        _photonView.RPC("GivePikudRole", GetPikudPlayer(), GetPikud10Index());
     }
     public void CloseMokdanRoomMenu()
     {
@@ -287,6 +288,22 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         chosenPlayerData.AssignAranRole(AranRoles.Pikud10);
     }
     #endregion
+    public Player GetPikudPlayer()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (_playerListDropDown.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            {
+                Player pikudPlayer = desiredPlayer.GetComponent<PhotonView>().Owner;
+                return pikudPlayer;
+            }
+        }
+
+        return null;
+    }
 
     #region Coroutines
     IEnumerator HandleDropDownUpdates(float nextUpdate)

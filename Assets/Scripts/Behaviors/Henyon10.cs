@@ -292,8 +292,12 @@ public class Henyon10 : MonoBehaviour, IPunObservable
     }
     void ShowParentWindow()
     {
-        Henyon10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        if (_photonView.IsMine)
+        {
+            Henyon10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+        
     }
     void CloseParentWindow()
     {

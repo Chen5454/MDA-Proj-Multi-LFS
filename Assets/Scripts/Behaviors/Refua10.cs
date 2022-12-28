@@ -148,8 +148,12 @@ public void OpenCloseRefua10Menu()
 
     void ShowPatientWindow()
     {
-        Refua10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        if (_photonView.IsMine)
+        {
+            Refua10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+     
     }
     void ClosePatientWindow()
     {
