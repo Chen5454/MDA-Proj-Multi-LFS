@@ -53,6 +53,7 @@ namespace PatientCreationSpace
         [SerializeField]
         List<TMP_InputField> measurementInputFields;
 
+        [SerializeField] private List<TMP_Dropdown> _measurementDropdowns;
 
         Patient createdPatient;
         NewPatientData newCreatedPatient;
@@ -163,11 +164,20 @@ namespace PatientCreationSpace
 
         public bool AreAllInitialMeasurementsFilled()
         {
-            foreach (var item in measurementInputFields)
+            foreach (TMP_InputField item in measurementInputFields)
             {
                 if (string.IsNullOrEmpty(item.text))
                     return false;
             }
+
+            //foreach (TMP_Dropdown dropdown in _measurementDropdowns)
+            //{
+            //    foreach (TMP_Dropdown.OptionData option in dropdown.options)
+            //    {
+            //        if (string.IsNullOrEmpty(option.text))
+            //            return false;
+            //    }
+            //}
 
             return true;
         }
@@ -181,6 +191,8 @@ namespace PatientCreationSpace
                 if (!item.AllInputsGood())
                     return false;
             }
+
+            //could need to add dropdown measurements
             return true;
         }
 
@@ -227,7 +239,30 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-            
+            string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
+            //for (int i = 0; i < _measurementDropdowns.Count; i++)
+            //{
+            //    for (int option = 0; option < _measurementDropdowns[i].options.Count; option++)
+            //    {
+            //        if (string.IsNullOrEmpty(_measurementDropdowns[i].options[i].text)) //Initial Measurements //nullorempty checks here!
+            //        {
+            //            Debug.LogError("all initial measurement fields need to be filled!");
+            //
+            //            return;
+            //        }
+            //
+            //        measurementDropdownArray[i] = _measurementDropdowns[i].options[i].text;
+            //    }
+            //    foreach (TMP_Dropdown.OptionData option in _measurementDropdowns[i].options)
+            //    {
+            //        
+            //
+            //        
+            //    }
+            //    
+            //    
+            //}
+
             newCreatedPatient = PatientCreator.CreateNewPatient(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ _isMale.IsBtnSelected, _isFemale.IsBtnSelected, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
