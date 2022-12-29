@@ -120,12 +120,13 @@ namespace PatientCreationSpace
             Name.text = "";
             EventName.text = "";
             Age.text = "";
-            Gender.value = 0;
             Weight.text = "";
             Height.text = "";
             //AddressLocation.text = "";
             Complaint.text = "";
 
+            _isMale.DeSetMe();
+            _isFemale.DeSetMe();
             IsALS.DeSetMe();
             IsBLS.DeSetMe();
             IsTrauma.DeSetMe();

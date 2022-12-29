@@ -57,10 +57,7 @@ public class NewPatientData
         SureName = sureName;
         Id = id;
         Age = age;
-        if (gender)
-            Gender = PatientGender.Male;
-        else
-            Gender = PatientGender.Female;
+        Gender = gender ? PatientGender.Male : PatientGender.Female;
         PhoneNumber = phoneNum;
         MedicalCompany = medicalCompany;
         //AddressLocation = adress;

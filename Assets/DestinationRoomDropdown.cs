@@ -11,13 +11,20 @@ public class DestinationRoomDropdown : MonoBehaviour
 {
     [SerializeField]
     TMPro.TMP_Dropdown dropdown;
+
+    [SerializeField] private string _ct, _maternity, _bypass;
+
     private void OnEnable()
     {
         if (!dropdown)
             dropdown = GetComponent<TMPro.TMP_Dropdown>();
 
         dropdown.ClearOptions();
-        
-        dropdown.AddOptions(System.Enum.GetNames(typeof( DestinationRoom)).ToList());
+        List<string> options = new List<string>();
+        options.Add(_ct);
+        options.Add(_maternity);
+        options.Add(_bypass);
+        dropdown.AddOptions(options);
+        //dropdown.AddOptions(System.Enum.GetNames(typeof( DestinationRoom)).ToList());
     }
 }
