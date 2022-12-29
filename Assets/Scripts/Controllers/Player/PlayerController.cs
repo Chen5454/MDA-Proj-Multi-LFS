@@ -527,13 +527,13 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                _stateAction = UseTankIdleState;
-            }
-
             RotateBodyWithMouse();
         }
+    }
+
+    public void UnstuckFromUI()
+    {
+        _stateAction = UseTankIdleState;
     }
 
     public void TelepotrtToCenterBtn()

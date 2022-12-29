@@ -894,6 +894,20 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             SetStartIncidentBtn();
     }
 
+    public void ExitButton()
+    {
+        foreach (var player in _playersInRoomList)
+        {
+            PlayerController wantedPlayer = player.GetComponent<PlayerController>();
+
+            if (player.Owner == _photonView.Owner)
+            {
+                wantedPlayer.UnstuckFromUI();
+            }
+        }
+    }
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
