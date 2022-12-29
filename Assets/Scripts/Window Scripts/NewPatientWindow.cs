@@ -125,12 +125,12 @@ namespace PatientCreationSpace
             //AddressLocation.text = "";
             Complaint.text = "";
 
-            _isMale.DeSetMe();
-            _isFemale.DeSetMe();
-            IsALS.DeSetMe();
-            IsBLS.DeSetMe();
-            IsTrauma.DeSetMe();
-            IsIllness.DeSetMe();
+            _isMale.DeSetMe(true);
+            _isFemale.DeSetMe(false);
+            IsBLS.DeSetMe(true);
+            IsALS.DeSetMe(false);
+            IsTrauma.DeSetMe(true);
+            IsIllness.DeSetMe(false);
             //PatientCreator.ClearLoadedPatient();
         }
 
