@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
 
-    private VehicleController _currentVehicleController;
+    public VehicleController _currentVehicleController;
     public VehicleController CurrentVehicleController { get => _currentVehicleController; set => _currentVehicleController = value; }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
@@ -554,17 +554,22 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 player.ResetPlayerData();
             }
 
+            _photonView.RPC("ExitPlayersFromCar_RPC", RpcTarget.All, PlayerData.CrewIndex);
+
+
             if (_photonView.IsMine)
                 _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer, PlayerData.CrewIndex);
         }
 
         if (_photonView.IsMine)
-        { 
+        {
             _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
             _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
         }
+
         UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
+
     }
 
 
@@ -851,17 +856,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     [PunRPC]
     public void CrewLeaderResetIncident_RPC(int crewIndex)
     {
-        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
-        {
-            PlayerController desiredPlayer =
-                ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
-
-            if (desiredPlayer.IsInVehicle)
-            {
-                desiredPlayer.CurrentVehicleController.GetComponent<VehicleInteraction>().ExitVehicle();
-            }
-        }
-       
         List<PlayerController> crewMembers = FindObjectsOfType<PlayerController>()
             .Where(player => player.PlayerData.CrewIndex == crewIndex).ToList();
         foreach (PlayerController player in crewMembers)
@@ -870,7 +864,36 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
     }
 
+    [PunRPC]
+    public void ExitPlayersFromCar_RPC(int crewIndex)
+    {
+        ExitPlayersFromCar(crewIndex);
+    }
 
+    public void ExitPlayersFromCar(int crewIndex)
+    {
+        // Get a list of all the players in the crew
+        List<PlayerController> playersToExit = FindObjectsOfType<PlayerController>()
+            .Where(player => player.PlayerData.CrewIndex == PlayerData.CrewIndex && player.IsInVehicle).ToList();
+
+        // Iterate through the list of players
+        foreach (PlayerController player in playersToExit)
+        {
+            // Check if the player is in a vehicle
+            if (player.IsInVehicle && player.CurrentVehicleController != null)
+            {
+                // Get the VehicleInteraction component of the current vehicle
+                VehicleInteraction vehicleInteraction = player.CurrentVehicleController.GetComponent<VehicleInteraction>();
+
+                // Call the ExitVehicle method of the VehicleInteraction component
+                if (vehicleInteraction != null)
+                {
+                    // Exit the vehicle
+                    vehicleInteraction.ExitVehicle();
+                }
+            }
+        }
+    }
 
     public void ResetPlayerData()
     {
