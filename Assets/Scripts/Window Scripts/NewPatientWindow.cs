@@ -239,7 +239,7 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-            string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
+            //string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             //for (int i = 0; i < _measurementDropdowns.Count; i++)
             //{
             //    for (int option = 0; option < _measurementDropdowns[i].options.Count; option++)
