@@ -36,6 +36,8 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
     [SerializeField] private GameObject _tvScreen;
+    [SerializeField] private Button SicknessButtonDefualt;
+    [SerializeField] private Sprite PressedSprite;
     [SerializeField] private GameObject /*_patientMale, _patientFemale, */_chooseIncidentParent, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
     [SerializeField] private Button _startSimulationBtn;
     [SerializeField] private TextMeshProUGUI _currentIncidentNameTMP, _startSimulationTMP;
@@ -66,6 +68,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         //GameManager.Instance.AllCrewRooms.Add(this);
         _crewRoomIndexStatic++;
         _crewRoomIndex = _crewRoomIndexStatic;
+        SicknessButtonDefualt.image.sprite = PressedSprite;
     }
 
     private void Update()
