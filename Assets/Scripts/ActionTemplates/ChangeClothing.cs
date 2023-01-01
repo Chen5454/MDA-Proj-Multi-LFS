@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +14,7 @@ public class ChangeClothing : Action
     {
         GetActionData();
 
-        TextToLog = $"Patient's clothing changed to: {_textToLog}";
+        TextToLog = $"בגדי המטופל השתנו ל: {_textToLog}";
 
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {

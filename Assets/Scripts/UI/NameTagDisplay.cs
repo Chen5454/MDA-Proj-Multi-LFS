@@ -8,7 +8,7 @@ using Photon.Pun;
 public class NameTagDisplay : MonoBehaviour
 {
     [SerializeField] private PhotonView playerPhotonView;
-    [SerializeField] private GameObject crown;
+    [SerializeField] public GameObject crown;
     [SerializeField] public TMP_Text text;
 
     private PlayerData playerData;

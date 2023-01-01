@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,8 +27,9 @@ public class CheckMeasurement : Action
             //_currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
             _currentMeasurement = CurrentPatientData.GetMeasurement(measurementNum);
 
-            TextToLog = $"Checked Patient's {_measurementName}, it is {_currentMeasurement}";
-
+            //old log, in english
+            // TextToLog = $"Checked Patient's {FromMeasurmentEnumToMeasurementName(_measurement)}, it is {_currentMeasurement}";
+            TextToLog = $"ביצע בדיקת {_measurementName}: {_currentMeasurement}";
             if (_writeMeasurements)
             {
                 _textInput.text = _currentMeasurement.ToString();
@@ -45,4 +46,5 @@ public class CheckMeasurement : Action
             }
         }
     }
+
 }

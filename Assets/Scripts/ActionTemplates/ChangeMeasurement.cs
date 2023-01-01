@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,11 +24,11 @@ public class ChangeMeasurement : Action
 
             if (_useMedicineLog)
             {
-                TextToLog = $"Patient's took & applied {_treatmentName}";
+                TextToLog = $" המטופל לקח וצרך:  {_treatmentName}";
             }
             else
             {
-                TextToLog = $"did {_treatmentName} on Patient";
+                TextToLog = $"ביצע {_treatmentName} על המטופל";
             }
 
             if (_shouldUpdateLog)

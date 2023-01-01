@@ -16,6 +16,12 @@ public class BasicInfo_Enforcer : MonoBehaviour
     private void OnEnable()
     {
         CheckCondition();
+        PatientCreator.OnLoadPatient += CheckCondition;
+    }
+
+    private void OnDisable()
+    {
+        PatientCreator.OnLoadPatient -= CheckCondition;
     }
 
     bool canInteract;

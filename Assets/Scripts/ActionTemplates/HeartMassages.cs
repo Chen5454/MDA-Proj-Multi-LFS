@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +31,7 @@ public class HeartMassages : Action
 
             _heartMassagesWindow.SetActive(true);
 
-            TextToLog = $"Started Administering Heart Massages";
+            TextToLog = $"התחיל במתן עיסוי לב";
 
             if (_shouldUpdateLog)
             {
@@ -42,7 +42,7 @@ public class HeartMassages : Action
 
     public void StopHeartMassages()
     {
-        TextToLog = $"Stopped Administering Heart Massages";
+        TextToLog = $"הפסיק במתן עיסוי לב";
         _playerAnimator.SetBool("Administering Cpr", false);
         _heartMassagesWindow.SetActive(false);
 
