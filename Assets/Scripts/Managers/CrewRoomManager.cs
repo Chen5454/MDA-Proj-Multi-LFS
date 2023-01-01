@@ -170,7 +170,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     {
         string[] roles = Enum.GetNames(typeof(Roles));
         List<string> rolesList = new List<string>(roles);
-
+        rolesList.Remove("None");
         foreach (var dropdown in CrewMemberRoleDropDownList)
         {
             dropdown.AddOptions(rolesList);
@@ -741,31 +741,29 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [PunRPC]
     void CrewCreateSubmit_RPC(int[] roleIndex, int leaderIndex, int crewIndex)
     {
-        // int indexInCrewCounter = 0;
-        for (int i = 0; i < roleIndex.Length; i++)
-        {
-
-            PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
-            var desiredPlayerController = desiredPlayerData.GetComponent<PlayerController>();
-            if (!desiredPlayerData.IsDataInitialized || desiredPlayerData.UserRole == Roles.None)
+        
+            for (int i = 0; i < roleIndex.Length; i++)
             {
-                desiredPlayerData.CrewIndex = crewIndex;
-                // desiredPlayerData.CrewIndex = indexInCrewCounter;
-                desiredPlayerData.UserRole = (Roles)roleIndex[i];
-                desiredPlayerController.SetUserVestRPC1((int)desiredPlayerData.UserRole);
-                //esiredPlayerData.PhotonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, desiredPlayerData.UserRole);
-                //indexInCrewCounter++;
+                PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
+                var desiredPlayerController = desiredPlayerData.GetComponent<PlayerController>();
+               
+                    desiredPlayerController.PlayerData.UserRole = Roles.None;
+                    desiredPlayerData.IsDataInitialized = false; 
+                    desiredPlayerData.CrewIndex = crewIndex;
+                    desiredPlayerData.UserRole = (Roles)roleIndex[i];
+                    desiredPlayerController.SetUserVestRPC1((int)desiredPlayerData.UserRole);
+                
+            }
+            foreach (PhotonView player in _playersInRoomList)
+            {
+                player.GetComponent<PlayerData>().IsCrewLeader = false;
             }
 
-        }
-        foreach (PhotonView player in _playersInRoomList)
-        {
-            player.GetComponent<PlayerData>().IsCrewLeader = false;
-        }
+            PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
+            leaderToBe.IsCrewLeader = true;
+            ActionsManager.Instance.NextCrewIndex++;
+        
 
-        PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
-        leaderToBe.IsCrewLeader = true;
-        ActionsManager.Instance.NextCrewIndex++;
     }
 
     [PunRPC]

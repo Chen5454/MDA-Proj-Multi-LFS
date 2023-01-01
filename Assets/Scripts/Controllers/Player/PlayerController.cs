@@ -840,7 +840,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     public void SetUserVestRPC1(int roleIndex)
     {
-        if (!PlayerData.IsDataInitialized || PlayerData.UserRole == Roles.None)
+        if (!PlayerData.IsDataInitialized || PlayerData.UserRole != (Roles)roleIndex)
         {
             VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
             PlayerData.UserRole = (Roles)roleIndex;
@@ -851,6 +851,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             PlayerData.IsDataInitialized = true;
         }
     }
+
 
 
     [PunRPC]

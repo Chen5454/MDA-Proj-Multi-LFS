@@ -6,7 +6,7 @@ using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using Photon.Pun;
 
-public enum Roles { None, CFR, Medic, SeniorMedic, Paramedic, Doctor }
+public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor,None }
 public enum AranRoles { None, HeadMokdan, Mokdan, Pikud10, Refua10, Henyon10, Pinuy10 }
 
 public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
@@ -49,7 +49,7 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
         AranRole = AranRoles.None;
         PhotonView.ObservedComponents.Add(this);
 
-
+        UserRole = Roles.None;
     }
 
     private void OnDestroy()
