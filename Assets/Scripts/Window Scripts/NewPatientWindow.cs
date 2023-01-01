@@ -266,8 +266,8 @@ namespace PatientCreationSpace
             newCreatedPatient = PatientCreator.CreateNewPatient(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ _isMale.IsBtnSelected, _isFemale.IsBtnSelected, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
 
-
             treatmentSequenceEditorWindow.SetActive(true);
+
             //treatmentSequenceEditorWindow.Init(createdPatient);
             //treatmentSequenceEditorWindow.Init(newCreatedPatient);
             //continue work on setting the patient and filling their Treatment Sequence
@@ -396,7 +396,6 @@ namespace PatientCreationSpace
             newCreatedPatient.Initialize(PatientType.value, Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ _isMale.IsBtnSelected, Weight.text, //TBF
                 Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);
             newCreatedPatient.FullTreatmentSequence = PatientCreator.newPatient.FullTreatmentSequence;
-
             //treatmentSequenceEditorWindow.Init(createdPatient);
             //treatmentSequenceEditorWindow.Init(newCreatedPatient);
             //continue work on setting the patient and filling their Treatment Sequence

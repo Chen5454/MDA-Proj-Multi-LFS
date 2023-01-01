@@ -42,13 +42,13 @@ namespace PatientCreationSpace
         /// False if there was no loaded patient to clear.
         /// </summary>
         /// <returns></returns>
-        public static bool ClearLoadedPatient()
-        {
-            bool wasCleared = (newPatient != null);
-            newPatient = null;
-            OnPatientClear?.Invoke();
-            return wasCleared;
-        }
+        //public static bool ClearLoadedPatient()
+        //{
+        //    bool wasCleared = (newPatient != null);
+        //    newPatient = null;
+        //    OnPatientClear?.Invoke();
+        //    return wasCleared;
+        //}
         public static NewPatientData CreateNewPatient(int patientType, string name, string sureName, int id, int age, bool isMale, bool isFemale, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
         {
             newPatient = new NewPatientData(); 
