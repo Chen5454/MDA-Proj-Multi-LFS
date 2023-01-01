@@ -22,6 +22,7 @@ public class BasicInfo_Enforcer : MonoBehaviour
     private void OnDisable()
     {
         PatientCreator.OnLoadPatient -= CheckCondition;
+        StopCoroutine(nameof(CheckMeCoroutine));
     }
 
     bool canInteract;
@@ -47,9 +48,5 @@ public class BasicInfo_Enforcer : MonoBehaviour
             CheckCondition();
             yield return new WaitForSeconds(1f / 1);
         }
-    }
-    private void OnDisable()
-    {
-        StopCoroutine(nameof(CheckMeCoroutine));
     }
 }
