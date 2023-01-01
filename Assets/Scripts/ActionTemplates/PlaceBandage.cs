@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
@@ -27,7 +27,7 @@ public class PlaceBandage : Action
 
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
-            TextToLog = "Placed Bandage on Patient";
+            TextToLog = "הניח תחבושת על המטופל";
 
             CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", RpcTarget.AllBufferedViaServer, _useTourniquetInstead);
             SwitchRayCastTarget(false);

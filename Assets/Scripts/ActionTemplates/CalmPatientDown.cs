@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +22,7 @@ public class CalmPatientDown : Action
             CurrentPatient.PhotonView.RPC("SetMeasurementByIndexRPC", RpcTarget.All, _heartRateIndex, _newHeartRate);
             CurrentPatient.PhotonView.RPC("SetMeasurementByIndexRPC", RpcTarget.All, _respiratoryRate, _newRespiratoryRate);
 
-            TextToLog = $"Patient calm down";
+            TextToLog = $"המטופל הורגע";
 
             if (_shouldUpdateLog)
             {
