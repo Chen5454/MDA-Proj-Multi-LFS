@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,7 +44,7 @@ public class PatientTreatmentAnimation : Action
             _patientAnimator.SetBool(_animationName, true);
             StartCoroutine(WaitToFinishAnimation());
 
-            TextToLog = $" {CurrentPatientData.Name} is Reciving Heart Massages";
+            TextToLog = $" {CurrentPatientData.Name} מקבל עיסוי לב";
 
             if (_showAlert)
             {

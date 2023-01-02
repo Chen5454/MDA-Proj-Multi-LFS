@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +28,7 @@ public class PatientObjectInstantiation : Action
             GameObject item = PhotonNetwork.Instantiate(_item.name, desiredPosition, desiredRotation);
             item.transform.SetParent(CurrentPatient.transform);
 
-            TextToLog = $"Used {_itemName}";
+            TextToLog = $"השתמש ב {_itemName}";
 
             if (_shouldUpdateLog)
             {

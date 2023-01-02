@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +21,7 @@ public class RevealPropOnPatient : Action
             CurrentPatient.PhotonView.RPC("RevealPropOnPatientRPC", RpcTarget.AllViaServer, (int)_prop);
             //CurrentPatient.PropList[(int)_prop].SetActive(true);
 
-            TextToLog = $"Used {_itemName}";
+            TextToLog = $"השתמש ב {_itemName}";
 
             if (_shouldUpdateLog)
             {
