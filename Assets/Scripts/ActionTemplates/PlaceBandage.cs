@@ -27,7 +27,14 @@ public class PlaceBandage : Action
 
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
-            TextToLog = "הניח תחבושת על המטופל";
+            if (_useTourniquetInstead == true)
+            {
+                TextToLog = "ביצע חוסם עורקים למטופל";
+            }
+            else
+            {
+                TextToLog = "חבש את המטופל";
+            }
 
             CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", RpcTarget.AllBufferedViaServer, _useTourniquetInstead);
             SwitchRayCastTarget(false);
