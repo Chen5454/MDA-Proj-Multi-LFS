@@ -263,7 +263,7 @@ public class VehicleInteraction : MonoBehaviour
                     //photonView.transform.localRotation = _vehicleController.MiddleExit.rotation;
                     UIManager.Instance.PassangerExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });
                 }
-
+                Debug.Log("Exit Function Activated");
                 playerController.IsInVehicle = false;
                 playerController.CurrentVehicleController = null;
 

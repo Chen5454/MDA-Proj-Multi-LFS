@@ -361,6 +361,8 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
         UIManager.Instance.Id.text = NewPatientData.Id.ToString();
         UIManager.Instance.PhoneNumber.text = NewPatientData.PhoneNumber.ToString();
 
+        UIManager.Instance.QASureName.text = UIManager.Instance.SureName.text;
+
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)

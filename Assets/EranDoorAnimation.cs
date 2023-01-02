@@ -52,7 +52,6 @@ public class EranDoorAnimation : MonoBehaviour
         if (_isOpen)
         {
            // eranDoor.GetComponent<BoxCollider>().enabled = false;
-           Debug.Log("Opening door ");
             _eranDoorAnim.SetBool("OpenDoor",true);
             //_eranDoorAnim.SetBool("CloseDoor",false);
 

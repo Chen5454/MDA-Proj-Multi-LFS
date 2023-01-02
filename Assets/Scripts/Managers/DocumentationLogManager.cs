@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -86,7 +88,9 @@ public class DocumentationLogManager : MonoBehaviourPunCallbacks
     public void LogThisText(int senderCrewIndex, string senderName, string text)
     {
         myLog = text;
-        string newString = $"[{senderCrewIndex}] <{senderName}> {myLog} \n";
+        if (Regex.IsMatch(senderName[0].ToString(), "^[a-zA-Z0-9]*$"))
+            senderName = Reverse(senderName);
+        string newString = $"{senderName} {myLog} \n";
         Enqueue(newString);
         myLog = string.Empty;
         if (!InfiniteList)
@@ -171,5 +175,10 @@ public class DocumentationLogManager : MonoBehaviourPunCallbacks
         _queueIndex--;
     }
 
-
+    public static string Reverse(string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
 }

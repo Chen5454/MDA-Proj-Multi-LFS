@@ -22,6 +22,7 @@ public class BasicInfo_Enforcer : MonoBehaviour
     private void OnDisable()
     {
         PatientCreator.OnLoadPatient -= CheckCondition;
+        StopCoroutine(nameof(CheckMeCoroutine));
     }
 
     bool canInteract;
@@ -38,5 +39,14 @@ public class BasicInfo_Enforcer : MonoBehaviour
         ColorUtility.TryParseHtmlString("#2A2A2A", out offColor);
 
         nextBtn.image.color = canInteract ? onColor : offColor;
+    }
+
+    IEnumerator CheckMeCoroutine()
+    {
+        while (true)
+        {
+            CheckCondition();
+            yield return new WaitForSeconds(1f / 1);
+        }
     }
 }

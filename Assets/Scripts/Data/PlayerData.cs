@@ -6,10 +6,10 @@ using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using Photon.Pun;
 
-public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor }
+public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor,None }
 public enum AranRoles { None, HeadMokdan, Mokdan, Pikud10, Refua10, Henyon10, Pinuy10 }
 
-public class PlayerData : MonoBehaviourPunCallbacks
+public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
 {
     public PhotonView PhotonView => gameObject.GetPhotonView();
     public bool IsJoinedNearbyPatient => CurrentPatientNearby.IsPlayerJoined(this);
@@ -25,6 +25,7 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [field: SerializeField] public bool IsRefua10 { get; set; }
     [field: SerializeField] public bool IsPinuy10 { get; set; }
     [field: SerializeField] public bool IsHenyon10 { get; set; }
+    [field: SerializeField] public bool IsDataInitialized { get; set; }
     [field: SerializeField] public Roles UserRole { get; set; }
     [field: SerializeField] public AranRoles AranRole { get; set; }
     [field: SerializeField] public Color CrewColor { get; set; }
@@ -46,28 +47,11 @@ public class PlayerData : MonoBehaviourPunCallbacks
             PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
 
         AranRole = AranRoles.None;
+        PhotonView.ObservedComponents.Add(this);
 
-      
-
-
+        UserRole = Roles.None;
     }
 
-    private void Update()
-    {
-        //if (IsInstructor)
-        //{
-        //    gameObject.AddComponent<Instructor>();
-        //    ActionsManager.Instance.AllPlayerData.Add(this);
-        //}
-        //else if (TryGetComponent(out Instructor instructor))
-        //{
-        //    if (instructor)
-        //    {
-        //        ActionsManager.Instance.AllPlayerData.Remove(this);
-        //        Destroy(instructor);
-        //    }
-        //}
-    }
     private void OnDestroy()
     {
 
@@ -292,20 +276,24 @@ public class PlayerData : MonoBehaviourPunCallbacks
     [PunRPC]
     private void DropdownPlayersNickNamesPikud10()
     {
-        List<string> value = new List<string>();
-        foreach (PhotonView player in ActionsManager.Instance.AllPlayersPhotonViews)
+        if (IsPikud10 && PhotonView.IsMine)
         {
-            if (player.GetComponent<PlayerData>().IsCrewLeader)
-                value.Add(player.Owner.NickName);
+            List<string> value = new List<string>();
+            foreach (PhotonView player in ActionsManager.Instance.AllPlayersPhotonViews)
+            {
+                if (player.GetComponent<PlayerData>().IsCrewLeader)
+                    value.Add(player.Owner.NickName);
+            }
+
+            Pikud10 pikud10 = GetComponent<Pikud10>();
+            pikud10.PlayerListDropdownRefua10.ClearOptions();
+            pikud10.PlayerListDropdownRefua10.AddOptions(value);
+            pikud10.PlayerListDropdownPinuy10.ClearOptions();
+            pikud10.PlayerListDropdownPinuy10.AddOptions(value);
+            pikud10.PlayerListDropdownHenyon10.ClearOptions();
+            pikud10.PlayerListDropdownHenyon10.AddOptions(value);
         }
 
-        Pikud10 pikud10 = GetComponent<Pikud10>();
-        pikud10.PlayerListDropdownRefua10.ClearOptions();
-        pikud10.PlayerListDropdownRefua10.AddOptions(value);
-        pikud10.PlayerListDropdownPinuy10.ClearOptions();
-        pikud10.PlayerListDropdownPinuy10.AddOptions(value);
-        pikud10.PlayerListDropdownHenyon10.ClearOptions();
-        pikud10.PlayerListDropdownHenyon10.AddOptions(value);
     }
 
     [PunRPC]
@@ -325,6 +313,10 @@ public class PlayerData : MonoBehaviourPunCallbacks
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsRefua10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Refua10);
+
+        UIManager.Instance.HenyonParent.SetActive(false);
+        UIManager.Instance.TeamLeaderParent.SetActive(false);
+        UIManager.Instance.Pinuy10Parent.SetActive(false);
     }
 
     [PunRPC]
@@ -344,6 +336,10 @@ public class PlayerData : MonoBehaviourPunCallbacks
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsPinuy10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Pinuy10);
+
+        UIManager.Instance.RefuaParent.SetActive(false);
+        UIManager.Instance.TeamLeaderParent.SetActive(false);
+        UIManager.Instance.HenyonParent.SetActive(false);
     }
 
     [PunRPC]
@@ -363,6 +359,12 @@ public class PlayerData : MonoBehaviourPunCallbacks
         PlayerData chosenPlayerData = ActionsManager.Instance.AllPlayersPhotonViews[index].GetComponent<PlayerData>();
         chosenPlayerData.IsHenyon10 = true;
         chosenPlayerData.AssignAranRole(AranRoles.Henyon10);
+
+        //need to disable the other panels.
+        UIManager.Instance.RefuaParent.SetActive(false);
+        UIManager.Instance.TeamLeaderParent.SetActive(false);
+        UIManager.Instance.Pinuy10Parent.SetActive(false);
+
     }
 
     //[PunRPC]
@@ -406,6 +408,44 @@ public class PlayerData : MonoBehaviourPunCallbacks
             Debug.LogError("GameManager.Instance.Pikud10View is null, cannot get Pikud10 component");
         }
    
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
+        if (stream.IsWriting)
+        {
+            stream.SendNext(IsRefua10);
+            stream.SendNext(IsCrewLeader);
+            stream.SendNext(IsInstructor);
+            stream.SendNext(IsMokdan);
+            stream.SendNext(IsPikud10);
+            stream.SendNext(IsPinuy10);
+            stream.SendNext(IsHenyon10);
+            stream.SendNext(CrewIndex);
+            stream.SendNext(IsDataInitialized);
+            stream.SendNext(CrewColor.r);
+            stream.SendNext(CrewColor.g);
+            stream.SendNext(CrewColor.b);
+        }
+        else
+        {
+            IsRefua10 = (bool)stream.ReceiveNext();
+            IsCrewLeader = (bool)stream.ReceiveNext();
+            IsInstructor = (bool)stream.ReceiveNext();
+            IsMokdan = (bool)stream.ReceiveNext();
+            IsPikud10 = (bool)stream.ReceiveNext();
+            IsPinuy10 = (bool)stream.ReceiveNext();
+            IsHenyon10 = (bool)stream.ReceiveNext();
+            CrewIndex = (int)stream.ReceiveNext();
+            IsDataInitialized = (bool)stream.ReceiveNext();
+
+            var color = CrewColor;
+            color.r = (float)stream.ReceiveNext();
+            color.g = (float)stream.ReceiveNext();
+            color.b = (float)stream.ReceiveNext();
+            CrewColor = color;
+        }
     }
     #endregion
 

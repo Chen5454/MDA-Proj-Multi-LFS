@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using VivoxUnity;
 
@@ -57,6 +59,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
 
 
     private GameObject worldMark;
+
 
     //private GameObject worldMark;
     private OwnershipTransfer _transfer;
@@ -140,6 +143,55 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     #endregion
 
     #region Getters
+
+   public Player GetRefuaPlayer()
+   {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+            if (_dropdownRefua10.GetComponentInChildren<TextMeshProUGUI>().text ==
+                ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+            {
+                Player refuaPlayer = desiredPlayer.GetComponent<PhotonView>().Owner;
+                return refuaPlayer;
+            }
+        }
+
+        return null;
+   }
+   public Player GetPinuyPlayer()
+   {
+       for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+       {
+           PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+           if (_dropdownPinuy10.GetComponentInChildren<TextMeshProUGUI>().text ==
+               ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+           {
+               Player refuaPlayer = desiredPlayer.GetComponent<PhotonView>().Owner;
+               return refuaPlayer;
+           }
+       }
+
+       return null;
+   }
+   public Player GetHenyonPlayer()
+   {
+       for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+       {
+           PlayerController desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
+
+           if (_dropdownHenyon10.GetComponentInChildren<TextMeshProUGUI>().text ==
+               ActionsManager.Instance.AllPlayersPhotonViews[i].Owner.NickName)
+           {
+               Player refuaPlayer = desiredPlayer.GetComponent<PhotonView>().Owner;
+               return refuaPlayer;
+           }
+       }
+
+       return null;
+   }
 
     public int GetRefuaIndex()
     {
@@ -259,17 +311,17 @@ public class Pikud10 : MonoBehaviour, IPunObservable
 
     public void OnClickRefua()
     {
-        _photonView.RPC("GiveRefuaRole", RpcTarget.AllBufferedViaServer, GetRefuaIndex());
+        _photonView.RPC("GiveRefuaRole", GetRefuaPlayer(), GetRefuaIndex());
     }
 
     public void OnClickPinoye()
     {
-        _photonView.RPC("GivePinoyeRole", RpcTarget.AllBufferedViaServer, GetPinoyeIndex());
+        _photonView.RPC("GivePinoyeRole", GetPinuyPlayer(), GetPinoyeIndex());
     }
 
     public void OnClickHenyon()
     {
-        _photonView.RPC("GiveHenyonRole", RpcTarget.AllBufferedViaServer, GetHenyonIndex());
+        _photonView.RPC("GiveHenyonRole", GetHenyonPlayer(), GetHenyonIndex());
     }
 
     public void CreateMarkedArea(int markIndex)
@@ -372,6 +424,8 @@ public class Pikud10 : MonoBehaviour, IPunObservable
 
         ShowButton.onClick.AddListener(delegate { ShowParentWindow(); });
         CloseButton.onClick.AddListener(delegate { CloseParentWindow(); });
+
+     
     }
 
     private void SetMarkRPC(int markIndex)
@@ -594,8 +648,12 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     }
     void ShowParentWindow()
     {
-        Pikud10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        if (_photonView.IsMine)
+        {
+            Pikud10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+
     }
     void CloseParentWindow()
     {

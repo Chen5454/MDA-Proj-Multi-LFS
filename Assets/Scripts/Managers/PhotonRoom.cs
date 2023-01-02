@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -21,6 +22,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     [SerializeField] public int multiplayerScene;
     [SerializeField] private int currentScene;
+     [SerializeField] private TMP_Text currentVersion;
+     public string currentVer;
     private void Awake()
     {
 
@@ -35,6 +38,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
         }
 
+        currentVersion.text = currentVer;
         DontDestroyOnLoad(this.gameObject);
     }
 

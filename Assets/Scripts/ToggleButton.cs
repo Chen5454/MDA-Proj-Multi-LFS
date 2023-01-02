@@ -113,10 +113,19 @@ public class ToggleButton : MonoBehaviour
     /// <summary>
     /// Clears without doing anything else
     /// </summary>
-    public void DeSetMe()
+    public void DeSetMe(bool @default)
     {
-        BtnImg.sprite = _btnOffImg;
-        IsBtnSelected = false;
+        if (!@default)
+        {
+            BtnImg.sprite = _btnOffImg;
+            IsBtnSelected = false;
+        }
+        else
+        {
+            BtnImg.sprite = _btnOnImg;
+            IsBtnSelected = true;
+        }
+        
         if (CheckmarkImg)
             CheckmarkImg.gameObject.SetActive(false);
     }

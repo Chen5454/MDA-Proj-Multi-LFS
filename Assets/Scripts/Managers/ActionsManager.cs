@@ -73,6 +73,7 @@ public class ActionsManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
     #endregion
 

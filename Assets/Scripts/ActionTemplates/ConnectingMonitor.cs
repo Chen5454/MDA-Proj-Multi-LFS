@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,7 +45,7 @@ public class ConnectingMonitor : Action
                 }
             }
 
-            TextToLog = $"Used {monitor.name} on Patient";
+            TextToLog = $"השתמש ב {monitor.name} על המטופל";
 
             if (_showAlert)
             {
