@@ -161,7 +161,7 @@ namespace PatientCreationSpace
 
             newPatient = RequestTest.Instance.GetFullPatientDataByName(patientFullName);
 
-            Debug.LogError($"{newPatient.FullTreatmentSequence.sequenceBlocks.Count} sequence blocks in treatment sequence");
+            Debug.Log($"{newPatient.FullTreatmentSequence.sequenceBlocks.Count} sequence blocks in treatment sequence");
             OnLoadPatient?.Invoke();
             return newPatient;
         }

@@ -146,16 +146,13 @@ namespace PatientCreationSpace
                 string.IsNullOrEmpty(Height.text)|| 
                 string.IsNullOrEmpty(Complaint.text)))
             {
-                Debug.LogError("fields fine");
                 if (((!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected) ||
                   (!IsTrauma.IsBtnSelected && !IsIllness.IsBtnSelected) ||
                   (!_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)))
                 {
-                    Debug.LogError("toggles not fine");
 
                     return false;
                 }
-                Debug.LogError("all fine");
                 return true;
             }
             //implied else 
@@ -486,7 +483,7 @@ namespace PatientCreationSpace
         {
             if (PatientCreator.newPatient == null)
             {
-                Debug.LogError("how?");
+                Debug.LogError("No newPatient");
                 return;
             }
 

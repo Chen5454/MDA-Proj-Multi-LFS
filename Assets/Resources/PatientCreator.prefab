@@ -4753,6 +4753,7 @@ MonoBehaviour:
   verticalGroup: {fileID: 2288369618126889088}
   newPatientWindow: {fileID: 2860667055216325854}
   windowToClose: {fileID: 1873863412403345134}
+  _basicPatientInfo: {fileID: 2860667055191043306}
   toggleALS: {fileID: 4180789953451868847}
   toggleTrauma: {fileID: 3682568151312531909}
 --- !u!114 &9014083059468586214
@@ -11855,7 +11856,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3544991648505420415}
   m_OnClick:
     m_PersistentCalls:
@@ -14792,7 +14793,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 310189550278271928}
   m_OnClick:
     m_PersistentCalls:
@@ -28233,6 +28234,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6017844571573309992, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
+      propertyPath: OnChoosen.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6017844571573309992, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
+      propertyPath: OnShutdown.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6270203495638878835, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: m_Name
       value: IncidentCreation NavBar
@@ -28297,6 +28306,14 @@ PrefabInstance:
       propertyPath: _btnOffImg
       value: 
       objectReference: {fileID: 5621054864795274326, guid: 661106c9cda4dc343af5849981afc1ea, type: 3}
+    - target: {fileID: 6812243171496349533, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
+      propertyPath: OnChoosen.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6812243171496349533, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
+      propertyPath: OnShutdown.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6812243171496349533, guid: 9178f81edcb8a4747b50b8c766c57862, type: 3}
       propertyPath: OnChoosen.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
