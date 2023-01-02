@@ -16,11 +16,14 @@ public class Pinuy10 : MonoBehaviour
     [SerializeField] private List<PhotonView> _natanList = new List<PhotonView>(), _ambulanceList = new List<PhotonView>();
     [SerializeField] private Transform _ambulanceListContent, _natanListContent;
     [SerializeField] private GameObject _vehicleListRow;
+    [SerializeField] private GameObject Pinuy10Panel;
+    private Coroutine updatePlayerListCoroutine;
+
     private Patient _currentTaggedPatient;
     private bool _isPinuy10MenuOpen;
     private Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
 
-    public Button TopMenuHandle, RefreshButton,RefreshCarBtn;
+    public Button TopMenuHandle, RefreshButton,RefreshCarBtn, ShowButton, CloseButton;
     public GameObject Pinuy10Menu;
 
     void Start()
@@ -64,6 +67,16 @@ public class Pinuy10 : MonoBehaviour
         _ambulanceListContent = UIManager.Instance.AmbulanceListContentPinuy10;
         _natanListContent = UIManager.Instance.NatanListContentPinuy10;
         _vehicleListRow = UIManager.Instance.CarPrefab;
+
+
+        Pinuy10Panel = UIManager.Instance.Pinuy10Window;
+
+        CloseButton = UIManager.Instance.ClosePinuyWindow;
+        ShowButton = UIManager.Instance.ShowPinuyWindow;
+
+        ShowButton.onClick.AddListener(delegate { ShowParentWindow(); });
+        CloseButton.onClick.AddListener(delegate { CloseParentWindow(); });
+
     }
 
     public void OpenClosePinuy10Menu()
@@ -89,17 +102,43 @@ public class Pinuy10 : MonoBehaviour
     }
     public void RefreshPatientList()
     {
-        _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        //_photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        UpdateTaggedPatientListRPC();
     }
 
 
     public void RefreshCarsList()
     {
-        _photonView.RPC("UpdateVehicleListsPinuy10RPC", RpcTarget.AllViaServer);
+        // _photonView.RPC("UpdateVehicleListsPinuy10RPC", RpcTarget.AllViaServer);
+        UpdateVehicleListsPinuy10RPC();
     }
 
+    void ShowParentWindow()
+    {
+        if (_photonView.IsMine)
+        {
+            Pinuy10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+       
+    }
+    void CloseParentWindow()
+    {
+        Pinuy10Panel.SetActive(false);
+        StopCoroutine(updatePlayerListCoroutine);
+    }
 
-    [PunRPC]
+    IEnumerator HandleRefreshUpdates(float nextUpdate)
+    {
+        while (true)
+        {
+
+            RefreshPatientList();
+            RefreshCarsList();
+            yield return new WaitForSeconds(nextUpdate);
+        }
+    }
+
     private void UpdateVehicleListsPinuy10RPC()
     {
         _ambulanceList.Clear();
@@ -176,9 +215,6 @@ public class Pinuy10 : MonoBehaviour
         }
     }
 
-
-
-    [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
         // Clear the current list of patients

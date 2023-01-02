@@ -40,31 +40,38 @@ public class UIManager : MonoBehaviour
     public GameObject DropdownRefua10, DropdownPinuy10, DropdownHenyon10;
     public TMP_Dropdown PlayerListDropdownRefua10, PlayerListDropdownPinuy10, PlayerListDropdownHenyon10;
     public Button Pikud10MenuHandle;
-    public Button RefreshBtn,RefreshPatientBtn;
+    public GameObject Pikud10Window;
+    public Button RefreshBtn,RefreshPatientBtn, ShowPikudWindow, ClosePikudWindow;
     public Button AssignRefua10, AssignPinuy10, AssignHenyon10;
     public Button MarkUrgent, MarkUnUrgent, MarkVehicles, MarkGeneral, MarkDeceased, MarkBomb;
     public GameObject MarkerPrefab;
     public Transform AmbulanceListContentPikud10, NatanListContentPikud10;
     public Transform PatientContentPikud10;
     public Toggle CriticalTGL, UrgentTGL, NonUrgentTGL, DeadTGL;
-
+    public GameObject Pikud10Parent;
 
     [Header("Henyon10")]
     public GameObject Henyon10Menu;
     public Button Henyon10MenuHandle;
-    public Button Henyon10CarsMenu,RefreshButton;
+    public GameObject Henyon10Window;
+    public Button Henyon10CarsMenu,RefreshButton, ShowHenyonWindow, CloseHenyonWindow;
     public GameObject CarPrefab;
     public Transform AmbulanceListContent, NatanListContent;
     public Button MarkVehiclesHenyon;
+    public GameObject HenyonParent;
+
 
     [Header("Pinuy10")]
     public GameObject Pinuy10Menu;
+    public GameObject Pinuy10Window;
     public Button Pinuy10MenuHandle;
     public Transform TaggedPatientListContent;
     public Button RefresTaghButton;
     public Button RefresCarshButton;
+    public Button ShowPinuyWindow,ClosePinuyWindow;
     public Transform AmbulanceListContentPinuy10, NatanListContentPinuy10;
     public Toggle CriticalTGLPinuy, UrgentTGLPinuy, NonUrgentTGLPinuy, DeadTGLPinuy;
+    public GameObject Pinuy10Parent;
 
 
 
@@ -75,7 +82,10 @@ public class UIManager : MonoBehaviour
     public Button RefresTaghButtonRefua,ShowRefuaWindow,CloseRefuaWindow;
     public Transform TaggedPatientListContentRefua;
     public Toggle CriticalTGLRefua, UrgentTGLRefua, NonUrgentTGLRefua, DeadTGLRefua;
+    public GameObject RefuaParent;
 
+    [Header("Other")]
+    public GameObject TeamLeaderParent;
 
 
     //[Header("Errors")]
@@ -96,6 +106,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI LastName, Id, Age, Gender, PhoneNumber, InsuranceCompany, Adress, Complaint;
     public StatsPanel StatsPanel;
     public QuestionPanel QuestionPanel;
+
+    [Header("Other Patient UI Texts")]
+    public TextMeshProUGUI QASureName;
+
+
     #endregion
 
     #region Patient Creation
