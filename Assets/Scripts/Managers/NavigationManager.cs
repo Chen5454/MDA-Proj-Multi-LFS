@@ -179,21 +179,15 @@ public class NavigationManager : MonoBehaviour
             int _incidentsCount = 0;
             _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
-            try
-            {
-                _destinationMarkerPrefab.transform.position =
-                    GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
-                _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
-                _agent.isStopped = true;
-                _reachedDestination = false;
-                _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
-                _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
-            }
-            catch (System.ArgumentOutOfRangeException)
-            {
 
-                return;
-            }
+            _destinationMarkerPrefab.transform.position =
+                GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
+            _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
+            _agent.isStopped = true;
+            _reachedDestination = false;
+            _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
+            _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+
         }
         else
         {
@@ -254,6 +248,7 @@ public class NavigationManager : MonoBehaviour
     {
         if (_playerData.CrewIndex == crewIndex)
         {
+            _incidentGPSNavStarted = true;
             _destinationMarkerPrefab.transform.position = GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position;
             _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position);
             _agent.isStopped = true;
