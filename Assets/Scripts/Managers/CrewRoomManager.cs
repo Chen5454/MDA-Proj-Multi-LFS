@@ -728,12 +728,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     [PunRPC]
 
-    void SpawnVehicle_RPC(int crewroomIndex)
+    void SpawnVehicle_RPC(int crewroomIndex,int aptNumber)
     {
         VehicleChecker currentPosVehicleChecker = ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].GetComponent<VehicleChecker>();
         object[] crewRoom = new object[2];
         crewRoom[0] = crewroomIndex;
-        crewRoom[1] = AptNumber;
+        crewRoom[1] = aptNumber;
         if (!currentPosVehicleChecker.IsPosOccupied)
         {
             if (_isNatanRequired)
@@ -749,7 +749,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     public void SpawnVehicle()
     {
-        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex);
+        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex, AptNumber);
 
     }
 
@@ -883,6 +883,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             }
             //stream.SendNext(_crewRoomIndex);
             stream.SendNext(_isNatanRequired);
+            stream.SendNext(AptNumber);
 
 
 
@@ -897,6 +898,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             }
             // _crewRoomIndex = (int)stream.ReceiveNext();
             _isNatanRequired = (bool)stream.ReceiveNext();
+            AptNumber = (int)stream.ReceiveNext();
 
 
         }

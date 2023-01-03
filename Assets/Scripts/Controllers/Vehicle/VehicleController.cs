@@ -377,7 +377,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
         Debug.Log("Room Number is " + _ownedCrewNumber);
 
         AptNumber = (int)instantiationData[1];
-        Debug.Log("AptNumber " + _ownedCrewNumber);
+        Debug.Log("AptNumber " + AptNumber);
 
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -394,6 +394,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             stream.SendNext(IsPatientIn);
             stream.SendNext(IsInMovement);
             stream.SendNext(IsDestroy);
+            stream.SendNext(AptNumber);
 
             foreach (var CarNameTxt in _CarNameTxt)
             {
@@ -418,6 +419,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
             IsPatientIn = (bool)stream.ReceiveNext();
             IsInMovement = (bool)stream.ReceiveNext();
             IsDestroy = (bool)stream.ReceiveNext();
+            AptNumber = (int)stream.ReceiveNext();
 
 
             foreach (var CarNameTxt in _CarNameTxt)

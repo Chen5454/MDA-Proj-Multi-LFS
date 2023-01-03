@@ -126,7 +126,7 @@ public class NavigationManager : MonoBehaviour
 
     public void StartEvacuationGPSNav() // this
     {
-
+        _incidentGPSNavStarted = true;
         Transform closestTarget = null;
         float closestTargetDistance = float.MaxValue;
         NavMeshPath Path = new NavMeshPath();
@@ -263,7 +263,9 @@ public class NavigationManager : MonoBehaviour
     {
         if (_playerData.CrewIndex == crewIndex)
         {
-          //  _destinationMarkerPrefab.SetActive(true);
+            _incidentGPSNavStarted = true;
+
+            //  _destinationMarkerPrefab.SetActive(true);
             _destinationMarkerPrefab.transform.position = target + new Vector3(0f, 4f, 0f);
             _agent.SetDestination(target);
             _agent.isStopped = true;
