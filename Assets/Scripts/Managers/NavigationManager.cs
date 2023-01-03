@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,18 @@ public class NavigationManager : MonoBehaviour
 {
     [SerializeField] private PhotonView _photonView;
 
-    private PhotonView _playerPhotonView;
-    private PlayerController _playerController;
-    private PlayerData _playerData;
-    private NavMeshAgent _agent;
-    private LineRenderer _lineRenderer;
-    private bool _reachedDestination;
+    [SerializeField] PhotonView _playerPhotonView;
+    [SerializeField] private PlayerController _playerController;
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private bool _reachedDestination;
 
     [SerializeField] private List<GameObject> listRoomEnums;
     [SerializeField] private List<Transform> _destinationHospitals;
     [SerializeField] private GameObject _destinationMarkerPrefab;
     [SerializeField] private float stoppingDistance;
+    public bool _incidentGPSNavStarted;
 
     private GameObject[] _roomsGOTag;
     private Transform[] _hospitalDestTag;
@@ -51,37 +53,46 @@ public class NavigationManager : MonoBehaviour
 
     void Update()
     {
-       
-            if (!_playerPhotonView)
+
+        if (!_playerPhotonView)
+        {
+            for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
             {
-                for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+                if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
                 {
-                    if (ActionsManager.Instance.AllPlayersPhotonViews[i].IsMine)
-                    {
-                        _playerPhotonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
-                        _playerController = _playerPhotonView.GetComponent<PlayerController>();
-                        _playerData = _playerPhotonView.GetComponent<PlayerData>();
-                        break;
-                    }
+                    _playerPhotonView = ActionsManager.Instance.AllPlayersPhotonViews[i];
+                    _playerController = _playerPhotonView.GetComponent<PlayerController>();
+                    _playerData = _playerPhotonView.GetComponent<PlayerData>();
+                    break;
                 }
+            }
+        }
+        else
+        {
+
+            if (_playerController._isInVehicle)
+            {
+                transform.position = this.transform.parent.position +new Vector3(0,4,0);
+                // _agent.transform.position = _playerController.CurrentVehicleController.transform.position;
+                //_agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
             }
             else
             {
-                if (_playerController.CurrentVehicleController)
-                {
-                    transform.position = _playerController.CurrentVehicleController.transform.position;
-                    //_agent.transform.position = _playerController.CurrentVehicleController.transform.position;
-                    //_agent.transform.rotation = _playerController.CurrentVehicleController.transform.rotation;
-
-
-                }
-                else
-                {
-                    transform.position = _playerPhotonView.transform.position + (_playerPhotonView.transform.forward * 2);
-                }
+                transform.position = _playerPhotonView.transform.position;
+                // transform.position = _playerController.CurrentVehicleController.transform.position;
 
             }
 
+            //else
+            //{
+            //    transform.position = _playerPhotonView.transform.position +
+            //                         (_playerPhotonView.transform.forward * 2);
+            //}
+        }
+
+
+        if (_incidentGPSNavStarted)
+        {
             if (_agent.hasPath && !_agent.isStopped)
             {
                 _lineRenderer.positionCount = 0;
@@ -90,11 +101,22 @@ public class NavigationManager : MonoBehaviour
             {
                 _lineRenderer.positionCount = 2;
                 _lineRenderer.SetPosition(0, transform.position);
-                _lineRenderer.SetPosition(1, _agent.destination);
+                _lineRenderer.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+
+                StopGPSNav();
+                // Set the line renderer's Z rotation to 0
+                //_lineRenderer.transform.rotation = Quaternion.Euler(new Vector3(_lineRenderer.transform.eulerAngles.x, _lineRenderer.transform.eulerAngles.y, 0f));
+                //_lineRenderer.transform.position = new Vector3(_lineRenderer.transform.position.x, _lineRenderer.transform.position.y + 10, _lineRenderer.transform.position.z);
             }
-            StopGPSNav();
-        
-    
+        }
+
+    }
+
+
+    public void TestingMethod()
+    {
+
     }
 
     public void StartEvacuationGPSNavButton()
@@ -106,6 +128,7 @@ public class NavigationManager : MonoBehaviour
 
     public void StartEvacuationGPSNav() // this
     {
+
         Transform closestTarget = null;
         float closestTargetDistance = float.MaxValue;
         NavMeshPath Path = new NavMeshPath();
@@ -148,50 +171,54 @@ public class NavigationManager : MonoBehaviour
     // need fixing - navigation always will go to last incident currently playing
     public void StartIncidentGPSNav()
     {
-      
-            if (_playerController.IsDriving)
-            {
-                int _incidentsCount = 0;
-                _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
-                try
-                {
-                    _destinationMarkerPrefab.transform.position =
-                        GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
-                    _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
-                    _agent.isStopped = true;
-                    _reachedDestination = false;
-                    _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
-                    _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
-                }
-                catch (System.ArgumentOutOfRangeException)
-                {
+        if (_playerController.IsDriving)
+        {
+            _incidentGPSNavStarted = true;
 
-                    return;
-                }
-            }
-            else
+            int _incidentsCount = 0;
+            _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
+
+            try
             {
-                Debug.Log("Only the driver can set to navigation.");
+                _destinationMarkerPrefab.transform.position =
+                    GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
+                _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
+                _agent.isStopped = true;
+                _reachedDestination = false;
+                _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
+                _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
             }
-        
-   
+            catch (System.ArgumentOutOfRangeException)
+            {
+
+                return;
+            }
+        }
+        else
+        {
+            Debug.Log("Only the driver can set to navigation.");
+        }
+
+
     }
 
     public void StopGPSNav()
     {
-       
-            if (Vector3.Distance(_agent.destination, transform.position) <= _agent.stoppingDistance)
-            {
-                //_destinationMarkerPrefab.SetActive(false);
-                _reachedDestination = true;
 
-            }
-            else if (_agent.hasPath)
-            {
-                DrawPath();
-            }
-        
+        if (Vector3.Distance(_agent.destination, transform.position) <= _agent.stoppingDistance)
+        {
+            _incidentGPSNavStarted = false;
+            //_destinationMarkerPrefab.SetActive(false);
+            _lineRenderer.positionCount = 0;
+            _reachedDestination = true;
+
+        }
+        else if (_agent.hasPath)
+        {
+            DrawPath();
+        }
+
     }
 
     private void DrawPath()

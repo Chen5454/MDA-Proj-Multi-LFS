@@ -5290,10 +5290,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _photonView: {fileID: 3915607620860341496}
+  _playerPhotonView: {fileID: 0}
+  _playerController: {fileID: 0}
+  _playerData: {fileID: 0}
+  _agent: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  _reachedDestination: 0
   listRoomEnums: []
   _destinationHospitals: []
   _destinationMarkerPrefab: {fileID: 0}
   stoppingDistance: 0
+  _incidentGPSNavStarted: 0
 --- !u!114 &3915607620860341496
 MonoBehaviour:
   m_ObjectHideFlags: 0
