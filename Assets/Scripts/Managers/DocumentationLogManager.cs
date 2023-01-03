@@ -90,7 +90,7 @@ public class DocumentationLogManager : MonoBehaviourPunCallbacks
         myLog = text;
         if (Regex.IsMatch(senderName[0].ToString(), "^[a-zA-Z0-9]*$"))
             senderName = Reverse(senderName);
-        string newString = $"{senderName} {myLog} \n";
+        string newString = $">{senderName}< {myLog} \n";
         Enqueue(newString);
         myLog = string.Empty;
         if (!InfiniteList)
