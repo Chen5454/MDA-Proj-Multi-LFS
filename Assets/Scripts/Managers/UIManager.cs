@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Vector3 _leaderMenuOffset;
     [SerializeField] private bool _isLeaderMenuOpen, _isPikud10MenuOpen, _isHenyon10MenuOpen, _isPinuy10MenuOpen, _isRefua10MenuOpen;
     public EventSystem EventSystem;
+    public GameObject[] _aranPrefabs;
 
     #region Player UI
     [Header("Player UI Parents")]
