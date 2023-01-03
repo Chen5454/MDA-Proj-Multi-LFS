@@ -15,6 +15,7 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private VehicleController vehicleController;
     [SerializeField] private bool _reachedDestination;
 
     [SerializeField] private List<GameObject> listRoomEnums;
@@ -25,15 +26,18 @@ public class NavigationManager : MonoBehaviour
 
     private GameObject[] _roomsGOTag;
     private Transform[] _hospitalDestTag;
+    public int AptNumber;
 
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _lineRenderer = GetComponent<LineRenderer>();
+        vehicleController = GetComponentInParent<VehicleController>();
 
         _roomsGOTag = GameObject.FindGameObjectsWithTag("EvacRoom");
         _hospitalDestTag = GameObject.FindGameObjectsWithTag("HospitalDest").Select(gameObject=>gameObject.transform).ToArray();
         _destinationMarkerPrefab = GameObject.FindGameObjectWithTag("EvacGoal");
+        
 
         _lineRenderer.positionCount = 0;
         stoppingDistance = 14f;
@@ -47,8 +51,7 @@ public class NavigationManager : MonoBehaviour
 
         UIManager.Instance.NavigationBtn.onClick.AddListener(delegate { StartIncidentGPSNav();});
         UIManager.Instance.EvacBtn.onClick.AddListener(delegate { StartEvacuationGPSNavButton();});
-        //_agent.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        //_lineRenderer.gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        AptNumber = vehicleController.AptNumber;
     }
 
     void Update()
@@ -114,11 +117,6 @@ public class NavigationManager : MonoBehaviour
     }
 
 
-    public void TestingMethod()
-    {
-
-    }
-
     public void StartEvacuationGPSNavButton()
     {
         if(_playerController.CurrentVehicleController.IsPatientIn)
@@ -171,22 +169,26 @@ public class NavigationManager : MonoBehaviour
     // need fixing - navigation always will go to last incident currently playing
     public void StartIncidentGPSNav()
     {
-
+        if (AptNumber < 0 || AptNumber >= GameManager.Instance.IncidentPatientSpawns.Length)
+        {
+            Debug.LogError("AptNumber is not a valid index for GameManager.Instance.CurrentIncidentsTransforms!");
+            return;
+        }
         if (_playerController.IsDriving)
         {
             _incidentGPSNavStarted = true;
 
-            int _incidentsCount = 0;
-            _incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
+            //int _incidentsCount = 0;
+            //_incidentsCount = GameManager.Instance.CurrentIncidentsTransforms.Count;
 
 
             _destinationMarkerPrefab.transform.position =
-                GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position;
-            _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[_incidentsCount - 1].position);
+                GameManager.Instance.IncidentPatientSpawns[AptNumber].position;
+            _agent.SetDestination(GameManager.Instance.IncidentPatientSpawns[AptNumber].position);
             _agent.isStopped = true;
             _reachedDestination = false;
             _photonView.RPC("EnableLineRenderer", RpcTarget.Others);
-            _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, _incidentsCount - 1);
+            _photonView.RPC("ShowIncidentNavRPC", RpcTarget.Others, _playerData.CrewIndex, AptNumber);
 
         }
         else
@@ -249,8 +251,8 @@ public class NavigationManager : MonoBehaviour
         if (_playerData.CrewIndex == crewIndex)
         {
             _incidentGPSNavStarted = true;
-            _destinationMarkerPrefab.transform.position = GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position;
-            _agent.SetDestination(GameManager.Instance.CurrentIncidentsTransforms[incidentCount].position);
+            _destinationMarkerPrefab.transform.position = GameManager.Instance.IncidentPatientSpawns[incidentCount].position;
+            _agent.SetDestination(GameManager.Instance.IncidentPatientSpawns[incidentCount].position);
             _agent.isStopped = true;
             _reachedDestination = false;
         }

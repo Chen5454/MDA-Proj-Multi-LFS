@@ -57,6 +57,7 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
     private GameObject _carDashboardUI;
     public List <TMP_Text> _CarNameTxt;
     public List<TMP_Text> _CarNumberTxt;
+    public int AptNumber;
 
     #region Monobehaviour Callbacks
 
@@ -126,9 +127,6 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
         IsDestroy = true;
     }
     #endregion
-
-
-
 
     #region Trigger Colliders
     private void OnTriggerEnter(Collider other)
@@ -377,6 +375,10 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
         object[] instantiationData = info.photonView.InstantiationData;
         _ownedCrewNumber = (int)instantiationData[0];
         Debug.Log("Room Number is " + _ownedCrewNumber);
+
+        AptNumber = (int)instantiationData[1];
+        Debug.Log("AptNumber " + _ownedCrewNumber);
+
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

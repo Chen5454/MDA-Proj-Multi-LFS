@@ -46,9 +46,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
     [SerializeField] public FilteredPatientsRoster _filterredRoaster;
 
-
     private OwnershipTransfer _transfer;
     //[SerializeField] private GameObject _crewRoomDoor;
+    public int AptNumber;
 
     private void Awake()
     {
@@ -182,10 +182,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
 
         _photonView.RPC("GivesLeaderButton", RpcTarget.AllBufferedViaServer, GetCrewLeaderIndex());
-        //  var color = Random.ColorHSV();
-        //_photonView.RPC("ChangeCrewColors", RpcTarget.AllBufferedViaServer, new Vector3(color.r, color.g, color.b));
         ChangeCrewColors();
-        //_photonView.RPC("CrewLeaderIsChosen", RpcTarget.AllBufferedViaServer, GetCrewLeader());
     }
 
     [PunRPC]
@@ -270,14 +267,10 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         _transfer.CrewUI();
         _photonView.RPC("ShowCrewUI_RPC", RpcTarget.AllBufferedViaServer);
 
-        // RoomCrewMenuUI.gameObject.SetActive(true);
-        //RefreshCrewUITexts();
     }
     public void HideCrewRoomMenu()
     {
         _photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
-
-        // RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
     private void AlertStartAll(string title, string content)
@@ -313,7 +306,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         }
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             if (PatientCreationSpace.PatientCreator.newPatient == null)
             {
                 Debug.LogError("no patient loaded!");
@@ -364,47 +356,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             }
 
             GameObject go = PhotonNetwork.InstantiateRoomObject(prefabToInstantiate, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
-            //3.5) Grab the Patient component from the instantiated object.
-            //4) Set this patients data to the NewPatientData to be spawned
             go.GetComponent<Patient>().InitializePatientData(newPatientData);
-            //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            AptNumber = apartmentNum;
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
-
         }
         else
         {
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
-    //private void StartSpecificIncident()
-    //{
-    //    int apartmentNum = int.Parse(_apartmentNumber.text);
-    //    List<int> unavailableList = new List<int>();
-    //
-    //    for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
-    //    {
-    //        if (GameManager.Instance.IsPatientSpawned[i])
-    //            unavailableList.Add(i);
-    //    }
-    //
-    //    if (unavailableList.Count >= 5)
-    //    {
-    //        AlertStartAll(_errorTitle, _errorFullString);
-    //    }
-    //    else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
-    //    {
-    //        AlertStartAll(_errorTitle, _errorAptBusy);
-    //    }
-    //    else
-    //    {
-    //        //PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawn//[apartmentNum /-/ 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-    //        //
-    //        //_photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
-    //        //
-    //        //AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
-    //    }
-    //}
+
     private void StartIncidentInRandomLocation()
     {
         List<int> unavailableList = new List<int>();
@@ -423,9 +385,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 apartmentNum = Random.Range(0, 6);
                 Debug.Log("New aptNum" + apartmentNum);
-
-                //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
-                //    break;
             }
         }
         catch
@@ -435,7 +394,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             if (PatientCreationSpace.PatientCreator.newPatient == null)
             {
                 Debug.LogError("no patient loaded!");
@@ -463,6 +421,8 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            AptNumber = apartmentNum;
+
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
         else
@@ -771,8 +731,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     void SpawnVehicle_RPC(int crewroomIndex)
     {
         VehicleChecker currentPosVehicleChecker = ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].GetComponent<VehicleChecker>();
-        object[] crewRoom = new object[1];
+        object[] crewRoom = new object[2];
         crewRoom[0] = crewroomIndex;
+        crewRoom[1] = AptNumber;
         if (!currentPosVehicleChecker.IsPosOccupied)
         {
             if (_isNatanRequired)
@@ -786,7 +747,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         }
     }
 
-    void SpawnVehicle()
+    public void SpawnVehicle()
     {
         _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex);
 
@@ -862,7 +823,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     private void UpdateCurrentIncidents(int apartmentNum)
     {
         GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
-        GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
+        //GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
     }
 
     [PunRPC]
