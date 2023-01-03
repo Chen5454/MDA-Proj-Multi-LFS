@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private CarControllerSimple _currentCarController;
     public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
 
-    private VehicleController _currentVehicleController;
+    public VehicleController _currentVehicleController;
     public VehicleController CurrentVehicleController { get => _currentVehicleController; set => _currentVehicleController = value; }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
@@ -100,7 +100,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private PlayerController thisScript;
 
     public GameObject _tastingForPremisionWorks;
-    public bool IsReset;
     public GameObject _tastingForPremisionError;
     [SerializeField] private NameTagDisplay playerNameTag;
     #region Colliders
@@ -528,13 +527,13 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (_photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                _stateAction = UseTankIdleState;
-            }
-
             RotateBodyWithMouse();
         }
+    }
+
+    public void UnstuckFromUI()
+    {
+        _stateAction = UseTankIdleState;
     }
 
     public void TelepotrtToCenterBtn()
@@ -546,29 +545,31 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     {
         if (PlayerData.IsCrewLeader)
         {
-            // Get a list of players in the same crew as the leader
-            List<PlayerController> crewMembers = FindObjectsOfType<PlayerController>().Where(player => player.PlayerData.CrewIndex == PlayerData.CrewIndex).ToList();
 
-            // Iterate through the list of players in the crew
+            List<PlayerController> crewMembers = FindObjectsOfType<PlayerController>()
+                .Where(player => player.PlayerData.CrewIndex == PlayerData.CrewIndex && player != this).ToList();
             foreach (PlayerController player in crewMembers)
             {
-                // Get a reference to the PhotonView component of the player
-                PhotonView playerPhotonView = player.GetComponent<PhotonView>();
-
-                // Send the RPC to reset the player's data
-                playerPhotonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer);
+                // Reset the data for each player in the crew
+                player.ResetPlayerData();
             }
+
+            _photonView.RPC("ExitPlayersFromCar_RPC", RpcTarget.All, PlayerData.CrewIndex);
+
+
+            if (_photonView.IsMine)
+                _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer, PlayerData.CrewIndex);
         }
-        
+
         if (_photonView.IsMine)
-        { 
-           // _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer);
+        {
             _photonView.RPC("FindPlayerOwner", GetPatientOwner(), GetPatientPhotonView());
             _photonView.RPC("FindPlayerOwner", GetCarOwner(), GetCarPhotonView());
 
         }
+
         UIManager.Instance.ResetCrewRoom.gameObject.SetActive(false);
-        IsReset = true;
+
     }
 
 
@@ -825,41 +826,75 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     [PunRPC]
     private void SetUserVestRPC(int roleIndex)
     {
-        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
-        PlayerData.UserRole = (Roles)roleIndex;
+        if (!PlayerData.IsDataInitialized || PlayerData.UserRole == Roles.None)
+        {
+            VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+            PlayerData.UserRole = (Roles)roleIndex;
 
-        if (!Vest.activeInHierarchy)
-            Vest.SetActive(true);
+            if (!Vest.activeInHierarchy)
+                Vest.SetActive(true);
+
+            PlayerData.IsDataInitialized = true;
+        }
     }
+
+    public void SetUserVestRPC1(int roleIndex)
+    {
+        if (!PlayerData.IsDataInitialized || PlayerData.UserRole != (Roles)roleIndex)
+        {
+            VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+            PlayerData.UserRole = (Roles)roleIndex;
+
+            if (!Vest.activeInHierarchy)
+                Vest.SetActive(true);
+
+            PlayerData.IsDataInitialized = true;
+        }
+    }
+
 
 
     [PunRPC]
-    public void CrewLeaderResetIncident_RPC()
+    public void CrewLeaderResetIncident_RPC(int crewIndex)
     {
-        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        List<PlayerController> crewMembers = FindObjectsOfType<PlayerController>()
+            .Where(player => player.PlayerData.CrewIndex == crewIndex).ToList();
+        foreach (PlayerController player in crewMembers)
         {
-            PlayerController desiredPlayer =
-                ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerController>();
-
-            if (desiredPlayer.IsInVehicle)
-            {
-                desiredPlayer.CurrentVehicleController.GetComponent<VehicleInteraction>().ExitVehicle();
-            }
-        }
-   
-
-        // Reset the data for all players in the same group as the leader
-        PlayerController[] players = FindObjectsOfType<PlayerController>();
-        foreach (PlayerController player in players)
-        {
-            if (player.PlayerData.CrewIndex == PlayerData.CrewIndex)
-            {
-                player.ResetPlayerData();
-            }
+            player.ResetPlayerData();
         }
     }
 
+    [PunRPC]
+    public void ExitPlayersFromCar_RPC(int crewIndex)
+    {
+        ExitPlayersFromCar(crewIndex);
+    }
 
+    public void ExitPlayersFromCar(int crewIndex)
+    {
+        // Get a list of all the players in the crew
+        List<PlayerController> playersToExit = FindObjectsOfType<PlayerController>()
+            .Where(player => player.PlayerData.CrewIndex == PlayerData.CrewIndex && player.IsInVehicle).ToList();
+
+        // Iterate through the list of players
+        foreach (PlayerController player in playersToExit)
+        {
+            // Check if the player is in a vehicle
+            if (player.IsInVehicle && player.CurrentVehicleController != null)
+            {
+                // Get the VehicleInteraction component of the current vehicle
+                VehicleInteraction vehicleInteraction = player.CurrentVehicleController.GetComponent<VehicleInteraction>();
+
+                // Call the ExitVehicle method of the VehicleInteraction component
+                if (vehicleInteraction != null)
+                {
+                    // Exit the vehicle
+                    vehicleInteraction.ExitVehicle();
+                }
+            }
+        }
+    }
 
     public void ResetPlayerData()
     {
@@ -868,10 +903,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         playerNameTag.text.color = Color.white;
         PlayerData.CrewColor = Color.white;
         PlayerData.CrewIndex = 0;
-        PlayerData.UserRole = 0;
+        PlayerData.UserRole = Roles.None;
         PlayerData.IsCrewLeader = false;
         Vest.SetActive(false);
-        IsReset = false;
+        PlayerData.IsDataInitialized = false;
         if (UIManager.Instance.PatientInfoParent.activeInHierarchy)
         {
             UIManager.Instance.PatientInfoParent.SetActive(false);
@@ -884,26 +919,38 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
         Debug.Log("objectIndex: " + objectIndex);
 
-        GameObject go = PhotonNetwork.GetPhotonView(objectIndex).gameObject;
-
-        Debug.Log("go: " + go);
-
-
-        if (go == null)
+        // Check if the objectIndex is valid
+        if (objectIndex <= 0)
         {
-            // If the game object is null, return immediately
+            Debug.LogError("Invalid objectIndex: " + objectIndex);
             return;
         }
 
-        var goPhotonview = go.GetComponent<PhotonView>().Owner;
+        // Try to get the PhotonView component using the objectIndex
+        PhotonView goPhotonView = PhotonNetwork.GetPhotonView(objectIndex);
+        if (goPhotonView == null)
+        {
+            Debug.LogError("PhotonView is null for objectIndex: " + objectIndex);
+            return;
+        }
 
+        // Get the game object associated with the PhotonView component
+        GameObject go = goPhotonView.gameObject;
+        Debug.Log("go: " + go);
 
+        // Get the owner of the PhotonView component
+        Photon.Realtime.Player goPhotonview = goPhotonView.Owner;
+
+        // Iterate through the list of players
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
+            // Get the PhotonView component for the player
             PhotonView desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PhotonView>();
 
-            if (desiredPlayer.Owner == goPhotonview)//enter Car Photon
+            // Check if the owner of the PhotonView component matches the owner of the goPhotonView component
+            if (desiredPlayer.Owner == goPhotonview)
             {
+                // Destroy the game object if the owners match
                 PhotonNetwork.Destroy(go);
                 break;
             }
@@ -911,6 +958,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
 
     }
+
     #endregion
 
     #region Gizmos

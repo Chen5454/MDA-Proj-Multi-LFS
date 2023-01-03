@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
     public bool[] IsPatientSpawned;
     //public List<CrewRoomManager> AllCrewRooms;
     public List<PhotonView> CrewRoomsList = new List<PhotonView>();
-
+    public TMP_Text CurrentVer;
 
     [Header("Aran")]
     public PhotonView Pikud10View; 
@@ -78,7 +79,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
     {
         _photonView = GetComponent<PhotonView>();
         OnEscape(true);
-
+        CurrentVer.text = PhotonRoom.Instance.currentVer;
         //if (PhotonNetwork.IsMasterClient)
         //{
         //    OnGoingIncidents = new List<int>();

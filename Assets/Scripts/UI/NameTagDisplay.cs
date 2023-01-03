@@ -38,7 +38,7 @@ public class NameTagDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (playerData)
+        if (playerData != null && crown != null)
         {
             if (playerData.IsCrewLeader && !crown.activeInHierarchy)
             {
@@ -48,14 +48,6 @@ public class NameTagDisplay : MonoBehaviour
             {
                 crown.SetActive(false);
             }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            return;
         }
     }
 }

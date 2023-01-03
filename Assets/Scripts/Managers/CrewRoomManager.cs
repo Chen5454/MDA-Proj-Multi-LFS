@@ -36,6 +36,8 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     private Vector3 _vestPos = new Vector3(0f, 0.295f, -0.015f);
 
     [SerializeField] private GameObject _tvScreen;
+    [SerializeField] private Button SicknessButtonDefualt;
+    [SerializeField] private Sprite PressedSprite;
     [SerializeField] private GameObject /*_patientMale, _patientFemale, */_chooseIncidentParent, _chooseIncidentMenu, _overlay, _chooseSimulationPanel;
     [SerializeField] private Button _startSimulationBtn;
     [SerializeField] private TextMeshProUGUI _currentIncidentNameTMP, _startSimulationTMP;
@@ -66,6 +68,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         //GameManager.Instance.AllCrewRooms.Add(this);
         _crewRoomIndexStatic++;
         _crewRoomIndex = _crewRoomIndexStatic;
+        SicknessButtonDefualt.image.sprite = PressedSprite;
     }
 
     private void Update()
@@ -106,6 +109,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
                 desiredPlayerName.text.color = new Color(r, b, g);
                 currentPlayerData.CrewColor = new Color(r, b, g);
+
+                if (!currentPlayerData.IsDataInitialized)
+                {
+                    desiredPlayerName.text.color =Color.white;
+                    currentPlayerData.CrewColor = Color.white;
+                }
             }
 
 
@@ -161,7 +170,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     {
         string[] roles = Enum.GetNames(typeof(Roles));
         List<string> rolesList = new List<string>(roles);
-
+        rolesList.Remove("None");
         foreach (var dropdown in CrewMemberRoleDropDownList)
         {
             dropdown.AddOptions(rolesList);
@@ -171,6 +180,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void CreateCrewSubmit()
     {
         _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
+
         _photonView.RPC("GivesLeaderButton", RpcTarget.AllBufferedViaServer, GetCrewLeaderIndex());
         //  var color = Random.ColorHSV();
         //_photonView.RPC("ChangeCrewColors", RpcTarget.AllBufferedViaServer, new Vector3(color.r, color.g, color.b));
@@ -731,25 +741,29 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [PunRPC]
     void CrewCreateSubmit_RPC(int[] roleIndex, int leaderIndex, int crewIndex)
     {
-        // int indexInCrewCounter = 0;
-        for (int i = 0; i < roleIndex.Length; i++)
-        {
+        
+            for (int i = 0; i < roleIndex.Length; i++)
+            {
+                PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
+                var desiredPlayerController = desiredPlayerData.GetComponent<PlayerController>();
+               
+                    desiredPlayerController.PlayerData.UserRole = Roles.None;
+                    desiredPlayerData.IsDataInitialized = false; 
+                    desiredPlayerData.CrewIndex = crewIndex;
+                    desiredPlayerData.UserRole = (Roles)roleIndex[i];
+                    desiredPlayerController.SetUserVestRPC1((int)desiredPlayerData.UserRole);
+                
+            }
+            foreach (PhotonView player in _playersInRoomList)
+            {
+                player.GetComponent<PlayerData>().IsCrewLeader = false;
+            }
 
-            PlayerData desiredPlayerData = _playersInRoomList[i].GetComponent<PlayerData>();
-            desiredPlayerData.CrewIndex = crewIndex;
-            // desiredPlayerData.CrewIndex = indexInCrewCounter;
-            desiredPlayerData.UserRole = (Roles)roleIndex[i];
-            desiredPlayerData.PhotonView.RPC("SetUserVestRPC", RpcTarget.AllBufferedViaServer, desiredPlayerData.UserRole);
-            //indexInCrewCounter++;
-        }
-        foreach (PhotonView player in _playersInRoomList)
-        {
-            player.GetComponent<PlayerData>().IsCrewLeader = false;
-        }
+            PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
+            leaderToBe.IsCrewLeader = true;
+            ActionsManager.Instance.NextCrewIndex++;
+        
 
-        PlayerData leaderToBe = _playersInRoomList[leaderIndex].GetComponent<PlayerData>();
-        leaderToBe.IsCrewLeader = true;
-        ActionsManager.Instance.NextCrewIndex++;
     }
 
     [PunRPC]
@@ -880,6 +894,20 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         else
             SetStartIncidentBtn();
     }
+
+    public void ExitButton()
+    {
+        foreach (var player in _playersInRoomList)
+        {
+            PlayerController wantedPlayer = player.GetComponent<PlayerController>();
+
+            if (player.Owner == _photonView.Owner)
+            {
+                wantedPlayer.UnstuckFromUI();
+            }
+        }
+    }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

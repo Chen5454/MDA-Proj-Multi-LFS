@@ -102,19 +102,25 @@ public class Pinuy10 : MonoBehaviour
     }
     public void RefreshPatientList()
     {
-        _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        //_photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        UpdateTaggedPatientListRPC();
     }
 
 
     public void RefreshCarsList()
     {
-        _photonView.RPC("UpdateVehicleListsPinuy10RPC", RpcTarget.AllViaServer);
+        // _photonView.RPC("UpdateVehicleListsPinuy10RPC", RpcTarget.AllViaServer);
+        UpdateVehicleListsPinuy10RPC();
     }
 
     void ShowParentWindow()
     {
-        Pinuy10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        if (_photonView.IsMine)
+        {
+            Pinuy10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+       
     }
     void CloseParentWindow()
     {
@@ -133,7 +139,6 @@ public class Pinuy10 : MonoBehaviour
         }
     }
 
-    [PunRPC]
     private void UpdateVehicleListsPinuy10RPC()
     {
         _ambulanceList.Clear();
@@ -210,7 +215,6 @@ public class Pinuy10 : MonoBehaviour
         }
     }
 
-    [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
         // Clear the current list of patients

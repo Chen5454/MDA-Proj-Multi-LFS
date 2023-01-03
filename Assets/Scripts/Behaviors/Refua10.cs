@@ -67,10 +67,10 @@ public class Refua10 : MonoBehaviour
 
     public void RefreshPatientList()
     {
-        _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        // _photonView.RPC("UpdateTaggedPatientListRPC", RpcTarget.AllViaServer);
+        UpdateTaggedPatientListRPC();
     }
 
-    [PunRPC]
     private void UpdateTaggedPatientListRPC()
     {
         // Clear the current list of patients
@@ -148,8 +148,12 @@ public void OpenCloseRefua10Menu()
 
     void ShowPatientWindow()
     {
-        Refua10Panel.SetActive(true);
-        updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        if (_photonView.IsMine)
+        {
+            Refua10Panel.SetActive(true);
+            updatePlayerListCoroutine = StartCoroutine(HandleRefreshUpdates(0.5f));
+        }
+     
     }
     void ClosePatientWindow()
     {
