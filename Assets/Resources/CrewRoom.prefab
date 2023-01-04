@@ -7648,6 +7648,7 @@ MonoBehaviour:
   _isNatanRequired: 0
   _isRandomIncident: 0
   _filterredRoaster: {fileID: 4895573465391814137}
+  AptNumber: 0
 --- !u!114 &6340234360517652064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9993,7 +9994,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5138764310284169353}
         m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
-        m_MethodName: SpawnVehicle
+        m_MethodName: StartIncident
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10017,7 +10018,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5138764310284169353}
         m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
-        m_MethodName: StartIncident
+        m_MethodName: SpawnVehicle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
