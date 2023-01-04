@@ -16,10 +16,12 @@ public class ConnectingMonitor : Action
     [Header("Component's Data")]
     [SerializeField] private Image _newMonitorGraph;
     [SerializeField] private MonitorSprites _monitorSprites;
+    [SerializeField] private string _monitorName;
 
     [Header("Alert")]
     [SerializeField] private string _alertTitle;
     [SerializeField] private string _alertText;
+
 
     private GameObject _player;
     
@@ -45,7 +47,7 @@ public class ConnectingMonitor : Action
                 }
             }
 
-            TextToLog = $"השתמש ב {monitor.name} על המטופל";
+            TextToLog = $"חיבר {_monitorName} למטופל";
 
             if (_showAlert)
             {

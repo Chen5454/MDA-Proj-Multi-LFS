@@ -14,7 +14,7 @@ public class ChangeClothing : Action
     {
         GetActionData();
 
-        TextToLog = $"בגדי המטופל השתנו ל: {_textToLog}";
+        TextToLog = $"{_textToLog}";
 
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {

@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
     [field: SerializeField] public bool IsAranActive { get; set; }
 
     [Header("General")]
-    public List<Transform> CurrentIncidentsTransforms;
+  //  public List<Transform> CurrentIncidentsTransforms;
     public List<Patient> AllPatients;
     public List<Patient> AllTaggedPatients;
     public GameObject PlayerTPPos, KidPatient;
