@@ -823,22 +823,9 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         PlayerData.LastVehicleController = _currentVehicleController;
     }
 
-    [PunRPC]
-    private void SetUserVestRPC(int roleIndex)
-    {
-        if (!PlayerData.IsDataInitialized || PlayerData.UserRole == Roles.None)
-        {
-            VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
-            PlayerData.UserRole = (Roles)roleIndex;
 
-            if (!Vest.activeInHierarchy)
-                Vest.SetActive(true);
 
-            PlayerData.IsDataInitialized = true;
-        }
-    }
-
-    public void SetUserVestRPC1(int roleIndex)
+    public void SetUserVestRPC(int roleIndex)
     {
         if (!PlayerData.IsDataInitialized || PlayerData.UserRole != (Roles)roleIndex)
         {
