@@ -89,6 +89,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        return;
         Debug.Log("OnPlayerLeftRoom Activated Function");
 
         var views = PhotonNetwork.PhotonViewCollection;
