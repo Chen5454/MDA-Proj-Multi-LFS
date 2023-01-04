@@ -12,7 +12,7 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
     [SerializeField]
     TMP_Dropdown dropdown;
     [SerializeField]
-    TMP_Dropdown applicationMethodDropdown;
+    TMP_Dropdown applicationMethodDropdown, _unitsMinDoseInputField, _unitsMaxDoseInputField;
 
     [SerializeField]
     TMP_InputField searchText;
@@ -97,20 +97,6 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         measurementToReveal.ClearOptions();
         measurementToReveal.AddOptions(System.Enum.GetNames(typeof(Measurements)).ToList());
     }
-    //public void OnDisable()
-    //{
-    //    Invoke(nameof(LateDisable),1);
-    //}
-
-    //private void LateDisable()
-    //{
-    //    foreach (var item in measurementInputFields)
-    //    {
-    //        item.text = "";
-    //        item.gameObject.SetActive(false);
-    //    }
-    //    measurementToReveal.value = 0;
-    //}
 
     public void RefreshDropdownMedicine()
     {
@@ -141,12 +127,10 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         applicationMethodDropdown.ClearOptions();
         applicationMethodDropdown.AddOptions(medAppMethods);
     }
-
     public void RevealMeasurement()
     {
         measurementInputFields[measurementToReveal.value].transform.parent.gameObject.SetActive(true); //Turns on the whole title and field 
     }
-
     public Treatment GetTreatment()
     {
         Medicine temp = databases.medicineDB.GetTreatmentByIndex(dropdown.value);
@@ -161,12 +145,10 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
         patientMeasurements.SetMeasurementValues(measurementArray);
         return MedicineCreator.CreateMedicine(temp.ID(), dropdown.options[dropdown.value].text, patientMeasurements, float.Parse(minDosageInputField.text), float.Parse(maxDosageInputField.text), applicationMethodDropdown.value);
     }
-
     public TreatmentGroup GetTreatmentGroup()
     {
         return null;
     }
-
     public bool IsInteractable()
     {
         return _isInteractable;
@@ -174,8 +156,11 @@ public class MedicineBlock : MonoBehaviour, BasicBlock
 
     public void SetInteractable(bool isInteractable)
     {
+        applicationMethodDropdown.interactable = isInteractable;
         minDosageInputField.interactable = isInteractable;
+        _unitsMinDoseInputField.interactable = isInteractable;
         maxDosageInputField.interactable = isInteractable;
+        _unitsMaxDoseInputField.interactable = isInteractable;
 
         foreach (var item in measurementInputFields)
         {
