@@ -54,12 +54,7 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
 
     private void OnDestroy()
     {
-
-        Debug.Log("RemovingPlayerFromAllPlayersListBefore");
         ActionsManager.Instance.AllPlayersPhotonViews.Remove(PhotonView);
-        Debug.Log("RemovingPlayerFromAllPlayersListAfter");
-
-
     }
 
 

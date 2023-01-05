@@ -212,6 +212,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        
         base.OnPlayerLeftRoom(otherPlayer);
 
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
