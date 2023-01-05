@@ -147,11 +147,11 @@ public class TagMiun : MonoBehaviour
             answers.Add(item.Answer);
         }
 
-        _patient.PhotonView.RPC("AddToTaggedPatientsListRPC", Photon.Pun.RpcTarget.AllBufferedViaServer);
+        _patient.PhotonView.RPC("AddToTaggedPatientsListRPC", Photon.Pun.RpcTarget.AllViaServer);
     }
 
     public void TagPatient(int conditionNum)
     {
-        _patient.PhotonView.RPC("TagPatientRPC", Photon.Pun.RpcTarget.AllBufferedViaServer, conditionNum);
+        _patient.PhotonView.RPC("TagPatientRPC", Photon.Pun.RpcTarget.AllViaServer, conditionNum);
     }
 }

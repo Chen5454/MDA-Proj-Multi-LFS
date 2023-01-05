@@ -45,7 +45,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [SerializeField] private string _currentIncidentName, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
     [SerializeField] public FilteredPatientsRoster _filterredRoaster;
-
+    [SerializeField] private bool IsAranActive;
+    [SerializeField] private bool changeCar;
+    
     private OwnershipTransfer _transfer;
     //[SerializeField] private GameObject _crewRoomDoor;
     public int AptNumber;
@@ -179,9 +181,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     public void CreateCrewSubmit()
     {
-        _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
+        _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
 
-        _photonView.RPC("GivesLeaderButton", RpcTarget.AllBufferedViaServer, GetCrewLeaderIndex());
+        _photonView.RPC("GivesLeaderButton", RpcTarget.AllViaServer, GetCrewLeaderIndex());
 
         ChangeCrewColors();
     }
@@ -266,12 +268,15 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void ShowCrewRoomMenu()
     {
         _transfer.CrewUI();
-        _photonView.RPC("ShowCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        // _photonView.RPC("ShowCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        ShowCrewUI_RPC();
 
     }
     public void HideCrewRoomMenu()
     {
-        _photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        //_photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        isUsed = false;
+        _tvScreen.layer = (int)LayerMasks.Interactable;
     }
 
     private void AlertStartAll(string title, string content)
@@ -358,7 +363,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             GameObject go = PhotonNetwork.InstantiateRoomObject(prefabToInstantiate, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             go.GetComponent<Patient>().InitializePatientData(newPatientData);
-            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllViaServer, apartmentNum);
             AptNumber = apartmentNum;
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
@@ -421,7 +426,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
-            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllViaServer, apartmentNum);
             AptNumber = apartmentNum;
 
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
@@ -514,18 +519,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         _currentIncidentNameTMP.text = _currentIncidentName;
     }
 
-    //public void ChooseIncidents()
-    //{
-    //    if (_isRandomIncident)
-    //    {
-    //        _overlay.SetActive(false);
-    //        _startSimulationBtn.interactable = true;
-    //        _startSimulationTMP.text = _startSimulationText;
-    //        return;
-    //    }
-    //
-    //    _chooseSimulationPanel.SetActive(true);
-    //}
     public void SetStartIncidentBtn()
     {
         if (GameManager.Instance.IsAranActive)
@@ -549,14 +542,10 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     public void ChangeVehicleRequired(bool changeVehicle)
     {
-        _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
+        changeCar = changeVehicle;
+       // _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
+       ChangeVehicleRequiredRPC(changeCar);
     }
-
-    //public void SpawnVehicle()
-    //{
-    //    _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
-    //}
-
 
     // Collision Methods
     // --------------------
@@ -568,22 +557,11 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
         {
             // _playersInRoomList.Add(playerView);
-            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-            _photonView.RPC("SetToUi_RPC", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllViaServer, playerView.Owner.NickName);
+            _photonView.RPC("SetToUi_RPC", RpcTarget.AllViaServer);
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    PhotonView playerView = other.GetComponentInParent<PhotonView>();
-
-    //    if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
-    //    {
-
-    //        _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-    //        _playersInRoomList.Add(playerView);
-    //    }
-    //}
 
     private void OnTriggerExit(Collider other)
     {
@@ -592,9 +570,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
         if (other.CompareTag("PlayerCollider") && _playersInRoomList.Contains(playerView))
         {
-            _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllViaServer, playerView.Owner.NickName);
 
-            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllViaServer, playerView.Owner.NickName);
             //_playersInRoomList.Remove(playerView);
         }
     }
@@ -602,24 +580,30 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void ShowOverlayUI()
     {
         if (!GameManager.Instance.IsAranActive)
-            _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+            ShowOverlayUI_RPC();
+        //  _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void RemoveOverlayUI()
     {
         if (!GameManager.Instance.IsAranActive)
-            _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+            RemoveOverlayUI_RPC();
+        //  _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void ShowSimulationPanelUI()
     {
-        _photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        //_photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        ShowSimulationPanelUI_RPC();
     }
     public void RemoveShowSimulationPanelUI()
     {
-        _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        // _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        RemoveSimulationPanelUI_RPC();
     }
     public void ActivateAranBehaviour(bool isAranActive)
     {
-        _photonView.RPC("CheckAranBehaviourRPC", RpcTarget.AllBufferedViaServer, isAranActive);
+        // _photonView.RPC("CheckAranBehaviourRPC", RpcTarget.AllBufferedViaServer, isAranActive);
+        IsAranActive = isAranActive;
+        CheckAranBehaviourRPC(IsAranActive);
     }
 
     // PUN RPC Methods
@@ -649,9 +633,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                 _playersInRoomList.Add(currentPlayerView);
             }
         }
-        //BlockRoomAccess();
-        // Debug.LogError("Added to room");
-
     }
 
     [PunRPC]
@@ -755,7 +736,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     }
 
-    [PunRPC]
     void ShowCrewUI_RPC()
     {
         if (GameManager.Instance.IsAranActive)
@@ -815,7 +795,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
-    [PunRPC]
     public void ChangeVehicleRequiredRPC(bool changeVehcile)
     {
         _isNatanRequired = changeVehcile;
@@ -828,30 +807,27 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         //GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
     }
 
-    [PunRPC]
     private void ShowOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(true);
         _filterredRoaster._photonView.TransferOwnership(_photonView.Owner);
     }
-    [PunRPC]
     public void RemoveOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(false);
     }
-    [PunRPC]
     private void ShowSimulationPanelUI_RPC()
     {
         _chooseSimulationPanel.gameObject.SetActive(true);
     }
-    [PunRPC]
     private void RemoveSimulationPanelUI_RPC()
     {
         _chooseSimulationPanel.gameObject.SetActive(false);
     }
-    [PunRPC]
+
     private void CheckAranBehaviourRPC(bool isAranActive)
     {
+        
         if (!isAranActive)
             ShowOverlayUI();
         else
@@ -883,10 +859,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 stream.SendNext(dropdown.value);
             }
-            //stream.SendNext(_crewRoomIndex);
             stream.SendNext(_isNatanRequired);
             stream.SendNext(AptNumber);
-
+            stream.SendNext(RoomCrewMenuUI.gameObject.activeSelf);
+            stream.SendNext(_startSimulationBtn.interactable);
+            stream.SendNext(_tvScreen.layer);
+            stream.SendNext(isUsed);
+            stream.SendNext(_overlay.gameObject.activeSelf);
+            stream.SendNext(_chooseSimulationPanel.gameObject.activeSelf);
+            stream.SendNext(IsAranActive);
+            stream.SendNext(changeCar);
+            stream.SendNext(_crewRoomIndex);
 
 
         }
@@ -898,11 +881,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
-            // _crewRoomIndex = (int)stream.ReceiveNext();
             _isNatanRequired = (bool)stream.ReceiveNext();
             AptNumber = (int)stream.ReceiveNext();
-
-
+            RoomCrewMenuUI.gameObject.SetActive((bool)stream.ReceiveNext());
+            _startSimulationBtn.interactable = (bool) stream.ReceiveNext();
+            _tvScreen.layer = (int) stream.ReceiveNext();
+            isUsed = (bool) stream.ReceiveNext();
+            _overlay.gameObject.SetActive((bool)stream.ReceiveNext());
+            _chooseSimulationPanel.gameObject.SetActive((bool)stream.ReceiveNext());
+            IsAranActive = (bool) stream.ReceiveNext();
+            changeCar = (bool) stream.ReceiveNext();
+            _crewRoomIndex = (int) stream.ReceiveNext();
         }
     }
 }
