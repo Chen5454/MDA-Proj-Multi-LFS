@@ -11,7 +11,7 @@ public class InitialMeasurements_Enforcer : MonoBehaviour
     [SerializeField]
     Button enforcedButton;
     [SerializeField]
-    Button nextBtn;
+    Button nextCreateBtn, nextEditBtn;
 
 
 
@@ -31,7 +31,11 @@ public class InitialMeasurements_Enforcer : MonoBehaviour
     {
         canInteract = newPatientWindow.AreAllInitialMeasurementsFilled();
         enforcedButton.interactable = canInteract;
-        nextBtn.interactable = canInteract;
+
+        if (nextCreateBtn.gameObject.activeInHierarchy)
+            nextCreateBtn.interactable = canInteract;
+        else if (nextEditBtn.gameObject.activeInHierarchy)
+            nextEditBtn.interactable = canInteract;
 
         Color onColor;
         Color offColor;
@@ -39,6 +43,7 @@ public class InitialMeasurements_Enforcer : MonoBehaviour
         ColorUtility.TryParseHtmlString("#F41B49", out onColor);
         ColorUtility.TryParseHtmlString("#2A2A2A", out offColor);
 
-        nextBtn.image.color = canInteract ? onColor : offColor;
+        nextCreateBtn.image.color = canInteract ? onColor : offColor;
+        nextEditBtn.image.color = canInteract ? onColor : offColor;
     }
 }

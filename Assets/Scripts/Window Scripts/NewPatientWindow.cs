@@ -4,6 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Analytics;
+using WebSocketSharp;
 
 namespace PatientCreationSpace
 {
@@ -79,16 +80,16 @@ namespace PatientCreationSpace
         //END BAD
 
         [SerializeField]
-        GameObject editSequenceButton;
-        [SerializeField]
-        GameObject newSequenceButton;
+        GameObject editSequenceButtonNav, newSequenceButtonNav;
+
+        public GameObject EditSequenceButton, NewSequenceButton;
 
 
         public PhotonView _photonView;
         public void SetEditOrNew(bool isEdit)
         {
-            editSequenceButton.SetActive(isEdit);
-            newSequenceButton.SetActive(!isEdit);
+            editSequenceButtonNav.SetActive(isEdit);
+            newSequenceButtonNav.SetActive(!isEdit);
         }
         private void OnEnable()
         {
@@ -163,7 +164,16 @@ namespace PatientCreationSpace
         {
             foreach (TMP_InputField item in measurementInputFields)
             {
+                if (item == measurementInputFields[5] || item == measurementInputFields[7])
+                    continue;
+
                 if (string.IsNullOrEmpty(item.text))
+                return false;
+            }
+
+            foreach (TMP_Dropdown item in _measurementDropdowns)
+            {
+                if (string.IsNullOrEmpty(item.itemText.text))
                     return false;
             }
 
@@ -199,6 +209,8 @@ namespace PatientCreationSpace
             {
                 item.text = "";
             }
+
+            // clear dropdowns
         }
 
         public void ClickOnCreateNew()
@@ -228,6 +240,10 @@ namespace PatientCreationSpace
             string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
+                if (i == 5 || i == 7)
+                    if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+                        measurementInputFields[i].text = "0";
+
                 if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
                 {
                     Debug.LogError("all initial measurement fields need to be filled!");
@@ -236,6 +252,23 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
+
+            for (int i = 0; i < _measurementDropdowns.Count; i++)
+            {
+                if (i == 0)
+                    measurementArray[5] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
+                else if (i == 1)
+                    measurementArray[7] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
+
+                if (string.IsNullOrEmpty(_measurementDropdowns[i].options[_measurementDropdowns[i].value].text)) //Initial Measurements nullorempty checks here!
+                {
+                    Debug.LogError("all initial measurement fields need to be filled!");
+
+                    return;
+                }
+            }
+
+
             //string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             //for (int i = 0; i < _measurementDropdowns.Count; i++)
             //{
