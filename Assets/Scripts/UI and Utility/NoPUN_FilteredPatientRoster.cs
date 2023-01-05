@@ -129,6 +129,8 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
         }
         newPatientWindow.gameObject.SetActive(true);
         _basicPatientInfo.SetActive(true);
+        newPatientWindow.EditSequenceButton.SetActive(true);
+        newPatientWindow.NewSequenceButton.SetActive(false);
         windowToClose.gameObject.SetActive(false);
         return PatientCreator.LoadPatient(patientFullName);
         //newPatientWindow.LoadPatient(patientFullName); //same but more useless

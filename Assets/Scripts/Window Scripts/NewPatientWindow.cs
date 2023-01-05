@@ -80,16 +80,16 @@ namespace PatientCreationSpace
         //END BAD
 
         [SerializeField]
-        GameObject editSequenceButton;
-        [SerializeField]
-        GameObject newSequenceButton;
+        GameObject editSequenceButtonNav, newSequenceButtonNav;
+
+        public GameObject EditSequenceButton, NewSequenceButton;
 
 
         public PhotonView _photonView;
         public void SetEditOrNew(bool isEdit)
         {
-            editSequenceButton.SetActive(isEdit);
-            newSequenceButton.SetActive(!isEdit);
+            editSequenceButtonNav.SetActive(isEdit);
+            newSequenceButtonNav.SetActive(!isEdit);
         }
         private void OnEnable()
         {
