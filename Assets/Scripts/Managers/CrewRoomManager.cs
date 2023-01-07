@@ -666,6 +666,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             desiredPlayerName.text.color = new Color(r, b, g);
             currentPlayerData.CrewColor = new Color(r, b, g);
+
         }
 
 

@@ -7,54 +7,75 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.Assertions.Must;
 
-public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
+public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
     #region Photon
-    [Header("Photon")]
-    [SerializeField] public PhotonView _photonView; // should be private
+
+    [Header("Photon")] [SerializeField] public PhotonView _photonView; // should be private
     [SerializeField] public PhotonView PhotonView => _photonView;
+
     #endregion
 
     #region Data
-    [Header("Data")]
-    public PlayerData PlayerData;
+
+    [Header("Data")] public PlayerData PlayerData;
     public Material LineMaterial;
     public GameObject Vest;
     public MeshFilter VestMeshFilter;
+
     #endregion
 
     #region Cameras
-    [Header("Cameras")]
-    private Camera _currentCamera;
+
+    [Header("Cameras")] private Camera _currentCamera;
+
     [SerializeField] private GameObject _MiniMaCamera;
+
     //[SerializeField] private Transform _firstPersonCameraTransform;
     [SerializeField] private Transform _thirdPersonCameraTransform;
     [SerializeField] private Camera _playerCamera, _vehicleCamera, _pikud10Camera;
     public Camera CurrentCamera => _currentCamera;
     public Camera Pikud10Camera => _pikud10Camera;
+
     #endregion
 
     #region Audio
+
     [SerializeField] private AudioListener _audioListener;
+
     #endregion
 
     #region Animations
+
     // [Header("Animation")]
     //[SerializeField] private Animator _playerAnimator;
 
     private PlayerAnimationManager _anim;
+
     #endregion
 
     #region Controllers Behaviours
-    [Header("Controllers")]
-    [SerializeField] public CharacterController _characterController;
+
+    [Header("Controllers")] [SerializeField]
+    public CharacterController _characterController;
 
     private CarControllerSimple _currentCarController;
-    public CarControllerSimple CurrentCarController { get => _currentCarController; set => _currentCarController = value; }
+
+    public CarControllerSimple CurrentCarController
+    {
+        get => _currentCarController;
+        set => _currentCarController = value;
+    }
 
     public VehicleController _currentVehicleController;
-    public VehicleController CurrentVehicleController { get => _currentVehicleController; set => _currentVehicleController = value; }
+
+    public VehicleController CurrentVehicleController
+    {
+        get => _currentVehicleController;
+        set => _currentVehicleController = value;
+    }
 
     [SerializeField] private Vector2 _mouseSensitivity = new Vector2(60f, 40f);
     [SerializeField] private float _turnSpeed = 90f, _runningSpeed = 11f, _flyingSpeed = 16f;
@@ -62,22 +83,52 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     private float _stateSpeed;
 
     public bool _isInVehicle;
-    public bool IsInVehicle { get => _isInVehicle; set => _isInVehicle = value; }
+
+    public bool IsInVehicle
+    {
+        get => _isInVehicle;
+        set => _isInVehicle = value;
+    }
 
     private bool _isDriving;
-    public bool IsDriving { get => _isDriving; set => _isDriving = value; }
+
+    public bool IsDriving
+    {
+        get => _isDriving;
+        set => _isDriving = value;
+    }
 
     private bool _isPassanger;
-    public bool IsPassanger { get => _isPassanger; set => _isPassanger = value; }
+
+    public bool IsPassanger
+    {
+        get => _isPassanger;
+        set => _isPassanger = value;
+    }
 
     private bool _isMiddleSit;
-    public bool IsMiddleSit { get => _isMiddleSit; set => _isMiddleSit = value; }
+
+    public bool IsMiddleSit
+    {
+        get => _isMiddleSit;
+        set => _isMiddleSit = value;
+    }
 
     private bool _isLeftBackSit;
-    public bool IsLeftBackSit { get => _isLeftBackSit; set => _isLeftBackSit = value; }
+
+    public bool IsLeftBackSit
+    {
+        get => _isLeftBackSit;
+        set => _isLeftBackSit = value;
+    }
 
     private bool _isRightBackSit;
-    public bool IsRightBackSit { get => _isRightBackSit; set => _isRightBackSit = value; }
+
+    public bool IsRightBackSit
+    {
+        get => _isRightBackSit;
+        set => _isRightBackSit = value;
+    }
 
 
     public Vector2 _input;
@@ -85,11 +136,12 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     [SerializeField] private float _focusedCanvasDistance;
     [SerializeField] private int _worldCanvasLayer;
+
     #endregion
 
     #region Physics
-    [Header("Physics")]
-    [SerializeField] private LayerMask _groundLayer;
+
+    [Header("Physics")] [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private Transform _groundCheckTransform;
     [SerializeField] private float _groundCheckRadius = 0.5f;
     private bool _isGrounded;
@@ -102,17 +154,23 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     public GameObject _tastingForPremisionWorks;
     public GameObject _tastingForPremisionError;
     [SerializeField] private NameTagDisplay playerNameTag;
+
     #region Colliders
-    [Header("Colliders")]
-    public GameObject CarCollider;
+
+    [Header("Colliders")] public GameObject CarCollider;
+
     #endregion
 
     #region State Machine
+
     private delegate void State();
+
     private State _stateAction;
+
     #endregion
 
     #region Monobehaviour Callbacks
+
     private void Awake()
     {
         UIManager.Instance.ResetCrewRoom.onClick.AddListener(delegate { CrewLeaderResetIncident(); });
@@ -157,18 +215,21 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             // Destroy(this);
         }
     }
+
     private void Update()
     {
-    
+
 
         if (_photonView.IsMine)
         {
             _stateAction.Invoke();
         }
     }
+
     #endregion
 
     #region Collisions & Triggers
+
     private void OnTriggerEnter(Collider other)
     {
         if (_photonView.IsMine)
@@ -179,7 +240,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
                 foreach (GameObject door in vehicleController.AllDoors)
                 {
-                    door.layer = (int)LayerMasks.Interactable;
+                    door.layer = (int) LayerMasks.Interactable;
                 }
             }
 
@@ -200,7 +261,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
                 foreach (GameObject door in vehicleController.AllDoors)
                 {
-                    door.layer = (int)LayerMasks.Default;
+                    door.layer = (int) LayerMasks.Default;
                 }
             }
 
@@ -210,6 +271,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             PlayerData.CurrentPatientNearby = null;
         }
     }
+
     #endregion
 
     #region States
@@ -251,6 +313,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             RotateBodyWithMouse();
         }
     }
+
     private void UseTankWalkingState()
     {
         if (_photonView.IsMine)
@@ -289,6 +352,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             UseTankMovement();
         }
     }
+
     private void UseFlyingIdleState()
     {
         if (_photonView.IsMine)
@@ -326,11 +390,12 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             RotateBodyWithMouse();
         }
     }
+
     private void UseFlyingMovingState()
     {
         if (_photonView.IsMine)
         {
-          //  Debug.Log("Current State: FlyingMoving");
+            //  Debug.Log("Current State: FlyingMoving");
 
             GetInputAxis();
 
@@ -359,11 +424,12 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             UseFlyingMovement();
         }
     }
+
     private void UseDrivingState()
     {
         if (_photonView.IsMine)
         {
-         //   Debug.Log("Current State: Driving");
+            //   Debug.Log("Current State: Driving");
             _anim.IsSittedAnimation();
 
             if (!_isInVehicle)
@@ -386,7 +452,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             {
                 Transform vehicleTransform = transform.parent.parent.parent;
 
-                vehicleTransform.rotation = Quaternion.Lerp(vehicleTransform.rotation, new Quaternion(0, vehicleTransform.rotation.y, 0, vehicleTransform.rotation.w), 0.1f);
+                vehicleTransform.rotation = Quaternion.Lerp(vehicleTransform.rotation,
+                    new Quaternion(0, vehicleTransform.rotation.y, 0, vehicleTransform.rotation.w), 0.1f);
             }
 
             if (_playerCamera.enabled)
@@ -408,6 +475,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             //_currentCarController.CheckIsMovingBackwards();
         }
     }
+
     private void UseTreatingState()
     {
         if (_photonView.IsMine)
@@ -415,6 +483,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             //RotateCameraWithMouse();
         }
     }
+
     private void UseUIState()
     {
         if (_photonView.IsMine)
@@ -482,7 +551,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         return 0;
     }
 
-    public int  GetCarPhotonView()
+    public int GetCarPhotonView()
     {
         for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
         {
@@ -491,7 +560,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             if (PlayerData.CrewIndex == desiredCar._ownedCrewNumber)
             {
 
-                 int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
+                int carIndex = desiredCar.GetComponent<PhotonView>().ViewID;
                 Debug.Log(carIndex);
                 return carIndex;
             }
@@ -513,22 +582,25 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         Debug.Log("Return nothing");
         return 0;
     }
-    public int GetPatientPhotonView()
-        {
-            for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
-            {
-                Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
 
-                if (PlayerData.CrewIndex == desiredPatient._ownedCrewNumber)
-                {
-                    int PatientIndex = desiredPatient.GetComponent<PhotonView>().ViewID;
-                    Debug.Log(PatientIndex);
-                    return PatientIndex;
-                }
+    public int GetPatientPhotonView()
+    {
+        for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        {
+            Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
+
+            if (PlayerData.CrewIndex == desiredPatient._ownedCrewNumber)
+            {
+                int PatientIndex = desiredPatient.GetComponent<PhotonView>().ViewID;
+                Debug.Log(PatientIndex);
+                return PatientIndex;
             }
-            Debug.Log("Return nothing");
-            return 0;
         }
+
+        Debug.Log("Return nothing");
+        return 0;
+    }
+
     public Player GetCarOwner()
     {
         for (int i = 0; i < GameManager.Instance.AmbulanceCarList.Count; i++)
@@ -553,6 +625,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 return carIndex;
             }
         }
+
         return null;
     }
 
@@ -568,8 +641,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 return PaitentIndex;
             }
         }
+
         return null;
     }
+
     public Player GetBedOwner()
     {
         for (int i = 0; i < GameManager.Instance.AllBeds.Count; i++)
@@ -582,13 +657,14 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 return BedIndex;
             }
         }
+
         return null;
     }
 
 
     public Player GetRandomCrewTeam()
     {
-        
+
         for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
         {
             PlayerData desiredPlayer = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
@@ -606,17 +682,21 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                     return null;
                 }
             }
-        
+
         }
+
         return null;
     }
+
     #endregion
 
     #region Private Methods
+
     private void GetInputAxis()
     {
         _input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
+
     private void UseTankMovement()
     {
         Vector3 moveDirerction;
@@ -626,16 +706,19 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         // moves the character in diagonal direction
         _characterController.Move(moveDirerction * Time.deltaTime - Vector3.up * 0.1f);
     }
+
     private void UseFlyingMovement()
     {
         float yPosition = transform.position.y;
         Vector3 moveDirerction;
-        moveDirerction = (Input.GetKey(KeyCode.LeftShift) ? _flyingSpeed * 2 : _flyingSpeed) * _input.y * transform.forward;
+        moveDirerction = (Input.GetKey(KeyCode.LeftShift) ? _flyingSpeed * 2 : _flyingSpeed) * _input.y *
+                         transform.forward;
 
         // moves the character in diagonal direction
         _characterController.Move(moveDirerction * Time.deltaTime - Vector3.up * 0.1f);
         transform.position = new Vector3(transform.position.x, yPosition, transform.position.z);
     }
+
     private void UseTankRotate()
     {
         _anim.RotateAnimation();
@@ -650,6 +733,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         Cursor.visible = value;
         Cursor.lockState = value ? CursorLockMode.Confined : CursorLockMode.Locked;
     }
+
     private void RotateBodyWithMouse()
     {
         if (Input.GetMouseButton(1))
@@ -660,6 +744,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _currentCamera.transform.Rotate(_mouseSensitivity.y * mouseInput.y * Time.deltaTime * Vector3.right);
         }
     }
+
     private void FreeMouseWithAlt()
     {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
@@ -667,9 +752,11 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             FreeMouse(!Cursor.visible);
         }
     }
+
     #endregion
 
     #region Public Methods
+
     public void ChangeToTreatingState(bool isTreating)
     {
         if (isTreating)
@@ -682,6 +769,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _currentCamera.transform.localRotation = new Quaternion(0.130525976f, 0, 0, 0.991444886f);
         }
     }
+
     public void ChangeToUseUIState(bool isFocusingOnUI)
     {
         if (isFocusingOnUI)
@@ -693,9 +781,11 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _stateAction = UseTankIdleState;
         }
     }
+
     #endregion
 
     #region PunRPC
+
     [PunRPC]
     private void ChangeCharControllerStateRPC()
     {
@@ -719,10 +809,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
 
     public void SetUserVestRPC(int roleIndex)
     {
-        if (!PlayerData.IsDataInitialized || PlayerData.UserRole != (Roles)roleIndex)
+        if (!PlayerData.IsDataInitialized || PlayerData.UserRole != (Roles) roleIndex)
         {
             VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
-            PlayerData.UserRole = (Roles)roleIndex;
+            PlayerData.UserRole = (Roles) roleIndex;
 
             if (!Vest.activeInHierarchy)
                 Vest.SetActive(true);
@@ -763,7 +853,8 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             if (player.IsInVehicle && player.CurrentVehicleController != null)
             {
                 // Get the VehicleInteraction component of the current vehicle
-                VehicleInteraction vehicleInteraction = player.CurrentVehicleController.GetComponent<VehicleInteraction>();
+                VehicleInteraction vehicleInteraction =
+                    player.CurrentVehicleController.GetComponent<VehicleInteraction>();
 
                 // Call the ExitVehicle method of the VehicleInteraction component
                 if (vehicleInteraction != null)
@@ -841,6 +932,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     #endregion
 
     #region Gizmos
+
     private void OnDrawGizmosSelected()
     {
         if (_photonView.IsMine)
@@ -866,21 +958,21 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(_isMiddleSit);
             stream.SendNext(_isLeftBackSit);
             stream.SendNext(_isRightBackSit);
-           // stream.SendNext(Vest.activeSelf);
-          //  stream.SendNext(PlayerData.UserRole); // no need
+            // stream.SendNext(Vest.activeSelf);
+            //  stream.SendNext(PlayerData.UserRole); // no need
 
 
         }
         else
         {
-            _isInVehicle = (bool)stream.ReceiveNext();
-            _isDriving = (bool)stream.ReceiveNext();
-            _isPassanger = (bool)stream.ReceiveNext();
-            _isMiddleSit = (bool)stream.ReceiveNext();
-            _isLeftBackSit = (bool)stream.ReceiveNext();
-            _isRightBackSit = (bool)stream.ReceiveNext();
+            _isInVehicle = (bool) stream.ReceiveNext();
+            _isDriving = (bool) stream.ReceiveNext();
+            _isPassanger = (bool) stream.ReceiveNext();
+            _isMiddleSit = (bool) stream.ReceiveNext();
+            _isLeftBackSit = (bool) stream.ReceiveNext();
+            _isRightBackSit = (bool) stream.ReceiveNext();
             // Vest.SetActive((bool)stream.ReceiveNext());
-          //  PlayerData.UserRole  = (Roles)stream.ReceiveNext(); // no need
+            //  PlayerData.UserRole  = (Roles)stream.ReceiveNext(); // no need
 
 
 
@@ -888,28 +980,34 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         }
 
     }
+
     #endregion
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
-       // Debug.LogError(newPlayer + "OnPlayerEnteredRoom");
+        // Debug.LogError(newPlayer + "OnPlayerEnteredRoom");
 
-        _photonView.RPC("UpdatePlayerData", newPlayer, PlayerData.CrewIndex, (int)PlayerData.UserRole, PlayerData.IsCrewLeader, PlayerData.IsDataInitialized);
+        _photonView.RPC("UpdatePlayerData", newPlayer, PlayerData.CrewIndex, (int) PlayerData.UserRole,
+            PlayerData.IsCrewLeader, PlayerData.IsDataInitialized, PlayerData.CrewColor.r, PlayerData.CrewColor.g,
+            PlayerData.CrewColor.b);
     }
 
     [PunRPC]
-    public void UpdatePlayerData(int crewIndex, int roleIndex, bool isCrewLeader, bool isDataInitialized)
+    public void UpdatePlayerData(int crewIndex, int roleIndex, bool isCrewLeader, bool isDataInitialized, float r,
+        float g, float b)
     {
         PlayerData.CrewIndex = crewIndex;
-        PlayerData.UserRole = (Roles)roleIndex;
+        PlayerData.UserRole = (Roles) roleIndex;
         PlayerData.IsCrewLeader = isCrewLeader;
         PlayerData.IsDataInitialized = isDataInitialized;
         //Set his Vest to the right Role
         VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
         if (!Vest.activeInHierarchy)
             Vest.SetActive(true);
-      //  SetUserVestRPC((int)PlayerData.UserRole);
+
+        PlayerData.CrewColor = new Color(r, g, b);
+        playerNameTag.text.color = PlayerData.CrewColor;
     }
 }
 

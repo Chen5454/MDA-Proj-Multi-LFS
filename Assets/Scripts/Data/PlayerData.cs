@@ -48,9 +48,9 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
         {
             PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
             UserRole = Roles.None;
+            AranRole = AranRoles.None;
         }
 
-        AranRole = AranRoles.None;
         PhotonView.ObservedComponents.Add(this);
 
     }
@@ -416,9 +416,9 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(IsHenyon10);
             stream.SendNext(CrewIndex);
             stream.SendNext(IsDataInitialized);
-            stream.SendNext(CrewColor.r);
-            stream.SendNext(CrewColor.g);
-            stream.SendNext(CrewColor.b);
+            //stream.SendNext(CrewColor.r);
+            //stream.SendNext(CrewColor.g);
+            //stream.SendNext(CrewColor.b);
             stream.SendNext(UserRole);
 
         }
@@ -434,11 +434,11 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             CrewIndex = (int)stream.ReceiveNext();
             IsDataInitialized = (bool)stream.ReceiveNext();
 
-            var color = CrewColor;
-            color.r = (float)stream.ReceiveNext();
-            color.g = (float)stream.ReceiveNext();
-            color.b = (float)stream.ReceiveNext();
-            CrewColor = color;
+            //var color = CrewColor;
+            //color.r = (float)stream.ReceiveNext();
+            //color.g = (float)stream.ReceiveNext();
+            //color.b = (float)stream.ReceiveNext();
+            //CrewColor = color;
             UserRole = (Roles)stream.ReceiveNext();
 
 
