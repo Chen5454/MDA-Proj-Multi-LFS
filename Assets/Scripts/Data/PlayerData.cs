@@ -6,7 +6,10 @@ using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using Photon.Pun;
 
+[System.Serializable]
 public enum Roles { CFR, Medic, SeniorMedic, Paramedic, Doctor,None }
+
+[System.Serializable]
 public enum AranRoles { None, HeadMokdan, Mokdan, Pikud10, Refua10, Henyon10, Pinuy10 }
 
 public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
@@ -16,7 +19,6 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
 
     [field: SerializeField] public string UserName { get; set; }
     [field: SerializeField] public string CrewName { get; set; }
-  //  [field: SerializeField] public int UserIndexInCrew { get; set; }
     [field: SerializeField] public int CrewIndex { get; set; }
     [field: SerializeField] public bool IsCrewLeader { get; set; }
     [field: SerializeField] public bool IsInstructor { get; set; }
@@ -33,8 +35,7 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     [field: SerializeField] public Animation PlayerAnimation { get; set; }
     [field: SerializeField] public CarControllerSimple LastCarController { get; set; }
     [field: SerializeField] public VehicleController LastVehicleController { get; set; }
-   // [field: SerializeField] public GameObject Vest { get; set; }
-   // [field: SerializeField] public MeshFilter VestMeshFilter { get; set; }
+
 
     #region MonobehaviourCallbacks
     private void Awake()
@@ -44,12 +45,14 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     private void Start()
     {
         if (PhotonView.IsMine)
+        {
             PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
+            UserRole = Roles.None;
+        }
 
         AranRole = AranRoles.None;
         PhotonView.ObservedComponents.Add(this);
 
-        UserRole = Roles.None;
     }
 
     private void OnDestroy()
@@ -199,12 +202,6 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     }
 
 
-
-    //[PunRPC]
-    //private void OnJoinPatient(int patientViewID)
-    //{
-    //    CurrentPatientNearby.PhotonView.RPC("AddUserToTreatingLists", RpcTarget.AllBufferedViaServer, UserName);
-    //}
 
     [PunRPC]
     private void OnLeavePatient(int patientViewID)
@@ -422,6 +419,8 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(CrewColor.r);
             stream.SendNext(CrewColor.g);
             stream.SendNext(CrewColor.b);
+            stream.SendNext(UserRole);
+
         }
         else
         {
@@ -440,12 +439,12 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
             color.g = (float)stream.ReceiveNext();
             color.b = (float)stream.ReceiveNext();
             CrewColor = color;
+            UserRole = (Roles)stream.ReceiveNext();
+
+
         }
     }
     #endregion
 
-    #region UserRPC
-
-
-    #endregion
+    
 }

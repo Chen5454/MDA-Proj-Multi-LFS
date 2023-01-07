@@ -275,6 +275,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void HideCrewRoomMenu()
     {
         //_photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        CloseCrewUI_RPC();
         isUsed = false;
         _tvScreen.layer = (int)LayerMasks.Interactable;
     }
@@ -871,7 +872,8 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             stream.SendNext(changeCar);
             stream.SendNext(_crewRoomIndex);
 
-
+            int[] roles = GetCrewRolesByEnum();
+            stream.SendNext(roles);
         }
         else
         {
@@ -892,6 +894,20 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             IsAranActive = (bool) stream.ReceiveNext();
             changeCar = (bool) stream.ReceiveNext();
             _crewRoomIndex = (int) stream.ReceiveNext();
+
+            int[] roles = (int[])stream.ReceiveNext();
+            // Update the variables with the received values
+            UpdateCrewRoles(roles);
+
+        }
+    }
+
+    private void UpdateCrewRoles(int[] roles)
+    {
+        for (int i = 0; i < roles.Length; i++)
+        {
+            PlayerData playerData = _playersInRoomList[i].GetComponent<PlayerData>();
+            playerData.UserRole = (Roles)roles[i];
         }
     }
 }
