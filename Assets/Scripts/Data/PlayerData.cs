@@ -44,9 +44,10 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     }
     private void Start()
     {
+
         if (PhotonView.IsMine)
         {
-            PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllBufferedViaServer);
+         //   PhotonView.RPC("AddingPlayerToAllPlayersList", RpcTarget.AllViaServer);
             UserRole = Roles.None;
             AranRole = AranRoles.None;
         }
@@ -195,11 +196,11 @@ public class PlayerData : MonoBehaviourPunCallbacks,IPunObservable
     #endregion
 
     #region PunRPC invoked by Player
-    [PunRPC]
-    void AddingPlayerToAllPlayersList()
-    {
-        ActionsManager.Instance.AllPlayersPhotonViews.Add(PhotonView);
-    }
+    //[PunRPC]
+    //void AddingPlayerToAllPlayersList()
+    //{
+    //    ActionsManager.Instance.AllPlayersPhotonViews.Add(PhotonView);
+    //}
 
 
 

@@ -197,6 +197,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private void Start()
     {
 
+        PhotonView.Get(this).RPC("AddPlayerToList", RpcTarget.All, PhotonView.Get(this).ViewID);
+
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -1009,7 +1011,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         PlayerData.CrewColor = new Color(r, g, b);
         playerNameTag.text.color = PlayerData.CrewColor;
     }
+
+
+    [PunRPC]
+    void AddPlayerToList(int playerViewId)
+    {
+        PhotonView playerView = PhotonView.Find(playerViewId);
+        if (playerView != null)
+        {
+            if (!ActionsManager.Instance.AllPlayersPhotonViews.Contains(playerView))
+                ActionsManager.Instance.AllPlayersPhotonViews.Add(playerView);
+
+            else
+            {
+                return;
+            }
+        }
+    }
+    //public override void OnJoinedRoom()
+    //{
+    //    ActionsManager.Instance.AllPlayersPhotonViews.Add(this._photonView);
+    //}
 }
+
 
 
 
