@@ -35,7 +35,10 @@ public class AmbulancePermissions : MonoBehaviour
 
         foreach (Button action in _seniorMedicActionPermissions)
         {
-            action.interactable = true;
+            if (!action)
+                Debug.LogError("Not all actions set properly by permission");
+            else
+                action.interactable = true;
         }
 
         _currentActionPermissions = _seniorMedicActionPermissions;
@@ -50,7 +53,10 @@ public class AmbulancePermissions : MonoBehaviour
 
         foreach (Button action in _paramedicDocActionPermissions)
         {
-            action.interactable = true;
+            if (!action)
+                Debug.LogError("Not all actions set properly by permission");
+            else
+                action.interactable = true;
         }
 
         _currentActionPermissions = _paramedicDocActionPermissions;
@@ -93,7 +99,10 @@ public class AmbulancePermissions : MonoBehaviour
         }
         foreach (Button actionBtn in _currentActionPermissions)
         {
-            actionBtn.interactable = true;
+            if (!actionBtn)
+                Debug.LogError("Not all actions set properly by permission");
+            else
+                actionBtn.interactable = true;
         }
     }
     public void RemovePermissions()
