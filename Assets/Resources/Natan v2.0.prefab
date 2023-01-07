@@ -1971,10 +1971,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _photonView: {fileID: 6549300742097016997}
+  _playerPhotonView: {fileID: 0}
+  _playerController: {fileID: 0}
+  _playerData: {fileID: 0}
+  _agent: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  vehicleController: {fileID: 0}
+  _reachedDestination: 0
   listRoomEnums: []
   _destinationHospitals: []
   _destinationMarkerPrefab: {fileID: 0}
   stoppingDistance: 0
+  _incidentGPSNavStarted: 0
+  _aranPrefabs: []
+  AptNumber: 0
 --- !u!114 &6549300742097016997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6563,6 +6573,7 @@ MonoBehaviour:
   - {fileID: 4615893852235213892}
   - {fileID: 7968465497417900085}
   - {fileID: 2795378495980434861}
+  AptNumber: 0
 --- !u!114 &7058643523234376212
 MonoBehaviour:
   m_ObjectHideFlags: 0

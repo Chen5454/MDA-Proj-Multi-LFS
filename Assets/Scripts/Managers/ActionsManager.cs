@@ -102,7 +102,7 @@ public class ActionsManager : MonoBehaviour
                 if (!myPlayerData.CurrentPatientNearby.IsPlayerJoined(myPlayerData))
                 {
                     Debug.Log($"Attempting Join Patient");
-                    _lastClickedPatient.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllBufferedViaServer);
+                    _lastClickedPatient.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllViaServer);
                     Debug.Log($"Joined Patient");
                     UIManager.Instance.JoinPatientPopUp.SetActive(true);
                     Debug.Log($"Attempting Open Player Info");
@@ -110,7 +110,7 @@ public class ActionsManager : MonoBehaviour
                 else
                 {
                     Debug.Log($"Attempting Open Player Info");
-                    _lastClickedPatient.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllBufferedViaServer);
+                    _lastClickedPatient.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllViaServer);
                     UIManager.Instance.PatientInfoParent.SetActive(true);
                     Debug.Log($"Attempting Open Player Info");
                 }

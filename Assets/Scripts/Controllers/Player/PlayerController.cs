@@ -136,12 +136,9 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
         playerNameTag = GetComponentInChildren<NameTagDisplay>();
     }
 
-
-
     private void Start()
     {
 
-        
         if (_photonView.IsMine)
         {
             FreeMouse(true);
@@ -162,10 +159,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     }
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    GetChildRoomPhotonView();
-        //}
+    
 
         if (_photonView.IsMine)
         {
@@ -219,97 +213,7 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
     #endregion
 
     #region States
-    //private void UseFirstPersonIdleState()
-    //{
-    //    if (_photonView)
-    //    {
-    //        Debug.Log("Current State: First Person Idle");
-    //
-    //        GetInputAxis();
-    //
-    //        if (_isInVehicle)
-    //        {
-    //            _stateAction = UseDrivingState;
-    //        }
-    //
-    //        if (_input != Vector2.zero)
-    //        {
-    //            FreeMouse(false);
-    //            _stateAction = UseFirstPersonWalkingState;
-    //        }
-    //
-    //        if (Input.GetKeyDown(KeyCode.V))
-    //        {
-    //            FreeMouse(true);
-    //            SetFirstPersonCamera(false);
-    //            _stateAction = UseTankIdleState;
-    //        }
-    //
-    //        if (Input.GetKeyDown(KeyCode.G))
-    //        {
-    //            _stateAction = UseFlyingIdleState;
-    //        }
-    //
-    //        UseFirstPersonRotate();
-    //        FreeMouseWithAlt();
-    //    }
-    //}
-    //private void UseFirstPersonWalkingState()
-    //{
-    //    if (_photonView.IsMine)
-    //    {
-    //        Debug.Log("Current State: First Person Walking");
-    //
-    //        GetInputAxis();
-    //
-    //        if (_isInVehicle)
-    //        {
-    //            _stateAction = UseDrivingState;
-    //        }
-    //
-    //        if (_input == Vector2.zero)
-    //        {
-    //            _stateAction = UseFirstPersonIdleState;
-    //        }
-    //
-    //        if (Input.GetKeyDown(KeyCode.V))
-    //        {
-    //            SetFirstPersonCamera(false);
-    //
-    //            if (_input == Vector2.zero)
-    //            {
-    //                FreeMouse(true);
-    //                _stateAction = UseTankIdleState;
-    //            }
-    //            else
-    //            {
-    //                FreeMouse(true);
-    //                _stateAction = UseTankWalkingState;
-    //            }
-    //        }
-    //
-    //        if (Input.GetKeyDown(KeyCode.G))
-    //        {
-    //            _stateAction = UseFlyingMovingState;
-    //        }
-    //
-    //        if (Input.GetMouseButtonDown(1))
-    //        {
-    //            if (Cursor.visible)
-    //            {
-    //                FreeMouse(false);
-    //            }
-    //            else
-    //            {
-    //                FreeMouse(true);
-    //            }
-    //        }
-    //
-    //        UseFirstPersonRotate();
-    //        UseFirstPersonMovement();
-    //        FreeMouseWithAlt();
-    //    }
-    //}
+
     private void UseTankIdleState()
     {
         if (_photonView.IsMine)
@@ -338,12 +242,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 }
             }
 
-            //if (Input.GetKeyDown(KeyCode.V))
-            //{
-            //    FreeMouse(false);
-            //    SetFirstPersonCamera(true);
-            //    _stateAction = UseFirstPersonIdleState;
-            //}
 
             if (Input.GetKeyDown(KeyCode.G))
             {
@@ -380,12 +278,6 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
                 }
             }
 
-            //if (Input.GetKeyDown(KeyCode.V))
-            //{
-            //    FreeMouse(false);
-            //    SetFirstPersonCamera(true);
-            //    _stateAction = UseFirstPersonWalkingState;
-            //}
 
             if (Input.GetKeyDown(KeyCode.G))
             {
@@ -974,6 +866,10 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             stream.SendNext(_isMiddleSit);
             stream.SendNext(_isLeftBackSit);
             stream.SendNext(_isRightBackSit);
+           // stream.SendNext(Vest.activeSelf);
+          //  stream.SendNext(PlayerData.UserRole); // no need
+
+
         }
         else
         {
@@ -983,19 +879,38 @@ public class PlayerController : MonoBehaviourPunCallbacks,IPunObservable
             _isMiddleSit = (bool)stream.ReceiveNext();
             _isLeftBackSit = (bool)stream.ReceiveNext();
             _isRightBackSit = (bool)stream.ReceiveNext();
+            // Vest.SetActive((bool)stream.ReceiveNext());
+          //  PlayerData.UserRole  = (Roles)stream.ReceiveNext(); // no need
+
+
+
+
         }
 
     }
     #endregion
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+       // Debug.LogError(newPlayer + "OnPlayerEnteredRoom");
 
+        _photonView.RPC("UpdatePlayerData", newPlayer, PlayerData.CrewIndex, (int)PlayerData.UserRole, PlayerData.IsCrewLeader, PlayerData.IsDataInitialized);
+    }
 
-    //private void OnDestroy()
-    //{
-    //    photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetRoomPhotonView());
-    //    photonView.RPC("FindPlayerOwnerCrewRoom", RpcTarget.AllBufferedViaServer, GetChildRoomPhotonView());
-
-    //}
+    [PunRPC]
+    public void UpdatePlayerData(int crewIndex, int roleIndex, bool isCrewLeader, bool isDataInitialized)
+    {
+        PlayerData.CrewIndex = crewIndex;
+        PlayerData.UserRole = (Roles)roleIndex;
+        PlayerData.IsCrewLeader = isCrewLeader;
+        PlayerData.IsDataInitialized = isDataInitialized;
+        //Set his Vest to the right Role
+        VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
+        if (!Vest.activeInHierarchy)
+            Vest.SetActive(true);
+      //  SetUserVestRPC((int)PlayerData.UserRole);
+    }
 }
 
 
