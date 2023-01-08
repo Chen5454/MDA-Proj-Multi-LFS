@@ -521,7 +521,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
 
             if (_photonView.IsMine)
-                _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllBufferedViaServer, PlayerData.CrewIndex);
+                _photonView.RPC("CrewLeaderResetIncident_RPC", RpcTarget.AllViaServer, PlayerData.CrewIndex);
         }
 
         if (_photonView.IsMine)
