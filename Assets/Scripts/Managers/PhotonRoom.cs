@@ -63,10 +63,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("We are now in a room");
-        //if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-        //{
-        //    PhotonNetwork.LoadLevel(multiplayerScene);
-        //}
         StartGame();
 
     }
