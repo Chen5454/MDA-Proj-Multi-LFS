@@ -169,9 +169,9 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5908842724618689642
 CanvasRenderer:
@@ -322,6 +322,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 7079236625397665795}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -1413,6 +1414,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 9122653679079368902}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -1512,7 +1514,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3264,6 +3266,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 2558235016812902006}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 1
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -5520,8 +5523,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 5283127074343037375}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -7384,7 +7387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2860667055216325855
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10958,6 +10961,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 5388352595417930050}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -11898,6 +11902,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 7087819397139916896}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 1
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -14860,7 +14865,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3723420871215520033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15429,6 +15434,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 6813011029134312035}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -17252,6 +17258,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -22532,6 +22550,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 1098409917416794358}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -23453,6 +23472,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 1583928277975543970}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 1
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -24568,6 +24588,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 3730892275885638708}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -26092,6 +26113,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 9057933425159258604}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
