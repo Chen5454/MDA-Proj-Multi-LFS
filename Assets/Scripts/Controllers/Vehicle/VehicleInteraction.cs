@@ -217,7 +217,7 @@ public class VehicleInteraction : MonoBehaviour
                     UIManager.Instance.DriverExitBtn.onClick.RemoveListener(delegate { ExitVehicle(); });
                     UIManager.Instance.SirenBtn.onClick.RemoveListener(delegate { ToggleSiren(); });
                     _vehicleController.CurrentDriverController = null;
-                    photonView.RPC("SetUserVehicleController", RpcTarget.AllBufferedViaServer);
+                    photonView.RPC("SetUserVehicleController", RpcTarget.AllViaServer);
                     playerController.PlayerData.LastVehicleController = _vehicleController;
                     StartCoroutine(ChangeKinematicStateCorooutine());
                     photonView.transform.position = _vehicleController.DriverExit.position;
@@ -303,7 +303,7 @@ public class VehicleInteraction : MonoBehaviour
     #region OnClick Events
     public void OpenCloseBackDoor()
     {
-        _vehicleController.PhotonView.RPC("OpenCloseBackDoorRPC", RpcTarget.AllBufferedViaServer);
+        _vehicleController.PhotonView.RPC("OpenCloseBackDoorRPC", RpcTarget.AllViaServer);
     }
     public void ToggleHeadlights()
     {
