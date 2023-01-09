@@ -8,8 +8,9 @@ public class CameraWallAvoid : MonoBehaviour
     [SerializeField] private Transform ogCameraPosition;
     [SerializeField] private float height = 2f;
     [SerializeField] private float smoothTime = .3f;
-    [SerializeField] private float maxDistance = 3f;
-    [SerializeField] public LayerMask wallLayer;
+    //[SerializeField] private float maxDistance = 3f;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] bool ignoreTrigger = true;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -17,7 +18,7 @@ public class CameraWallAvoid : MonoBehaviour
     {
         // Raycast from the camera to the player
         RaycastHit hit;
-        if (Physics.Linecast(transform.position, new Vector3(player.position.x, player.position.y + height, player.position.z), out hit, wallLayer))
+        if (Physics.Linecast(transform.position, new Vector3(player.position.x, player.position.y + height, player.position.z), out hit, wallLayer, ignoreTrigger ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.UseGlobal))
         {
             // If the raycast hits a wall, move the camera closer to the player
             transform.position = Vector3.SmoothDamp(transform.position, hit.point, ref velocity, smoothTime);
