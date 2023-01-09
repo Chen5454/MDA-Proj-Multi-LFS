@@ -62,13 +62,6 @@ public class VehicleInteraction : MonoBehaviour
                     natanPermissions.SetActions();
                 }
 
-                //UIManager.Instance.CurrentActionBarParent = _barType switch
-                //{
-                //    0 => UIManager.Instance.AmbulanceBar,
-                //    1 => UIManager.Instance.NatanBar,
-                //    _ => UIManager.Instance.AmbulanceBar,
-                //};
-
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
 
                 if (UIManager.Instance.VehicleDriverUI.activeInHierarchy)

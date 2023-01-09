@@ -197,10 +197,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private void Start()
     {
 
-        PhotonView.Get(this).RPC("AddPlayerToList", RpcTarget.All, PhotonView.Get(this).ViewID);
 
         if (_photonView.IsMine)
         {
+            PhotonView.Get(this).RPC("AddPlayerToList", RpcTarget.All, PhotonView.Get(this).ViewID);
             FreeMouse(true);
             _stateAction = UseTankIdleState;
             _MiniMaCamera.SetActive(true);
@@ -220,7 +220,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Debug.LogError(ActionsManager.Instance.AllPlayersPhotonViews.Count);
+        }
 
         if (_photonView.IsMine)
         {
@@ -993,6 +996,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         _photonView.RPC("UpdatePlayerData", newPlayer, PlayerData.CrewIndex, (int) PlayerData.UserRole,
             PlayerData.IsCrewLeader, PlayerData.IsDataInitialized, PlayerData.CrewColor.r, PlayerData.CrewColor.g,
             PlayerData.CrewColor.b);
+
+        _photonView.RPC("AddPlayerToList", newPlayer, PhotonView.Get(this).ViewID);
+
     }
 
     [PunRPC]
@@ -1017,21 +1023,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     void AddPlayerToList(int playerViewId)
     {
         PhotonView playerView = PhotonView.Find(playerViewId);
-        if (playerView != null)
-        {
-            if (!ActionsManager.Instance.AllPlayersPhotonViews.Contains(playerView))
-                ActionsManager.Instance.AllPlayersPhotonViews.Add(playerView);
-
-            else
-            {
-                return;
-            }
-        }
+        if (!ActionsManager.Instance.AllPlayersPhotonViews.Contains(playerView))
+            ActionsManager.Instance.AllPlayersPhotonViews.Add(playerView);
     }
-    //public override void OnJoinedRoom()
-    //{
-    //    ActionsManager.Instance.AllPlayersPhotonViews.Add(this._photonView);
-    //}
+
 }
 
 
