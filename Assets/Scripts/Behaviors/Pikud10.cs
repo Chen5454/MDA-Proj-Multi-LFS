@@ -111,8 +111,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
                     if (hit.collider.tag == "test")
                     {
                         string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
-                        Debug.Log(nameIndx);
-                        _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                        _photonView.RPC("DestroyWorldMark_RPC", GetPikud10Player(), nameIndx);
                     }
                 }
             }
@@ -128,7 +127,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
             if (mark.GetComponent<WorldMark>().nameID == nameIndex)
             {
                 _allWorldMarks.Remove(mark);
-                Destroy(mark);
+                PhotonNetwork.Destroy(mark);
                 break;
             }
         }
@@ -437,7 +436,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
             string IndexRandom = Random.value.ToString();
-            _photonView.RPC("SettingPrefabPos_RPC", RpcTarget.AllBufferedViaServer, markIndex, _targetPos, IndexRandom);
+            _photonView.RPC("SettingPrefabPos_RPC", GetPikud10Player(), markIndex, _targetPos, IndexRandom);
         }
 
         _isMarking = false;
@@ -447,56 +446,57 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos, string IndexRandom)
     {
 
-        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y),
-            Quaternion.identity);
-        ChangeColorForArea(markIndex, instantiateWorldMark);
-        instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
-            instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
-        instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
-        _allWorldMarks.Add(instantiateWorldMark);
-    }
+        //var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y),
+        //    Quaternion.identity);
+        //ChangeColorForArea(markIndex, instantiateWorldMark);
+        //instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
+        //    instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
+        //instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
+        //_allWorldMarks.Add(instantiateWorldMark);
 
-    //[PunRPC]
-    //private void DestoryPrefabPos_RPC()
+        object[] instantiationData = new object[4];
+        instantiationData[0] = targetPos;
+        instantiationData[1] = IndexRandom;
+        instantiationData[2] = markIndex;
+
+
+        var thisPrefab = PhotonNetwork.Instantiate(worldMark.name, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity, 0, instantiationData);
+        _allWorldMarks.Add(thisPrefab);
+    }
+    
+    //private void ChangeColorForArea(int markIndex, GameObject worldMark)
     //{
-    //    Destroy(hit.transform.root.gameObject);
-    //    Debug.Log("Hit");
+    //    var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
+    //    var ColorFillArea = worldMark.transform.Find("FillArea").GetComponentInChildren<Renderer>().material;
+
+    //    switch (markIndex)
+    //    {
+    //        case 0:
+    //            colorArea.color = Color.red;
+    //            ColorFillArea.color = new Color(1, 0, 0, 0.2f);
+    //            break;
+    //        case 1:
+    //            colorArea.color = Color.green;
+    //            ColorFillArea.color = new Color(0, 1, 0, 0.2f);
+    //            break;
+    //        case 2:
+    //            colorArea.color = Color.blue;
+    //            ColorFillArea.color = new Color(0, 0, 1, 0.2f);
+    //            break;
+    //        case 3:
+    //            colorArea.color = Color.white;
+    //            ColorFillArea.color = new Color(1, 1, 1, 0.2f);
+    //            break;
+    //        case 4:
+    //            colorArea.color = Color.black;
+    //            ColorFillArea.color = new Color(0, 0, 0, 0.2f);
+    //            break;
+    //        case 5:
+    //            colorArea.color = Color.yellow;
+    //            ColorFillArea.color = new Color(1, 1, 0, 0.2f);
+    //            break;
+    //    }
     //}
-
-
-    private void ChangeColorForArea(int markIndex, GameObject worldMark)
-    {
-        var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
-        var ColorFillArea = worldMark.transform.Find("FillArea").GetComponentInChildren<Renderer>().material;
-
-        switch (markIndex)
-        {
-            case 0:
-                colorArea.color = Color.red;
-                ColorFillArea.color = new Color(1, 0, 0, 0.2f);
-                break;
-            case 1:
-                colorArea.color = Color.green;
-                ColorFillArea.color = new Color(0, 1, 0, 0.2f);
-                break;
-            case 2:
-                colorArea.color = Color.blue;
-                ColorFillArea.color = new Color(0, 0, 1, 0.2f);
-                break;
-            case 3:
-                colorArea.color = Color.white;
-                ColorFillArea.color = new Color(1, 1, 1, 0.2f);
-                break;
-            case 4:
-                colorArea.color = Color.black;
-                ColorFillArea.color = new Color(0, 0, 0, 0.2f);
-                break;
-            case 5:
-                colorArea.color = Color.yellow;
-                ColorFillArea.color = new Color(1, 1, 0, 0.2f);
-                break;
-        }
-    }
 
 
 
@@ -584,7 +584,24 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         }
     }
 
+    private Player GetPikud10Player()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            var playerView = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+            var PikudPlayer = playerView.GetComponent<Pikud10>();
 
+            if (PikudPlayer!=null && playerView.IsPikud10)
+            {
+                Player playerIndex = PikudPlayer.GetComponent<PhotonView>().Controller;
+                return playerIndex;
+
+            }
+        }
+
+        Debug.LogError("There is no Pikud10 Player");
+        return null;
+    }
 
     public void RefreshPatientLists()
     {

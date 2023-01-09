@@ -452,11 +452,11 @@ GameObject:
   - component: {fileID: 8700292631787039922}
   - component: {fileID: 5403986275392784894}
   - component: {fileID: 5432011416783910119}
-  - component: {fileID: 3180913919758561978}
   - component: {fileID: 8554843344001437052}
   - component: {fileID: 8509783079996804296}
+  - component: {fileID: 2560830145260301765}
   m_Layer: 5
-  m_Name: WorldMark Canvas
+  m_Name: WorldMark Canvas Hanyon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5432011416783910119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,26 +550,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3180913919758561978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2331357891863953160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29a3dd0ae127554e883031ac9e0d712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _marks:
-  - {fileID: -7081967626730529400, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  - {fileID: 5148261822647252159, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  - {fileID: -805120838098705393, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  - {fileID: 1413792517813804771, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  - {fileID: 6350185886741087055, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  - {fileID: 878827397447960536, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
-  nameID: 
 --- !u!114 &8554843344001437052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,6 +584,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c313d5e2f1297f479bd3896b62a3283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2560830145260301765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331357891863953160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9640037e040694b469796d777f74222b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _marks:
+  - {fileID: -7081967626730529400, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  - {fileID: 5148261822647252159, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  - {fileID: -805120838098705393, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  - {fileID: 1413792517813804771, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  - {fileID: 6350185886741087055, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  - {fileID: 878827397447960536, guid: 0d7192008de9d7f459555102ca4ede8a, type: 3}
+  nameID: 
 --- !u!1 &3820110802953122814
 GameObject:
   m_ObjectHideFlags: 0

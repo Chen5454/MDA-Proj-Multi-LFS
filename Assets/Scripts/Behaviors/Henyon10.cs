@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Henyon10 : MonoBehaviour, IPunObservable
 {
@@ -41,7 +44,7 @@ public class Henyon10 : MonoBehaviour, IPunObservable
         {
             _camController = GetComponent<CameraController>();
         }
-        worldMark = UIManager.Instance.MarkerPrefab;
+        worldMark = UIManager.Instance.MarkerPrefabHanyon;
 
     }
 
@@ -67,9 +70,8 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
                     if (hit.collider.tag == "test")
                     {
-                        string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
-                        Debug.Log(nameIndx);
-                        _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                        string nameIndx = hit.transform.parent.GetComponent<WorldMarkHenyon>().nameID;
+                        _photonView.RPC("DestroyWorldMark_RPC", GetHenyonPlayer(), nameIndx);
                     }
                 }
             }
@@ -238,7 +240,7 @@ public class Henyon10 : MonoBehaviour, IPunObservable
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
             string IndexRandom = Random.value.ToString();
-            _photonView.RPC("SettingPrefabPos_RPC", RpcTarget.AllBufferedViaServer, _targetPos, IndexRandom);
+            _photonView.RPC("SettingPrefabPos_RPC", GetHenyonPlayer(), _targetPos, IndexRandom);
         }
 
         _isMarking = false;
@@ -254,14 +256,16 @@ public class Henyon10 : MonoBehaviour, IPunObservable
 
 
     [PunRPC]
-    private void SettingPrefabPos_RPC( Vector2 targetPos, string IndexRandom)
+    private void SettingPrefabPos_RPC(Vector2 targetPos, string IndexRandom)
     {
+        object[] instantiationData = new object[3];
+        instantiationData[0] = targetPos;
+        instantiationData[1] = IndexRandom;
+        
 
-        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity);
-        ChangeColorForArea( instantiateWorldMark);
-        instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = instantiateWorldMark.GetComponent<WorldMark>().Marks[2];
-        instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
-        _allWorldMarks.Add(instantiateWorldMark);
+       var thisPrefab =  PhotonNetwork.Instantiate(worldMark.name, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity, 0, instantiationData);
+       _allWorldMarks.Add(thisPrefab);
+
     }
 
 
@@ -270,14 +274,34 @@ public class Henyon10 : MonoBehaviour, IPunObservable
     {
         foreach (var mark in _allWorldMarks)
         {
-            if (mark.GetComponent<WorldMark>().nameID == nameIndex)
+            if (mark.GetComponent<WorldMarkHenyon>().nameID == nameIndex)
             {
                 _allWorldMarks.Remove(mark);
-                Destroy(mark);
+                PhotonNetwork.Destroy(mark);
                 break;
             }
         }
     }
+
+    private Player GetHenyonPlayer()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            var playerView = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+            var HenyonPlayer = playerView.GetComponent<Henyon10>();
+
+            if (HenyonPlayer != null && playerView.IsHenyon10)
+            {
+                Player playerIndex = HenyonPlayer.GetComponent<PhotonView>().Controller;
+                return playerIndex;
+
+            }
+        }
+
+        Debug.LogError("There is no Henyon10 Player");
+        return null;
+    }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
