@@ -274,7 +274,8 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     }
     public void HideCrewRoomMenu()
     {
-        //_photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        //_photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBuff
+        //eredViaServer);
         CloseCrewUI_RPC();
         isUsed = false;
         _tvScreen.layer = (int)LayerMasks.Interactable;

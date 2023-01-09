@@ -190,7 +190,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     private IEnumerator PauseBeforeBandage(int bandageIndex)
     {
         yield return new WaitForSeconds(0.1f);
-        PhotonView.RPC("RemoveBandageFromUnusedListRPC", RpcTarget.AllBufferedViaServer, bandageIndex);
+        PhotonView.RPC("RemoveBandageFromUnusedListRPC", RpcTarget.AllViaServer, bandageIndex);
     }
     #endregion
 
@@ -579,10 +579,22 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
         if (stream.IsWriting)
         {
             stream.SendNext(isEvac);
+
+            foreach (GameObject bandage in _unusedBandagesOnPatient)
+            {
+                stream.SendNext(bandage.activeSelf);
+            }
+
         }
         else
         {
             isEvac = (bool)stream.ReceiveNext();
+
+            foreach (GameObject bandage in _unusedBandagesOnPatient)
+            {
+                bandage.SetActive((bool)stream.ReceiveNext());
+
+            }
         }
     }
 }

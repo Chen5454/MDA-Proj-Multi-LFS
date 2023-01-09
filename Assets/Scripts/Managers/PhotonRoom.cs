@@ -130,6 +130,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks,IInRoomCallbacks
 
     public void DisconnectPlayer()
     {
+        if (!this.gameObject.activeSelf)
+        {
+            return;
+            
+        }
+
+
         StartCoroutine(DisconnectAndLoad());
 
     }

@@ -19,7 +19,7 @@ public class AutomaticDoors : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag))
         {
             if (!_isOpen)
-                _photonView.RPC("HandleDoorsRPC", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("HandleDoorsRPC", RpcTarget.All);
             else
                 return;
         }
@@ -29,7 +29,7 @@ public class AutomaticDoors : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag))
         {
             if (_isOpen)
-                _photonView.RPC("HandleDoorsRPC", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("HandleDoorsRPC", RpcTarget.All);
             else
                 return;
         }
