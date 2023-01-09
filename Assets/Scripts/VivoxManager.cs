@@ -39,6 +39,12 @@ public class VivoxManager : MonoBehaviour
         // LeaveChannelClick();
         LeaveChannel(vivox.channelSession);
         LeaveChannel(vivox.channelSession2);
+
+        if (vivox.loginSession == null)
+        {
+            return;
+        }
+
         vivox.loginSession.Logout();
         BindLoginCallBack(false, vivox.loginSession);
         vivox.client.Uninitialize(); // closes all the net to the servers
@@ -281,6 +287,11 @@ public class VivoxManager : MonoBehaviour
 
     public void LeaveChannel(IChannelSession channelToDisconnect)
     {
+        if (channelToDisconnect == null)
+        {
+            return;
+        }
+
         channelToDisconnect.Disconnect();
         // vivox.loginSession.DeleteChannelSession(new ChannelId(vivox.issuer, channelName, vivox.domain));
     }

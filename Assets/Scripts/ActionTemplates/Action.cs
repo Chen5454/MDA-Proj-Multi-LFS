@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 /*
  * for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
@@ -18,7 +19,7 @@ using Photon.Pun;
 public enum PlayerTreatingPosition { Head = 0, Chest = 1, Leg = 2}
 public enum EquipmentPosition { Head = 0, Chest = 1}
 
-public class Action : MonoBehaviour
+public class Action : MonoBehaviourPunCallbacks
 {
     [Header("Player Data")]
     protected PhotonView LocalPlayerPhotonView;
@@ -115,4 +116,14 @@ public class Action : MonoBehaviour
     {
         ActionTemplates.Instance.UpdatePatientLog(LocalPlayerCrewIndex, LocalPlayerName, textToLog);
     }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+
+        base.OnPlayerEnteredRoom(newPlayer);
+        GetActionData();
+      //  CurrentPatient.PhotonView.RPC("UpdatePatientAction", newPlayer);
+
+    }
+
 }
