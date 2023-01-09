@@ -16,6 +16,7 @@ public class ToggleButton : MonoBehaviour
     [field: SerializeField] public Image BtnImg { get; set; }
     [field: SerializeField] public Image CheckmarkImg { get; set; }
     [field: SerializeField] public bool IsBtnSelected { get; set; }
+    [field: SerializeField] public bool IsBtnDefaultOn { get; set; }
 
     //Dangerous attempt! ALON TBF 
     [SerializeField]
@@ -28,6 +29,11 @@ public class ToggleButton : MonoBehaviour
 
     public UnityEngine.Events.UnityEvent OnClick;
 
+    private void Start()
+    {
+        if (IsBtnDefaultOn)
+            ToggleBtnOnClick();
+    }
 
     public void ToggleBtnOnClick()
     {

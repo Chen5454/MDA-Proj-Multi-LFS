@@ -74,8 +74,11 @@ namespace PatientCreationSpace
                 noPUN_filteredPatientRoster.LoadPatient(fileNameToLoad);
 
             //  RequestTest.Instance.GetRows(fileNameToLoad);
-            crewRoom.GetComponent<PhotonView>().RPC("SetIncidentName", RpcTarget.All, fileNameToLoad);
-            crewRoom.RemoveOverlayUI();
+            if (crewRoom)
+            {
+                crewRoom.GetComponent<PhotonView>().RPC("SetIncidentName", RpcTarget.All, fileNameToLoad);
+                crewRoom.RemoveOverlayUI();
+            }
         }
     }
 }

@@ -130,7 +130,7 @@ public class Lobby : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = maxPlayersPerRoom;
         roomOptions.EmptyRoomTtl = 1;
         roomOptions.PlayerTtl = 1;
-      //  roomOptions.CleanupCacheOnLeave = false; // I dont like this at all~
+       // roomOptions.CleanupCacheOnLeave = false; // I dont like this at all~
         PhotonNetwork.CreateRoom(PhotonRoomName, roomOptions, TypedLobby.Default);
     }
 

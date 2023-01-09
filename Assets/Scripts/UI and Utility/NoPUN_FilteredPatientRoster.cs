@@ -14,7 +14,7 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
     [SerializeField]
     NewPatientWindow newPatientWindow;
     [SerializeField]
-    GameObject windowToClose;
+    GameObject windowToClose, _basicPatientInfo;
     
     private CrewRoomManager _crewRoomManager;
     public CrewRoomManager CrewRoomManager { get => _crewRoomManager; set => _crewRoomManager = value; }
@@ -128,6 +128,9 @@ public class NoPUN_FilteredPatientRoster : MonoBehaviour
             return null;
         }
         newPatientWindow.gameObject.SetActive(true);
+        _basicPatientInfo.SetActive(true);
+        newPatientWindow.EditSequenceButton.SetActive(true);
+        newPatientWindow.NewSequenceButton.SetActive(false);
         windowToClose.gameObject.SetActive(false);
         return PatientCreator.LoadPatient(patientFullName);
         //newPatientWindow.LoadPatient(patientFullName); //same but more useless

@@ -50,17 +50,19 @@ public class RequestTest : MonoBehaviour
         ServiceAccountCredential serviceAccountCredential = ServiceAccountCredential.FromServiceAccountData(creds);
 
         sheetsService = new SheetsService(new BaseClientService.Initializer() { HttpClientInitializer = serviceAccountCredential });
+        SetWriteRangeToNewRow();
 
+    }
+
+    public void SetWriteRangeToNewRow()
+    {
         var request = sheetsService.Spreadsheets.Values.Get(spreadsheetID, _readRange);
         var response = request.Execute();
         var values = response.Values;
 
         patientCount = values.Count;
 
-        SetWriteRange((patientCount+1).ToString());
-
-
-
+        SetWriteRange((patientCount + 1).ToString());
     }
 
     public void PrintCell() //just prints us the first(A1) that inside the cell
@@ -134,14 +136,23 @@ public class RequestTest : MonoBehaviour
         {
             //return (List<string>)values;
             NewPatientData toReturn = null;
-            foreach (var row in values)
+            for (int i = 0; i < values.Count; i++)
             {
-                if (PatientName == row[0].ToString())
+                if (PatientName == values[i][0].ToString())
                 {
-                    toReturn = DeSerializePatient_Full(row[1] as string, row[2] as string);
+                    toReturn = DeSerializePatient_Full(values[i][1] as string, values[i][2] as string);
+                    SetWriteRange((i + 1).ToString());
                     break;
                 }
             }
+            //foreach (var row in values)
+            //{
+            //    if (PatientName == row[0].ToString())
+            //    {
+            //        toReturn = DeSerializePatient_Full(row[1] as string, row[2] as string);
+            //        break;
+            //    }
+            //}
             return toReturn;
         }
 

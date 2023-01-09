@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class PlaceBandage : Action
@@ -27,9 +28,16 @@ public class PlaceBandage : Action
 
         if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
         {
-            TextToLog = "הניח תחבושת על המטופל";
+            if (_useTourniquetInstead == true)
+            {
+                TextToLog = "ביצע חוסם עורקים למטופל";
+            }
+            else
+            {
+                TextToLog = "חבש את המטופל";
+            }
 
-            CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", RpcTarget.AllBufferedViaServer, _useTourniquetInstead);
+            CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", RpcTarget.AllViaServer, _useTourniquetInstead);
             SwitchRayCastTarget(false);
 
             if (_shouldUpdateLog)
@@ -38,6 +46,15 @@ public class PlaceBandage : Action
             }
         }
     }
+
+    //public override void OnPlayerEnteredRoom(Player newPlayer)
+    //{
+    //    base.OnPlayerEnteredRoom(newPlayer);
+
+    //    if (CurrentPatient.IsPlayerJoined(LocalPlayerData))
+    //        CurrentPatient.PhotonView.RPC("PlaceBandageAction_RPC", newPlayer, _useTourniquetInstead);
+
+    //}
 
     private void SwitchRayCastTarget(bool useInteractable)
     {

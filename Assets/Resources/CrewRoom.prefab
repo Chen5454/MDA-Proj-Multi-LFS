@@ -336,6 +336,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 6849833070207140289}
   <CheckmarkImg>k__BackingField: {fileID: 8080736722065862118}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -2899,6 +2900,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 1094880644488356545}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -3222,6 +3224,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 2607999914668761619}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 1
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -5469,6 +5472,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 3187203744921489368}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -6754,6 +6758,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 7896853112055130283}
   <CheckmarkImg>k__BackingField: {fileID: 2699067529885624490}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -7648,6 +7653,9 @@ MonoBehaviour:
   _isNatanRequired: 0
   _isRandomIncident: 0
   _filterredRoaster: {fileID: 4895573465391814137}
+  IsAranActive: 0
+  changeCar: 0
+  AptNumber: 0
 --- !u!114 &6340234360517652064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8450,6 +8458,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 7237389752749345315}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -9017,6 +9026,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 2975829108826765430}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -9993,7 +10003,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5138764310284169353}
         m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
-        m_MethodName: SpawnVehicle
+        m_MethodName: StartIncident
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10017,7 +10027,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5138764310284169353}
         m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
-        m_MethodName: StartIncident
+        m_MethodName: SpawnVehicle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10030,6 +10040,18 @@ MonoBehaviour:
       - m_Target: {fileID: 8105575230657858419}
         m_TargetAssemblyTypeName: WorldCanvasInteraction, Assembly-CSharp
         m_MethodName: OnCloseWindow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5138764310284169353}
+        m_TargetAssemblyTypeName: CrewRoomManager, Assembly-CSharp
+        m_MethodName: HideCrewRoomMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10339,6 +10361,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 334815351713027250}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 1
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -10946,6 +10969,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 6973104278596293969}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -11580,6 +11604,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 1795041204268792896}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:
@@ -15357,6 +15382,7 @@ MonoBehaviour:
   <BtnImg>k__BackingField: {fileID: 2240739700163141643}
   <CheckmarkImg>k__BackingField: {fileID: 0}
   <IsBtnSelected>k__BackingField: 0
+  <IsBtnDefaultOn>k__BackingField: 0
   canSelectNothing: 0
   OnChoosen:
     m_PersistentCalls:

@@ -45,10 +45,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     [SerializeField] private string _currentIncidentName, _startSimulationText, _startAranSimulationText, _waitMemberText, _incidentStartTitle, _incidentStartText, _errorTitle, _errorFullString, _errorSomthingWentWrong, _errorAptBusy;
     [SerializeField] private bool isUsed, _isNatanRequired, _isRandomIncident;
     [SerializeField] public FilteredPatientsRoster _filterredRoaster;
-
-
+    [SerializeField] private bool IsAranActive;
+    [SerializeField] private bool changeCar;
+    
     private OwnershipTransfer _transfer;
     //[SerializeField] private GameObject _crewRoomDoor;
+    public int AptNumber;
 
     private void Awake()
     {
@@ -179,13 +181,11 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     public void CreateCrewSubmit()
     {
-        _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllBufferedViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
+        _photonView.RPC("CrewCreateSubmit_RPC", RpcTarget.AllViaServer, GetCrewRolesByEnum(), GetCrewLeaderIndex(), _crewRoomIndex);
 
-        _photonView.RPC("GivesLeaderButton", RpcTarget.AllBufferedViaServer, GetCrewLeaderIndex());
-        //  var color = Random.ColorHSV();
-        //_photonView.RPC("ChangeCrewColors", RpcTarget.AllBufferedViaServer, new Vector3(color.r, color.g, color.b));
+        _photonView.RPC("GivesLeaderButton", RpcTarget.AllViaServer, GetCrewLeaderIndex());
+
         ChangeCrewColors();
-        //_photonView.RPC("CrewLeaderIsChosen", RpcTarget.AllBufferedViaServer, GetCrewLeader());
     }
 
     [PunRPC]
@@ -268,16 +268,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void ShowCrewRoomMenu()
     {
         _transfer.CrewUI();
-        _photonView.RPC("ShowCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        // _photonView.RPC("ShowCrewUI_RPC", RpcTarget.AllBufferedViaServer);
+        ShowCrewUI_RPC();
 
-        // RoomCrewMenuUI.gameObject.SetActive(true);
-        //RefreshCrewUITexts();
     }
     public void HideCrewRoomMenu()
     {
-        _photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBufferedViaServer);
-
-        // RoomCrewMenuUI.gameObject.SetActive(false);
+        //_photonView.RPC("CloseCrewUI_RPC", RpcTarget.AllBuff
+        //eredViaServer);
+        CloseCrewUI_RPC();
+        isUsed = false;
+        _tvScreen.layer = (int)LayerMasks.Interactable;
     }
 
     private void AlertStartAll(string title, string content)
@@ -313,7 +314,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         }
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             if (PatientCreationSpace.PatientCreator.newPatient == null)
             {
                 Debug.LogError("no patient loaded!");
@@ -364,47 +364,17 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             }
 
             GameObject go = PhotonNetwork.InstantiateRoomObject(prefabToInstantiate, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
-            //3.5) Grab the Patient component from the instantiated object.
-            //4) Set this patients data to the NewPatientData to be spawned
             go.GetComponent<Patient>().InitializePatientData(newPatientData);
-            //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
-            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllViaServer, apartmentNum);
+            AptNumber = apartmentNum;
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
-
         }
         else
         {
             AlertStartAll(_errorTitle, _errorSomthingWentWrong);
         }
     }
-    //private void StartSpecificIncident()
-    //{
-    //    int apartmentNum = int.Parse(_apartmentNumber.text);
-    //    List<int> unavailableList = new List<int>();
-    //
-    //    for (int i = 0; i < GameManager.Instance.IsPatientSpawned.Length - 1; i++)
-    //    {
-    //        if (GameManager.Instance.IsPatientSpawned[i])
-    //            unavailableList.Add(i);
-    //    }
-    //
-    //    if (unavailableList.Count >= 5)
-    //    {
-    //        AlertStartAll(_errorTitle, _errorFullString);
-    //    }
-    //    else if (GameManager.Instance.IsPatientSpawned[apartmentNum - 1])
-    //    {
-    //        AlertStartAll(_errorTitle, _errorAptBusy);
-    //    }
-    //    else
-    //    {
-    //        //PhotonNetwork.InstantiateRoomObject(_patientMale.name, GameManager.Instance.IncidentPatientSpawn//[apartmentNum /-/ 1].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum - 1].rotation);
-    //        //
-    //        //_photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum - 1);
-    //        //
-    //        //AlertStartAll(_errorTitle, $"{_incidentStartText} {apartmentNum + 0}");
-    //    }
-    //}
+
     private void StartIncidentInRandomLocation()
     {
         List<int> unavailableList = new List<int>();
@@ -423,9 +393,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 apartmentNum = Random.Range(0, 6);
                 Debug.Log("New aptNum" + apartmentNum);
-
-                //if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
-                //    break;
             }
         }
         catch
@@ -435,7 +402,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
         if (!GameManager.Instance.IsPatientSpawned[apartmentNum])
         {
-            //PhotonNetwork.Instantiate(_patientMale.name, GameManager.Instance.IncidentPatientSpawns[apartmentNum].position, GameManager.Instance.IncidentPatientSpawns[apartmentNum].rotation);
             if (PatientCreationSpace.PatientCreator.newPatient == null)
             {
                 Debug.LogError("no patient loaded!");
@@ -462,7 +428,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
 
-            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllBufferedViaServer, apartmentNum);
+            _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllViaServer, apartmentNum);
+            AptNumber = apartmentNum;
+
             AlertStartAll(_incidentStartTitle, $"{_incidentStartText} {apartmentNum + 1}");
         }
         else
@@ -553,18 +521,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         _currentIncidentNameTMP.text = _currentIncidentName;
     }
 
-    //public void ChooseIncidents()
-    //{
-    //    if (_isRandomIncident)
-    //    {
-    //        _overlay.SetActive(false);
-    //        _startSimulationBtn.interactable = true;
-    //        _startSimulationTMP.text = _startSimulationText;
-    //        return;
-    //    }
-    //
-    //    _chooseSimulationPanel.SetActive(true);
-    //}
     public void SetStartIncidentBtn()
     {
         if (GameManager.Instance.IsAranActive)
@@ -588,14 +544,10 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     public void ChangeVehicleRequired(bool changeVehicle)
     {
-        _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
+        changeCar = changeVehicle;
+       // _photonView.RPC("ChangeVehicleRequiredRPC", RpcTarget.AllBufferedViaServer, changeVehicle);
+       ChangeVehicleRequiredRPC(changeCar);
     }
-
-    //public void SpawnVehicle()
-    //{
-    //    _photonView.RPC("SpawnVehicle_RPC", RpcTarget.AllBufferedViaServer);
-    //}
-
 
     // Collision Methods
     // --------------------
@@ -607,22 +559,11 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
         {
             // _playersInRoomList.Add(playerView);
-            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-            _photonView.RPC("SetToUi_RPC", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllViaServer, playerView.Owner.NickName);
+            _photonView.RPC("SetToUi_RPC", RpcTarget.AllViaServer);
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    PhotonView playerView = other.GetComponentInParent<PhotonView>();
-
-    //    if (other.CompareTag("PlayerCollider") && !_playersInRoomList.Contains(playerView))
-    //    {
-
-    //        _photonView.RPC("AddingToRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
-    //        _playersInRoomList.Add(playerView);
-    //    }
-    //}
 
     private void OnTriggerExit(Collider other)
     {
@@ -631,9 +572,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
         if (other.CompareTag("PlayerCollider") && _playersInRoomList.Contains(playerView))
         {
-            _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            _photonView.RPC("RemovingFromRoomList_RPC", RpcTarget.AllViaServer, playerView.Owner.NickName);
 
-            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllBufferedViaServer, playerView.Owner.NickName);
+            _photonView.RPC("UpdateUiNameOnExit", RpcTarget.AllViaServer, playerView.Owner.NickName);
             //_playersInRoomList.Remove(playerView);
         }
     }
@@ -641,24 +582,30 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     public void ShowOverlayUI()
     {
         if (!GameManager.Instance.IsAranActive)
-            _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+            ShowOverlayUI_RPC();
+        //  _photonView.RPC("ShowOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void RemoveOverlayUI()
     {
         if (!GameManager.Instance.IsAranActive)
-            _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
+            RemoveOverlayUI_RPC();
+        //  _photonView.RPC("RemoveOverlayUI_RPC", RpcTarget.AllBufferedViaServer);
     }
     public void ShowSimulationPanelUI()
     {
-        _photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        //_photonView.RPC("ShowSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        ShowSimulationPanelUI_RPC();
     }
     public void RemoveShowSimulationPanelUI()
     {
-        _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        // _photonView.RPC("RemoveSimulationPanelUI_RPC", RpcTarget.AllBufferedViaServer);
+        RemoveSimulationPanelUI_RPC();
     }
     public void ActivateAranBehaviour(bool isAranActive)
     {
-        _photonView.RPC("CheckAranBehaviourRPC", RpcTarget.AllBufferedViaServer, isAranActive);
+        // _photonView.RPC("CheckAranBehaviourRPC", RpcTarget.AllBufferedViaServer, isAranActive);
+        IsAranActive = isAranActive;
+        CheckAranBehaviourRPC(IsAranActive);
     }
 
     // PUN RPC Methods
@@ -688,9 +635,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                 _playersInRoomList.Add(currentPlayerView);
             }
         }
-        //BlockRoomAccess();
-        // Debug.LogError("Added to room");
-
     }
 
     [PunRPC]
@@ -723,6 +667,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
             desiredPlayerName.text.color = new Color(r, b, g);
             currentPlayerData.CrewColor = new Color(r, b, g);
+
         }
 
 
@@ -751,9 +696,10 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                     desiredPlayerData.IsDataInitialized = false; 
                     desiredPlayerData.CrewIndex = crewIndex;
                     desiredPlayerData.UserRole = (Roles)roleIndex[i];
-                    desiredPlayerController.SetUserVestRPC1((int)desiredPlayerData.UserRole);
+                    desiredPlayerController.SetUserVestRPC((int)desiredPlayerData.UserRole);
                 
             }
+
             foreach (PhotonView player in _playersInRoomList)
             {
                 player.GetComponent<PlayerData>().IsCrewLeader = false;
@@ -768,11 +714,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
 
     [PunRPC]
 
-    void SpawnVehicle_RPC(int crewroomIndex)
+    void SpawnVehicle_RPC(int crewroomIndex,int aptNumber)
     {
         VehicleChecker currentPosVehicleChecker = ActionsManager.Instance.VehiclePosTransforms[crewroomIndex - 1].GetComponent<VehicleChecker>();
-        object[] crewRoom = new object[1];
+        object[] crewRoom = new object[2];
         crewRoom[0] = crewroomIndex;
+        crewRoom[1] = aptNumber;
         if (!currentPosVehicleChecker.IsPosOccupied)
         {
             if (_isNatanRequired)
@@ -786,13 +733,12 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         }
     }
 
-    void SpawnVehicle()
+    public void SpawnVehicle()
     {
-        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex);
+        _photonView.RPC("SpawnVehicle_RPC", RpcTarget.MasterClient, _crewRoomIndex, AptNumber);
 
     }
 
-    [PunRPC]
     void ShowCrewUI_RPC()
     {
         if (GameManager.Instance.IsAranActive)
@@ -852,7 +798,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
         RoomCrewMenuUI.gameObject.SetActive(false);
     }
 
-    [PunRPC]
     public void ChangeVehicleRequiredRPC(bool changeVehcile)
     {
         _isNatanRequired = changeVehcile;
@@ -862,33 +807,30 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
     private void UpdateCurrentIncidents(int apartmentNum)
     {
         GameManager.Instance.IsPatientSpawned[apartmentNum] = true;
-        GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
+        //GameManager.Instance.CurrentIncidentsTransforms.Add(GameManager.Instance.IncidentPatientSpawns[apartmentNum]);
     }
 
-    [PunRPC]
     private void ShowOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(true);
         _filterredRoaster._photonView.TransferOwnership(_photonView.Owner);
     }
-    [PunRPC]
     public void RemoveOverlayUI_RPC()
     {
         _overlay.gameObject.SetActive(false);
     }
-    [PunRPC]
     private void ShowSimulationPanelUI_RPC()
     {
         _chooseSimulationPanel.gameObject.SetActive(true);
     }
-    [PunRPC]
     private void RemoveSimulationPanelUI_RPC()
     {
         _chooseSimulationPanel.gameObject.SetActive(false);
     }
-    [PunRPC]
+
     private void CheckAranBehaviourRPC(bool isAranActive)
     {
+        
         if (!isAranActive)
             ShowOverlayUI();
         else
@@ -920,11 +862,20 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 stream.SendNext(dropdown.value);
             }
-            //stream.SendNext(_crewRoomIndex);
             stream.SendNext(_isNatanRequired);
+            stream.SendNext(AptNumber);
+            stream.SendNext(RoomCrewMenuUI.gameObject.activeSelf);
+            stream.SendNext(_startSimulationBtn.interactable);
+            stream.SendNext(_tvScreen.layer);
+            stream.SendNext(isUsed);
+            stream.SendNext(_overlay.gameObject.activeSelf);
+            stream.SendNext(_chooseSimulationPanel.gameObject.activeSelf);
+            stream.SendNext(IsAranActive);
+            stream.SendNext(changeCar);
+            stream.SendNext(_crewRoomIndex);
 
-
-
+            int[] roles = GetCrewRolesByEnum();
+            stream.SendNext(roles);
         }
         else
         {
@@ -934,10 +885,31 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             {
                 dropdown.value = (int)stream.ReceiveNext();
             }
-            // _crewRoomIndex = (int)stream.ReceiveNext();
             _isNatanRequired = (bool)stream.ReceiveNext();
+            AptNumber = (int)stream.ReceiveNext();
+            RoomCrewMenuUI.gameObject.SetActive((bool)stream.ReceiveNext());
+            _startSimulationBtn.interactable = (bool) stream.ReceiveNext();
+            _tvScreen.layer = (int) stream.ReceiveNext();
+            isUsed = (bool) stream.ReceiveNext();
+            _overlay.gameObject.SetActive((bool)stream.ReceiveNext());
+            _chooseSimulationPanel.gameObject.SetActive((bool)stream.ReceiveNext());
+            IsAranActive = (bool) stream.ReceiveNext();
+            changeCar = (bool) stream.ReceiveNext();
+            _crewRoomIndex = (int) stream.ReceiveNext();
 
+            int[] roles = (int[])stream.ReceiveNext();
+            // Update the variables with the received values
+            UpdateCrewRoles(roles);
 
+        }
+    }
+
+    private void UpdateCrewRoles(int[] roles)
+    {
+        for (int i = 0; i < roles.Length; i++)
+        {
+            PlayerData playerData = _playersInRoomList[i].GetComponent<PlayerData>();
+            playerData.UserRole = (Roles)roles[i];
         }
     }
 }

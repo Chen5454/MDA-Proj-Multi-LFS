@@ -143,8 +143,10 @@ public class ActionTemplates : MonoBehaviour
 
     public void UpdatePatientLog(int senderCrewIndex, string senderName, string textToLog)
     {
-        _photonView.RPC("RPC_UpdatePatientLog", RpcTarget.AllBufferedViaServer, senderCrewIndex, senderName, textToLog);
+        _photonView.RPC("RPC_UpdatePatientLog", RpcTarget.AllViaServer, senderCrewIndex, senderName, textToLog);
     }
+    
+    
     #endregion
 
 
