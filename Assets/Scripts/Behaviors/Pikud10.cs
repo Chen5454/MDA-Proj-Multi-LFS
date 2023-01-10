@@ -74,6 +74,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     {
         thisPlayerdata = GetComponent<PlayerData>();
         _transfer = GetComponent<OwnershipTransfer>();
+        GameManager.Instance.Pikud10View = GetComponent<PhotonView>();
 
         if (_photonView.IsMine)
         {
@@ -253,17 +254,17 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownRefua10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownPinuy10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownHenyon10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             yield return new WaitForSeconds(nextUpdate);
@@ -279,11 +280,20 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         SetMarkRPC(markIndex);
     }
 
-    private void CameraTransmition()
-    {
-        //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
-        _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
-    }
+      private void CameraTransmition()
+        {
+            if (GameManager.Instance.Pikud10TextureRenderer != null)
+            {
+                Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
+            }
+            else
+            {
+                Debug.LogError("GameManager.Instance.Pikud10TextureRenderer is null, cannot set target texture");
+            }
+
+            _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllViaServer);
+        }
+    
 
     #endregion
 
@@ -401,10 +411,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         AssignHenyon10.onClick.AddListener(delegate { OnClickHenyon(); });
 
         gameObject.AddComponent<LineRenderer>();
-        // _lineRenderer = GetComponent<LineRenderer>();
-        // _lineRenderer.positionCount = 6;
-        // _lineRenderer.widthMultiplier = 0.1f;
-        //_lineRenderer.material = GameManager.Instance.LineMaterial;
+     
         _groundLayer = LayerMask.GetMask("Ground");
         _groundLayer += LayerMask.GetMask("Road");
 
@@ -464,41 +471,6 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         _allWorldMarks.Add(thisPrefab);
     }
     
-    //private void ChangeColorForArea(int markIndex, GameObject worldMark)
-    //{
-    //    var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
-    //    var ColorFillArea = worldMark.transform.Find("FillArea").GetComponentInChildren<Renderer>().material;
-
-    //    switch (markIndex)
-    //    {
-    //        case 0:
-    //            colorArea.color = Color.red;
-    //            ColorFillArea.color = new Color(1, 0, 0, 0.2f);
-    //            break;
-    //        case 1:
-    //            colorArea.color = Color.green;
-    //            ColorFillArea.color = new Color(0, 1, 0, 0.2f);
-    //            break;
-    //        case 2:
-    //            colorArea.color = Color.blue;
-    //            ColorFillArea.color = new Color(0, 0, 1, 0.2f);
-    //            break;
-    //        case 3:
-    //            colorArea.color = Color.white;
-    //            ColorFillArea.color = new Color(1, 1, 1, 0.2f);
-    //            break;
-    //        case 4:
-    //            colorArea.color = Color.black;
-    //            ColorFillArea.color = new Color(0, 0, 0, 0.2f);
-    //            break;
-    //        case 5:
-    //            colorArea.color = Color.yellow;
-    //            ColorFillArea.color = new Color(1, 1, 0, 0.2f);
-    //            break;
-    //    }
-    //}
-
-
 
 
     public void RefreshVehicleLists()
@@ -696,15 +668,14 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             stream.SendNext(_isMarking);
             stream.SendNext(_currentMarkIndex);
-          //stream.SendNext(_targetPos);
+          stream.SendNext(Pikud10Camera.gameObject.activeSelf);
 
         }
         else
         {
             _isMarking = (bool)stream.ReceiveNext();
             _currentMarkIndex = (int)stream.ReceiveNext();
-          //_targetPos = (Vector2)stream.ReceiveNext();
-
+            Pikud10Camera.gameObject.SetActive((bool)stream.ReceiveNext());
         }
     }
     #endregion
