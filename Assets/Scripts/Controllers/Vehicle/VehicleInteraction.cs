@@ -307,11 +307,11 @@ public class VehicleInteraction : MonoBehaviour
     }
     public void ToggleHeadlights()
     {
-        _vehicleController.PhotonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllBufferedViaServer);
+        _vehicleController.PhotonView.RPC("ToggleHeadlightsRPC", RpcTarget.AllViaServer);
     }
     public void ToggleSiren()
     {
-        _vehicleController.PhotonView.RPC("ToggleSirenRPC", RpcTarget.AllBufferedViaServer);
+        _vehicleController.PhotonView.RPC("ToggleSirenRPC", RpcTarget.AllViaServer);
     }
     #endregion
 

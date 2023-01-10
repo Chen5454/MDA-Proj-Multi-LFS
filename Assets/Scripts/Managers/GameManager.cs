@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
     }
     public void UpdatePinuyList()
     {
-        _photonView.RPC("UpdatePinuyList_RPC", RpcTarget.AllBufferedViaServer);
+        _photonView.RPC("UpdatePinuyList_RPC", RpcTarget.AllViaServer);
     }
     public void ChangeAranState(bool isActive)
     {
