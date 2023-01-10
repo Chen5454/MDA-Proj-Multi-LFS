@@ -167,7 +167,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("Evac"))
         {
-            _patient.GetComponent<BoxCollider>().enabled = false;
+            if (_patient != null)
+            {
+                _patient.GetComponent<BoxCollider>().enabled = false;
+            }
+           
         }
     }
 

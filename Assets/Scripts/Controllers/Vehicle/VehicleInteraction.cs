@@ -261,7 +261,7 @@ public class VehicleInteraction : MonoBehaviour
                 playerController.CurrentVehicleController = null;
 
                 _vehicleController.PhotonView.RPC("ChangeSit", RpcTarget.All, i, 0, false);
-                playerController.transform.GetChild(5).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true;
+               // playerController.transform.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true; // what for?
                // DontDestroyOnLoad(photonView.gameObject);
                 break;
             }

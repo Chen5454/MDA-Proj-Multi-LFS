@@ -580,21 +580,21 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
         {
             stream.SendNext(isEvac);
 
-            foreach (GameObject bandage in _unusedBandagesOnPatient)
-            {
-                stream.SendNext(bandage.activeSelf);
-            }
+            //foreach (GameObject bandage in _unusedBandagesOnPatient)
+            //{
+            //    stream.SendNext(bandage.activeSelf);
+            //}
 
         }
         else
         {
             isEvac = (bool)stream.ReceiveNext();
 
-            foreach (GameObject bandage in _unusedBandagesOnPatient)
-            {
-                bandage.SetActive((bool)stream.ReceiveNext());
+            //foreach (GameObject bandage in _unusedBandagesOnPatient)
+            //{
+            //    bandage.SetActive((bool)stream.ReceiveNext());
 
-            }
+            //}
         }
     }
 }

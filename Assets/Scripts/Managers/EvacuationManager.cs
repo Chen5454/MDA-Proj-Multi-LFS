@@ -76,8 +76,8 @@ public class EvacuationManager : MonoBehaviour
 
     public void DestroyPatient(PhotonView patient)
     {
-        patient.gameObject.SetActive(false);
-        
+        //patient.gameObject.SetActive(false);
+        PhotonNetwork.Destroy(patient.gameObject);
     }
 
     public void ResetEmergencyBed(EmergencyBedController ebc)
