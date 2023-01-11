@@ -974,6 +974,7 @@ MonoBehaviour:
   _vehicleSitTaken: "\u05D4\u05DE\u05D5\u05E9\u05D1 \u05EA\u05E4\u05D5\u05E1"
   _vehicleFullContent: "\u05E8\u05DB\u05D1 \u05D4\u05D4\u05E6\u05DC\u05D4 \u05DE\u05DC\u05D0"
   _barType: 0
+  _PhotonView: {fileID: 172696219136593039}
 --- !u!114 &3027300269723291375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1356,6 +1357,7 @@ MonoBehaviour:
   PatientMenuParentUI: {fileID: 0}
   JoinPatientParentUI: {fileID: 0}
   TagMiunParentUI: {fileID: 0}
+  _SmoothSyncEnabled: 0
   _takeReturnText: {fileID: 3138112749602979894}
   _followUnfollowText: {fileID: 6284889622598405390}
   _placeRemovePatientText: {fileID: 3093672119316198300}
@@ -1378,6 +1380,9 @@ MonoBehaviour:
   _isBedClosed: 1
   _interactableLayerNum: 7
   _defaultLayerNum: 0
+  shouldBeInCar: 0
+  shouldBeOut: 0
+  shouldFollowPlayer: 0
   _transfer: {fileID: 8779624945012766165}
 --- !u!114 &8779624945012766165
 MonoBehaviour:

@@ -94,8 +94,9 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     public void ShowMokdanMenu()
     {
         _transfer.TvOwner();
-        _photonView.RPC("ShowMokdanMenu_RPC", RpcTarget.AllBufferedViaServer);
-        updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
+        // _photonView.RPC("ShowMokdanMenu_RPC", RpcTarget.AllViaServer);
+        ShowMokdanMenu_RPC();
+         updatePlayerListCoroutine = StartCoroutine(HandleDropDownUpdates(0.5f));
     }
     public void RefreshPatientList()
     {
@@ -112,12 +113,13 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
     public void CloseMokdanRoomMenu()
     {
         StopCoroutine(updatePlayerListCoroutine);
-        _photonView.RPC("CloseMokdanMenu_RPC", RpcTarget.AllBufferedViaServer);
+        //_photonView.RPC("CloseMokdanMenu_RPC", RpcTarget.AllBufferedViaServer);
+        CloseMokdanMenu_RPC();
     }
     public void ReTagPatient(Patient patientToReTag, TextMeshProUGUI patientNameTMP)
     {
         patientNameTMP.color = Color.red;
-        patientToReTag.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllBufferedViaServer);
+        patientToReTag.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllViaServer);
         UIManager.Instance.JoinPatientPopUp.SetActive(true);
     }
     #endregion
@@ -312,7 +314,7 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != _playerListDropDown.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud", RpcTarget.All);
             }
 
             yield return new WaitForSeconds(nextUpdate);
@@ -325,10 +327,16 @@ public class OperationsRoom : MonoBehaviour, IPunObservable
         if (stream.IsWriting)
         {
             stream.SendNext(_playerListDropDown.value);
+            stream.SendNext(MokdnMenuUI.activeSelf);
+            stream.SendNext(isUsed);
+          
         }
         else
         {
             _playerListDropDown.value = (int)stream.ReceiveNext();
+            MokdnMenuUI.SetActive((bool)stream.ReceiveNext());
+            isUsed = (bool) stream.ReceiveNext();
+
         }
     }
 }

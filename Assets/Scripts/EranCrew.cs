@@ -95,11 +95,11 @@ public class EranCrew : MonoBehaviour
     }
     public void GiveMokdanRoleClick()
     {
-        _photonView.RPC("GiveMokdanRole", RpcTarget.AllBufferedViaServer, GetMokdanIndex());
+        _photonView.RPC("GiveMokdanRole", RpcTarget.AllViaServer, GetMokdanIndex());
     }
     public void GiveMainMokdanRoleClick()
     {
-        _photonView.RPC("GiveMainMokdanRole", RpcTarget.AllBufferedViaServer, GetMainMokdanIndex());
+        _photonView.RPC("GiveMainMokdanRole", RpcTarget.AllViaServer, GetMainMokdanIndex());
     }
     public void ShowMetargelMenu()
     {
@@ -110,18 +110,19 @@ public class EranCrew : MonoBehaviour
     }
     public void StartAran()
     {
-        _photonView.RPC("ResetsEventsLists_RPC",RpcTarget.AllBufferedViaServer);
-        _photonView.RPC("ResetPlayerData_RPC", RpcTarget.AllBufferedViaServer);
+        _photonView.RPC("ResetsEventsLists_RPC",RpcTarget.AllViaServer);
+        _photonView.RPC("ResetPlayerData_RPC", RpcTarget.AllViaServer);
         ClearAllPatient();
 
-        // should be replaced later with the Create Aran UI and behaviours
+        // should be replaced later with the Create Aran UI and behaviours -------------------------------
         PhotonNetwork.Instantiate(_aranPrefabs[0].name, new Vector3(-130f, 0f, 210f), Quaternion.identity);
-        GameManager.Instance.ChangeAranState(true);
 
+
+
+
+        GameManager.Instance.ChangeAranState(true);
         GameManager.Instance.photonView.RPC("SetPopUp",RpcTarget.All, _startAranTitle, _startAranText);
         //GameManager.Instance.SetPopUp(_startAranTitle, _startAranText);
-
-
     }
 
     public void ClearAllPatient()
@@ -156,12 +157,12 @@ public class EranCrew : MonoBehaviour
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != _mainMokdanPlayerListDropDown.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesMetargel", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesMetargel", RpcTarget.AllViaServer);
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != _mokdanPlayerListDropDown.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesMetargel", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesMetargel", RpcTarget.AllViaServer);
             }
             yield return new WaitForSeconds(nextUpdate);
         }
