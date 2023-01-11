@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviourPunCallbacks,IInRoomCallbacks,IPunObserv
   //  public List<Transform> CurrentIncidentsTransforms;
     public List<Patient> AllPatients;
     public List<Patient> AllTaggedPatients;
-    public GameObject PlayerTPPos, KidPatient;
-    public GameObject[] MalePatients, FemalePatients;
+    public GameObject PlayerTPPos;
+    public GameObject[] MalePatients, FemalePatients, KidPatient;
     //public List<int> OnGoingIncidents;
     public Transform[] IncidentPatientSpawns;
     public bool[] IsPatientSpawned;

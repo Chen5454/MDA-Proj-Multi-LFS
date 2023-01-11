@@ -340,7 +340,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                         prefabToInstantiate = GameManager.Instance.MalePatients[1].name;
                         break;
                     case PatientType.Kid:
-                        prefabToInstantiate = GameManager.Instance.KidPatient.name;
+                        prefabToInstantiate = GameManager.Instance.KidPatient[0].name;
                         break;
                     default:
                         Debug.Log("This model don't exist, try another.");
@@ -356,6 +356,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                         break;
                     case PatientType.Grown:
                         prefabToInstantiate = GameManager.Instance.FemalePatients[1].name;
+                        break;
+                    case PatientType.Kid:
+                        prefabToInstantiate = GameManager.Instance.KidPatient[1].name;
                         break;
                     default:
                         Debug.Log("This model don't exist, try another.");
@@ -450,7 +453,7 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                     prefabToInstantiate = GameManager.Instance.MalePatients[1].name;
                     break;
                 case PatientType.Kid:
-                    prefabToInstantiate = GameManager.Instance.KidPatient.name;
+                    prefabToInstantiate = GameManager.Instance.KidPatient[0].name;
                     break;
                 default:
                     Debug.Log("This model don't exist, try another.");
@@ -466,6 +469,9 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
                     break;
                 case PatientType.Grown:
                     prefabToInstantiate = GameManager.Instance.FemalePatients[1].name;
+                    break;
+                case PatientType.Kid:
+                    prefabToInstantiate = GameManager.Instance.KidPatient[1].name;
                     break;
                 default:
                     Debug.Log("This model don't exist, try another.");
