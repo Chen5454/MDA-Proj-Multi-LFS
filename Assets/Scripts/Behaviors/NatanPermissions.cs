@@ -33,10 +33,7 @@ public class NatanPermissions : MonoBehaviour
 
         foreach (Button action in _medicActionPermissions)
         {
-            if (!action)
-                Debug.LogError("Not all medicine loaded properly by permissionby permission");
-            else
-                action.interactable = true;
+            action.interactable = true;
         }
 
         _currentActionPermissions = _medicActionPermissions;
@@ -67,10 +64,7 @@ public class NatanPermissions : MonoBehaviour
 
         foreach (Button action in _seniorMedicActionPermissions)
         {
-            if (!action)
-                Debug.LogError("Not all medicine loaded properly by permissionby permission");
-            else
-                action.interactable = true;
+            action.interactable = true;
         }
 
         _currentActionPermissions = _seniorMedicActionPermissions;

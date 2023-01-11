@@ -16,7 +16,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     public VehicleController ParentVehicle => _parentVehicle;
 
     public SmoothSyncMovement _SmoothSync;
-
+    
     [Header("Player & Patient")]
     [SerializeField] private GameObject _patient;
     private Patient _patientScript;
@@ -35,7 +35,8 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] private GameObject PatientMenuParentUI;
     [SerializeField] private GameObject JoinPatientParentUI;
     [SerializeField] private GameObject TagMiunParentUI;
-
+    [SerializeField] private bool _SmoothSyncEnabled;
+    int currentPlayerActorNumber;
 
 
     [SerializeField] private TextMeshProUGUI _takeReturnText;
@@ -57,7 +58,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     [Header("Layers")]
     [SerializeField] private int _interactableLayerNum;
     [SerializeField] private int _defaultLayerNum;
-
+    [SerializeField] private bool shouldBeInCar, shouldBeOut, shouldFollowPlayer;
     private PhotonView _photonView;
     public OwnershipTransfer _transfer;
     private void Awake()
@@ -94,7 +95,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (ParentVehicle.IsDestroy)
         {
-            _photonView.RPC("DestroyBedOnReset", RpcTarget.AllBufferedViaServer);
+            _photonView.RPC("DestroyBedOnReset", RpcTarget.AllViaServer);
         }
     }
 
@@ -122,11 +123,29 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
+    public int GetPlayerID()
+    {
+       var player = _player.GetComponent<PhotonView>();
+
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            var playerView = ActionsManager.Instance.AllPlayersPhotonViews[i];
+
+            if (player.ViewID == playerView.ViewID)
+            {
+                return playerView.ViewID;
+            }
+        }
+
+        return 0;
+    } 
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             _player = other.gameObject;
+            
             _emergencyBedModelParent.layer = (int)LayerMasks.Interactable;
         }
 
@@ -167,7 +186,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("Evac"))
         {
-            _patient.GetComponent<BoxCollider>().enabled = false;
+            if (_patient != null)
+            {
+                _patient.GetComponent<BoxCollider>().enabled = false;
+            }
+           
         }
     }
 
@@ -249,9 +272,11 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _isBedClosed = value;
 
             if (value)
-                _photonView.RPC("SetBedClosedRPC", RpcTarget.AllBufferedViaServer);
+                SetBedClosedRPC();
+            //_photonView.RPC("SetBedClosedRPC", RpcTarget.AllBufferedViaServer);
             else
-                _photonView.RPC("SetBedOpenRPC", RpcTarget.AllBufferedViaServer);
+                SetBedOpenRPC();
+               // _photonView.RPC("SetBedOpenRPC", RpcTarget.AllBufferedViaServer);
         }
     }
 
@@ -265,11 +290,15 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             gameObject.transform.SetPositionAndRotation(_emergencyBedPositionOutsideVehicle.position, _emergencyBedPositionOutsideVehicle.rotation);
 
             // bed needs to be [in car], [just outside car] ,[with player]
-            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, false);
+            shouldBeInCar = false;
+            shouldBeOut = true;
+            shouldFollowPlayer = false;
+            _photonView.RPC("SetBedParentRPC", RpcTarget.AllViaServer, GetPlayerID(), shouldBeInCar, shouldBeOut, shouldFollowPlayer);
 
             FollowPlayerToggle();
             _takeReturnText.text = _returnText;
-            _photonView.RPC("SynchBedON", RpcTarget.AllBufferedViaServer);
+            _SmoothSyncEnabled = true;
+            _photonView.RPC("SynchBed", RpcTarget.AllViaServer, _SmoothSyncEnabled);
             transform.Rotate(transform.eulerAngles.x, transform.eulerAngles.y, 0);
 
         }
@@ -283,12 +312,16 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _emergencyBedUI.SetActive(false);
 
             // bed needs to be [in car], [just outside car] ,[with player]
-            _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, true, false, false);
+            shouldBeInCar = true;
+            shouldBeOut = false;
+            shouldFollowPlayer = false;
+            _photonView.RPC("SetBedParentRPC", RpcTarget.AllViaServer, GetPlayerID(), shouldBeInCar, shouldBeOut, shouldFollowPlayer);
             // gameObject.transform.SetPositionAndRotation(_emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
-            _photonView.RPC("SetPositionAndRotation_RPC", RpcTarget.AllBufferedViaServer, _emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
+            _photonView.RPC("SetPositionAndRotation_RPC", RpcTarget.AllViaServer, _emergencyBedPositionInsideVehicle.position, _emergencyBedPositionInsideVehicle.rotation);
 
             _takeReturnText.text = _takeText;
-            _photonView.RPC("SynchBedOFF", RpcTarget.AllBufferedViaServer);
+            _SmoothSyncEnabled = false;
+            _photonView.RPC("SynchBed", RpcTarget.AllViaServer, _SmoothSyncEnabled);
 
 
         }
@@ -302,20 +335,24 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
+    //[PunRPC]
+    //public void SynchBedOFF()
+    //{
+    //    _SmoothSync.enabled =false ;
+    //    _SmoothSyncEnabled = false;
+    //}
+
+    //[PunRPC]
+    //public void SynchBedON()
+    //{
+    //    _SmoothSync.enabled = true;
+    //    _SmoothSyncEnabled = true;
+    //}
     [PunRPC]
-    public void SynchBedOFF()
+    public void SynchBed(bool enable)
     {
-        _SmoothSync.enabled =false ;
-
+        _SmoothSync.enabled = enable;
     }
-
-    [PunRPC]
-    public void SynchBedON()
-    {
-        _SmoothSync.enabled = true;
-      
-    }
-
     private void FollowPlayer()
     {
         if (_player != null)
@@ -326,15 +363,21 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _player.transform.LookAt(transform.position);
 
                 // bed needs to be [in car], [just outside car] ,[with player]
-                _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, true, true);
+                shouldBeInCar = false;
+                shouldBeOut = true;
+                shouldFollowPlayer = true;
+                _photonView.RPC("SetBedParentRPC", RpcTarget.AllViaServer, GetPlayerID(), shouldBeInCar, shouldBeOut, shouldFollowPlayer);
                 _followUnfollowText.text = _unfollowText;
             }
             else if (!_isFollowingPlayer)
             {
                 //_isFacingTrolley = false;
                 // bed needs to be [in car], [just outside car] ,[with player]
+                shouldBeInCar = false;
+                shouldBeOut = false;
+                shouldFollowPlayer = false;
                 if (!_inCar)
-                    _photonView.RPC("SetBedParentRPC", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName, false, false, false);
+                    _photonView.RPC("SetBedParentRPC", RpcTarget.AllViaServer, GetPlayerID(), shouldBeInCar, shouldBeOut, shouldFollowPlayer);
 
                 _followUnfollowText.text = _followText;
             }
@@ -347,7 +390,6 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             if (_isFollowingPlayer)
             {
                 _isFollowingPlayer = false;
-                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _followText;
                 UIManager.Instance.CurrentActionBarParent.SetActive(true);
             }
@@ -356,7 +398,6 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
                 _isFollowingPlayer = true;
                 _player.transform.position = _playerHoldPos.position;
                 _player.transform.LookAt(transform.position);
-                //_photonView.RPC("SetBedFollowPlayer", RpcTarget.AllBufferedViaServer, PhotonNetwork.NickName);
                 _followUnfollowText.text = _unfollowText;
                 UIManager.Instance.CurrentActionBarParent.SetActive(false);
             }
@@ -368,12 +409,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (_patient != null && !IsPatientOnBed)
         {
-            _photonView.RPC("PutOnBed", RpcTarget.AllBufferedViaServer,_patient.GetComponent<PhotonView>().ViewID);
+            _photonView.RPC("PutOnBed", RpcTarget.AllViaServer,_patient.GetComponent<PhotonView>().ViewID);
 
         }
         else if (_patient != null && IsPatientOnBed && !_inCar)
         {
-            _photonView.RPC("RemoveFromBed", RpcTarget.AllBufferedViaServer, _patient.GetComponent<PhotonView>().ViewID);
+            _photonView.RPC("RemoveFromBed", RpcTarget.AllViaServer, _patient.GetComponent<PhotonView>().ViewID);
             _patient.GetComponentInChildren<MakeItAButton>().gameObject.layer = (int) LayerMasks.Default;
         }
     }
@@ -397,7 +438,14 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(_isFollowingPlayer);
             stream.SendNext(_inCar);
             stream.SendNext(_isBedOut);
-           // stream.SendNext(_patientPosOnBed.position);
+            stream.SendNext(_emergencyBedOpen.activeSelf);
+            stream.SendNext(_emergencyBedClosed.activeSelf);
+            stream.SendNext(shouldBeInCar);
+            stream.SendNext(shouldBeOut);
+            stream.SendNext(shouldFollowPlayer);
+            stream.SendNext(_SmoothSyncEnabled);
+            
+
         }
         else
         {
@@ -406,7 +454,14 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
             _isFollowingPlayer = (bool)stream.ReceiveNext();
             _inCar = (bool)stream.ReceiveNext();
             _isBedOut = (bool)stream.ReceiveNext();
-          //  _patientPosOnBed.position = (Vector3)stream.ReceiveNext();
+            _emergencyBedOpen.SetActive((bool)stream.ReceiveNext());
+            _emergencyBedClosed.SetActive((bool)stream.ReceiveNext());
+            shouldBeInCar = (bool)stream.ReceiveNext();
+            shouldBeOut = (bool)stream.ReceiveNext();
+            shouldFollowPlayer = (bool)stream.ReceiveNext();
+            _SmoothSyncEnabled = (bool)stream.ReceiveNext();
+
+
         }
     }
 
@@ -438,40 +493,36 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         currentPatientView.GetComponent<Patient>().SmoothMovement.enabled = true;
     }
 
-    [PunRPC]
     void SetBedOpenRPC()
     {
         _emergencyBedOpen.SetActive(true);
         _emergencyBedClosed.SetActive(false);
     }
 
-    [PunRPC]
     void SetBedClosedRPC()
     {
         _emergencyBedOpen.SetActive(false);
         _emergencyBedClosed.SetActive(true);
     }
 
+    //[PunRPC]
+    //private void SetBedFollowPlayer(string currentPlayer)
+    //{
+    //    PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
+    //    if (_isFollowingPlayer)
+    //    {
+    //        gameObject.transform.SetParent(currentPlayerView.transform);
+    //    }
+    //    else if (!_isFollowingPlayer)
+    //    {
+    //        gameObject.transform.SetParent(null);
+    //    }
+    //}
+
     [PunRPC]
-    private void SetBedFollowPlayer(string currentPlayer)
+    public void SetBedParentRPC(int currentPlayer, bool shouldBeInCar, bool shouldBeOut, bool shouldFollowPlayer)
     {
-        PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
-
-        if (_isFollowingPlayer)
-        {
-            gameObject.transform.SetParent(currentPlayerView.transform);
-        }
-        else if (!_isFollowingPlayer)
-        {
-            gameObject.transform.SetParent(null);
-        }
-    }
-
-    [PunRPC]
-    private void SetBedParentRPC(string currentPlayer, bool shouldBeInCar, bool shouldBeOut, bool shouldFollowPlayer)
-    {
-        PhotonView currentPlayerView = ActionsManager.Instance.GetPlayerPhotonViewByNickName(currentPlayer);
-
+        PhotonView currentPlayerView = PhotonView.Find(currentPlayer);
         if (shouldBeInCar && !shouldBeOut && !shouldFollowPlayer)
         {
             transform.SetParent(_emergencyBedPositionInsideVehicle);
@@ -512,7 +563,7 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
         }
         else if (!shouldBeInCar && shouldBeOut && shouldFollowPlayer)
         {
-            gameObject.transform.SetParent(currentPlayerView.transform);
+                gameObject.transform.SetParent(currentPlayerView.transform);
 
             if (_patientScript)
             {
@@ -528,5 +579,12 @@ public class EmergencyBedController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (!shouldDisable)
             _patientScript.WorldCanvas.SetActive(false);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        base.OnPlayerEnteredRoom(newPlayer);
+        _photonView.RPC("SynchBed", newPlayer, _SmoothSyncEnabled);
+
     }
 }

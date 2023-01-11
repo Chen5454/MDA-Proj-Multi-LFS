@@ -6,6 +6,7 @@ using Photon.Pun;
 using System.Reflection;
 using TMPro;
 
+
 public enum VehicleSit { Driver, Passanger, Middle, LeftBack, RightBack }
 
 public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateMagicCallback
@@ -307,9 +308,22 @@ public class VehicleController : MonoBehaviour, IPunObservable, IPunInstantiateM
     }
 
     [PunRPC]
-    private void ChangeSit(int playerViewIndex, int sitEnum, bool isEnteringVehicle)
+    private void ChangeSit(int viewID, int sitEnum, bool isEnteringVehicle)
     {
-        PhotonView photonView = ActionsManager.Instance.AllPlayersPhotonViews[playerViewIndex];
+
+
+        PhotonView photonView = null;
+
+        // Find the PhotonView with the given ID
+        foreach (PhotonView pv in ActionsManager.Instance.AllPlayersPhotonViews)
+        {
+            if (pv.ViewID == viewID)
+            {
+                photonView = pv;
+                break;
+            }
+        }
+
         PlayerController playerController = photonView.GetComponent<PlayerController>();
 
         if (isEnteringVehicle)

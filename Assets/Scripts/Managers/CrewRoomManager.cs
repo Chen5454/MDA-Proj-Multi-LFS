@@ -422,12 +422,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             _photonView.RPC("SpawnPatients_RPC", RpcTarget.MasterClient, apartmentNum, instantiationData, (int)PatientCreationSpace.PatientCreator.newPatient.Gender, (int)PatientCreationSpace.PatientCreator.newPatient.PatientType);
             //3.5) Grab the Patient component from the instantiated object.
             //4) Set this patients data to the NewPatientData to be spawned
-            // go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
-            // Debug.Log(PatientCreationSpace.PatientCreator.newPatient);
-            //go.GetComponent<Patient>().InitializePatientData(PatientCreationSpace.PatientCreator.newPatient);
-
-            //go.GetComponent<Patient>().PhotonView.TransferOwnership(GetCrewLeader());
-
             _photonView.RPC("UpdateCurrentIncidents", RpcTarget.AllViaServer, apartmentNum);
             AptNumber = apartmentNum;
 
@@ -873,9 +867,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             stream.SendNext(IsAranActive);
             stream.SendNext(changeCar);
             stream.SendNext(_crewRoomIndex);
-
-            int[] roles = GetCrewRolesByEnum();
-            stream.SendNext(roles);
         }
         else
         {
@@ -896,10 +887,6 @@ public class CrewRoomManager : MonoBehaviour, IPunObservable
             IsAranActive = (bool) stream.ReceiveNext();
             changeCar = (bool) stream.ReceiveNext();
             _crewRoomIndex = (int) stream.ReceiveNext();
-
-            int[] roles = (int[])stream.ReceiveNext();
-            // Update the variables with the received values
-            UpdateCrewRoles(roles);
 
         }
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 public class EvacuationNpc : MonoBehaviour
@@ -67,8 +68,30 @@ public class EvacuationNpc : MonoBehaviour
 
     public void EvacPatient()
     {
-        _photonView.RPC("EvacPatient_RPC", RpcTarget.AllBufferedViaServer);
-        // AllPatientsPhotonViews.PhotonView.RPC("EvacPatient_RPC", RpcTarget.AllBufferedViaServer);
+        _photonView.RPC("DestoryPatient", FindPatientOwner());
+        _photonView.RPC("EvacPatient_RPC", RpcTarget.AllViaServer);
+
+    }
+
+    private Player FindPatientOwner()
+    {
+        var patient = evacuation.NearbyPatient[0].GetComponent<Patient>();
+        var patientOwner = patient.GetComponent<PhotonView>().Owner;
+        return patientOwner;
+        //for (int i = 0; i < GameManager.Instance.AllPatients.Count; i++)
+        //{
+        //    Patient desiredPatient = GameManager.Instance.AllPatients[i].GetComponent<Patient>();
+
+        //    if (desiredPatient._ownedCrewNumber == evacuation.NearbyPatient[0]._ownedCrewNumber)
+        //    {
+        //        Player playerOwner = desiredPatient.GetComponent<PhotonView>().Owner;
+        //        return playerOwner;
+        //    }
+
+
+        //}
+
+        //return null;
     }
 
     [PunRPC]
@@ -87,7 +110,6 @@ public class EvacuationNpc : MonoBehaviour
             }
         }
         EvacuationManager.Instance.AddPatientToRooms(evacuation.NearbyPatient[0].PhotonView, evacuation.RoomEnum);
-        EvacuationManager.Instance.DestroyPatient(evacuation.NearbyPatient[0].PhotonView);
         evacuation.NearbyPatient.Clear();
 
         EvacuationManager.Instance.ResetEmergencyBed(bed);
@@ -106,6 +128,14 @@ public class EvacuationNpc : MonoBehaviour
         _evacuationUI.SetActive(false);
         
     }
+
+    [PunRPC]
+    private void DestoryPatient()
+    {
+       // EvacuationManager.Instance.DestroyPatient(evacuation.NearbyPatient[0].PhotonView);
+        PhotonNetwork.Destroy(evacuation.NearbyPatient[0].gameObject);
+    }
+
 
     public void CancelEvac()
    {
