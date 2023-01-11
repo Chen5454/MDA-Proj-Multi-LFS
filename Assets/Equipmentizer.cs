@@ -4,6 +4,7 @@ using UnityEngine;
 public class Equipmentizer : MonoBehaviour
 {
     public SkinnedMeshRenderer TargetMeshRenderer;
+    public SkinnedMeshRenderer myRenderer;
 
     void Start()
     {
@@ -12,7 +13,7 @@ public class Equipmentizer : MonoBehaviour
             boneMap[bone.gameObject.name] = bone;
 
 
-        SkinnedMeshRenderer myRenderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+        //myRenderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
 
         Transform[] newBones = new Transform[myRenderer.bones.Length];
         for (int i = 0; i < myRenderer.bones.Length; ++i)

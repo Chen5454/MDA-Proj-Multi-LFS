@@ -29,7 +29,9 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     public List<ActionSequence> ActionSequences;
     public SmoothSyncMovement SmoothMovement;
     public EmergencyBedController myBed;
+    public Collider PatientModelCollider;
     public bool isEvac;
+
     [SerializeField] private string urgent, critical, nonUrgent, dead, unTugged;
     #endregion
 
@@ -48,10 +50,7 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
 
     #region GameObjects
     [Header("Props")]
-    public List<GameObject> KidPropList;
     public List<GameObject> PropList;
-    public List<GameObject> OldPropList;
-    public Collider PatientModelCollider;
 
     [Header("Bandages")]
     public bool UseTourniquet = false;
@@ -536,20 +535,6 @@ public class Patient : MonoBehaviour, IPunInstantiateMagicCallback, IPunObservab
     [PunRPC]
     private void RevealPropOnPatientRPC(int propIndex)
     {
-        switch (NewPatientData.PatientType)
-        {
-            case PatientType.Old:
-                OldPropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Grown:
-                PropList[propIndex].SetActive(true);
-                break;
-            case PatientType.Kid:
-                KidPropList[propIndex].SetActive(true);
-                break;
-            default:
-                break;
-        }
         PropList[propIndex].SetActive(true);
     }
 
