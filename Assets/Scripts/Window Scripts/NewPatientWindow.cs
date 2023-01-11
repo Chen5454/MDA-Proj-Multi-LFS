@@ -23,8 +23,7 @@ namespace PatientCreationSpace
         TMP_InputField EventName;
         [SerializeField]
         TMP_InputField Age;
-        [SerializeField]
-        TMP_Dropdown Gender;
+        [SerializeField] private TMP_Dropdown _patientType;
         [SerializeField]
         TMP_InputField Weight;
         [SerializeField]
@@ -122,10 +121,12 @@ namespace PatientCreationSpace
             Name.text = "";
             EventName.text = "";
             Age.text = "";
+            _patientType.value = 0;
             Weight.text = "";
             Height.text = "";
             //AddressLocation.text = "";
             Complaint.text = "";
+            DestinationDropdown.value = 0;
 
             _isMale.DeSetMe(true);
             _isFemale.DeSetMe(false);
@@ -143,8 +144,8 @@ namespace PatientCreationSpace
                 (string.IsNullOrEmpty(Name.text) ||
                 string.IsNullOrEmpty(EventName.text) ||
                 string.IsNullOrEmpty(Age.text) || //!float.TryParse(Age.text, out float nothing)) || //age is filled, and a number
-                string.IsNullOrEmpty(Weight.text) || 
-                string.IsNullOrEmpty(Height.text)|| 
+                string.IsNullOrEmpty(Weight.text) ||
+                string.IsNullOrEmpty(Height.text) ||
                 string.IsNullOrEmpty(Complaint.text)))
             {
                 if (((!IsALS.IsBtnSelected && !IsBLS.IsBtnSelected) ||
@@ -168,7 +169,7 @@ namespace PatientCreationSpace
                     continue;
 
                 if (string.IsNullOrEmpty(item.text))
-                return false;
+                    return false;
             }
 
             foreach (TMP_Dropdown item in _measurementDropdowns)
@@ -218,14 +219,14 @@ namespace PatientCreationSpace
             //TO BE REMOVED!
 
             //Basic info nullorempty checks:
-            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text) 
+            if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text)
                 || string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Weight.text)
-                || string.IsNullOrEmpty(Height.text) ||  string.IsNullOrEmpty(Complaint.text))
+                || string.IsNullOrEmpty(Height.text) || string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
             }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
+            if (!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
             {
                 Debug.LogError("no type selected somehow?");
                 return;
@@ -241,8 +242,9 @@ namespace PatientCreationSpace
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
                 if (i == 5 || i == 7)
-                    if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
-                        measurementInputFields[i].text = "0";
+                    continue; // deal with the things below later (dropdown)
+                              //if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+                              //measurementInputFields[i].text = "0";
 
                 if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
                 {
@@ -253,21 +255,15 @@ namespace PatientCreationSpace
                 measurementArray[i] = measurementInputFields[i].text;
             }
 
-            for (int i = 0; i < _measurementDropdowns.Count; i++)
-            {
-                if (i == 0)
-                    measurementArray[5] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
-                else if (i == 1)
-                    measurementArray[7] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
+            measurementArray[(int)Measurements.אקג] = _measurementDropdowns[0].options[_measurementDropdowns[0].value].text;
+            measurementArray[(int)Measurements.הכרה] = _measurementDropdowns[1].options[_measurementDropdowns[1].value].text;
 
-                if (string.IsNullOrEmpty(_measurementDropdowns[i].options[_measurementDropdowns[i].value].text)) //Initial Measurements nullorempty checks here!
-                {
-                    Debug.LogError("all initial measurement fields need to be filled!");
-
-                    return;
-                }
-            }
-
+            //if (string.IsNullOrEmpty(_measurementDropdowns[i].options[_measurementDropdowns[i].value].text)) //Initial //Measurements nullorempty checks here!
+            //{
+            //    Debug.LogError("all initial measurement fields need to be filled!");
+            //
+            //    return;
+            //}
 
             //string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             //for (int i = 0; i < _measurementDropdowns.Count; i++)
@@ -307,16 +303,16 @@ namespace PatientCreationSpace
         public void ClickOnEditExisting()
         {
             //check are REQUIRED(?) fields TBD
-            if(PatientCreator.newPatient == null)
+            if (PatientCreator.newPatient == null)
             {
                 Debug.LogError("no loaded patient found!");
                 return;
             }
-            
+
             //Basic info nullorempty checks:
             if (string.IsNullOrEmpty(Name.text) || string.IsNullOrEmpty(EventName.text)
-                ||string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Weight.text)
-                || string.IsNullOrEmpty(Height.text) ||  string.IsNullOrEmpty(Complaint.text))
+                || string.IsNullOrEmpty(Age.text) || string.IsNullOrEmpty(Weight.text)
+                || string.IsNullOrEmpty(Height.text) || string.IsNullOrEmpty(Complaint.text))
             {
                 Debug.LogError("all basic info fields need to be filled!");
                 return;
@@ -328,6 +324,9 @@ namespace PatientCreationSpace
             string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
+                if (i == 5 || i == 7)
+                    continue;
+
                 if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
                 {
                     Debug.LogError("all initial measurement fields need to be filled!");
@@ -336,17 +335,22 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
+
+            measurementArray[(int)Measurements.אקג] = _measurementDropdowns[0].options[_measurementDropdowns[0].value].text;
+            measurementArray[(int)Measurements.הכרה] = _measurementDropdowns[1].options[_measurementDropdowns[1].value].text;
+
+            //measurementArray[(int)Measurements.אקג] = _measurementDropdowns.
+            if (!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
             {
                 Debug.LogError("no type selected somehow?");
                 return;
             }
-            
+
             //newCreatedPatient = PatientCreator.CreateNewPatient(Name.text, EventName.text, 1/*TBF! UniqueID*/, int.Parse(Age.text), /*Gender.options[Gender.value].text*/ ((PatientGender)Gender.value).ToString(), Weight.text, //TBF
             //    Height.text, Complaint.text, measurementArray, ((DestinationRoom)DestinationDropdown.value), IsALS.IsBtnSelected, IsTrauma.IsBtnSelected);//parsing for ints is temp TBF
-            
+
             treatmentSequenceEditorWindow.SetActive(true);
-            
+
             //load up the treatment sequence:
             foreach (var item in PatientCreator.newPatient.FullTreatmentSequence.sequenceBlocks)
             {
@@ -372,7 +376,7 @@ namespace PatientCreationSpace
 
                                     break;
                                 case "Test":
-                                    
+
                                     TestBlock tb1 = Instantiate(testBlockPrefab).GetComponent<TestBlock>();
                                     Test t1 = sBlock as Test;
                                     tb1.SetTest(t1);
@@ -380,7 +384,7 @@ namespace PatientCreationSpace
 
                                     break;
                                 case "Medicine":
-                                    
+
                                     MedicineBlock mb1 = Instantiate(medicineBlockPrefab).GetComponent<MedicineBlock>();
                                     Medicine m1 = sBlock as Medicine;
                                     mb1.SetMedicine(m1);
@@ -389,8 +393,8 @@ namespace PatientCreationSpace
 
                             }
                         }
-                                        
-                        
+
+
 
                         break;
                     case "Question":
@@ -420,7 +424,7 @@ namespace PatientCreationSpace
                 }
 
             }
-            if(newCreatedPatient == null)
+            if (newCreatedPatient == null)
             {
                 newCreatedPatient = new NewPatientData();
             }
@@ -482,20 +486,20 @@ namespace PatientCreationSpace
             TreatmentSequence treatmentSequence = new TreatmentSequence();
             treatmentSequence.Init();
             //WAITING WITH ALL THIS - need to see if groups don't need parsing but will just return the TreatmentGroup 
-            
-            foreach (var item in addBlockMaster.basicBlocks) 
+
+            foreach (var item in addBlockMaster.basicBlocks)
             {
                 Treatment t = item.GetTreatment();
-                if (t!=null)
+                if (t != null)
                 {
                     //Treatment confirmed!
                     treatmentSequence.AddToSequence(t as SequenceBlock);
-                 
+
                 }
                 else
                 {
                     TreatmentGroup tg = item.GetTreatmentGroup();
-                    if(tg ==null)
+                    if (tg == null)
                     {
                         //neither treatment nor group??
                         Debug.LogError("this block returns neither treatment nor group");
@@ -505,7 +509,7 @@ namespace PatientCreationSpace
                     treatmentSequence.AddToSequence(tg as SequenceBlock);
                 }
             }
-            
+
             PatientCreator.newPatient.FullTreatmentSequence = treatmentSequence;
 
             PatientCreator.SaveNewPatient();
@@ -535,12 +539,29 @@ namespace PatientCreationSpace
             else
                 _isFemale.ClickMe();
 
+            for (int i = 0; i < _patientType.options.Count; i++)
+            {
+                if (i == (int)patient.PatientType)
+                {
+                    _patientType.value = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < _measurementDropdowns[0].options.Count; i++)
+            {
+                if (_measurementDropdowns[0].options[i].text == patient.GetMeasurement(Measurements.אקג))
+                {
+                    _measurementDropdowns[0].value = i;
+                    break;
+                }
+            }
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
             //AddressLocation.text = patient.AddressLocation;
             Complaint.text = patient.Complaint;
 
-            
+
 
             if (patient.isTrauma)
                 IsTrauma.ClickMe();
@@ -549,21 +570,39 @@ namespace PatientCreationSpace
 
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
+                if (i == 5 || i == 7)
+                    continue;
+
                 measurementInputFields[i].text = patient.GetMeasurement(i);
                 //measurementInputFields[i].ForceMeshUpdate(true);
             }
 
+            for (int i = 0; i < _measurementDropdowns[0].options.Count; i++)
+            {
+                if (_measurementDropdowns[0].options[i].text == patient.GetMeasurement(Measurements.אקג))
+                {
+                    _measurementDropdowns[0].value = i;
+                    break;
+                }
+            }
 
-
+            for (int i = 0; i < _measurementDropdowns[1].options.Count; i++)
+            {
+                if (_measurementDropdowns[1].options[i].text == patient.GetMeasurement(Measurements.הכרה))
+                {
+                    _measurementDropdowns[1].value = i;
+                    break;
+                }
+            }
         }
         public void RefreshLoadedPatients()
         {
-            if(patientRoster)
-            patientRoster.SetUpNamesAsButtons();
+            if (patientRoster)
+                patientRoster.SetUpNamesAsButtons();
         }
 
 
-   
+
     }
     //cancel patient creation - delete all SOs that need to be deleted (keep questions, because why not?)
     //public void CancelPatientCreation()
