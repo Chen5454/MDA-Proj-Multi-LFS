@@ -23,8 +23,7 @@ namespace PatientCreationSpace
         TMP_InputField EventName;
         [SerializeField]
         TMP_InputField Age;
-        [SerializeField]
-        TMP_Dropdown Gender;
+        [SerializeField] private TMP_Dropdown _patientType;
         [SerializeField]
         TMP_InputField Weight;
         [SerializeField]
@@ -122,10 +121,12 @@ namespace PatientCreationSpace
             Name.text = "";
             EventName.text = "";
             Age.text = "";
+            _patientType.value = 0;
             Weight.text = "";
             Height.text = "";
             //AddressLocation.text = "";
             Complaint.text = "";
+            DestinationDropdown.value = 0;
 
             _isMale.DeSetMe(true);
             _isFemale.DeSetMe(false);
@@ -241,8 +242,9 @@ namespace PatientCreationSpace
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
                 if (i == 5 || i == 7)
-                    if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
-                        measurementInputFields[i].text = "0";
+                    continue; // deal with the things below later (dropdown)
+                    //if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
+                        //measurementInputFields[i].text = "0";
 
                 if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
                 {
@@ -253,21 +255,15 @@ namespace PatientCreationSpace
                 measurementArray[i] = measurementInputFields[i].text;
             }
 
-            for (int i = 0; i < _measurementDropdowns.Count; i++)
-            {
-                if (i == 0)
-                    measurementArray[5] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
-                else if (i == 1)
-                    measurementArray[7] = _measurementDropdowns[i].options[_measurementDropdowns[i].value].text;
+            measurementArray[(int)Measurements.אקג] = _measurementDropdowns[0].options[_measurementDropdowns[0].value].text;
+            measurementArray[(int)Measurements.הכרה] = _measurementDropdowns[1].options[_measurementDropdowns[1].value].text;
 
-                if (string.IsNullOrEmpty(_measurementDropdowns[i].options[_measurementDropdowns[i].value].text)) //Initial Measurements nullorempty checks here!
-                {
-                    Debug.LogError("all initial measurement fields need to be filled!");
-
-                    return;
-                }
-            }
-
+            //if (string.IsNullOrEmpty(_measurementDropdowns[i].options[_measurementDropdowns[i].value].text)) //Initial //Measurements nullorempty checks here!
+            //{
+            //    Debug.LogError("all initial measurement fields need to be filled!");
+            //
+            //    return;
+            //}
 
             //string[] measurementDropdownArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             //for (int i = 0; i < _measurementDropdowns.Count; i++)
@@ -328,6 +324,9 @@ namespace PatientCreationSpace
             string[] measurementArray = new string[System.Enum.GetValues(typeof(Measurements)).Length];
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
+                if (i == 5 || i == 7)
+                    continue;
+
                 if (string.IsNullOrEmpty(measurementInputFields[i].text)) //Initial Measurements nullorempty checks here!
                 {
                     Debug.LogError("all initial measurement fields need to be filled!");
@@ -336,7 +335,12 @@ namespace PatientCreationSpace
                 }
                 measurementArray[i] = measurementInputFields[i].text;
             }
-            if(!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
+
+            measurementArray[(int)Measurements.אקג] = _measurementDropdowns[0].options[_measurementDropdowns[0].value].text;
+            measurementArray[(int)Measurements.הכרה] = _measurementDropdowns[1].options[_measurementDropdowns[1].value].text;
+
+            //measurementArray[(int)Measurements.אקג] = _measurementDropdowns.
+            if (!IsALS.IsBtnSelected && !IsTrauma.IsBtnSelected && !IsBLS.IsBtnSelected && !IsIllness.IsBtnSelected && !_isMale.IsBtnSelected && !_isFemale.IsBtnSelected)
             {
                 Debug.LogError("no type selected somehow?");
                 return;
@@ -535,6 +539,23 @@ namespace PatientCreationSpace
             else
                 _isFemale.ClickMe();
 
+            for (int i = 0; i < _patientType.options.Count; i++)
+            {
+                if (i == (int)patient.PatientType)
+                {
+                    _patientType.value = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < _measurementDropdowns[0].options.Count; i++)
+            {
+                if (_measurementDropdowns[0].options[i].text == patient.GetMeasurement(Measurements.אקג))
+                {
+                    _measurementDropdowns[0].value = i;
+                    break;
+                }
+            }
             Weight.text = patient.PhoneNumber;
             Height.text = patient.MedicalCompany;
             //AddressLocation.text = patient.AddressLocation;
@@ -549,12 +570,30 @@ namespace PatientCreationSpace
 
             for (int i = 0; i < measurementInputFields.Count; i++)
             {
+                if (i == 5 || i == 7)
+                    continue;
+
                 measurementInputFields[i].text = patient.GetMeasurement(i);
                 //measurementInputFields[i].ForceMeshUpdate(true);
             }
 
+            for (int i = 0; i < _measurementDropdowns[0].options.Count; i++)
+            {
+                if (_measurementDropdowns[0].options[i].text == patient.GetMeasurement(Measurements.אקג))
+                {
+                    _measurementDropdowns[0].value = i;
+                    break;
+                }
+            }
 
-
+            for (int i = 0; i < _measurementDropdowns[1].options.Count; i++)
+            {
+                if (_measurementDropdowns[1].options[i].text == patient.GetMeasurement(Measurements.הכרה))
+                {
+                    _measurementDropdowns[1].value = i;
+                    break;
+                }
+            }
         }
         public void RefreshLoadedPatients()
         {
