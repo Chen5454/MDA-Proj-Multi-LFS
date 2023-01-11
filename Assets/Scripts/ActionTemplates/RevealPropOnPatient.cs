@@ -9,8 +9,8 @@ public class RevealPropOnPatient : Action
     [Header("Prefab References")]
     [SerializeField] private Props _prop;
 
-    [Header("Item Name")]
-    [SerializeField] private string _itemName;
+    [Header("Log Text")]
+    [SerializeField] private string _logText;
 
     public void RevealOnPatient()
     {
@@ -21,7 +21,7 @@ public class RevealPropOnPatient : Action
             CurrentPatient.PhotonView.RPC("RevealPropOnPatientRPC", RpcTarget.AllViaServer, (int)_prop);
             //CurrentPatient.PropList[(int)_prop].SetActive(true);
 
-            TextToLog = $"השתמש ב {_itemName}";
+            TextToLog = $"{_logText}";
 
             if (_shouldUpdateLog)
             {

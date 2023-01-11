@@ -10,7 +10,7 @@ public class PatientObjectInstantiation : Action
     [SerializeField] private GameObject _item;
 
     [Header("Item Name")]
-    [SerializeField] private string _itemName;
+    [SerializeField] private string _logText;
 
     [Header("Item Offsets")]
     [SerializeField] private Vector3 _offsetPos;
@@ -28,7 +28,7 @@ public class PatientObjectInstantiation : Action
             GameObject item = PhotonNetwork.Instantiate(_item.name, desiredPosition, desiredRotation);
             item.transform.SetParent(CurrentPatient.transform);
 
-            TextToLog = $"השתמש ב {_itemName}";
+            TextToLog = $"{_logText}";
 
             if (_shouldUpdateLog)
             {

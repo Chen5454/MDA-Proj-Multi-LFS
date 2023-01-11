@@ -22,7 +22,6 @@ public class ConnectingMonitor : Action
     [SerializeField] private string _alertTitle;
     [SerializeField] private string _alertText;
 
-
     private GameObject _player;
     
     public void ConnectingDevice()
