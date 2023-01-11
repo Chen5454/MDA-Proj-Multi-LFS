@@ -58,7 +58,7 @@ public class FilteredPatientsRoster : MonoBehaviour,IPunObservable
 
     public void SetUpNamesAsButtons() //called in inspector by the same buttons which perform the ALS/BLS Filtering
     {
-        _photonView.RPC("SetUpNamesAsButtons_RPC", RpcTarget.AllBufferedViaServer, isShowingALS, isShowingTrauma);
+        _photonView.RPC("SetUpNamesAsButtons_RPC", RpcTarget.AllViaServer, isShowingALS, isShowingTrauma);
     }
 
     [PunRPC]

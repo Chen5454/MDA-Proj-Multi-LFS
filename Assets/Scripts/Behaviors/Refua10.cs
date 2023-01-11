@@ -61,7 +61,7 @@ public class Refua10 : MonoBehaviour
     public void ReTagPatient(Patient patientToReTag, TextMeshProUGUI patientNameTMP)
     {
         patientNameTMP.color = Color.red;
-        patientToReTag.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllBufferedViaServer);
+        patientToReTag.PhotonView.RPC("UpdatePatientInfoDisplay", RpcTarget.AllViaServer);
         UIManager.Instance.JoinPatientPopUp.SetActive(true);
     }
 

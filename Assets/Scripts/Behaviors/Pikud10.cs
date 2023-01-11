@@ -74,6 +74,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     {
         thisPlayerdata = GetComponent<PlayerData>();
         _transfer = GetComponent<OwnershipTransfer>();
+        GameManager.Instance.Pikud10View = GetComponent<PhotonView>();
 
         if (_photonView.IsMine)
         {
@@ -111,8 +112,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
                     if (hit.collider.tag == "test")
                     {
                         string nameIndx = hit.transform.parent.GetComponent<WorldMark>().nameID;
-                        Debug.Log(nameIndx);
-                        _photonView.RPC("DestroyWorldMark_RPC", RpcTarget.AllBufferedViaServer, nameIndx);
+                        _photonView.RPC("DestroyWorldMark_RPC", GetPikud10Player(), nameIndx);
                     }
                 }
             }
@@ -128,7 +128,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
             if (mark.GetComponent<WorldMark>().nameID == nameIndex)
             {
                 _allWorldMarks.Remove(mark);
-                Destroy(mark);
+                PhotonNetwork.Destroy(mark);
                 break;
             }
         }
@@ -254,17 +254,17 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownRefua10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownPinuy10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             if (ActionsManager.Instance.AllPlayersPhotonViews.Count != PlayerListDropdownHenyon10.options.Count)
             {
-                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllBufferedViaServer);
+                _photonView.RPC("DropdownPlayersNickNamesPikud10", RpcTarget.AllViaServer);
             }
 
             yield return new WaitForSeconds(nextUpdate);
@@ -280,11 +280,20 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         SetMarkRPC(markIndex);
     }
 
-    private void CameraTransmition()
-    {
-        //GameManager.Instance.Pikud10TextureRenderer = transform.GetChild(1).GetComponent<RenderTexture>();
-        _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllBufferedViaServer);
-    }
+      private void CameraTransmition()
+        {
+            if (GameManager.Instance.Pikud10TextureRenderer != null)
+            {
+                Pikud10Camera.targetTexture = GameManager.Instance.Pikud10TextureRenderer;
+            }
+            else
+            {
+                Debug.LogError("GameManager.Instance.Pikud10TextureRenderer is null, cannot set target texture");
+            }
+
+            _photonView.RPC("SpectatePikudCamera_RPC", RpcTarget.AllViaServer);
+        }
+    
 
     #endregion
 
@@ -402,10 +411,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         AssignHenyon10.onClick.AddListener(delegate { OnClickHenyon(); });
 
         gameObject.AddComponent<LineRenderer>();
-        // _lineRenderer = GetComponent<LineRenderer>();
-        // _lineRenderer.positionCount = 6;
-        // _lineRenderer.widthMultiplier = 0.1f;
-        //_lineRenderer.material = GameManager.Instance.LineMaterial;
+     
         _groundLayer = LayerMask.GetMask("Ground");
         _groundLayer += LayerMask.GetMask("Road");
 
@@ -437,7 +443,7 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             _targetPos = new Vector2(areaPosRaycastHit.point.x, areaPosRaycastHit.point.z);
             string IndexRandom = Random.value.ToString();
-            _photonView.RPC("SettingPrefabPos_RPC", RpcTarget.AllBufferedViaServer, markIndex, _targetPos, IndexRandom);
+            _photonView.RPC("SettingPrefabPos_RPC", GetPikud10Player(), markIndex, _targetPos, IndexRandom);
         }
 
         _isMarking = false;
@@ -447,58 +453,24 @@ public class Pikud10 : MonoBehaviour, IPunObservable
     private void SettingPrefabPos_RPC(int markIndex, Vector2 targetPos, string IndexRandom)
     {
 
-        var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y),
-            Quaternion.identity);
-        ChangeColorForArea(markIndex, instantiateWorldMark);
-        instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
-            instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
-        instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
-        _allWorldMarks.Add(instantiateWorldMark);
+        //var instantiateWorldMark = Instantiate(worldMark, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y),
+        //    Quaternion.identity);
+        //ChangeColorForArea(markIndex, instantiateWorldMark);
+        //instantiateWorldMark.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite =
+        //    instantiateWorldMark.GetComponent<WorldMark>().Marks[markIndex];
+        //instantiateWorldMark.GetComponent<WorldMark>().nameID = IndexRandom;
+        //_allWorldMarks.Add(instantiateWorldMark);
+
+        object[] instantiationData = new object[4];
+        instantiationData[0] = targetPos;
+        instantiationData[1] = IndexRandom;
+        instantiationData[2] = markIndex;
+
+
+        var thisPrefab = PhotonNetwork.Instantiate(worldMark.name, new Vector3(targetPos.x, _worldMarkHeight, targetPos.y), Quaternion.identity, 0, instantiationData);
+        _allWorldMarks.Add(thisPrefab);
     }
-
-    //[PunRPC]
-    //private void DestoryPrefabPos_RPC()
-    //{
-    //    Destroy(hit.transform.root.gameObject);
-    //    Debug.Log("Hit");
-    //}
-
-
-    private void ChangeColorForArea(int markIndex, GameObject worldMark)
-    {
-        var colorArea = worldMark.transform.GetComponentInChildren<Renderer>().material;
-        var ColorFillArea = worldMark.transform.Find("FillArea").GetComponentInChildren<Renderer>().material;
-
-        switch (markIndex)
-        {
-            case 0:
-                colorArea.color = Color.red;
-                ColorFillArea.color = new Color(1, 0, 0, 0.2f);
-                break;
-            case 1:
-                colorArea.color = Color.green;
-                ColorFillArea.color = new Color(0, 1, 0, 0.2f);
-                break;
-            case 2:
-                colorArea.color = Color.blue;
-                ColorFillArea.color = new Color(0, 0, 1, 0.2f);
-                break;
-            case 3:
-                colorArea.color = Color.white;
-                ColorFillArea.color = new Color(1, 1, 1, 0.2f);
-                break;
-            case 4:
-                colorArea.color = Color.black;
-                ColorFillArea.color = new Color(0, 0, 0, 0.2f);
-                break;
-            case 5:
-                colorArea.color = Color.yellow;
-                ColorFillArea.color = new Color(1, 1, 0, 0.2f);
-                break;
-        }
-    }
-
-
+    
 
 
     public void RefreshVehicleLists()
@@ -584,7 +556,24 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         }
     }
 
+    private Player GetPikud10Player()
+    {
+        for (int i = 0; i < ActionsManager.Instance.AllPlayersPhotonViews.Count; i++)
+        {
+            var playerView = ActionsManager.Instance.AllPlayersPhotonViews[i].GetComponent<PlayerData>();
+            var PikudPlayer = playerView.GetComponent<Pikud10>();
 
+            if (PikudPlayer!=null && playerView.IsPikud10)
+            {
+                Player playerIndex = PikudPlayer.GetComponent<PhotonView>().Controller;
+                return playerIndex;
+
+            }
+        }
+
+        Debug.LogError("There is no Pikud10 Player");
+        return null;
+    }
 
     public void RefreshPatientLists()
     {
@@ -679,15 +668,14 @@ public class Pikud10 : MonoBehaviour, IPunObservable
         {
             stream.SendNext(_isMarking);
             stream.SendNext(_currentMarkIndex);
-          //stream.SendNext(_targetPos);
+          stream.SendNext(Pikud10Camera.gameObject.activeSelf);
 
         }
         else
         {
             _isMarking = (bool)stream.ReceiveNext();
             _currentMarkIndex = (int)stream.ReceiveNext();
-          //_targetPos = (Vector2)stream.ReceiveNext();
-
+            Pikud10Camera.gameObject.SetActive((bool)stream.ReceiveNext());
         }
     }
     #endregion

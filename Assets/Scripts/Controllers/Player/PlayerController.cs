@@ -995,7 +995,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         _photonView.RPC("UpdatePlayerData", newPlayer, PlayerData.CrewIndex, (int) PlayerData.UserRole,
             PlayerData.IsCrewLeader, PlayerData.IsDataInitialized, PlayerData.CrewColor.r, PlayerData.CrewColor.g,
-            PlayerData.CrewColor.b);
+            PlayerData.CrewColor.b,(int)PlayerData.AranRole, PlayerData.IsMokdan, PlayerData.IsPinuy10, PlayerData.IsPikud10, PlayerData.IsRefua10, PlayerData.IsHenyon10,PlayerData.IsInstructor);
 
         _photonView.RPC("AddPlayerToList", newPlayer, PhotonView.Get(this).ViewID);
 
@@ -1003,12 +1003,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     [PunRPC]
     public void UpdatePlayerData(int crewIndex, int roleIndex, bool isCrewLeader, bool isDataInitialized, float r,
-        float g, float b)
+        float g, float b,int aranRole, bool isMonkdan, bool isPinuy, bool isPikud, bool isRefua, bool isHenyon,bool isInstructor)
     {
         PlayerData.CrewIndex = crewIndex;
         PlayerData.UserRole = (Roles) roleIndex;
         PlayerData.IsCrewLeader = isCrewLeader;
         PlayerData.IsDataInitialized = isDataInitialized;
+        PlayerData.AranRole = (AranRoles) aranRole;
+        PlayerData.IsMokdan = isMonkdan;
+        PlayerData.IsPinuy10 = isPinuy;
+        PlayerData.IsPikud10 = isPikud;
+        PlayerData.IsRefua10 = isRefua;
+        PlayerData.IsHenyon10 = isHenyon;
+        PlayerData.IsInstructor = isInstructor;
+
         //Set his Vest to the right Role
         VestMeshFilter.mesh = ActionsManager.Instance.Vests[roleIndex];
         if (!Vest.activeInHierarchy)

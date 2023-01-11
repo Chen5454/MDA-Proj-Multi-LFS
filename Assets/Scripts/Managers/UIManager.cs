@@ -60,6 +60,8 @@ public class UIManager : MonoBehaviour
     public Transform AmbulanceListContent, NatanListContent;
     public Button MarkVehiclesHenyon;
     public GameObject HenyonParent;
+    public GameObject MarkerPrefabHanyon;
+
 
 
     [Header("Pinuy10")]

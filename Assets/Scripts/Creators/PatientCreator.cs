@@ -51,9 +51,9 @@ namespace PatientCreationSpace
         //}
         public static NewPatientData CreateNewPatient(int patientType, string name, string sureName, int id, int age, bool isMale, bool isFemale, string phoneNum, string medicalCompany, string complaint, string[] measurements, DestinationRoom room, bool isAls, bool trauma)
         {
-            newPatient = new NewPatientData(); 
+            newPatient = new NewPatientData();
 
-            newPatient.Initialize(patientType, name, sureName, id, age, isMale, phoneNum, medicalCompany, complaint, measurements,room,  isAls, trauma);
+            newPatient.Initialize(patientType, name, sureName, id, age, isMale, phoneNum, medicalCompany, complaint, measurements, room, isAls, trauma);
 
             //create file already?
 
@@ -73,16 +73,16 @@ namespace PatientCreationSpace
             string treatmentSequenceJSON = SerializeTreatmentSequence(newPatient.FullTreatmentSequence);
 
             string patientFullName = newPatient.Name + "_" + newPatient.SureName;
-            
-            RequestTest.Instance.LogPlayer(patientFullName, patientJSON,treatmentSequenceJSON);
 
-          //  NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
+            RequestTest.Instance.LogPlayer(patientFullName, patientJSON, treatmentSequenceJSON);
+
+            //  NewPatientWindow.Instance._photonView.RPC("CallPatientCreator", RpcTarget.AllBufferedViaServer, patientJSON, treatmentSequenceJSON, newPatient.Name, newPatient.SureName);
 
 
             return true; //successful save!
         }
 
-        
+
         public static void CreateSaveFiles(string patientJSON, string treatmentSequenceJSON, string name, string sureName)
         {
             if (!Directory.Exists($"{streamingAssets_PatientFolderPath}"))
@@ -188,12 +188,12 @@ namespace PatientCreationSpace
         /// <param name="patientFullName"></param>
         /// <returns></returns>
         /// 
-        static NewPatientData DeSerializePatient_Full(string json,string ts_json)
+        static NewPatientData DeSerializePatient_Full(string json, string ts_json)
         {
-          //  string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
+            //  string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
             NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
 
-           // string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
+            // string ts_json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}_treatmentSequence.txt");
             TreatmentSequence ts = DeSerializeTreatmentSequence(ts_json);
 
 
@@ -201,9 +201,9 @@ namespace PatientCreationSpace
             return newPatientData;
         }
         static NewPatientData DeSerializePatient_Simple(string patientFullName)
-        { 
+        {
             string json = File.ReadAllText($"{streamingAssets_PatientFolderPath}{patientFullName}.txt");
-          // string json = RequestTest.Instance.GetRows(patientFullName);
+            // string json = RequestTest.Instance.GetRows(patientFullName);
             NewPatientData newPatientData = JsonUtility.FromJson<NewPatientData>(json);
             return newPatientData;
         }
@@ -316,8 +316,8 @@ namespace PatientCreationSpace
                 string s = Path.GetFileName(toFilter[i]);
                 s = s.Substring(0, s.Length - 4); //removes ".txt"
                 NewPatientData temp = DeSerializePatient_Simple(s);
-                if(temp.isALS == isAls)
-                toReturn.Add(s); //removes ".txt"
+                if (temp.isALS == isAls)
+                    toReturn.Add(s); //removes ".txt"
             }
 
             return toReturn;
@@ -329,9 +329,9 @@ namespace PatientCreationSpace
 
 
             toFilter = RequestTest.Instance.GetAllPatients_Simple();
-            foreach(var temp in toFilter)
+            foreach (var temp in toFilter)
             {
-                if (pred(temp)) 
+                if (pred(temp))
                     toReturn.Add($"{temp.Name}_{temp.SureName}"); //TBF IMMEDIATELY!
             }
 
